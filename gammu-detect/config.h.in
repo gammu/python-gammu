@@ -1,8 +1,0 @@
-#ifndef _config_h_
-#define _config_h_
-
-#cmakedefine GUDEV_FOUND
-
-#cmakedefine BLUEZ_FOUND
-
-#endif

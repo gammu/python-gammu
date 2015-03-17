@@ -1,29 +1,18 @@
-language: c
-compiler:
-  - gcc
-  - clang
+language: python
+python:
+  - "2.6"
+  - "2.7"
+  - "3.2"
+  - "3.3"
 before_install:
   - sudo apt-get update -qq
   - sudo apt-get install -qq libbluetooth-dev libusb-1.0-0-dev libgudev-1.0-dev unixodbc-dev libdbi-dev libdbd-sqlite3
-before_script:
-  - mkdir _build
-  - cd _build
 script:
-  - if [ ${COVERITY_SCAN_BRANCH} != 1 ] ; then cmake .. -DCMAKE_C_COMPILER=$CC -DCOVERAGE=ON -DCMAKE_BUILD_TYPE=Continuous ; fi
-  - if [ ${COVERITY_SCAN_BRANCH} != 1 ] ; then make ; fi
-  - if [ ${COVERITY_SCAN_BRANCH} != 1 ] ; then make test ; fi
-after_success:
-  - ./coveralls-upload
-addons:
-  coverity_scan:
-    project:
-      name: "gammu/gammu"
-      description: "Build submitted via Travis CI"
-    notification_email: michal@cihar.com
-    build_command_prepend: cmake ..
-    build_command: make
-    branch_pattern: coverity_scan
-# trigger Buildtime Trend Service to parse Travis CI log
+  - ./setup.py build
 notifications:
   webhooks:
     - https://buildtimetrend.herokuapp.com/travis
+matrix:
+  allow_failures:
+    - python: "3.2"
+    - python: "3.3"

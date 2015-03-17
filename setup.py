@@ -40,7 +40,7 @@ import datetime
 import string
 
 # some defines
-VERSION = '1.35.90'
+VERSION = '2.0'
 VERSION_TUPLE = tuple(map(int, VERSION.split('.')))
 GAMMU_REQUIRED = (1, 34, 0)
 PYTHON_REQUIRED = (2,3)

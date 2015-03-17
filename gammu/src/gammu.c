@@ -6283,7 +6283,7 @@ gammu_DecodePDU(PyObject *self, PyObject *args, PyObject *kwds)
     PyObject *result;
     PyObject *o = Py_None;
     gboolean smsc;
-    const char *pdu;
+    const unsigned char *pdu;
     int pdulen;
 	size_t parse_len = 0;
     GSM_SMSMessage sms;
@@ -6328,7 +6328,8 @@ gammu_EncodePDU(PyObject *self, PyObject *args, PyObject *kwds)
     static char *kwlist[] = {"SMS", "Layout", NULL};
     GSM_Error error;
     PyObject *value;
-    unsigned char buffer[1000], req[1000];
+    unsigned char buffer[1000];
+    char req[1000];
     int length = 0, current = 0, i;
     GSM_SMSMessage sms;
     char *layout = NULL;

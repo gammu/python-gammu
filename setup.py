@@ -42,7 +42,7 @@ import string
 # some defines
 VERSION = '1.35.90'
 VERSION_TUPLE = tuple(map(int, VERSION.split('.')))
-GAMMU_REQUIRED = VERSION_TUPLE
+GAMMU_REQUIRED = (1, 34, 0)
 PYTHON_REQUIRED = (2,3)
 
 ADDITIONAL_PARAMS = [

@@ -13,6 +13,9 @@ python-gammu
 .. image:: https://coveralls.io/repos/nijel/python-gammu/badge.svg
     :target: https://coveralls.io/r/nijel/python-gammu
 
+.. image:: https://buildtimetrend.herokuapp.com/badge/nijel/python-gammu/latest
+    :target: https://buildtimetrend.herokuapp.com/dashboard/nijel/python-gammu
+
 Python bindings for Gammu library are now part of Gammu source package
 (in python subdirectory).  They are built automatically if you have
 installed Python with all needed tools.

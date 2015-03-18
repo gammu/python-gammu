@@ -74,9 +74,6 @@ class SMSDDummyTest(DummyTest):
             retries = 0
             while retries < 2:
                 status = smsd.GetStatus()
-                for k in status.keys():
-                    print '%s: %s' % (k, status[k])
-                print
                 if status['Sent'] >= 2:
                     break
                 time.sleep(10)
@@ -85,13 +82,13 @@ class SMSDDummyTest(DummyTest):
             self.assertEqual(
                 status['Received'],
                 2,
-                'Messages were not sent as expected (sent = %d)!' %
+                'Messages were not received as expected (%d)!' %
                 status['Received']
             )
             self.assertEqual(
                 status['Sent'],
                 2,
-                'Messages were not sent as expected (sent = %d)!' %
+                'Messages were not sent as expected (%d)!' %
                 status['Sent']
             )
 

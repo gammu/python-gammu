@@ -30,8 +30,3 @@ if (WITH_BACKUP)
     configure_file("examples/sendlongsms.py" "${CMAKE_CURRENT_BINARY_DIR}/sendlongsms.py" COPY_ONLY)
     add_test("py-sendlongsms" ${PYTHON_EXECUTABLE} "${CMAKE_CURRENT_BINARY_DIR}/sendlongsms.py" "${CMAKE_CURRENT_BINARY_DIR}/.gammurc" "+420800123456")
 endif (WITH_BACKUP)
-
-if (LIBDBI_FOUND AND SQLITE_BIN AND WITH_BACKUP)
-    configure_file("examples/smsd-testing.py" "${CMAKE_CURRENT_BINARY_DIR}/test-smsd-testing.py" @ONLY)
-    add_test("py-smsd-testing" ${PYTHON_EXECUTABLE} "${CMAKE_CURRENT_BINARY_DIR}/test-smsd-testing.py")
-endif (LIBDBI_FOUND AND SQLITE_BIN AND WITH_BACKUP)

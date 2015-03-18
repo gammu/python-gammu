@@ -62,3 +62,16 @@ class BasicDummyTest(DummyTest):
     def test_model(self):
         state_machine = self.get_statemachine()
         self.assertEqual(state_machine.GetModel()[1], 'Dummy')
+
+    def test_diverts(self):
+        state_machine = self.get_statemachine()
+        diverts = state_machine.GetCallDivert()
+        self.assertEqual(
+            diverts,
+            [{
+                'CallType': 'All',
+                'Timeout': 0,
+                'Number': u'',
+                'DivertType': 'AllTypes'
+            }]
+        )

@@ -66,11 +66,11 @@ def check_worker_command(command):
     raise InvalidCommand(command)
 
 
-class GammuCommand:
+class GammuCommand(object):
     '''
     Storage of single command for gammu.
     '''
-    def __init__(self, command, params = None, percentage = 100):
+    def __init__(self, command, params=None, percentage=100):
         '''
         Creates single command instance.
         '''
@@ -107,7 +107,7 @@ class GammuCommand:
             return '%s ()' % self._command
 
 
-class GammuTask:
+class GammuTask(object):
     '''
     Storage of taks for gammu.
     '''
@@ -124,7 +124,7 @@ class GammuTask:
         self._list = []
         self._pointer = 0
         for i in range(len(commands)):
-            if type(commands[i]) == tuple:
+            if isinstance(commands[i], tuple):
                 cmd = commands[i][0]
                 try:
                     params = commands[i][1]
@@ -140,7 +140,7 @@ class GammuTask:
         '''
         Returns next command to be executed as L{GammuCommand}.
         '''
-        result =  self._list[self._pointer]
+        result = self._list[self._pointer]
         self._pointer += 1
         return result
 
@@ -182,7 +182,7 @@ class GammuThread(threading.Thread):
         self._queue = queue
         self._sm.SetConfig(0, config)
 
-    def _do_command(self, name, cmd, params, percentage = 100):
+    def _do_command(self, name, cmd, params, percentage=100):
         '''
         Executes single command on phone.
         '''
@@ -192,7 +192,7 @@ class GammuThread(threading.Thread):
         try:
             if params is None:
                 result = func()
-            elif type(params) is dict:
+            elif isinstance(params, dict):
                 result = func(**params)
             else:
                 result = func(*params)
@@ -220,14 +220,14 @@ class GammuThread(threading.Thread):
                     while True:
                         cmd = task.get_next()
                         self._do_command(
-                                task.get_name(),
-                                cmd.get_command(),
-                                cmd.get_params(),
-                                cmd.get_percentage()
-                                )
+                            task.get_name(),
+                            cmd.get_command(),
+                            cmd.get_params(),
+                            cmd.get_percentage()
+                        )
                 except IndexError:
                     try:
-                        if task.name() != 'Init':
+                        if task.get_name() != 'Init':
                             self._queue.task_done()
                     except AttributeError:
                         # This works since python 2.5
@@ -255,7 +255,7 @@ class GammuThread(threading.Thread):
         threading.Thread.join(self, timeout)
 
 
-class GammuWorker:
+class GammuWorker(object):
     '''
     Wrapper class for asynchronous communication with Gammu. It spaws
     own thread and then passes all commands to this thread. When task is
@@ -298,7 +298,7 @@ class GammuWorker:
         '''
         self._queue.put(GammuTask(command, commands))
 
-    def enqueue(self, command, params = None, commands = None):
+    def enqueue(self, command, params=None, commands=None):
         '''
         Enqueues command or task.
 

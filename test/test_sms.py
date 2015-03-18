@@ -20,7 +20,6 @@
 from __future__ import unicode_literals
 import datetime
 import unittest
-import doctest
 import gammu
 import sys
 import os
@@ -105,7 +104,7 @@ class PDUTest(unittest.TestCase):
     def test_link(self):
         # SMS info about message
         smsinfo = {
-            'Entries':[{'ID': 'ConcatenatedTextLong', 'Buffer': MESSAGE}]
+            'Entries': [{'ID': 'ConcatenatedTextLong', 'Buffer': MESSAGE}]
         }
 
         # encode SMS
@@ -127,7 +126,12 @@ class PDUTest(unittest.TestCase):
             'Class': -1,
             'Name': '',
             'InboxFolder': 0,
-            'Text': b'\x04\x06\x03\xbe\xaf\x84\x8c\x82\x981277970059\x00\x8d\x92\x89\x19\x80\x16\x0433707520030/TYPE=PLMN\x00\x96yBO\x00\x8a\x80\x8e\x01"\x88\x04\x81\x02\x0b\xb8\x83http://mmsc.labmctel.fr:9090/m33\x00',
+            'Text': (
+                b'\x04\x06\x03\xbe\xaf\x84\x8c\x82\x981277970059\x00\x8d\x92'
+                b'\x89\x19\x80\x16\x0433707520030/TYPE=PLMN\x00\x96yBO\x00'
+                b'\x8a\x80\x8e\x01"\x88\x04\x81\x02\x0b\xb8\x83'
+                b'http://mmsc.labmctel.fr:9090/m33\x00'
+            ),
             'SMSC': {
                 'DefaultNumber': '',
                 'Format': 'Text',

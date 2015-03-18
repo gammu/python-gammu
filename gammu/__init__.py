@@ -21,18 +21,10 @@
 Phone communication libary - python wrapper for Gammu library.
 '''
 
-# Submodules
-__all__ = [
-    'data',
-    'worker',
-    'smsd',
-    'exception',
-    ]
-
 # Import core library, we need to load it into global namespace
 # as otherwise libdbi plugins fail to find some symbols
 import sys
-if not hasattr(sys,'getdlopenflags'):
+if not hasattr(sys, 'getdlopenflags'):
     from gammu._gammu import *
 else:
     try:
@@ -50,7 +42,7 @@ else:
                 RTLD_GLOBAL = 0x8
                 RTLD_NOW = 0x2
         except:
-             pass
+            pass
 
     if RTLD_GLOBAL != -1 and RTLD_NOW != -1:
         try:
@@ -68,6 +60,14 @@ else:
     del RTLD_NOW
 
 __version__ = 'Gammu %s, python-gammu %s' % (
-        Version()[0],
-        Version()[1]
-        )
+    Version()[0],
+    Version()[1]
+)
+
+# Submodules
+__all__ = [
+    'data',
+    'worker',
+    'smsd',
+    'exception',
+]

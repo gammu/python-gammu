@@ -20,7 +20,6 @@
 '''
 SMSD wrapper layer.
 '''
+from gammu import SMSD
 
 __all__ = ['SMSD']
-
-from gammu import SMSD

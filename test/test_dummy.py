@@ -75,3 +75,15 @@ class BasicDummyTest(DummyTest):
                 'DivertType': 'AllTypes'
             }]
         )
+
+        state_machine.SetCallDivert('AllTypes', 'All', '123456789')
+        diverts = state_machine.GetCallDivert()
+        self.assertEqual(
+            diverts,
+            [{
+                'CallType': 'All',
+                'Timeout': 0,
+                'Number': u'123456789',
+                'DivertType': 'AllTypes'
+            }]
+        )

@@ -17,28 +17,13 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
-'''
-Gammu exceptions.
-'''
+import unittest
+import gammu.exception
 
-import gammu
 
-# Import base exception
-from gammu import GSMError
-
-__all__ = [
-    'GSMError',
-]
-
-# Import all exceptions
-for _name in dir(gammu._gammu):
-    if not _name.startswith('ERR_'):
-        continue
-    _temp = __import__('gammu._gammu', globals(), locals(), [_name], -1)
-    locals()[_name] = getattr(_temp, _name)
-    __all__.append(_name)
-
-# Cleanup
-del _name
-del _temp
-del gammu
+class ErrorTest(unittest.TestCase):
+    def test_catching(self):
+        try:
+            raise gammu.exception.ERR_WRONGCRC()
+        except gammu.exception.GSMError:
+            pass

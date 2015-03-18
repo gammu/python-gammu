@@ -24,17 +24,11 @@ if (WITH_BACKUP)
     configure_file("examples/service-numbers.py" "${CMAKE_CURRENT_BINARY_DIR}/service-numbers.py" COPY_ONLY)
     add_test("py-service-numbers" ${PYTHON_EXECUTABLE} "${CMAKE_CURRENT_BINARY_DIR}/service-numbers.py" "${CMAKE_CURRENT_BINARY_DIR}/.gammurc" "1234")
 
-    configure_file("examples/batteryinfo.py" "${CMAKE_CURRENT_BINARY_DIR}/batteryinfo.py" COPY_ONLY)
-    add_test("py-batteryinfo" ${PYTHON_EXECUTABLE} "${CMAKE_CURRENT_BINARY_DIR}/batteryinfo.py" "${CMAKE_CURRENT_BINARY_DIR}/.gammurc")
-
     configure_file("examples/sendsms.py" "${CMAKE_CURRENT_BINARY_DIR}/sendsms.py" COPY_ONLY)
     add_test("py-sendsms" ${PYTHON_EXECUTABLE} "${CMAKE_CURRENT_BINARY_DIR}/sendsms.py" "${CMAKE_CURRENT_BINARY_DIR}/.gammurc" "+420800123456")
 
     configure_file("examples/sendlongsms.py" "${CMAKE_CURRENT_BINARY_DIR}/sendlongsms.py" COPY_ONLY)
     add_test("py-sendlongsms" ${PYTHON_EXECUTABLE} "${CMAKE_CURRENT_BINARY_DIR}/sendlongsms.py" "${CMAKE_CURRENT_BINARY_DIR}/.gammurc" "+420800123456")
-
-    configure_file("examples/dialvoice.py" "${CMAKE_CURRENT_BINARY_DIR}/dialvoice.py" COPY_ONLY)
-    add_test("py-dialvoice" ${PYTHON_EXECUTABLE} "${CMAKE_CURRENT_BINARY_DIR}/dialvoice.py" "${CMAKE_CURRENT_BINARY_DIR}/.gammurc" "1234")
 endif (WITH_BACKUP)
 
 if (LIBDBI_FOUND AND SQLITE_BIN AND WITH_BACKUP)

@@ -87,3 +87,25 @@ class BasicDummyTest(DummyTest):
                 'DivertType': 'AllTypes'
             }]
         )
+
+    def test_dial(self):
+        state_machine = self.get_statemachine()
+        state_machine.DialVoice('123456')
+
+    def test_battery(self):
+        state_machine = self.get_statemachine()
+        status = state_machine.GetBatteryCharge()
+        self.assertEqual(
+            status,
+            {
+                'BatteryVoltage': 4200,
+                'PhoneTemperature': 22,
+                'BatteryTemperature': 22,
+                'ChargeState': 'BatteryConnected',
+                'ChargeVoltage': 4200,
+                'BatteryCapacity': 2000,
+                'BatteryPercent': 100,
+                'ChargeCurrent': 0,
+                'PhoneCurrent': 500
+            }
+        )

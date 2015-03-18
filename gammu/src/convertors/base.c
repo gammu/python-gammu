@@ -42,6 +42,15 @@ gboolean BoolFromPython(PyObject * o, const char *key)
 			else
 				return TRUE;
 		}
+#if PY_MAJOR_VERSION < 3
+		if (PyInt_Check(o)) {
+			i = PyInt_AsLong(o);
+			if (i == 0)
+				return FALSE;
+			else
+				return TRUE;
+		}
+#endif
 		if (PyString_Check(o)) {
 			s = PyString_AsString(o);
 			if (isdigit((int)s[0])) {
@@ -113,9 +122,11 @@ int GetIntFromDict(PyObject * dict, const char *key)
 		return PyLong_AsLongLong(o);
 	}
 
-	if (PyLong_Check(o)) {
-		return PyLong_AsLong(o);
+#if PY_MAJOR_VERSION < 3
+	if (PyInt_Check(o)) {
+		return PyInt_AsLong(o);
 	}
+#endif
 
 	if (PyString_Check(o)) {
 		s = PyString_AsString(o);

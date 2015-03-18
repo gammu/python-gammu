@@ -108,7 +108,16 @@ MemoryValueTypes = [
     'Photo',
     'Number_Mobile_Home',
     'Number_Mobile_Work',
-    ]
+    'Text_SecondName',
+    'Text_VOIP',
+    'Text_SIP',
+    'Text_DTMF',
+    'Number_Video',
+    'Text_SWIS',
+    'Text_WVID',
+    'Text_NamePrefix',
+    'Text_NameSuffix',
+]
 
 CalendarTypes = [
     'REMINDER',

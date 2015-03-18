@@ -1,6 +1,12 @@
 python-gammu
 ============
 
+.. image:: https://travis-ci.org/nijel/python-gammu.svg?branch=master
+    :target: https://travis-ci.org/nijel/python-gammu
+
+.. image:: https://www.codacy.com/project/badge/9a3a183894e3427a8b205f4c57672f63
+    :target: https://www.codacy.com/public/michal_2/python-gammu
+
 Python bindings for Gammu library are now part of Gammu source package
 (in python subdirectory).  They are built automatically if you have
 installed Python with all needed tools.

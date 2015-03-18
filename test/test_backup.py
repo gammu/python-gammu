@@ -77,3 +77,42 @@ class BackupTest(unittest.TestCase):
     def test_convert_calendar(self):
         for filename in TEST_FILES_CALENDAR:
             self.perform_test(filename, TEST_CALENDAR)
+
+    def test_calendar(self):
+        entry = gammu.ReadBackup(
+            os.path.join(TEST_DIR, 'rrule.ics')
+        )['Calendar'][0]
+
+        # Convert it to vCard
+        vc_entry = gammu.EncodeVCALENDAR(entry)
+        ic_entry = gammu.EncodeICALENDAR(entry)
+
+        # Convert it back to entry
+        entry2 = gammu.DecodeVCS(vc_entry)
+        entry3 = gammu.DecodeICS(ic_entry)
+
+    def test_todo(self):
+        entry = gammu.ReadBackup(
+            os.path.join(TEST_DIR, '02.vcs')
+        )['ToDo'][0]
+
+        # Convert it to vCard
+        vt_entry = gammu.EncodeVTODO(entry)
+        it_entry = gammu.EncodeITODO(entry)
+
+        # Convert it back to entry
+        entry2 = gammu.DecodeVCS(vt_entry)
+        entry3 = gammu.DecodeICS(it_entry)
+
+    def test_contact(self):
+        entry = gammu.ReadBackup(
+            os.path.join(TEST_DIR, 'gammu.vcf')
+        )['PhonePhonebook'][0]
+
+        # Convert it to vCard
+        vc_entry = gammu.EncodeVCARD(entry)
+
+        # Convert it back to entry
+        entry2 = gammu.DecodeVCARD(vc_entry)
+
+        self.assertEqual(entry, entry2)

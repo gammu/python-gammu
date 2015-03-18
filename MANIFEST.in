@@ -1,13 +1,7 @@
 include AUTHORS
 include COPYING
-include INSTALL
-include ChangeLog
 include README.rst
-include Makefile
-include *.h
+include include/*.h
 recursive-include examples *.py
+recursive-include test *.py
 include examples/data/*.jpg
-include python-gammu.spec
-include MakeFakeWin.sh
-include mingw/*.c
-include mingw/*.sh

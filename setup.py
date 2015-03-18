@@ -29,6 +29,8 @@ import os
 # some defines
 VERSION = '2.0'
 GAMMU_REQUIRED = '1.34.0'
+with open(os.path.join(os.path.dirname(__file__), 'README.rst')) as readme:
+    README = readme.read()
 
 
 _pkgcfg = -1
@@ -111,7 +113,7 @@ check_minimum_gammu_version()
 setup (name = 'python-gammu',
     version = VERSION,
     description = 'Gammu bindings',
-    long_description = 'Bindings to libGammu, which allows access many phones.',
+    long_description=README,
     author = "Michal Cihar",
     author_email = 'michal@cihar.com',
     maintainer = "Michal Cihar",

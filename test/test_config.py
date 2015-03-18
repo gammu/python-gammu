@@ -23,8 +23,8 @@ import gammu
 
 class ConfigTest(unittest.TestCase):
     def test_config_bool(self):
-        sm = gammu.StateMachine()
-        sm.SetConfig(
+        state_machine = gammu.StateMachine()
+        state_machine.SetConfig(
             0,
             {
                 'StartInfo': True,
@@ -38,12 +38,12 @@ class ConfigTest(unittest.TestCase):
                 'Model': '',
             },
         )
-        cfg = sm.GetConfig(0)
+        cfg = state_machine.GetConfig(0)
         self.assertEqual(cfg['StartInfo'], 1)
 
     def test_config_string(self):
-        sm = gammu.StateMachine()
-        sm.SetConfig(
+        state_machine = gammu.StateMachine()
+        state_machine.SetConfig(
             0,
             {
                 'StartInfo': 'yes',
@@ -57,12 +57,12 @@ class ConfigTest(unittest.TestCase):
                 'Model': '',
             },
         )
-        cfg = sm.GetConfig(0)
+        cfg = state_machine.GetConfig(0)
         self.assertEqual(cfg['StartInfo'], 1)
 
     def test_config_none(self):
-        sm = gammu.StateMachine()
-        sm.SetConfig(
+        state_machine = gammu.StateMachine()
+        state_machine.SetConfig(
             0,
             {
                 'StartInfo': None,
@@ -76,5 +76,5 @@ class ConfigTest(unittest.TestCase):
                 'Model': '',
             },
         )
-        cfg = sm.GetConfig(0)
+        cfg = state_machine.GetConfig(0)
         self.assertEqual(cfg['StartInfo'], 0)

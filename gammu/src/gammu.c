@@ -741,7 +741,7 @@ StateMachine_ReadDevice(StateMachineObject *self, PyObject *args, PyObject *kwds
     result = GSM_ReadDevice(self->s, waiting);
     END_PHONE_COMM
 
-    return PyInt_FromLong(result);
+    return PyLong_FromLong(result);
 }
 
 
@@ -2040,7 +2040,7 @@ StateMachine_SetMemory(StateMachineObject *self, PyObject *args, PyObject *kwds)
 
     if (!checkError(self->s, error, "SetMemory")) return NULL;
 
-    return PyInt_FromLong(entry.Location);
+    return PyLong_FromLong(entry.Location);
 }
 
 /*************/
@@ -2107,7 +2107,7 @@ StateMachine_AddMemory(StateMachineObject *self, PyObject *args, PyObject *kwds)
 
     if (!checkError(self->s, error, "AddMemory")) return NULL;
 
-    return PyInt_FromLong(entry.Location);
+    return PyLong_FromLong(entry.Location);
 }
 
 /****************/
@@ -2626,7 +2626,7 @@ StateMachine_SendSMS(StateMachineObject *self, PyObject *args, PyObject *kwds) {
         }
     }
 
-    return PyInt_FromLong(self->MessageReference);
+    return PyLong_FromLong(self->MessageReference);
 }
 
 
@@ -2673,7 +2673,7 @@ StateMachine_SendSavedSMS(StateMachineObject *self, PyObject *args, PyObject *kw
         }
     }
 
-    return PyInt_FromLong(self->MessageReference);
+    return PyLong_FromLong(self->MessageReference);
 
 }
 
@@ -3850,7 +3850,7 @@ StateMachine_SetToDo(StateMachineObject *self, PyObject *args, PyObject *kwds) {
 
     if (!checkError(self->s, error, "SetToDo")) return NULL;
 
-    return PyInt_FromLong(entry.Location);
+    return PyLong_FromLong(entry.Location);
 }
 
 /***********/
@@ -3912,7 +3912,7 @@ StateMachine_AddToDo(StateMachineObject *self, PyObject *args, PyObject *kwds) {
 
     if (!checkError(self->s, error, "AddToDo")) return NULL;
 
-    return PyInt_FromLong(entry.Location);
+    return PyLong_FromLong(entry.Location);
 }
 
 /**************/
@@ -4109,7 +4109,7 @@ StateMachine_SetCalendar(StateMachineObject *self, PyObject *args, PyObject *kwd
 
     if (!checkError(self->s, error, "SetCalendar")) return NULL;
 
-    return PyInt_FromLong(entry.Location);
+    return PyLong_FromLong(entry.Location);
 }
 
 /***************/
@@ -4171,7 +4171,7 @@ StateMachine_AddCalendar(StateMachineObject *self, PyObject *args, PyObject *kwd
 
     if (!checkError(self->s, error, "AddCalendar")) return NULL;
 
-    return PyInt_FromLong(entry.Location);
+    return PyLong_FromLong(entry.Location);
 }
 
 /******************/
@@ -4641,7 +4641,7 @@ StateMachine_GetFilePart(StateMachineObject *self, PyObject *args, PyObject *kwd
 
     if (result == NULL) return NULL;
 
-    value = PyInt_FromLong(size);
+    value = PyLong_FromLong(size);
     if (value == NULL) {
         Py_DECREF(result);
         return NULL;
@@ -4649,7 +4649,7 @@ StateMachine_GetFilePart(StateMachineObject *self, PyObject *args, PyObject *kwd
     PyDict_SetItemString(result, "Size", value);
     Py_DECREF(value);
 
-    value = PyInt_FromLong(handle);
+    value = PyLong_FromLong(handle);
     if (value == NULL) {
         Py_DECREF(result);
         return NULL;
@@ -4716,7 +4716,7 @@ StateMachine_AddFilePart(StateMachineObject *self, PyObject *args, PyObject *kwd
 
     if (result == NULL) return NULL;
 
-    value = PyInt_FromLong(pos);
+    value = PyLong_FromLong(pos);
     if (value == NULL) {
         Py_DECREF(result);
         return NULL;
@@ -4724,7 +4724,7 @@ StateMachine_AddFilePart(StateMachineObject *self, PyObject *args, PyObject *kwd
     PyDict_SetItemString(result, "Pos", value);
     Py_DECREF(value);
 
-    value = PyInt_FromLong(handle);
+    value = PyLong_FromLong(handle);
     if (value == NULL) {
         Py_DECREF(result);
         return NULL;
@@ -4791,7 +4791,7 @@ StateMachine_SendFilePart(StateMachineObject *self, PyObject *args, PyObject *kw
 
     if (result == NULL) return NULL;
 
-    value = PyInt_FromLong(pos);
+    value = PyLong_FromLong(pos);
     if (value == NULL) {
         Py_DECREF(result);
         return NULL;
@@ -4799,7 +4799,7 @@ StateMachine_SendFilePart(StateMachineObject *self, PyObject *args, PyObject *kw
     PyDict_SetItemString(result, "Pos", value);
     Py_DECREF(value);
 
-    value = PyInt_FromLong(handle);
+    value = PyLong_FromLong(handle);
     if (value == NULL) {
         Py_DECREF(result);
         return NULL;

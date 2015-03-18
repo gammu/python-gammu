@@ -35,8 +35,8 @@ gboolean BoolFromPython(PyObject * o, const char *key)
 	}
 
 	if (!PyBool_Check(o)) {
-		if (PyInt_Check(o)) {
-			i = PyInt_AsLong(o);
+		if (PyLong_Check(o)) {
+			i = PyLong_AsLong(o);
 			if (i == 0)
 				return FALSE;
 			else
@@ -113,8 +113,8 @@ int GetIntFromDict(PyObject * dict, const char *key)
 		return PyLong_AsLongLong(o);
 	}
 
-	if (PyInt_Check(o)) {
-		return PyInt_AsLong(o);
+	if (PyLong_Check(o)) {
+		return PyLong_AsLong(o);
 	}
 
 	if (PyString_Check(o)) {

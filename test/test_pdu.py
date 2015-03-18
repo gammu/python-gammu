@@ -39,6 +39,13 @@ UNICODE = (
     '.........2.........3.........4.........5.........6.........7.........8'
     '.........9....č...0'
 )
+GSM = (
+    '.........1$........2..Ø......3...åÅ....4....Λ....5....Æ....6....ñ....7'
+    '.........8.........9........0.........1.........2.........3.........4'
+    '.........5.........6.........7.........8.........9........0.........1'
+    '.........2.........3.........4.........5.........6.........7.........8'
+    '.........9....¥€..0'
+)
 
 
 class PDUTest(unittest.TestCase):
@@ -51,13 +58,7 @@ class PDUTest(unittest.TestCase):
         self.assertEqual(sms['Number'], '604865888')
         self.assertEqual(sms['Text'], 'Delivered')
 
-    def test_smsinfo(self):
-        # text of sms
-        # SMS info about message
-        smsinfo = {
-            'Entries': [{'ID': 'ConcatenatedTextLong', 'Buffer': MESSAGE}]
-        }
-
+    def do_smstest(self, smsinfo, expected):
         # encode SMSes
         sms = gammu.EncodeSMS(smsinfo)
 
@@ -65,7 +66,7 @@ class PDUTest(unittest.TestCase):
         decodedsms = gammu.DecodeSMS(sms)
 
         # compare text
-        self.assertEqual(decodedsms['Entries'][0]['Buffer'], MESSAGE)
+        self.assertEqual(decodedsms['Entries'][0]['Buffer'], expected)
 
         # do conversion to PDU
         pdu = [gammu.EncodePDU(s) for s in sms]
@@ -77,33 +78,23 @@ class PDUTest(unittest.TestCase):
         decodedsms = gammu.DecodeSMS(pdusms)
 
         # compare PDU results
-        self.assertEqual(decodedsms['Entries'][0]['Buffer'], MESSAGE)
+        self.assertEqual(decodedsms['Entries'][0]['Buffer'], expected)
 
-    def test_unicode(self):
-        # text of sms
-        # SMS info about message
+    def test_encode_plain(self):
+        smsinfo = {
+            'Entries': [{'ID': 'ConcatenatedTextLong', 'Buffer': MESSAGE}]
+        }
+        self.do_smstest(smsinfo, MESSAGE)
+
+    def test_encode_gsm(self):
+        smsinfo = {
+            'Entries': [{'ID': 'ConcatenatedTextLong', 'Buffer': GSM}]
+        }
+        self.do_smstest(smsinfo, GSM)
+
+    def test_encode_unicode(self):
         smsinfo = {
             'Entries': [{'ID': 'ConcatenatedTextLong', 'Buffer': UNICODE}],
             'Unicode': True
         }
-
-        # encode SMSes
-        sms = gammu.EncodeSMS(smsinfo)
-
-        # decode back SMSes
-        decodedsms = gammu.DecodeSMS(sms)
-
-        # compare text
-        self.assertEqual(decodedsms['Entries'][0]['Buffer'], UNICODE)
-
-        # do conversion to PDU
-        pdu = [gammu.EncodePDU(s) for s in sms]
-
-        # Convert back
-        pdusms = [gammu.DecodePDU(p) for p in pdu]
-
-        # decode back SMS from PDU
-        decodedsms = gammu.DecodeSMS(pdusms)
-
-        # compare PDU results
-        self.assertEqual(decodedsms['Entries'][0]['Buffer'], UNICODE)
+        self.do_smstest(smsinfo, UNICODE)

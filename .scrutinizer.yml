@@ -1,0 +1,11 @@
+# scrutinizer-ci.com configuration
+imports:
+    - python
+tools:
+    external_code_coverage:
+        runs: 2
+        timeout: 3600
+checks:
+    python:
+        code_rating: true
+        duplicate_code: true

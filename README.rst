@@ -24,9 +24,10 @@ GNU GPL version 2.
 Documentation
 =============
 
-Please see included python documentation:
->>> import gammu
->>> help(gammu)
+Please see included python documentation::
+
+    >>> import gammu
+    >>> help(gammu)
 
 Alternatively you can use Sphinx to generate browsable version, which is
 also available on-line at <http://wammu.eu/docs/manual/>.

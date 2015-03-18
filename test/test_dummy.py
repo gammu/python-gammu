@@ -30,9 +30,18 @@ CONFIGURATION = '''
 [gammu]
 model = dummy
 connection = none
-port = {path}
+port = {path}/gammu-dummy
 gammuloc = /dev/null
 logformat = none
+
+[smsd]
+commtimeout = 1
+debuglevel = 255
+logfile = stderr
+service = dbi
+driver = sqlite3
+database = smsd.db
+dbdir = {path}
 '''
 
 
@@ -46,7 +55,7 @@ class DummyTest(unittest.TestCase):
         self.config_name = os.path.join(self.test_dir, '.gammurc')
         shutil.copytree(DUMMY_DIR, dummy_dir)
         with open(self.config_name, 'w') as handle:
-            handle.write(CONFIGURATION.format(path=dummy_dir))
+            handle.write(CONFIGURATION.format(path=self.test_dir))
 
     def tearDown(self):
         shutil.rmtree(self.test_dir)

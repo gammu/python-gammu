@@ -3,7 +3,7 @@ imports:
     - python
 tools:
     external_code_coverage:
-        runs: 2
+        runs: 5
         timeout: 3600
 checks:
     python:

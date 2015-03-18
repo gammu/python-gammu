@@ -22,20 +22,9 @@
 python-gammu - Phone communication libary
 '''
 
-import distutils
 import distutils.spawn
-import distutils.sysconfig
-import distutils.cygwinccompiler
-import distutils.command.build
-import distutils.command.build_ext
-import distutils.command.install
-import distutils.command.bdist_wininst
 from setuptools import setup, Extension
-from commands import getstatusoutput
-import sys
 import os
-import os.path
-import re
 
 # some defines
 VERSION = '2.0'

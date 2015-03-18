@@ -52,7 +52,7 @@ class DummyTest(unittest.TestCase):
         shutil.rmtree(self.test_dir)
 
     def get_statemachine(self):
-        state_machine = gammu.StateMachine();
+        state_machine = gammu.StateMachine()
         state_machine.ReadConfig(Filename=self.config_name)
         state_machine.Init()
         return state_machine

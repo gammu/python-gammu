@@ -31,10 +31,6 @@ if (WITH_BACKUP)
     endforeach(VCF)
 endif (WITH_BACKUP)
 
-configure_file("examples/sms-link.py" "${CMAKE_CURRENT_BINARY_DIR}/test-sms-link.py" COPY_ONLY)
-add_test("py-sms-link" ${PYTHON_EXECUTABLE} "${CMAKE_CURRENT_BINARY_DIR}/test-sms-link.py")
-set_tests_properties("py-sms-link" PROPERTIES PASS_REGULAR_EXPRESSION "Comparsion: True")
-
 if (WITH_BACKUP)
     configure_file("examples/listfilesystem.py" "${CMAKE_CURRENT_BINARY_DIR}/test-listfilesystem.py" COPY_ONLY)
     add_test("py-listfilesystem" ${PYTHON_EXECUTABLE} "${CMAKE_CURRENT_BINARY_DIR}/test-listfilesystem.py" -c "${CMAKE_CURRENT_BINARY_DIR}/.gammurc")

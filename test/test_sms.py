@@ -98,3 +98,21 @@ class PDUTest(unittest.TestCase):
             'Unicode': True
         }
         self.do_smstest(smsinfo, UNICODE)
+
+    def test_link(self):
+        # SMS info about message
+        smsinfo = {
+            'Entries':[{'ID': 'ConcatenatedTextLong', 'Buffer': MESSAGE}]
+        }
+
+        # encode SMS
+        sms = gammu.EncodeSMS(smsinfo)
+
+        # link SMS
+        linked = gammu.LinkSMS([[sms[0]], [sms[1]]], True)
+
+        # decode back SMS
+        decodedsms = gammu.DecodeSMS(linked[0])
+
+        # compare results
+        self.assertTrue(decodedsms['Entries'][0]['Buffer'], MESSAGE)

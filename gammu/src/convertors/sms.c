@@ -23,6 +23,8 @@
 #include "convertors.h"
 #include "misc.h"
 
+#include <bytesobject.h>
+
 char *SMSValidityToString(GSM_SMSValidity Validity)
 {
 	char s[100] = "";
@@ -948,7 +950,7 @@ PyObject *SMSToPython(GSM_SMSMessage * sms)
 	} else {
 		/* Some UDH => copy as data */
 		text =
-		    PyString_FromStringAndSize((char *)sms->Text, sms->Length);
+		    PyBytes_FromStringAndSize((char *)sms->Text, sms->Length);
 	}
 	if (text == NULL) {
 		Py_DECREF(smsc);

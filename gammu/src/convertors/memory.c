@@ -24,6 +24,8 @@
 #include "convertors.h"
 #include "misc.h"
 
+#include <bytesobject.h>
+
 const char *LocationToString(GSM_EntryLocation location)
 {
     switch (location) {
@@ -264,7 +266,7 @@ PyObject *MemoryEntryToPython(const GSM_MemoryEntry * entry)
 				break;
 			case PBK_Photo:
 				bitmap = &(entry->Entries[i].Picture);
-				d = PyString_FromStringAndSize((char *)bitmap->
+				d = PyBytes_FromStringAndSize((char *)bitmap->
 							       Buffer,
 							       bitmap->Length);
 				if (d == NULL) {

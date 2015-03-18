@@ -5,3 +5,4 @@ tags
 *.swp
 python_gammu.egg-info/
 *.so
+.coverage

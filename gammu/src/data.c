@@ -32,7 +32,7 @@ int gammu_create_data(PyObject *d) {
         return 0;
 
     for (i = 0; GSM_Countries[i].Code[0] != 0; i++) {
-        val = PyString_FromString(GSM_Countries[i].Name);
+        val = PyUnicode_FromString(GSM_Countries[i].Name);
         PyDict_SetItemString(country_list, GSM_Countries[i].Code, val);
         Py_DECREF(val);
     }
@@ -46,7 +46,7 @@ int gammu_create_data(PyObject *d) {
         return 0;
 
     for (i = 0; GSM_Networks[i].Code[0] != 0; i++) {
-        val = PyString_FromString(GSM_Networks[i].Name);
+        val = PyUnicode_FromString(GSM_Networks[i].Name);
         PyDict_SetItemString(network_list, GSM_Networks[i].Code, val);
         Py_DECREF(val);
     }

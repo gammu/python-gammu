@@ -77,7 +77,7 @@ int gammu_create_errors(PyObject *d) {
         return 0;
 
     /* Help text */
-    help_text = PyString_FromString("Generic class as parent for all gammu exceptions. This is never raised directly.");
+    help_text = PyUnicode_FromString("Generic class as parent for all gammu exceptions. This is never raised directly.");
     if (help_text == NULL)
         return 0;
     error_dict = PyDict_New();
@@ -104,7 +104,7 @@ int gammu_create_errors(PyObject *d) {
         }
 
         /* Help text */
-        help_text = PyString_FromFormat("Exception corresponding to gammu error ERR_%s.\n"
+        help_text = PyUnicode_FromFormat("Exception corresponding to gammu error ERR_%s.\n"
                 "Verbose error description: %s",
                 GSM_ErrorName(error),
                 GSM_ErrorString(error));
@@ -133,11 +133,11 @@ int gammu_create_errors(PyObject *d) {
         Py_DECREF(gammu_error_map[error]);
 
         /* Store ids in dictionary */
-        id = PyInt_FromLong(error);
+        id = PyLong_FromLong(error);
         if (id == NULL)
             return 0;
         PyDict_SetItemString(error_list, errname, id);
-        PyDict_SetItem(errornumber_list, id, PyString_FromString(errname));
+        PyDict_SetItem(errornumber_list, id, PyUnicode_FromString(errname));
         Py_DECREF(id);
     }
 

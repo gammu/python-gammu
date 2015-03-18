@@ -38,8 +38,9 @@ logformat = none
 commtimeout = 1
 debuglevel = 255
 logfile = stderr
-service = dbi
+service = sql
 driver = sqlite3
+sql = sqlite
 database = smsd.db
 dbdir = {path}
 '''

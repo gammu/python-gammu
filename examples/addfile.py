@@ -2,7 +2,6 @@
 
 import gammu
 import os
-import datetime
 import sys
 
 if len(sys.argv) != 3:

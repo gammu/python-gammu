@@ -30,11 +30,9 @@ if SQLITE_BIN == '' or SQLITE_BIN[0] == '@':
     raise Exception('Please configure this script!')
 
 import gammu.smsd
-import sys
 import os
 import threading
 import time
-import traceback
 
 def GenerateSMSDRC(path, gammurc):
     gammu_config = file(gammurc).read()

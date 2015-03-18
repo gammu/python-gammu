@@ -35,8 +35,6 @@ import sys
 import os
 import os.path
 import re
-import datetime
-import string
 
 # some defines
 VERSION = '2.0'

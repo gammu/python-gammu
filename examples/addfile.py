@@ -16,7 +16,7 @@ sm.ReadConfig()
 sm.Init()
 
 # Check AddFilePart
-print "\n\nExpection: Put cgi.jpg onto Memorycard on phone"
+print "\n\nExpection: Put specified file onto Memorycard on phone"
 file_f = {
 "ID_FullName": sys.argv[2],
 "Name": os.path.basename(sys.argv[1]),

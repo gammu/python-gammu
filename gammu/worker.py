@@ -26,7 +26,10 @@ which are used by this class.
 
 import gammu
 import threading
-import Queue
+try:
+    import queue
+except ImportError:
+    import Queue as queue
 
 
 class InvalidCommand(Exception):
@@ -157,7 +160,7 @@ class GammuThread(threading.Thread):
         Initialises thread data.
 
         @param queue: Queue with events.
-        @type queue: Queue.Queue object.
+        @type queue: queue.Queue object.
 
         @param config: Gammu configuration, same as
         L{StateMachine.SetConfig} accepts.
@@ -193,7 +196,7 @@ class GammuThread(threading.Thread):
                 result = func(**params)
             else:
                 result = func(*params)
-        except gammu.GSMError, info:
+        except gammu.GSMError as info:
             errcode = info[0]['Code']
             error = gammu.ErrorNumbers[errcode]
 
@@ -232,7 +235,7 @@ class GammuThread(threading.Thread):
                     except ValueError:
                         # This works since python 2.5
                         pass
-            except Queue.Empty:
+            except queue.Empty:
                 if self._terminate:
                     break
                 # Read the device to catch possible incoming events
@@ -269,7 +272,7 @@ class GammuWorker:
         self._callback = callback
         self._config = {}
         self._lock = threading.Lock()
-        self._queue = Queue.Queue()
+        self._queue = queue.Queue()
 
     def enqueue_command(self, command, params):
         '''

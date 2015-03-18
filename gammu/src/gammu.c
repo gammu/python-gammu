@@ -5487,7 +5487,7 @@ static char gammu_Version__doc__[] =
 static PyObject *
 gammu_Version(PyObject *self)
 {
-    return Py_BuildValue("s,s,s", GetGammuVersion(), GAMMU_VERSION, GAMMU_VERSION);
+    return Py_BuildValue("s,s,s", GetGammuVersion(), PYTHON_GAMMU_VERSION, GAMMU_VERSION);
 }
 
 static char gammu_SetDebugFile__doc__[] =

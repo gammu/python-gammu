@@ -107,6 +107,9 @@ def get_module():
     )
     ldflags = get_pkgconfig_data(["--libs-only-L"], "gammu gammu-smsd", False)
     cflags = get_pkgconfig_data(["--cflags"], "gammu gammu-smsd", False)
+    module.extra_compile_args.append(
+        '-DPYTHON_GAMMU_VERSION="{0}"'.format(VERSION)
+    )
     if cflags:
         module.extra_compile_args.append(cflags)
     if ldflags:

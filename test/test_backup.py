@@ -58,8 +58,10 @@ class BackupTest(unittest.TestCase):
                     'Failed to compare calendar in {0}'.format(filename)
                 )
                 self.assertEqual(
-                    len(backup['PhonePhonebook']) + len(backup['SIMPhonebook']),
-                    len(backup_2['PhonePhonebook']) + len(backup_2['SIMPhonebook']),
+                    len(backup['PhonePhonebook']) +
+                    len(backup['SIMPhonebook']),
+                    len(backup_2['PhonePhonebook']) +
+                    len(backup_2['SIMPhonebook']),
                     'Failed to compare phonebook in {0}'.format(filename)
                 )
 

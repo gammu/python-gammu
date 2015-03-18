@@ -341,4 +341,3 @@ class WorkerDummyTest(DummyTest):
                 break
 
         self.assertEqual(self.results, WORKER_EXPECT)
-

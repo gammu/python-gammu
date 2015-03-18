@@ -57,103 +57,103 @@ WORKER_EXPECT = [
                     'AddError': 1,
                     'Type': 'Text_Name',
                     'Location': 'Unknown',
-                    'Value': u'firstname lastname'
+                    'Value': 'firstname lastname'
                 },
                 {
                     'AddError': 1,
                     'Type': 'Text_Note',
                     'Location': 'Unknown',
-                    'Value': u'Test1'
+                    'Value': 'Test1'
                 },
                 {
                     'AddError': 1,
                     'Type': 'Text_Note',
                     'Location': 'Unknown',
-                    'Value': u'Test2'
+                    'Value': 'Test2'
                 },
                 {
                     'AddError': 1,
                     'Type': 'Text_Note',
                     'Location': 'Unknown',
-                    'Value': u'Test3'
+                    'Value': 'Test3'
                 },
                 {
                     'AddError': 1,
                     'Type': 'Text_Note',
                     'Location': 'Unknown',
-                    'Value': u'Test4'
+                    'Value': 'Test4'
                 },
                 {
                     'AddError': 1,
                     'Type': 'Text_Note',
                     'Location': 'Unknown',
-                    'Value': u'Test5'
+                    'Value': 'Test5'
                 },
                 {
                     'AddError': 1,
                     'Type': 'Text_Note',
                     'Location': 'Unknown',
-                    'Value': u'Test6'
+                    'Value': 'Test6'
                 },
                 {
                     'AddError': 1,
                     'Type': 'Text_Note',
                     'Location': 'Unknown',
-                    'Value': u'Test7'
+                    'Value': 'Test7'
                 },
                 {
                     'AddError': 1,
                     'Type': 'Text_Note',
                     'Location': 'Unknown',
-                    'Value': u'Test8'
+                    'Value': 'Test8'
                 },
                 {
                     'AddError': 1,
                     'Type': 'Text_Note',
                     'Location': 'Unknown',
-                    'Value': u'Test9'
+                    'Value': 'Test9'
                 },
                 {
                     'AddError': 1,
                     'Type': 'Text_Note',
                     'Location': 'Unknown',
-                    'Value': u'Test10'
+                    'Value': 'Test10'
                 },
                 {
                     'AddError': 1,
                     'Type': 'Text_Note',
                     'Location': 'Unknown',
-                    'Value': u'Test11'
+                    'Value': 'Test11'
                 },
                 {
                     'AddError': 1,
                     'Type': 'Text_Note',
                     'Location': 'Unknown',
-                    'Value': u'Test12'
+                    'Value': 'Test12'
                 },
                 {
                     'AddError': 1,
                     'Type': 'Text_Note',
                     'Location': 'Unknown',
-                    'Value': u'Test13'
+                    'Value': 'Test13'
                 },
                 {
                     'AddError': 1,
                     'Type': 'Text_Note',
                     'Location': 'Unknown',
-                    'Value': u'Test14'
+                    'Value': 'Test14'
                 },
                 {
                     'AddError': 1,
                     'Type': 'Text_Note',
                     'Location': 'Unknown',
-                    'Value': u'Test15'
+                    'Value': 'Test15'
                 },
                 {
                     'AddError': 1,
                     'Type': 'Text_Note',
                     'Location': 'Unknown',
-                    'Value': u'Test16'
+                    'Value': 'Test16'
                 }
             ]
         },
@@ -170,103 +170,103 @@ WORKER_EXPECT = [
                     'AddError': 1,
                     'Type': 'Text_Name',
                     'Location': 'Unknown',
-                    'Value': u'firstname lastname'
+                    'Value': 'firstname lastname'
                 },
                 {
                     'AddError': 1,
                     'Type': 'Text_Note',
                     'Location': 'Unknown',
-                    'Value': u'Test1'
+                    'Value': 'Test1'
                 },
                 {
                     'AddError': 1,
                     'Type': 'Text_Note',
                     'Location': 'Unknown',
-                    'Value': u'Test2'
+                    'Value': 'Test2'
                 },
                 {
                     'AddError': 1,
                     'Type': 'Text_Note',
                     'Location': 'Unknown',
-                    'Value': u'Test3'
+                    'Value': 'Test3'
                 },
                 {
                     'AddError': 1,
                     'Type': 'Text_Note',
                     'Location': 'Unknown',
-                    'Value': u'Test4'
+                    'Value': 'Test4'
                 },
                 {
                     'AddError': 1,
                     'Type': 'Text_Note',
                     'Location': 'Unknown',
-                    'Value': u'Test5'
+                    'Value': 'Test5'
                 },
                 {
                     'AddError': 1,
                     'Type': 'Text_Note',
                     'Location': 'Unknown',
-                    'Value': u'Test6'
+                    'Value': 'Test6'
                 },
                 {
                     'AddError': 1,
                     'Type': 'Text_Note',
                     'Location': 'Unknown',
-                    'Value': u'Test7'
+                    'Value': 'Test7'
                 },
                 {
                     'AddError': 1,
                     'Type': 'Text_Note',
                     'Location': 'Unknown',
-                    'Value': u'Test8'
+                    'Value': 'Test8'
                 },
                 {
                     'AddError': 1,
                     'Type': 'Text_Note',
                     'Location': 'Unknown',
-                    'Value': u'Test9'
+                    'Value': 'Test9'
                 },
                 {
                     'AddError': 1,
                     'Type': 'Text_Note',
                     'Location': 'Unknown',
-                    'Value': u'Test10'
+                    'Value': 'Test10'
                 },
                 {
                     'AddError': 1,
                     'Type': 'Text_Note',
                     'Location': 'Unknown',
-                    'Value': u'Test11'
+                    'Value': 'Test11'
                 },
                 {
                     'AddError': 1,
                     'Type': 'Text_Note',
                     'Location': 'Unknown',
-                    'Value': u'Test12'
+                    'Value': 'Test12'
                 },
                 {
                     'AddError': 1,
                     'Type': 'Text_Note',
                     'Location': 'Unknown',
-                    'Value': u'Test13'
+                    'Value': 'Test13'
                 },
                 {
                     'AddError': 1,
                     'Type': 'Text_Note',
                     'Location': 'Unknown',
-                    'Value': u'Test14'
+                    'Value': 'Test14'
                 },
                 {
                     'AddError': 1,
                     'Type': 'Text_Note',
                     'Location': 'Unknown',
-                    'Value': u'Test15'
+                    'Value': 'Test15'
                 },
                 {
                     'AddError': 1,
                     'Type': 'Text_Note',
                     'Location': 'Unknown',
-                    'Value': u'Test16'
+                    'Value': 'Test16'
                 }
             ]
         },
@@ -280,12 +280,12 @@ WORKER_EXPECT = [
     (
         'GetSMSC',
         {
-            'DefaultNumber': u'',
+            'DefaultNumber': '',
             'Format': 'Text',
-            'Number': u'123456',
+            'Number': '123456',
             'Validity': 'NA',
             'Location': 1,
-            'Name': u'Default'
+            'Name': 'Default'
         },
         'ERR_NONE',
         100

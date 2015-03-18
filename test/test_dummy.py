@@ -81,7 +81,7 @@ class BasicDummyTest(DummyTest):
             [{
                 'CallType': 'All',
                 'Timeout': 0,
-                'Number': u'',
+                'Number': '',
                 'DivertType': 'AllTypes'
             }]
         )
@@ -93,7 +93,7 @@ class BasicDummyTest(DummyTest):
             [{
                 'CallType': 'All',
                 'Timeout': 0,
-                'Number': u'123456789',
+                'Number': '123456789',
                 'DivertType': 'AllTypes'
             }]
         )

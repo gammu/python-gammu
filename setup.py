@@ -34,6 +34,8 @@ with open(os.path.join(os.path.dirname(__file__), 'README.rst')) as readme:
 
 
 _pkgcfg = -1
+
+
 def get_pkgcfg():
     global _pkgcfg
     if _pkgcfg == -1:
@@ -48,9 +50,9 @@ def get_pkgcfg():
 def check_minimum_gammu_version():
     distutils.spawn.spawn([
         get_pkgcfg(),
-       "--print-errors",
-       "--atleast-version={0}".format(GAMMU_REQUIRED),
-       "gammu"
+        "--print-errors",
+        "--atleast-version={0}".format(GAMMU_REQUIRED),
+        "gammu"
     ])
 
 
@@ -64,7 +66,9 @@ def get_pkgconfig_data(args, mod, required=True):
 
     if line is None or line == "":
         if required:
-            raise Exception("Cannot determine '%s' from libvirt pkg-config file" % " ".join(args))
+            raise Exception(
+                "Cannot determine '%s' from pkg-config" % " ".join(args)
+            )
         else:
             return ""
 
@@ -74,10 +78,11 @@ def get_pkgconfig_data(args, mod, required=True):
 def get_module():
     libs = get_pkgconfig_data(["--libs-only-l"], "gammu gammu-smsd", False)
     libs = libs.replace('-l', '').split()
-    module = Extension('gammu._gammu',
-        libraries = libs,
-        include_dirs = ['include/'],
-        sources = [
+    module = Extension(
+        'gammu._gammu',
+        libraries=libs,
+        include_dirs=['include/'],
+        sources=[
             'gammu/src/errors.c',
             'gammu/src/data.c',
             'gammu/src/misc.c',
@@ -110,20 +115,21 @@ def get_module():
 
 
 check_minimum_gammu_version()
-setup (name = 'python-gammu',
-    version = VERSION,
-    description = 'Gammu bindings',
+setup(
+    name='python-gammu',
+    version=VERSION,
+    description='Gammu bindings',
     long_description=README,
-    author = "Michal Cihar",
-    author_email = 'michal@cihar.com',
-    maintainer = "Michal Cihar",
-    maintainer_email = "michal@cihar.com",
-    platforms = ['Linux','Mac OSX','Windows XP/2000/NT','Windows 95/98/ME'],
-    keywords = ['mobile', 'phone', 'SMS', 'contact', 'gammu', 'calendar', 'todo'],
+    author='Michal Čihař',
+    author_email='michal@cihar.com',
+    platforms=['Linux', 'Mac OSX', 'Windows XP/2000/NT', 'Windows 95/98/ME'],
+    keywords=[
+        'mobile', 'phone', 'SMS', 'contact', 'gammu', 'calendar', 'todo'
+    ],
     license='GPLv2',
-    url = 'http://wammu.eu/python-gammu/',
-    download_url = 'http://wammu.eu/download/gammu/',
-    classifiers = [
+    url='http://wammu.eu/python-gammu/',
+    download_url='http://wammu.eu/download/gammu/',
+    classifiers=[
         'Development Status :: 5 - Production/Stable',
         'License :: OSI Approved :: GNU General Public License (GPL)',
         'Operating System :: Microsoft :: Windows :: Windows 95/98/2000',
@@ -134,8 +140,7 @@ setup (name = 'python-gammu',
         'Programming Language :: C',
         'Topic :: Communications :: Telephony'
     ],
-    test_suite = "test",
-    packages = ['gammu'],
-    ext_modules = [get_module()]
+    test_suite="test",
+    packages=['gammu'],
+    ext_modules=[get_module()]
 )
-

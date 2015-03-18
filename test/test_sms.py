@@ -164,3 +164,19 @@ class PDUTest(unittest.TestCase):
             decoded['Entries'][0]['MMSIndicator']['Address'],
             'http://mmsc.labmctel.fr:9090/m33'
         )
+
+    def test_counter(self):
+        self.assertEqual(
+            gammu.SMSCounter('foobar'),
+            (1, 154)
+        )
+
+    def test_counter_long(self):
+        self.assertEqual(
+            gammu.SMSCounter(
+                'foobar fjsa;kjfkasdjfkljsklfjaskdljfkljasdfkljqilui143uu51o2'
+                '3rjhskdf jasdklfjasdklf jasdfkljasdlkfj;asd;lfjaskdljf431ou9'
+                '83jdfaskljfklsdjdkljasfl sdfjasdfkl jafklsda'
+            ),
+            (2, 156)
+        )

@@ -2,3 +2,5 @@ build*
 tags
 *.pyc
 *.swp
+python_gammu.egg-info/
+*.so

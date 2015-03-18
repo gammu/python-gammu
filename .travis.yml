@@ -8,8 +8,10 @@ before_install:
   - sudo add-apt-repository ppa:nijel/ppa -y
   - sudo apt-get update -qq
   - sudo apt-get install libgammu-dev
+install:
+  - pip install -r requirements.txt
 script:
-  - ./setup.py build
+  - ./setup.py test
 notifications:
   webhooks:
     - https://buildtimetrend.herokuapp.com/travis

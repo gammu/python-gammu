@@ -29,7 +29,7 @@ import distutils.command.build
 import distutils.command.build_ext
 import distutils.command.install
 import distutils.command.bdist_wininst
-from distutils.core import setup, Extension
+from setuptools import setup, Extension
 from commands import getstatusoutput
 import sys
 import os
@@ -311,6 +311,7 @@ setup (name = 'python-gammu',
     cmdclass = {
         'build_ext': build_ext_gammu,
         },
+    test_suite = "test",
     packages = ['gammu'],
     ext_modules = [gammumodule]
     )

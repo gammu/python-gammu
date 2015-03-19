@@ -30,6 +30,7 @@ import sys
 import gammu
 import gammu.worker
 
+
 def callback(name, result, error, percents):
     '''
     Callback which is executed when something is done. Please remember
@@ -42,6 +43,7 @@ def callback(name, result, error, percents):
             error)
     print result
 
+
 def read_config():
     '''
     Reads gammu configuration.
@@ -49,10 +51,11 @@ def read_config():
     sm = gammu.StateMachine()
     # This is hack and should be as parameter of this function
     if len(sys.argv) == 2:
-        sm.ReadConfig(Filename = sys.argv[1])
+        sm.ReadConfig(Filename=sys.argv[1])
     else:
         sm.ReadConfig()
     return sm.GetConfig()
+
 
 def main():
     '''
@@ -70,14 +73,14 @@ def main():
     worker.enqueue('GetHardware')
     worker.enqueue('GetDateTime')
     # We can create compound tasks
-    worker.enqueue('CustomGetInfo', commands = [
+    worker.enqueue('CustomGetInfo', commands=[
         'GetModel',
         'GetBatteryCharge'
         ])
     # We can pass parameters
     worker.enqueue('GetMemory', ('SM', 1))
     # We can create compound tasks with parameters:
-    worker.enqueue('CustomGetAllMemory', commands = [
+    worker.enqueue('CustomGetAllMemory', commands=[
         ('GetMemory', ('SM', 1)),
         ('GetMemory', ('SM', 2)),
         ('GetMemory', ('SM', 3)),

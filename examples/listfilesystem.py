@@ -1,4 +1,4 @@
-#!/usr/bin/env	python
+#!/usr/bin/env python
 #
 # Example for usage of GetNextFileFolder, which is oriented at
 #
@@ -14,7 +14,7 @@
 import gammu
 import locale
 from optparse import OptionParser
-parser = OptionParser(usage = "usage: %prog [options]")
+parser = OptionParser(usage="usage: %prog [options]")
 
 parser.add_option("-c", "--config",
                   action="store", type="string",
@@ -31,9 +31,9 @@ parser.add_option("-l", "--level",
 (options, args) = parser.parse_args()
 
 # Init gammu module
-sm = gammu.StateMachine();
+sm = gammu.StateMachine()
 if options.config is not None:
-    sm.ReadConfig(Filename = options.config)
+    sm.ReadConfig(Filename=options.config)
 else:
     sm.ReadConfig()
 sm.Init()
@@ -47,6 +47,7 @@ else:
 
 # Set locale to default locale (here relevant for printing of date)
 locale.setlocale(locale.LC_ALL, '')
+
 
 # Wrapper around GetNextFileFolder, catching gammu.ERR_EMPTY
 # for me, which should be after the last entry and returning "None"
@@ -65,61 +66,64 @@ locale.setlocale(locale.LC_ALL, '')
 # 'ReadOnly'
 # 'Hidden'
 # 'System'
-def NextFile (start = 0):
-	file = None;
-	try:
-		file = sm.GetNextFileFolder(start);
-	except gammu.ERR_EMPTY:
-		pass
-	return file
+def NextFile(start=0):
+    file = None
+    try:
+        file = sm.GetNextFileFolder(start)
+    except gammu.ERR_EMPTY:
+        pass
+    return file
+
 
 # Format File Attributes as String as a shorted Version
-def FileToAttributeString(file, filled = 1):
-	protected = readonly = hidden = system = ""
-	if filled:
-		protected = readonly = hidden = system = u" "
-	if file["Protected"]:
-		protected = u"P"
-	if file["ReadOnly"]:
-		readonly = u"R"
-	if file["Hidden"]:
-		hidden = u"H"
-	if file["System"]:
-		system = u"S"
-	return protected + readonly + hidden + system
+def FileToAttributeString(file, filled=1):
+    protected = readonly = hidden = system = ""
+    if filled:
+        protected = readonly = hidden = system = u" "
+    if file["Protected"]:
+        protected = u"P"
+    if file["ReadOnly"]:
+        readonly = u"R"
+    if file["Hidden"]:
+        hidden = u"H"
+    if file["System"]:
+        system = u"S"
+    return protected + readonly + hidden + system
 
 # Make sure we reset the pointer of the current entry to the first
-file = NextFile(1);
+file = NextFile(1)
 
 # Iterate over Files and print the Info
-while(file):
-	if mode=="flat" :
-		# Output:
-		# <ID>;<NAME>;<TYPE>;<MODDATE>;<SIZE>;<ATTRIBUTES>
-		# We have to catch the situations, where no Modification Time is provided
-		try:
-			time = file["Modified"].strftime("%x %X") + ";"
-		except AttributeError:
-			time = ";"
+while file:
+    if mode == "flat":
+        # Output:
+        # <ID>;<NAME>;<TYPE>;<MODDATE>;<SIZE>;<ATTRIBUTES>
+        # We have to catch the situations, where no Modification Time is
+        # provided
+        try:
+            time = file["Modified"].strftime("%x %X") + ";"
+        except AttributeError:
+            time = ";"
 
-		print file["ID_FullName"] + ";" \
-			+ file["Name"] + ";" \
-			+ file["Type"] + ";" \
-			+ time \
-			+ str(file["Used"]) + ";" \
-			+ FileToAttributeString(file, 0)
-	elif mode=="level":
-		attrib = FileToAttributeString(file,1)
-		level = file["Level"]
-		spacer = ""
+        print(
+            file["ID_FullName"] + ";" +
+            file["Name"] + ";" +
+            file["Type"] + ";" +
+            time + str(file["Used"]) + ";" +
+            FileToAttributeString(file, 0)
+        )
+    elif mode == "level":
+        attrib = FileToAttributeString(file, 1)
+        level = file["Level"]
+        spacer = ""
 
-		for i in range(1, (level-1)):
-			spacer = spacer + " |   "
-		if(level > 1):
-			spacer = spacer + " |-- "
+        for i in range(1, (level-1)):
+            spacer = spacer + " |   "
+        if(level > 1):
+            spacer = spacer + " |-- "
 
-		title = '"' + file["Name"] + '"'
-		if file["Folder"]:
-			title = "Folder " + title
-		print attrib + spacer + title;
-	file = NextFile()
+        title = '"' + file["Name"] + '"'
+        if file["Folder"]:
+            title = "Folder " + title
+        print attrib + spacer + title
+    file = NextFile()

@@ -3,6 +3,7 @@
 import gammu
 import time
 
+
 def Callback(sm, type, data):
     '''
     This callback receives notification about incoming event.
@@ -16,6 +17,7 @@ def Callback(sm, type, data):
     '''
     print 'Received incoming event type %s, data:' % type
     print data
+
 
 # Create state machine
 sm = gammu.StateMachine()

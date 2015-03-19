@@ -19,21 +19,23 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 '''
-python-gammu - Test script to test several Gammu operations (usually using dummy driver, but it depends on config)
+python-gammu - Test script to test several Gammu operations
+(usually using dummy driver, but it depends on config)
 '''
 
 import gammu
 import sys
 if len(sys.argv) != 2:
-    print 'This requires one parameter with location of config file!'
+    print('This requires one parameter with location of config file!')
     sys.exit(1)
 
 sm = gammu.StateMachine()
-sm.ReadConfig(Filename = sys.argv[1])
+sm.ReadConfig(Filename=sys.argv[1])
 sm.Init()
 
+
 def GetAllMemory(type):
-    status = sm.GetMemoryStatus(Type = type)
+    status = sm.GetMemoryStatus(Type=type)
 
     remain = status['Used']
 
@@ -41,19 +43,22 @@ def GetAllMemory(type):
 
     while remain > 0:
         if start:
-            entry = sm.GetNextMemory(Start = True, Type = type)
+            entry = sm.GetNextMemory(Start=True, Type=type)
             start = False
         else:
-            entry = sm.GetNextMemory(Location = entry['Location'], Type = type)
+            entry = sm.GetNextMemory(Location=entry['Location'], Type=type)
         remain = remain - 1
 
-        print
-        print '%-15s: %d' % ('Location',entry['Location'])
+        print()
+        print('%-15s: %d' % ('Location', entry['Location']))
         for v in entry['Entries']:
             if v['Type'] in ('Photo'):
-                print '%-15s: %s...' % (v['Type'], repr(v['Value'])[:30])
+                print('%-15s: %s...' % (v['Type'], repr(v['Value'])[:30]))
             else:
-                print '%-15s: %s' % (v['Type'], str(v['Value']).encode('utf-8'))
+                print(
+                    '%-15s: %s' % (v['Type'], str(v['Value']).encode('utf-8'))
+                )
+
 
 def GetAllCalendar():
     status = sm.GetCalendarStatus()
@@ -64,24 +69,26 @@ def GetAllCalendar():
 
     while remain > 0:
         if start:
-            entry = sm.GetNextCalendar(Start = True)
+            entry = sm.GetNextCalendar(Start=True)
             start = False
         else:
-            entry = sm.GetNextCalendar(Location = entry['Location'])
+            entry = sm.GetNextCalendar(Location=entry['Location'])
         remain = remain - 1
 
-        print
-        print '%-20s: %d' % ('Location',entry['Location'])
-        print '%-20s: %s' % ('Type',entry['Type'])
+        print()
+        print('%-20s: %d' % ('Location', entry['Location']))
+        print('%-20s: %s' % ('Type', entry['Type']))
         for v in entry['Entries']:
-            print '%-20s: %s' % (v['Type'], str(v['Value']).encode('utf-8'))
+            print('%-20s: %s' % (v['Type'], str(v['Value']).encode('utf-8')))
+
 
 def Battery():
     status = sm.GetBatteryCharge()
 
     for x in status:
         if status[x] != -1:
-            print "%20s: %s" % (x, status[x])
+            print("%20s: %s" % (x, status[x]))
+
 
 def GetAllSMS():
     status = sm.GetSMSStatus()
@@ -92,21 +99,23 @@ def GetAllSMS():
 
     while remain > 0:
         if start:
-            sms = sm.GetNextSMS(Start = True, Folder = 0)
+            sms = sm.GetNextSMS(Start=True, Folder=0)
             start = False
         else:
-            sms = sm.GetNextSMS(Location = sms[0]['Location'], Folder = 0)
+            sms = sm.GetNextSMS(Location=sms[0]['Location'], Folder=0)
         remain = remain - len(sms)
 
     return sms
+
 
 def PrintAllSMS(sms, folders):
     for m in sms:
         print
         print '%-15s: %s' % ('Number', m['Number'].encode('utf-8'))
-        print '%-15s: %s' %  ('Date', str(m['DateTime']))
+        print '%-15s: %s' % ('Date', str(m['DateTime']))
         print '%-15s: %s' % ('State', m['State'].encode('utf-8'))
         print '\n%s' % m['Text'].encode('utf-8')
+
 
 def LinkAllSMS(sms, folders):
     data = gammu.LinkSMS([[msg] for msg in sms])
@@ -119,16 +128,18 @@ def LinkAllSMS(sms, folders):
         print '%-15s: %s' % ('Number', m['Number'].encode('utf-8'))
         print '%-15s: %s' % ('Date', str(m['DateTime']))
         print '%-15s: %s' % ('State', m['State'])
-        print '%-15s: %s %s (%d)' % ('Folder',
+        print '%-15s: %s %s (%d)' % (
+            'Folder',
             folders[m['Folder']]['Name'].encode('utf-8'),
             folders[m['Folder']]['Memory'].encode('utf-8'),
-            m['Folder'])
+            m['Folder']
+        )
         print '%-15s: %s' % ('Validity', m['SMSC']['Validity'])
         loc = []
         for m in x:
             loc.append(str(m['Location']))
         print '%-15s: %s' % ('Location(s)', ', '.join(loc))
-        if v == None:
+        if v is None:
             print '\n%s' % m['Text'].encode('utf-8')
         else:
             for e in v['Entries']:
@@ -145,6 +156,7 @@ def LinkAllSMS(sms, folders):
                     print e['Buffer'].encode('utf-8')
                     print
 
+
 def GetAllTodo():
     status = sm.GetToDoStatus()
 
@@ -154,25 +166,29 @@ def GetAllTodo():
 
     while remain > 0:
         if start:
-            entry = sm.GetNextToDo(Start = True)
+            entry = sm.GetNextToDo(Start=True)
             start = False
         else:
-            entry = sm.GetNextToDo(Location = entry['Location'])
+            entry = sm.GetNextToDo(Location=entry['Location'])
         remain = remain - 1
 
         print
-        print '%-15s: %d' % ('Location',entry['Location'])
-        print '%-15s: %s' % ('Priority',entry['Priority'])
+        print '%-15s: %d' % ('Location', entry['Location'])
+        print '%-15s: %s' % ('Priority', entry['Priority'])
         for v in entry['Entries']:
             print '%-15s: %s' % (v['Type'], str(v['Value']).encode('utf-8'))
+
 
 def GetSMSFolders():
     folders = sm.GetSMSFolders()
     for i, folder in enumerate(folders):
-        print 'Folder %d: %s (%s)' % (i,
+        print 'Folder %d: %s (%s)' % (
+            i,
             folder['Name'].encode('utf-8'),
-            folder['Memory'].encode('utf-8'))
+            folder['Memory'].encode('utf-8')
+        )
     return folders
+
 
 def DateTime():
     dt = sm.GetDateTime()
@@ -180,16 +196,18 @@ def DateTime():
     sm.SetDateTime(dt)
     return dt
 
-smsfolders = GetSMSFolders()
-GetAllMemory('ME')
-GetAllMemory('SM')
-GetAllMemory('MC')
-GetAllMemory('RC')
-GetAllMemory('DC')
-Battery()
-GetAllCalendar()
-GetAllTodo()
-smslist = GetAllSMS()
-PrintAllSMS(smslist, smsfolders)
-LinkAllSMS(smslist, smsfolders)
-DateTime()
+
+if __name__ == '__main__':
+    smsfolders = GetSMSFolders()
+    GetAllMemory('ME')
+    GetAllMemory('SM')
+    GetAllMemory('MC')
+    GetAllMemory('RC')
+    GetAllMemory('DC')
+    Battery()
+    GetAllCalendar()
+    GetAllTodo()
+    smslist = GetAllSMS()
+    PrintAllSMS(smslist, smsfolders)
+    LinkAllSMS(smslist, smsfolders)
+    DateTime()

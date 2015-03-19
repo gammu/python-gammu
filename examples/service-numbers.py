@@ -25,6 +25,7 @@ Service numbers dialogue example.
 import gammu
 import sys
 
+
 def callback(sm, type, data):
     '''
     Callback on USSD data.
@@ -40,6 +41,7 @@ def callback(sm, type, data):
     if data['Status'] == 'ActionNeeded':
         do_service(sm)
 
+
 def init():
     '''
     Intializes gammu and callbacks.
@@ -47,7 +49,7 @@ def init():
     global sm
     sm = gammu.StateMachine()
     if len(sys.argv) >= 2:
-        sm.ReadConfig(Filename = sys.argv[1])
+        sm.ReadConfig(Filename=sys.argv[1])
     else:
         sm.ReadConfig()
     sm.Init()
@@ -58,6 +60,7 @@ def init():
         print 'Incoming USSD notification is not supported.'
         sys.exit(1)
     return sm
+
 
 def do_service(sm):
     '''
@@ -73,7 +76,8 @@ def do_service(sm):
         print 'Talking to network...'
         sm.DialService(code)
 
+
 if __name__ == '__main__':
     sm = init()
-    print 'This example shows interaction with network using service codes'
+    print('This example shows interaction with network using service codes')
     do_service(sm)

@@ -8,7 +8,7 @@ import sys
 
 sm = gammu.StateMachine()
 if len(sys.argv) == 2:
-    sm.ReadConfig(Filename = sys.argv[1])
+    sm.ReadConfig(Filename=sys.argv[1])
 else:
     sm.ReadConfig()
 sm.Init()
@@ -42,11 +42,10 @@ entry3 = gammu.DecodeICS(it_entry)
 # For memory entry
 
 # Read entry from phone
-entry = sm.GetNextMemory(Start=True, Type = 'ME')
+entry = sm.GetNextMemory(Start=True, Type='ME')
 
 # Convert it to vCard
 vc_entry = gammu.EncodeVCARD(entry)
 
 # Convert it back to entry
 entry2 = gammu.DecodeVCARD(vc_entry)
-

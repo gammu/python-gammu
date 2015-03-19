@@ -16,10 +16,10 @@ start = True
 try:
     while remain > 0:
         if start:
-            cursms = sm.GetNextSMS(Start = True, Folder = 0)
+            cursms = sm.GetNextSMS(Start=True, Folder=0)
             start = False
         else:
-            cursms = sm.GetNextSMS(Location = cursms[0]['Location'], Folder = 0)
+            cursms = sm.GetNextSMS(Location=cursms[0]['Location'], Folder=0)
         remain = remain - len(cursms)
         sms.append(cursms)
 except gammu.ERR_EMPTY:
@@ -43,7 +43,7 @@ for x in data:
     for m in x:
         loc.append(str(m['Location']))
     print '%-15s: %s' % ('Location(s)', ', '.join(loc))
-    if v == None:
+    if v is None:
         print '\n%s' % m['Text']
     else:
         for e in v['Entries']:

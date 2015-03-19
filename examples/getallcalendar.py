@@ -22,15 +22,15 @@ start = True
 while remain > 0:
     # Read the entry
     if start:
-        entry = sm.GetNextCalendar(Start = True)
+        entry = sm.GetNextCalendar(Start=True)
         start = False
     else:
-        entry = sm.GetNextCalendar(Location = entry['Location'])
+        entry = sm.GetNextCalendar(Location=entry['Location'])
     remain = remain - 1
 
     # Display it
     print
-    print '%-20s: %d' % ('Location',entry['Location'])
-    print '%-20s: %s' % ('Type',entry['Type'])
+    print '%-20s: %d' % ('Location', entry['Location'])
+    print '%-20s: %s' % ('Type', entry['Type'])
     for v in entry['Entries']:
         print '%-20s: %s' % (v['Type'], str(v['Value']))

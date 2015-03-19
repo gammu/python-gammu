@@ -10,7 +10,7 @@ sm = gammu.StateMachine()
 # Optionally load config file as defined by first parameter
 if len(sys.argv) >= 2:
     # Read the configuration from given file
-    sm.ReadConfig(Filename = sys.argv[1])
+    sm.ReadConfig(Filename=sys.argv[1])
     # Remove file name from args list
     del sys.argv[1]
 else:

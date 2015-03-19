@@ -8,10 +8,6 @@ if len(sys.argv) != 2:
     print 'This requires parameter: backup file!'
     sys.exit(1)
 
-#sm = gammu.StateMachine()
-#sm.ReadConfig()
-#sm.Init()
-
 charsetencoder = codecs.getencoder(sys.getdefaultencoding())
 
 filename = sys.argv[1]
@@ -37,7 +33,7 @@ for x in data:
     for m in x:
         loc.append(str(m['Location']))
     print '%-15s: %s' % ('Location(s)', ', '.join(loc))
-    if v == None:
+    if v is None:
         print '\n%s' % charsetencoder(m['Text'], 'replace')[0]
     else:
         for e in v['Entries']:

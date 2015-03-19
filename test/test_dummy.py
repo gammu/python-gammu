@@ -17,13 +17,16 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
+from __future__ import unicode_literals
 import unittest
 import gammu
 import tempfile
 import shutil
+import datetime
 import os.path
 
 DUMMY_DIR = os.path.join(os.path.dirname(__file__), 'data', 'gammu-dummy')
+TEST_FILE = os.path.join(os.path.dirname(__file__), 'data', 'sqlite.sql')
 CONFIGURATION = '''
 # Configuration for Gammu testsuite
 
@@ -260,3 +263,83 @@ class BasicDummyTest(DummyTest):
 
             # Actually send the message
             state_machine.SendSMS(message)
+
+    def test_filesystem(self):
+        state_machine = self.get_statemachine()
+        fs_info = state_machine.GetFileSystemStatus()
+        self.assertEquals(
+            fs_info,
+            {
+                'UsedImages': 0,
+                'Used': 1000000,
+                'UsedThemes': 0,
+                'Free': 10101,
+                'UsedSounds': 0
+            }
+        )
+
+    def test_deletefile(self):
+        state_machine = self.get_statemachine()
+        self.assertRaises(
+            gammu.ERR_FILENOTEXIST,
+            state_machine.DeleteFile,
+            'testfolder/nonexisting.png'
+        )
+        state_machine.DeleteFile('file5')
+
+    def test_deletefolder(self):
+        state_machine = self.get_statemachine()
+        self.assertRaises(
+            gammu.ERR_FILENOTEXIST,
+            state_machine.DeleteFolder,
+            'testfolder'
+        )
+        state_machine.DeleteFolder('testdir')
+
+    def test_addfile(self):
+        state_machine = self.get_statemachine()
+        file_stat = os.stat(TEST_FILE)
+        ttime = datetime.datetime.fromtimestamp(file_stat[8])
+        with open(TEST_FILE, 'r') as handle:
+            content = handle.read()
+        file_f = {
+            "ID_FullName": 'testfolder',
+            "Name": 'sqlite.sql',
+            "Modified": ttime,
+            "Folder": 0,
+            "Level": 1,
+            "Used": file_stat[6],
+            "Buffer": content,
+            "Type": "Other",
+            "Protected": 0,
+            "ReadOnly": 0,
+            "Hidden": 0,
+            "System": 0,
+            "Handle": 0,
+            "Pos": 0,
+            "Finished": 0
+        }
+        state_machine.AddFolder('', 'testfolder')
+        while (not file_f["Finished"]):
+            file_f = state_machine.AddFilePart(file_f)
+
+    def test_fileattributes(self):
+        state_machine = self.get_statemachine()
+        state_machine.SetFileAttributes('file5', ReadOnly=1, Protected=0, System=1, Hidden=1)
+
+    def test_getnextfile(self):
+        state_machine = self.get_statemachine()
+        file_f = state_machine.GetNextFileFolder(1)
+        folders = 0
+        files = 0
+        while 1:
+            if file_f['Folder']:
+                folders += 1
+            else:
+                files += 1
+            try:
+                file_f = state_machine.GetNextFileFolder(0)
+            except gammu.ERR_EMPTY:
+                break
+        self.assertEquals(folders, 8)
+        self.assertEquals(files, 6)

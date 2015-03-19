@@ -138,7 +138,9 @@ class BasicDummyTest(DummyTest):
                 entry = state_machine.GetNextMemory(Start=True, Type='ME')
                 start = False
             else:
-                entry = state_machine.GetNextMemory(Location=entry['Location'], Type='ME')
+                entry = state_machine.GetNextMemory(
+                    Location=entry['Location'], Type='ME'
+                )
             remain = remain - 1
 
 
@@ -157,14 +159,20 @@ class BasicDummyTest(DummyTest):
                 entry = state_machine.GetNextCalendar(Start=True)
                 start = False
             else:
-                entry = state_machine.GetNextCalendar(Location=entry['Location'])
+                entry = state_machine.GetNextCalendar(
+                    Location=entry['Location']
+                )
             remain = remain - 1
 
     def test_sms(self):
         state_machine = self.get_statemachine()
         status = state_machine.GetSMSStatus()
 
-        remain = status['SIMUsed'] + status['PhoneUsed'] + status['TemplatesUsed']
+        remain = (
+            status['SIMUsed'] +
+            status['PhoneUsed'] +
+            status['TemplatesUsed']
+        )
 
         self.assertEquals(remain, 6)
 
@@ -177,7 +185,11 @@ class BasicDummyTest(DummyTest):
                 sms.append(state_machine.GetNextSMS(Start=True, Folder=0))
                 start = False
             else:
-                sms.append(state_machine.GetNextSMS(Location=sms[-1][0]['Location'], Folder=0))
+                sms.append(
+                    state_machine.GetNextSMS(
+                        Location=sms[-1][0]['Location'], Folder=0
+                    )
+                )
             remain = remain - len(sms)
 
         data = gammu.LinkSMS(sms)
@@ -326,7 +338,9 @@ class BasicDummyTest(DummyTest):
 
     def test_fileattributes(self):
         state_machine = self.get_statemachine()
-        state_machine.SetFileAttributes('file5', ReadOnly=1, Protected=0, System=1, Hidden=1)
+        state_machine.SetFileAttributes(
+            'file5', ReadOnly=1, Protected=0, System=1, Hidden=1
+        )
 
     def test_getnextfile(self):
         state_machine = self.get_statemachine()

@@ -333,11 +333,11 @@ class WorkerDummyTest(DummyTest):
         worker.terminate()
 
         # Remove GetDateTime from comparing as the value changes
-        for x in range(len(self.results)):
-            if self.results[x][0] == 'GetDateTime':
-                self.assertEqual(self.results[x][2], 'ERR_NONE')
-                self.assertEqual(self.results[x][3], 100)
-                del self.results[x]
+        for i in range(len(self.results)):
+            if self.results[i][0] == 'GetDateTime':
+                self.assertEqual(self.results[i][2], 'ERR_NONE')
+                self.assertEqual(self.results[i][3], 100)
+                del self.results[i]
                 break
 
         self.assertEqual(self.results, WORKER_EXPECT)

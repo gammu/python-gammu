@@ -206,3 +206,17 @@ class BasicDummyTest(DummyTest):
         state_machine = self.get_statemachine()
         folders = state_machine.GetSMSFolders()
         self.assertEquals(len(folders), 5)
+
+    def ussd_callback(self, state_machine, response, data):
+        '''
+        Callback on USSD data.
+        '''
+        self.assertEquals(response, 'USSD')
+        self.assertEquals(data['Text'], 'Reply for 1234')
+        self.assertEquals(data['Status'], 'NoActionNeeded')
+
+    def test_ussd(self):
+        state_machine = self.get_statemachine()
+        state_machine.SetIncomingCallback(self.ussd_callback)
+        state_machine.SetIncomingUSSD()
+        state_machine.DialService('1234')

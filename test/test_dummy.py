@@ -220,3 +220,43 @@ class BasicDummyTest(DummyTest):
         state_machine.SetIncomingCallback(self.ussd_callback)
         state_machine.SetIncomingUSSD()
         state_machine.DialService('1234')
+
+    def test_sendsms(self):
+        state_machine = self.get_statemachine()
+        message = {
+            'Text': 'python-gammu testing message',
+            'SMSC': {'Location': 1},
+            'Number': '123456',
+        }
+
+        state_machine.SendSMS(message)
+
+    def test_sendsms_long(self):
+        state_machine = self.get_statemachine()
+        text = (
+            'Very long python-gammu testing message sent '
+            'from example python script. '
+        ) * 10
+        smsinfo = {
+            'Class': 1,
+            'Unicode': False,
+            'Entries':  [
+                {
+                    'ID': 'ConcatenatedTextLong',
+                    'Buffer': text
+                }
+            ]}
+
+        # Encode messages
+        encoded = gammu.EncodeSMS(smsinfo)
+
+        self.assertEquals(len(encoded), 5)
+
+        # Send messages
+        for message in encoded:
+            # Fill in numbers
+            message['SMSC'] = {'Location': 1}
+            message['Number'] = '123456'
+
+            # Actually send the message
+            state_machine.SendSMS(message)

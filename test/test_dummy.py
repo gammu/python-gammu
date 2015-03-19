@@ -129,7 +129,7 @@ class BasicDummyTest(DummyTest):
 
         remain = status['Used']
 
-        self.assertEquals(status['Used'], 3)
+        self.assertEqual(status['Used'], 3)
 
         start = True
 
@@ -149,7 +149,7 @@ class BasicDummyTest(DummyTest):
 
         remain = status['Used']
 
-        self.assertEquals(status['Used'], 2)
+        self.assertEqual(status['Used'], 2)
 
         start = True
 
@@ -173,7 +173,7 @@ class BasicDummyTest(DummyTest):
             status['TemplatesUsed']
         )
 
-        self.assertEquals(remain, 6)
+        self.assertEqual(remain, 6)
 
         start = True
 
@@ -196,7 +196,7 @@ class BasicDummyTest(DummyTest):
         for item in data:
             message = gammu.DecodeSMS(item)
             if message is None:
-                self.assertEquals(item[0]['UDH']['Type'], 'NoUDH')
+                self.assertEqual(item[0]['UDH']['Type'], 'NoUDH')
 
     def test_todo(self):
         state_machine = self.get_statemachine()
@@ -204,7 +204,7 @@ class BasicDummyTest(DummyTest):
 
         remain = status['Used']
 
-        self.assertEquals(status['Used'], 2)
+        self.assertEqual(status['Used'], 2)
 
         start = True
 
@@ -219,15 +219,15 @@ class BasicDummyTest(DummyTest):
     def test_sms_folders(self):
         state_machine = self.get_statemachine()
         folders = state_machine.GetSMSFolders()
-        self.assertEquals(len(folders), 5)
+        self.assertEqual(len(folders), 5)
 
     def ussd_callback(self, state_machine, response, data):
         '''
         Callback on USSD data.
         '''
-        self.assertEquals(response, 'USSD')
-        self.assertEquals(data['Text'], 'Reply for 1234')
-        self.assertEquals(data['Status'], 'NoActionNeeded')
+        self.assertEqual(response, 'USSD')
+        self.assertEqual(data['Text'], 'Reply for 1234')
+        self.assertEqual(data['Status'], 'NoActionNeeded')
 
     def test_ussd(self):
         state_machine = self.get_statemachine()
@@ -264,7 +264,7 @@ class BasicDummyTest(DummyTest):
         # Encode messages
         encoded = gammu.EncodeSMS(smsinfo)
 
-        self.assertEquals(len(encoded), 5)
+        self.assertEqual(len(encoded), 5)
 
         # Send messages
         for message in encoded:
@@ -278,7 +278,7 @@ class BasicDummyTest(DummyTest):
     def test_filesystem(self):
         state_machine = self.get_statemachine()
         fs_info = state_machine.GetFileSystemStatus()
-        self.assertEquals(
+        self.assertEqual(
             fs_info,
             {
                 'UsedImages': 0,
@@ -355,5 +355,5 @@ class BasicDummyTest(DummyTest):
                 file_f = state_machine.GetNextFileFolder(0)
             except gammu.ERR_EMPTY:
                 break
-        self.assertEquals(folders, 3)
-        self.assertEquals(files, 6)
+        self.assertEqual(folders, 3)
+        self.assertEqual(files, 6)

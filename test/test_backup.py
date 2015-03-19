@@ -93,7 +93,7 @@ class BackupTest(unittest.TestCase):
         entry2 = gammu.DecodeVCS(vc_entry)
         entry3 = gammu.DecodeICS(ic_entry)
 
-        self.assertEquals(entry2['Type'], entry3['Type'])
+        self.assertEqual(entry2['Type'], entry3['Type'])
 
     def test_todo(self):
         entry = gammu.ReadBackup(
@@ -108,7 +108,7 @@ class BackupTest(unittest.TestCase):
         entry2 = gammu.DecodeVCS(vt_entry)
         entry3 = gammu.DecodeICS(it_entry)
 
-        self.assertEquals(entry2['Type'], entry3['Type'])
+        self.assertEqual(entry2['Type'], entry3['Type'])
 
     def test_contact(self):
         entry = gammu.ReadBackup(

@@ -48,13 +48,13 @@ def read_config():
     '''
     Reads gammu configuration.
     '''
-    sm = gammu.StateMachine()
+    state_machine = gammu.StateMachine()
     # This is hack and should be as parameter of this function
     if len(sys.argv) == 2:
-        sm.ReadConfig(Filename=sys.argv[1])
+        state_machine.ReadConfig(Filename=sys.argv[1])
     else:
-        sm.ReadConfig()
-    return sm.GetConfig()
+        state_machine.ReadConfig()
+    return state_machine.GetConfig()
 
 
 def main():

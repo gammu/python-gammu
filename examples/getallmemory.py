@@ -3,9 +3,9 @@
 import gammu
 import sys
 
-sm = gammu.StateMachine()
-sm.ReadConfig()
-sm.Init()
+state_machine = gammu.StateMachine()
+state_machine.ReadConfig()
+state_machine.Init()
 
 if len(sys.argv) != 2:
     print 'This requires one parameter with memory type!'
@@ -13,7 +13,7 @@ if len(sys.argv) != 2:
 
 type = sys.argv[1]
 
-status = sm.GetMemoryStatus(Type=type)
+status = state_machine.GetMemoryStatus(Type=type)
 
 remain = status['Used']
 
@@ -21,10 +21,12 @@ start = True
 
 while remain > 0:
     if start:
-        entry = sm.GetNextMemory(Start=True, Type=type)
+        entry = state_machine.GetNextMemory(Start=True, Type=type)
         start = False
     else:
-        entry = sm.GetNextMemory(Location=entry['Location'], Type=type)
+        entry = state_machine.GetNextMemory(
+            Location=entry['Location'], Type=type
+        )
     remain = remain - 1
 
     print

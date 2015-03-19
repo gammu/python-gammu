@@ -4,17 +4,17 @@ import gammu
 import sys
 
 # Create object for talking with phone
-sm = gammu.StateMachine()
+state_machine = gammu.StateMachine()
 
 # Read the configuration (~/.gammurc or from command line)
 if len(sys.argv) >= 2:
-    sm.ReadConfig(Filename=sys.argv[1])
+    state_machine.ReadConfig(Filename=sys.argv[1])
     del sys.argv[1]
 else:
-    sm.ReadConfig()
+    state_machine.ReadConfig()
 
 # Connect to the phone
-sm.Init()
+state_machine.Init()
 
 # Check whether we have a number to dial
 if len(sys.argv) != 2:
@@ -22,4 +22,4 @@ if len(sys.argv) != 2:
     sys.exit(1)
 
 # Dial a number
-sm.DialVoice(sys.argv[1])
+state_machine.DialVoice(sys.argv[1])

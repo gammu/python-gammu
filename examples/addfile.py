@@ -11,9 +11,9 @@ if len(sys.argv) != 3:
 f = open(sys.argv[1], 'r')
 data = f.read()
 
-sm = gammu.StateMachine()
-sm.ReadConfig()
-sm.Init()
+state_machine = gammu.StateMachine()
+state_machine.ReadConfig()
+state_machine.Init()
 
 # Check AddFilePart
 print("\n\nExpection: Put specified file onto Memorycard on phone")
@@ -33,4 +33,4 @@ file_f = {
 }
 
 while not file_f['Finished']:
-    file_f = sm.AddFilePart(file_f)
+    file_f = state_machine.AddFilePart(file_f)

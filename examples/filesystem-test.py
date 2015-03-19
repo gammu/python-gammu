@@ -55,17 +55,17 @@ if not os.path.exists(options.testfile):
     print "You have to select file which will be used for testing!"
     sys.exit(1)
 
-sm = gammu.StateMachine()
+state_machine = gammu.StateMachine()
 if options.config is not None:
-    sm.ReadConfig(Filename=options.config)
+    state_machine.ReadConfig(Filename=options.config)
 else:
-    sm.ReadConfig()
-sm.Init()
+    state_machine.ReadConfig()
+state_machine.Init()
 
 # Check GetFileSystemStatus
 print "Expection: Info about filesystem usage"
 try:
-    fs_info = sm.GetFileSystemStatus()
+    fs_info = state_machine.GetFileSystemStatus()
     fs_info["Total"] = fs_info["Free"] + fs_info["Used"]
     print "Used: %(Used)d, Free: %(Free)d, Total: %(Total)d" % fs_info
 except gammu.ERR_NOTSUPPORTED:
@@ -74,7 +74,7 @@ except gammu.ERR_NOTSUPPORTED:
 # Check DeleteFile
 print "\n\nExpection: Deleting cgi.jpg from memorycard"
 try:
-    sm.DeleteFile(unicode(options.folder + "/cgi.jpg"))
+    state_machine.DeleteFile(unicode(options.folder + "/cgi.jpg"))
 except gammu.ERR_FILENOTEXIST:
     print "Oh well - we copy it now ;-) (You SHOULD read this)"
 
@@ -101,7 +101,7 @@ file_f = {
     "Finished": 0
 }
 while not file_f["Finished"]:
-    file_f = sm.AddFilePart(file_f)
+    file_f = state_machine.AddFilePart(file_f)
 
 
 # Check GetFilePart
@@ -112,7 +112,7 @@ file_f = {
     "Finished": 0
 }
 while not file_f["Finished"]:
-    file_f = sm.GetFilePart(file_f)
+    file_f = state_machine.GetFilePart(file_f)
 f.write(file_f["Buffer"])
 f.flush()
 
@@ -130,11 +130,11 @@ os.remove("./test.jpg")
 # Check GetNextRootFolder
 print "\n\nExpection: Root Folder List"
 try:
-    file = sm.GetNextRootFolder(u"")
+    file = state_machine.GetNextRootFolder(u"")
     while 1:
         print file["ID_FullName"] + " - " + file["Name"]
         try:
-            file = sm.GetNextRootFolder(file["ID_FullName"])
+            file = state_machine.GetNextRootFolder(file["ID_FullName"])
         except gammu.ERR_EMPTY:
             break
 except gammu.ERR_NOTSUPPORTED:
@@ -143,10 +143,10 @@ except gammu.ERR_NOTSUPPORTED:
 
 # Check GetNextFileFolder
 print "\n\nExpection: Info for a file of the phone (cgi.jpg)"
-file_f = sm.GetNextFileFolder(1)
+file_f = state_machine.GetNextFileFolder(1)
 while 1:
     if(file_f["Name"] != "cgi.jpg"):
-        file_f = sm.GetNextFileFolder(0)
+        file_f = state_machine.GetNextFileFolder(0)
     else:
         attribute = ""
         if file_f["Protected"]:
@@ -176,14 +176,16 @@ print(
     "\n\nExpection: Modifying attributes "
     "(readonly=1, protected=0, system=1, hidden=1)"
 )
-sm.SetFileAttributes(unicode(options.folder + "/cgi.jpg"), 1, 0, 1, 1)
+state_machine.SetFileAttributes(
+    unicode(options.folder + "/cgi.jpg"), 1, 0, 1, 1
+)
 
 # Check GetFolderListing
 print "\n\nExpection: Listing of cgi.jpg's properties"
-file_f = sm.GetFolderListing(unicode(options.folder), 1)
+file_f = state_machine.GetFolderListing(unicode(options.folder), 1)
 while 1:
     if(file_f["Name"] != "cgi.jpg"):
-        file_f = sm.GetFolderListing(unicode(options.folder), 0)
+        file_f = state_machine.GetFolderListing(unicode(options.folder), 0)
     else:
         attribute = ""
         if file_f["Protected"]:
@@ -210,21 +212,21 @@ while 1:
 # Check DeleteFile
 print "\n\nExpection: Deletion of cgi.jpg from memorycard"
 try:
-    sm.DeleteFile(unicode(options.folder + "cgi.jpg"))
+    state_machine.DeleteFile(unicode(options.folder + "cgi.jpg"))
     print "Deleted"
 except gammu.ERR_FILENOTEXIST:
     print "Something is wrong ..."
 
 # Check AddFolder
 print "\n\nExpection: Creation of a folder on the memorycard \"42alpha\""
-file_f = sm.AddFolder(unicode(options.folder), u"42alpha")
+file_f = state_machine.AddFolder(unicode(options.folder), u"42alpha")
 
 # Check GetFolderListing again *wired*
 print "\n\nExpection: Print properties of newly created folder"
-file_f = sm.GetFolderListing(unicode(options.folder), 1)
+file_f = state_machine.GetFolderListing(unicode(options.folder), 1)
 while 1:
     if(file_f["Name"] != "42alpha"):
-        file_f = sm.GetFolderListing(unicode(options.folder), 0)
+        file_f = state_machine.GetFolderListing(unicode(options.folder), 0)
     else:
         attribute = ""
         if file_f["Protected"]:
@@ -250,4 +252,4 @@ while 1:
 
 # Check DeleteFolder
 print "\n\nExpection: Deletion of previously created folder \"42alpha\""
-sm.DeleteFolder(unicode(options.folder + "/42alpha"))
+state_machine.DeleteFolder(unicode(options.folder + "/42alpha"))

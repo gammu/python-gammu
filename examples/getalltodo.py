@@ -2,11 +2,11 @@
 
 import gammu
 
-sm = gammu.StateMachine()
-sm.ReadConfig()
-sm.Init()
+state_machine = gammu.StateMachine()
+state_machine.ReadConfig()
+state_machine.Init()
 
-status = sm.GetToDoStatus()
+status = state_machine.GetToDoStatus()
 
 remain = status['Used']
 
@@ -14,10 +14,10 @@ start = True
 
 while remain > 0:
     if start:
-        entry = sm.GetNextToDo(Start=True)
+        entry = state_machine.GetNextToDo(Start=True)
         start = False
     else:
-        entry = sm.GetNextToDo(Location=entry['Location'])
+        entry = state_machine.GetNextToDo(Location=entry['Location'])
     remain = remain - 1
 
     print

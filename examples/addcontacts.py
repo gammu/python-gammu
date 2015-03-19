@@ -10,9 +10,9 @@ if len(sys.argv) != 3:
     )
     sys.exit(1)
 
-sm = gammu.StateMachine()
-sm.ReadConfig()
-sm.Init()
+state_machine = gammu.StateMachine()
+state_machine.ReadConfig()
+state_machine.Init()
 
 memory = sys.argv[1]
 filename = sys.argv[2]
@@ -21,5 +21,5 @@ backup = gammu.ReadBackup(filename)
 
 for item in backup['PhonePhonebook']:
     item['MemoryType'] = memory
-    loc = sm.AddMemory(item)
+    loc = state_machine.AddMemory(item)
     print('Added item to location %d' % loc)

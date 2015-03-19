@@ -136,19 +136,19 @@ def getAndDeleteAllSMS(myStMa):
 if __name__ == "__main__":
 
     # Get all contacts
-    sm = gammu.StateMachine()
-    sm.ReadConfig()
-    sm.Init()
-    myNumbers = getContacts(sm)
-    sm.Terminate()
+    state_machine = gammu.StateMachine()
+    state_machine.ReadConfig()
+    state_machine.Init()
+    myNumbers = getContacts(state_machine)
+    state_machine.Terminate()
 
     # Get all sms
     # why in two steps? ERR_TIMOUT is raised without closing the connection
-    sm = gammu.StateMachine()
-    sm.ReadConfig()
-    sm.Init()
-    myMessages = getAndDeleteAllSMS(sm)
-    sm.Terminate()
+    state_machine = gammu.StateMachine()
+    state_machine.ReadConfig()
+    state_machine.Init()
+    myMessages = getAndDeleteAllSMS(state_machine)
+    state_machine.Terminate()
 
     for message in myMessages:
         saveSMS(message, myNumbers)

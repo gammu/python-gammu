@@ -7,20 +7,20 @@ import sys
 gammu.SetDebugFile(sys.stderr)
 gammu.SetDebugLevel('textall')
 
-sm = gammu.StateMachine()
-sm.ReadConfig()
+state_machine = gammu.StateMachine()
+state_machine.ReadConfig()
 
 # Use global debug stub regardless configuration
-c = sm.GetConfig(0)
+c = state_machine.GetConfig(0)
 c['UseGlobalDebugFile'] = True
-sm.SetConfig(0, c)
+state_machine.SetConfig(0, c)
 
-sm.Init()
+state_machine.Init()
 
-Manufacturer = sm.GetManufacturer()
-Model = sm.GetModel()
-IMEI = sm.GetIMEI()
-Firmware = sm.GetFirmware()
+Manufacturer = state_machine.GetManufacturer()
+Model = state_machine.GetModel()
+IMEI = state_machine.GetIMEI()
+Firmware = state_machine.GetFirmware()
 print('Phone infomation:')
 print('%-15s: %s' % ('Manufacturer', Manufacturer))
 print('%-15s: %s (%s)' % ('Model', Model[0], Model[1]))

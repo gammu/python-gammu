@@ -6,17 +6,17 @@
 import gammu
 import sys
 
-sm = gammu.StateMachine()
+state_machine = gammu.StateMachine()
 if len(sys.argv) == 2:
-    sm.ReadConfig(Filename=sys.argv[1])
+    state_machine.ReadConfig(Filename=sys.argv[1])
 else:
-    sm.ReadConfig()
-sm.Init()
+    state_machine.ReadConfig()
+state_machine.Init()
 
 # For calendar entry
 
 # Read entry from phone
-entry = sm.GetNextCalendar(Start=True)
+entry = state_machine.GetNextCalendar(Start=True)
 
 # Convert it to vCard
 vc_entry = gammu.EncodeVCALENDAR(entry)
@@ -29,7 +29,7 @@ entry3 = gammu.DecodeICS(ic_entry)
 # For todo entry
 
 # Read entry from phone
-entry = sm.GetNextToDo(Start=True)
+entry = state_machine.GetNextToDo(Start=True)
 
 # Convert it to vCard
 vt_entry = gammu.EncodeVTODO(entry)
@@ -42,7 +42,7 @@ entry3 = gammu.DecodeICS(it_entry)
 # For memory entry
 
 # Read entry from phone
-entry = sm.GetNextMemory(Start=True, Type='ME')
+entry = state_machine.GetNextMemory(Start=True, Type='ME')
 
 # Convert it to vCard
 vc_entry = gammu.EncodeVCARD(entry)

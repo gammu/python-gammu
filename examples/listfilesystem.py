@@ -31,12 +31,12 @@ parser.add_option("-l", "--level",
 (options, args) = parser.parse_args()
 
 # Init gammu module
-sm = gammu.StateMachine()
+state_machine = gammu.StateMachine()
 if options.config is not None:
-    sm.ReadConfig(Filename=options.config)
+    state_machine.ReadConfig(Filename=options.config)
 else:
-    sm.ReadConfig()
-sm.Init()
+    state_machine.ReadConfig()
+state_machine.Init()
 
 # Get wished listing from commandline (if provided - else asume level)
 # On commandline level or flat can be provided as parameters
@@ -69,7 +69,7 @@ locale.setlocale(locale.LC_ALL, '')
 def NextFile(start=0):
     file = None
     try:
-        file = sm.GetNextFileFolder(start)
+        file = state_machine.GetNextFileFolder(start)
     except gammu.ERR_EMPTY:
         pass
     return file

@@ -3,15 +3,15 @@
 import gammu
 import sys
 
-sm = gammu.StateMachine()
+state_machine = gammu.StateMachine()
 if len(sys.argv) >= 2:
-    sm.ReadConfig(Filename=sys.argv[1])
+    state_machine.ReadConfig(Filename=sys.argv[1])
     del sys.argv[1]
 else:
-    sm.ReadConfig()
-sm.Init()
+    state_machine.ReadConfig()
+state_machine.Init()
 
-status = sm.GetBatteryCharge()
+status = state_machine.GetBatteryCharge()
 
 for x in status:
     if status[x] != -1:

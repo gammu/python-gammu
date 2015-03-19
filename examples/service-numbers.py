@@ -26,7 +26,7 @@ import gammu
 import sys
 
 
-def callback(sm, type, data):
+def callback(state_machine, type, data):
     '''
     Callback on USSD data.
     '''
@@ -39,30 +39,30 @@ def callback(sm, type, data):
     print data['Text']
 
     if data['Status'] == 'ActionNeeded':
-        do_service(sm)
+        do_service(state_machine)
 
 
 def init():
     '''
     Intializes gammu and callbacks.
     '''
-    global sm
-    sm = gammu.StateMachine()
+    global state_machine
+    state_machine = gammu.StateMachine()
     if len(sys.argv) >= 2:
-        sm.ReadConfig(Filename=sys.argv[1])
+        state_machine.ReadConfig(Filename=sys.argv[1])
     else:
-        sm.ReadConfig()
-    sm.Init()
-    sm.SetIncomingCallback(callback)
+        state_machine.ReadConfig()
+    state_machine.Init()
+    state_machine.SetIncomingCallback(callback)
     try:
-        sm.SetIncomingUSSD()
+        state_machine.SetIncomingUSSD()
     except gammu.ERR_NOTSUPPORTED:
         print 'Incoming USSD notification is not supported.'
         sys.exit(1)
-    return sm
+    return state_machine
 
 
-def do_service(sm):
+def do_service(state_machine):
     '''
     Main code to talk with worker.
     '''
@@ -74,10 +74,10 @@ def do_service(sm):
         code = raw_input()
     if code != '':
         print 'Talking to network...'
-        sm.DialService(code)
+        state_machine.DialService(code)
 
 
 if __name__ == '__main__':
-    sm = init()
+    state_machine = init()
     print('This example shows interaction with network using service codes')
-    do_service(sm)
+    do_service(state_machine)

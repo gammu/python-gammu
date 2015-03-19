@@ -2,11 +2,11 @@
 
 import gammu
 
-sm = gammu.StateMachine()
-sm.ReadConfig()
-sm.Init()
+state_machine = gammu.StateMachine()
+state_machine.ReadConfig()
+state_machine.Init()
 
-status = sm.GetSMSStatus()
+status = state_machine.GetSMSStatus()
 
 remain = status['SIMUsed'] + status['PhoneUsed'] + status['TemplatesUsed']
 
@@ -15,10 +15,12 @@ start = True
 try:
     while remain > 0:
         if start:
-            sms = sm.GetNextSMS(Start=True, Folder=0)
+            sms = state_machine.GetNextSMS(Start=True, Folder=0)
             start = False
         else:
-            sms = sm.GetNextSMS(Location=sms[0]['Location'], Folder=0)
+            sms = state_machine.GetNextSMS(
+                Location=sms[0]['Location'], Folder=0
+            )
         remain = remain - len(sms)
 
         for m in sms:

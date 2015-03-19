@@ -10,9 +10,9 @@ if len(sys.argv) < 3 or sys.argv[1] in ['--help', '-h', '-?']:
     sys.exit(1)
 
 # Configure Gammu
-sm = gammu.StateMachine()
-sm.ReadConfig()
-sm.Init()
+state_machine = gammu.StateMachine()
+state_machine.ReadConfig()
+state_machine.Init()
 
 # Prepare SMS template
 message = {'Text': sys.argv[1], 'SMSC': {'Location': 1}}
@@ -21,6 +21,6 @@ message = {'Text': sys.argv[1], 'SMSC': {'Location': 1}}
 for number in sys.argv[2:]:
     message['Number'] = number
     try:
-        sm.SendSMS(message)
+        state_machine.SendSMS(message)
     except Exception, exc:
         print 'Sending to %s failed: %s' % (number, exc)

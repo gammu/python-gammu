@@ -4,16 +4,16 @@
 import gammu
 
 # Create object for talking with phone
-sm = gammu.StateMachine()
+state_machine = gammu.StateMachine()
 
 # Read the configuration (~/.gammurc)
-sm.ReadConfig()
+state_machine.ReadConfig()
 
 # Connect to the phone
-sm.Init()
+state_machine.Init()
 
 # Get number of calendar entries
-status = sm.GetCalendarStatus()
+status = state_machine.GetCalendarStatus()
 
 remain = status['Used']
 
@@ -22,10 +22,10 @@ start = True
 while remain > 0:
     # Read the entry
     if start:
-        entry = sm.GetNextCalendar(Start=True)
+        entry = state_machine.GetNextCalendar(Start=True)
         start = False
     else:
-        entry = sm.GetNextCalendar(Location=entry['Location'])
+        entry = state_machine.GetNextCalendar(Location=entry['Location'])
     remain = remain - 1
 
     # Display it

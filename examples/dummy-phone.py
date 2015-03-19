@@ -29,13 +29,13 @@ if len(sys.argv) != 2:
     print('This requires one parameter with location of config file!')
     sys.exit(1)
 
-sm = gammu.StateMachine()
-sm.ReadConfig(Filename=sys.argv[1])
-sm.Init()
+state_machine = gammu.StateMachine()
+state_machine.ReadConfig(Filename=sys.argv[1])
+state_machine.Init()
 
 
 def GetAllMemory(type):
-    status = sm.GetMemoryStatus(Type=type)
+    status = state_machine.GetMemoryStatus(Type=type)
 
     remain = status['Used']
 
@@ -43,10 +43,12 @@ def GetAllMemory(type):
 
     while remain > 0:
         if start:
-            entry = sm.GetNextMemory(Start=True, Type=type)
+            entry = state_machine.GetNextMemory(Start=True, Type=type)
             start = False
         else:
-            entry = sm.GetNextMemory(Location=entry['Location'], Type=type)
+            entry = state_machine.GetNextMemory(
+                Location=entry['Location'], Type=type
+            )
         remain = remain - 1
 
         print()
@@ -61,7 +63,7 @@ def GetAllMemory(type):
 
 
 def GetAllCalendar():
-    status = sm.GetCalendarStatus()
+    status = state_machine.GetCalendarStatus()
 
     remain = status['Used']
 
@@ -69,10 +71,10 @@ def GetAllCalendar():
 
     while remain > 0:
         if start:
-            entry = sm.GetNextCalendar(Start=True)
+            entry = state_machine.GetNextCalendar(Start=True)
             start = False
         else:
-            entry = sm.GetNextCalendar(Location=entry['Location'])
+            entry = state_machine.GetNextCalendar(Location=entry['Location'])
         remain = remain - 1
 
         print()
@@ -83,7 +85,7 @@ def GetAllCalendar():
 
 
 def Battery():
-    status = sm.GetBatteryCharge()
+    status = state_machine.GetBatteryCharge()
 
     for x in status:
         if status[x] != -1:
@@ -91,7 +93,7 @@ def Battery():
 
 
 def GetAllSMS():
-    status = sm.GetSMSStatus()
+    status = state_machine.GetSMSStatus()
 
     remain = status['SIMUsed'] + status['PhoneUsed'] + status['TemplatesUsed']
 
@@ -99,10 +101,12 @@ def GetAllSMS():
 
     while remain > 0:
         if start:
-            sms = sm.GetNextSMS(Start=True, Folder=0)
+            sms = state_machine.GetNextSMS(Start=True, Folder=0)
             start = False
         else:
-            sms = sm.GetNextSMS(Location=sms[0]['Location'], Folder=0)
+            sms = state_machine.GetNextSMS(
+                Location=sms[0]['Location'], Folder=0
+            )
         remain = remain - len(sms)
 
     return sms
@@ -158,7 +162,7 @@ def LinkAllSMS(sms, folders):
 
 
 def GetAllTodo():
-    status = sm.GetToDoStatus()
+    status = state_machine.GetToDoStatus()
 
     remain = status['Used']
 
@@ -166,10 +170,10 @@ def GetAllTodo():
 
     while remain > 0:
         if start:
-            entry = sm.GetNextToDo(Start=True)
+            entry = state_machine.GetNextToDo(Start=True)
             start = False
         else:
-            entry = sm.GetNextToDo(Location=entry['Location'])
+            entry = state_machine.GetNextToDo(Location=entry['Location'])
         remain = remain - 1
 
         print
@@ -180,7 +184,7 @@ def GetAllTodo():
 
 
 def GetSMSFolders():
-    folders = sm.GetSMSFolders()
+    folders = state_machine.GetSMSFolders()
     for i, folder in enumerate(folders):
         print 'Folder %d: %s (%s)' % (
             i,
@@ -191,9 +195,9 @@ def GetSMSFolders():
 
 
 def DateTime():
-    dt = sm.GetDateTime()
+    dt = state_machine.GetDateTime()
     print dt
-    sm.SetDateTime(dt)
+    state_machine.SetDateTime(dt)
     return dt
 
 

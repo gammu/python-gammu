@@ -26,13 +26,13 @@ replies = [
 ]
 
 
-def Callback(sm, type, data):
+def Callback(state_machine, type, data):
     if verbose:
         print 'Received incoming event type %s, data:' % type
     if type != 'SMS':
         print 'Unsupported event!'
     if 'Number' not in data:
-        data = sm.GetSMS(data['Folder'], data['Location'])[0]
+        data = state_machine.GetSMS(data['Folder'], data['Location'])[0]
     if verbose:
         print data
 
@@ -51,19 +51,19 @@ def Callback(sm, type, data):
                 }
                 if verbose:
                     print message
-                sm.SendSMS(message)
+                state_machine.SendSMS(message)
             else:
                 if verbose:
                     print 'No reply!'
             break
 
 
-sm = gammu.StateMachine()
-sm.ReadConfig()
-sm.Init()
-sm.SetIncomingCallback(Callback)
+state_machine = gammu.StateMachine()
+state_machine.ReadConfig()
+state_machine.Init()
+state_machine.SetIncomingCallback(Callback)
 try:
-    sm.SetIncomingSMS()
+    state_machine.SetIncomingSMS()
 except gammu.ERR_NOTSUPPORTED:
     print 'Your phone does not support incoming SMS notifications!'
 
@@ -71,5 +71,5 @@ except gammu.ERR_NOTSUPPORTED:
 print 'Press Ctrl+C to interrupt'
 while 1:
     time.sleep(1)
-    status = sm.GetBatteryCharge()
+    status = state_machine.GetBatteryCharge()
     print 'Battery is at %d%%' % status['BatteryPercent']

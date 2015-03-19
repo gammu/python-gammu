@@ -15,8 +15,8 @@ def Callback(state_machine, type, data):
     @param data: event data
     @type data: hash
     '''
-    print 'Received incoming event type %s, data:' % type
-    print data
+    print('Received incoming event type %s, data:' % type)
+    print(data)
 
 
 # Create state machine
@@ -32,32 +32,32 @@ state_machine.SetIncomingCallback(Callback)
 try:
     state_machine.SetIncomingCall()
 except gammu.ERR_NOTSUPPORTED:
-    print 'Incoming calls notification is not supported.'
+    print('Incoming calls notification is not supported.')
 
 # Enable notifications from cell broadcast
 try:
     state_machine.SetIncomingCB()
 except gammu.ERR_NOTSUPPORTED:
-    print 'Incoming CB notification is not supported.'
+    print('Incoming CB notification is not supported.')
 except gammu.ERR_SOURCENOTAVAILABLE:
-    print 'Cell broadcasts support not enabled in Gammu.'
+    print('Cell broadcasts support not enabled in Gammu.')
 
 # Enable notifications from incoming SMS
 try:
     state_machine.SetIncomingSMS()
 except gammu.ERR_NOTSUPPORTED:
-    print 'Incoming SMS notification is not supported.'
+    print('Incoming SMS notification is not supported.')
 
 # Enable notifications for incoming USSD
 try:
     state_machine.SetIncomingUSSD()
 except gammu.ERR_NOTSUPPORTED:
-    print 'Incoming USSD notification is not supported.'
+    print('Incoming USSD notification is not supported.')
 
 # Just a busy waiting for event
 # We need to keep communication with phone to get notifications
-print 'Press Ctrl+C to interrupt'
+print('Press Ctrl+C to interrupt')
 while 1:
     q = state_machine.GetSignalQuality()
-    print 'Signal is at %d%%' % q['SignalPercent']
+    print('Signal is at %d%%' % q['SignalPercent'])
     time.sleep(1)

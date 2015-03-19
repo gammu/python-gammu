@@ -31,12 +31,12 @@ def callback(state_machine, type, data):
     Callback on USSD data.
     '''
     if type != 'USSD':
-        print 'Unexpected event type: %s' % type
+        print('Unexpected event type: %s' % type)
         sys.exit(1)
 
-    print 'Network reply:'
-    print 'Status: %s' % data['Status']
-    print data['Text']
+    print('Network reply:')
+    print('Status: %s' % data['Status'])
+    print(data['Text'])
 
     if data['Status'] == 'ActionNeeded':
         do_service(state_machine)
@@ -57,7 +57,7 @@ def init():
     try:
         state_machine.SetIncomingUSSD()
     except gammu.ERR_NOTSUPPORTED:
-        print 'Incoming USSD notification is not supported.'
+        print('Incoming USSD notification is not supported.')
         sys.exit(1)
     return state_machine
 
@@ -70,10 +70,10 @@ def do_service(state_machine):
         code = sys.argv[2]
         del sys.argv[2]
     else:
-        print 'Enter code (empty string to end):',
-        code = raw_input()
+        print('Enter code (empty string to end):', end=' ')
+        code = input()
     if code != '':
-        print 'Talking to network...'
+        print('Talking to network...')
         state_machine.DialService(code)
 
 

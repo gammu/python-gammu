@@ -22,4 +22,4 @@ backup = gammu.ReadBackup(filename)
 for item in backup['PhonePhonebook']:
     item['MemoryType'] = memory
     loc = state_machine.AddMemory(item)
-    print('Added item to location %d' % loc)
+    print(('Added item to location %d' % loc))

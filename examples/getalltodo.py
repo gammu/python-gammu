@@ -20,8 +20,8 @@ while remain > 0:
         entry = state_machine.GetNextToDo(Location=entry['Location'])
     remain = remain - 1
 
-    print
-    print '%-15s: %d' % ('Location', entry['Location'])
-    print '%-15s: %s' % ('Priority', entry['Priority'])
+    print()
+    print('%-15s: %d' % ('Location', entry['Location']))
+    print('%-15s: %s' % ('Priority', entry['Priority']))
     for v in entry['Entries']:
-        print '%-15s: %s' % (v['Type'], str(v['Value']))
+        print('%-15s: %s' % (v['Type'], str(v['Value'])))

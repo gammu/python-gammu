@@ -105,13 +105,13 @@ while file:
         except AttributeError:
             time = ";"
 
-        print(
+        print((
             file["ID_FullName"] + ";" +
             file["Name"] + ";" +
             file["Type"] + ";" +
             time + str(file["Used"]) + ";" +
             FileToAttributeString(file, 0)
-        )
+        ))
     elif mode == "level":
         attrib = FileToAttributeString(file, 1)
         level = file["Level"]
@@ -125,5 +125,5 @@ while file:
         title = '"' + file["Name"] + '"'
         if file["Folder"]:
             title = "Folder " + title
-        print attrib + spacer + title
+        print(attrib + spacer + title)
     file = NextFile()

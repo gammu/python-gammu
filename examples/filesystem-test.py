@@ -47,12 +47,12 @@ parser.add_option("-t", "--test-file",
 (options, args) = parser.parse_args()
 
 if options.folder is None:
-    print "You have to select folder where testing will be done!"
-    print "And even better, you should read the script before you run it."
+    print("You have to select folder where testing will be done!")
+    print("And even better, you should read the script before you run it.")
     sys.exit(1)
 
 if not os.path.exists(options.testfile):
-    print "You have to select file which will be used for testing!"
+    print("You have to select file which will be used for testing!")
     sys.exit(1)
 
 state_machine = gammu.StateMachine()
@@ -63,23 +63,23 @@ else:
 state_machine.Init()
 
 # Check GetFileSystemStatus
-print "Expection: Info about filesystem usage"
+print("Expection: Info about filesystem usage")
 try:
     fs_info = state_machine.GetFileSystemStatus()
     fs_info["Total"] = fs_info["Free"] + fs_info["Used"]
-    print "Used: %(Used)d, Free: %(Free)d, Total: %(Total)d" % fs_info
+    print("Used: %(Used)d, Free: %(Free)d, Total: %(Total)d" % fs_info)
 except gammu.ERR_NOTSUPPORTED:
-    print "You will have to live without this knowledge"
+    print("You will have to live without this knowledge")
 
 # Check DeleteFile
-print "\n\nExpection: Deleting cgi.jpg from memorycard"
+print("\n\nExpection: Deleting cgi.jpg from memorycard")
 try:
     state_machine.DeleteFile(unicode(options.folder + "/cgi.jpg"))
 except gammu.ERR_FILENOTEXIST:
-    print "Oh well - we copy it now ;-) (You SHOULD read this)"
+    print("Oh well - we copy it now ;-) (You SHOULD read this)")
 
 # Check AddFilePart
-print "\n\nExpection: Put cgi.jpg onto Memorycard on phone"
+print("\n\nExpection: Put cgi.jpg onto Memorycard on phone")
 file_handle = open(options.testfile, "r")
 file_stat = os.stat(options.testfile)
 ttime = datetime.datetime.fromtimestamp(file_stat[8])
@@ -105,7 +105,7 @@ while not file_f["Finished"]:
 
 
 # Check GetFilePart
-print "\n\nExpection: Get cgi.jpg from memorycard and write it as test.jpg"
+print("\n\nExpection: Get cgi.jpg from memorycard and write it as test.jpg")
 f = file('./test.jpg', 'w')
 file_f = {
     "ID_FullName": options.folder + "/cgi.jpg",
@@ -117,32 +117,32 @@ f.write(file_f["Buffer"])
 f.flush()
 
 # Check correct transfer
-print "\n\nExpection: test.jpg and cgi.jpg to be the same"
+print("\n\nExpection: test.jpg and cgi.jpg to be the same")
 f1 = open(options.testfile, "r")
 f2 = open("./test.jpg", "r")
 if(f1.read() == f2.read()):
-    print "Same files"
+    print("Same files")
 else:
-    print "Files differ!"
+    print("Files differ!")
 
 os.remove("./test.jpg")
 
 # Check GetNextRootFolder
-print "\n\nExpection: Root Folder List"
+print("\n\nExpection: Root Folder List")
 try:
     file = state_machine.GetNextRootFolder(u"")
     while 1:
-        print file["ID_FullName"] + " - " + file["Name"]
+        print(file["ID_FullName"] + " - " + file["Name"])
         try:
             file = state_machine.GetNextRootFolder(file["ID_FullName"])
         except gammu.ERR_EMPTY:
             break
 except gammu.ERR_NOTSUPPORTED:
-    print "Not supported..."
+    print("Not supported...")
 
 
 # Check GetNextFileFolder
-print "\n\nExpection: Info for a file of the phone (cgi.jpg)"
+print("\n\nExpection: Info for a file of the phone (cgi.jpg)")
 file_f = state_machine.GetNextFileFolder(1)
 while 1:
     if(file_f["Name"] != "cgi.jpg"):
@@ -157,7 +157,7 @@ while 1:
             attribute = attribute + "H"
         if file_f["System"]:
             attribute = attribute + "S"
-        print(
+        print((
             "ID:         " + file_f["ID_FullName"] + "\n" +
             "Name:       " + file_f["Name"] + "\n" +
             "Folder:     " + str(file_f["Folder"]) + "\n" +
@@ -166,7 +166,7 @@ while 1:
             "Type:       " + file_f["Type"] + "\n" +
             "Level:      " + str(file_f["Level"]) + "\n" +
             "Attribute:  " + attribute
-        )
+        ))
 
         break
 
@@ -181,7 +181,7 @@ state_machine.SetFileAttributes(
 )
 
 # Check GetFolderListing
-print "\n\nExpection: Listing of cgi.jpg's properties"
+print("\n\nExpection: Listing of cgi.jpg's properties")
 file_f = state_machine.GetFolderListing(unicode(options.folder), 1)
 while 1:
     if(file_f["Name"] != "cgi.jpg"):
@@ -196,7 +196,7 @@ while 1:
             attribute = attribute + "H"
         if file_f["System"]:
             attribute = attribute + "S"
-        print(
+        print((
             "ID:         " + file_f["ID_FullName"] + "\n" +
             "Name:       " + file_f["Name"] + "\n" +
             "Folder:     " + str(file_f["Folder"]) + "\n" +
@@ -205,24 +205,24 @@ while 1:
             "Type:       " + file_f["Type"] + "\n" +
             "Level:      " + str(file_f["Level"]) + "\n" +
             "Attribute:  " + attribute
-        )
+        ))
 
         break
 
 # Check DeleteFile
-print "\n\nExpection: Deletion of cgi.jpg from memorycard"
+print("\n\nExpection: Deletion of cgi.jpg from memorycard")
 try:
     state_machine.DeleteFile(unicode(options.folder + "cgi.jpg"))
-    print "Deleted"
+    print("Deleted")
 except gammu.ERR_FILENOTEXIST:
-    print "Something is wrong ..."
+    print("Something is wrong ...")
 
 # Check AddFolder
-print "\n\nExpection: Creation of a folder on the memorycard \"42alpha\""
+print("\n\nExpection: Creation of a folder on the memorycard \"42alpha\"")
 file_f = state_machine.AddFolder(unicode(options.folder), u"42alpha")
 
 # Check GetFolderListing again *wired*
-print "\n\nExpection: Print properties of newly created folder"
+print("\n\nExpection: Print properties of newly created folder")
 file_f = state_machine.GetFolderListing(unicode(options.folder), 1)
 while 1:
     if(file_f["Name"] != "42alpha"):
@@ -237,7 +237,7 @@ while 1:
             attribute = attribute + "H"
         if file_f["System"]:
             attribute = attribute + "S"
-        print(
+        print((
             "ID:         " + file_f["ID_FullName"] + "\n" +
             "Name:       " + file_f["Name"] + "\n" +
             "Folder:     " + str(file_f["Folder"]) + "\n" +
@@ -246,10 +246,10 @@ while 1:
             "Type:       " + file_f["Type"] + "\n" +
             "Level:      " + str(file_f["Level"]) + "\n" +
             "Attribute:  " + attribute
-        )
+        ))
 
         break
 
 # Check DeleteFolder
-print "\n\nExpection: Deletion of previously created folder \"42alpha\""
+print("\n\nExpection: Deletion of previously created folder \"42alpha\"")
 state_machine.DeleteFolder(unicode(options.folder + "/42alpha"))

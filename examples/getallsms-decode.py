@@ -35,29 +35,29 @@ for x in data:
     v = gammu.DecodeSMS(x)
 
     m = x[0]
-    print
-    print '%-15s: %s' % ('Number', m['Number'])
-    print '%-15s: %s' % ('Date', str(m['DateTime']))
-    print '%-15s: %s' % ('State', m['State'])
-    print '%-15s: %s' % ('Folder', m['Folder'])
-    print '%-15s: %s' % ('Validity', m['SMSC']['Validity'])
+    print()
+    print('%-15s: %s' % ('Number', m['Number']))
+    print('%-15s: %s' % ('Date', str(m['DateTime'])))
+    print('%-15s: %s' % ('State', m['State']))
+    print('%-15s: %s' % ('Folder', m['Folder']))
+    print('%-15s: %s' % ('Validity', m['SMSC']['Validity']))
     loc = []
     for m in x:
         loc.append(str(m['Location']))
-    print '%-15s: %s' % ('Location(s)', ', '.join(loc))
+    print('%-15s: %s' % ('Location(s)', ', '.join(loc)))
     if v is None:
-        print '\n%s' % m['Text']
+        print('\n%s' % m['Text'])
     else:
         for e in v['Entries']:
-            print
-            print '%-15s: %s' % ('Type', e['ID'])
+            print()
+            print('%-15s: %s' % ('Type', e['ID']))
             if e['Bitmap'] != None:
                 for bmp in e['Bitmap']:
-                    print 'Bitmap:'
+                    print('Bitmap:')
                     for row in bmp['XPM'][3:]:
-                        print row
-                print
+                        print(row)
+                print()
             if e['Buffer'] != None:
-                print 'Text:'
-                print e['Buffer']
-                print
+                print('Text:')
+                print(e['Buffer'])
+                print()

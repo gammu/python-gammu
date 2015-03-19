@@ -37,11 +37,11 @@ def callback(name, result, error, percents):
     this is called from different thread so it does not have to be save
     to work with GUI here.
     '''
-    print '-> %s completed %d%% with error %s , return value:' % (
+    print('-> %s completed %d%% with error %s , return value:' % (
             name,
             percents,
-            error)
-    print result
+            error))
+    print(result)
 
 
 def read_config():
@@ -87,14 +87,14 @@ def main():
         ('GetMemory', ('SM', 4)),
         ('GetMemory', ('SM', 5))
         ])
-    print 'All commands submitted'
+    print('All commands submitted')
     worker.initiate()
-    print 'Worker started'
+    print('Worker started')
     # We can also pass commands with named parameters
     worker.enqueue('GetSMSC', {'Location': 1})
-    print 'Submitted additional command'
+    print('Submitted additional command')
     worker.terminate()
-    print 'Worker done'
+    print('Worker done')
 
 if __name__ == '__main__':
     main()

@@ -6,7 +6,7 @@ import sys
 
 # Check parameters count
 if len(sys.argv) < 3 or sys.argv[1] in ['--help', '-h', '-?']:
-    print 'Usage: mass-sms <TEXT> [number]...'
+    print('Usage: mass-sms <TEXT> [number]...')
     sys.exit(1)
 
 # Configure Gammu
@@ -22,5 +22,5 @@ for number in sys.argv[2:]:
     message['Number'] = number
     try:
         state_machine.SendSMS(message)
-    except Exception, exc:
-        print 'Sending to %s failed: %s' % (number, exc)
+    except Exception as exc:
+        print('Sending to %s failed: %s' % (number, exc))

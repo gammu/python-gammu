@@ -52,14 +52,14 @@ def GetAllMemory(type):
         remain = remain - 1
 
         print()
-        print('%-15s: %d' % ('Location', entry['Location']))
+        print(('%-15s: %d' % ('Location', entry['Location'])))
         for v in entry['Entries']:
             if v['Type'] in ('Photo'):
-                print('%-15s: %s...' % (v['Type'], repr(v['Value'])[:30]))
+                print(('%-15s: %s...' % (v['Type'], repr(v['Value'])[:30])))
             else:
-                print(
+                print((
                     '%-15s: %s' % (v['Type'], str(v['Value']).encode('utf-8'))
-                )
+                ))
 
 
 def GetAllCalendar():
@@ -78,10 +78,10 @@ def GetAllCalendar():
         remain = remain - 1
 
         print()
-        print('%-20s: %d' % ('Location', entry['Location']))
-        print('%-20s: %s' % ('Type', entry['Type']))
+        print(('%-20s: %d' % ('Location', entry['Location'])))
+        print(('%-20s: %s' % ('Type', entry['Type'])))
         for v in entry['Entries']:
-            print('%-20s: %s' % (v['Type'], str(v['Value']).encode('utf-8')))
+            print(('%-20s: %s' % (v['Type'], str(v['Value']).encode('utf-8'))))
 
 
 def Battery():
@@ -89,7 +89,7 @@ def Battery():
 
     for x in status:
         if status[x] != -1:
-            print("%20s: %s" % (x, status[x]))
+            print(("%20s: %s" % (x, status[x])))
 
 
 def GetAllSMS():
@@ -114,11 +114,11 @@ def GetAllSMS():
 
 def PrintAllSMS(sms, folders):
     for m in sms:
-        print
-        print '%-15s: %s' % ('Number', m['Number'].encode('utf-8'))
-        print '%-15s: %s' % ('Date', str(m['DateTime']))
-        print '%-15s: %s' % ('State', m['State'].encode('utf-8'))
-        print '\n%s' % m['Text'].encode('utf-8')
+        print()
+        print('%-15s: %s' % ('Number', m['Number'].encode('utf-8')))
+        print('%-15s: %s' % ('Date', str(m['DateTime'])))
+        print('%-15s: %s' % ('State', m['State'].encode('utf-8')))
+        print('\n%s' % m['Text'].encode('utf-8'))
 
 
 def LinkAllSMS(sms, folders):
@@ -128,37 +128,37 @@ def LinkAllSMS(sms, folders):
         v = gammu.DecodeSMS(x)
 
         m = x[0]
-        print
-        print '%-15s: %s' % ('Number', m['Number'].encode('utf-8'))
-        print '%-15s: %s' % ('Date', str(m['DateTime']))
-        print '%-15s: %s' % ('State', m['State'])
-        print '%-15s: %s %s (%d)' % (
+        print()
+        print('%-15s: %s' % ('Number', m['Number'].encode('utf-8')))
+        print('%-15s: %s' % ('Date', str(m['DateTime'])))
+        print('%-15s: %s' % ('State', m['State']))
+        print('%-15s: %s %s (%d)' % (
             'Folder',
             folders[m['Folder']]['Name'].encode('utf-8'),
             folders[m['Folder']]['Memory'].encode('utf-8'),
             m['Folder']
-        )
-        print '%-15s: %s' % ('Validity', m['SMSC']['Validity'])
+        ))
+        print('%-15s: %s' % ('Validity', m['SMSC']['Validity']))
         loc = []
         for m in x:
             loc.append(str(m['Location']))
-        print '%-15s: %s' % ('Location(s)', ', '.join(loc))
+        print('%-15s: %s' % ('Location(s)', ', '.join(loc)))
         if v is None:
-            print '\n%s' % m['Text'].encode('utf-8')
+            print('\n%s' % m['Text'].encode('utf-8'))
         else:
             for e in v['Entries']:
-                print
-                print '%-15s: %s' % ('Type', e['ID'])
+                print()
+                print('%-15s: %s' % ('Type', e['ID']))
                 if e['Bitmap'] != None:
                     for bmp in e['Bitmap']:
-                        print 'Bitmap:'
+                        print('Bitmap:')
                         for row in bmp['XPM'][3:]:
-                            print row
-                    print
+                            print(row)
+                    print()
                 if e['Buffer'] != None:
-                    print 'Text:'
-                    print e['Buffer'].encode('utf-8')
-                    print
+                    print('Text:')
+                    print(e['Buffer'].encode('utf-8'))
+                    print()
 
 
 def GetAllTodo():
@@ -176,27 +176,27 @@ def GetAllTodo():
             entry = state_machine.GetNextToDo(Location=entry['Location'])
         remain = remain - 1
 
-        print
-        print '%-15s: %d' % ('Location', entry['Location'])
-        print '%-15s: %s' % ('Priority', entry['Priority'])
+        print()
+        print('%-15s: %d' % ('Location', entry['Location']))
+        print('%-15s: %s' % ('Priority', entry['Priority']))
         for v in entry['Entries']:
-            print '%-15s: %s' % (v['Type'], str(v['Value']).encode('utf-8'))
+            print('%-15s: %s' % (v['Type'], str(v['Value']).encode('utf-8')))
 
 
 def GetSMSFolders():
     folders = state_machine.GetSMSFolders()
     for i, folder in enumerate(folders):
-        print 'Folder %d: %s (%s)' % (
+        print('Folder %d: %s (%s)' % (
             i,
             folder['Name'].encode('utf-8'),
             folder['Memory'].encode('utf-8')
-        )
+        ))
     return folders
 
 
 def DateTime():
     dt = state_machine.GetDateTime()
-    print dt
+    print(dt)
     state_machine.SetDateTime(dt)
     return dt
 

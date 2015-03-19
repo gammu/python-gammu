@@ -14,4 +14,4 @@ state_machine.Init()
 diverts = state_machine.GetCallDivert()
 
 for x in diverts:
-    print x
+    print(x)

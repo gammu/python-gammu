@@ -5,4 +5,4 @@ import gammu.smsd
 
 smsd = gammu.smsd.SMSD('/etc/gammu-smsdrc')
 
-print smsd.GetStatus()
+print(smsd.GetStatus())

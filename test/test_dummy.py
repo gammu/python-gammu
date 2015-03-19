@@ -294,7 +294,8 @@ class BasicDummyTest(DummyTest):
             state_machine.DeleteFolder,
             'testfolder'
         )
-        state_machine.DeleteFolder('testdir')
+        state_machine.AddFolder('', 'testfolder')
+        state_machine.DeleteFolder('testfolder')
 
     def test_addfile(self):
         state_machine = self.get_statemachine()
@@ -341,5 +342,5 @@ class BasicDummyTest(DummyTest):
                 file_f = state_machine.GetNextFileFolder(0)
             except gammu.ERR_EMPTY:
                 break
-        self.assertEquals(folders, 8)
+        self.assertEquals(folders, 3)
         self.assertEquals(files, 6)

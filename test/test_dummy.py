@@ -119,3 +119,90 @@ class BasicDummyTest(DummyTest):
                 'PhoneCurrent': 500
             }
         )
+
+    def test_memory(self):
+        state_machine = self.get_statemachine()
+        status = state_machine.GetMemoryStatus(Type='ME')
+
+        remain = status['Used']
+
+        self.assertEquals(status['Used'], 3)
+
+        start = True
+
+        while remain > 0:
+            if start:
+                entry = state_machine.GetNextMemory(Start=True, Type='ME')
+                start = False
+            else:
+                entry = state_machine.GetNextMemory(Location=entry['Location'], Type='ME')
+            remain = remain - 1
+
+
+    def test_calendar(self):
+        state_machine = self.get_statemachine()
+        status = state_machine.GetCalendarStatus()
+
+        remain = status['Used']
+
+        self.assertEquals(status['Used'], 2)
+
+        start = True
+
+        while remain > 0:
+            if start:
+                entry = state_machine.GetNextCalendar(Start=True)
+                start = False
+            else:
+                entry = state_machine.GetNextCalendar(Location=entry['Location'])
+            remain = remain - 1
+
+    def test_sms(self):
+        state_machine = self.get_statemachine()
+        status = state_machine.GetSMSStatus()
+
+        remain = status['SIMUsed'] + status['PhoneUsed'] + status['TemplatesUsed']
+
+        self.assertEquals(remain, 6)
+
+        start = True
+
+        sms = []
+
+        while remain > 0:
+            if start:
+                sms.append(state_machine.GetNextSMS(Start=True, Folder=0))
+                start = False
+            else:
+                sms.append(state_machine.GetNextSMS(Location=sms[-1][0]['Location'], Folder=0))
+            remain = remain - len(sms)
+
+        data = gammu.LinkSMS(sms)
+
+        for item in data:
+            message = gammu.DecodeSMS(item)
+            if message is None:
+                self.assertEquals(item[0]['UDH']['Type'], 'NoUDH')
+
+    def test_todo(self):
+        state_machine = self.get_statemachine()
+        status = state_machine.GetToDoStatus()
+
+        remain = status['Used']
+
+        self.assertEquals(status['Used'], 2)
+
+        start = True
+
+        while remain > 0:
+            if start:
+                entry = state_machine.GetNextToDo(Start = True)
+                start = False
+            else:
+                entry = state_machine.GetNextToDo(Location = entry['Location'])
+            remain = remain - 1
+
+    def test_sms_folders(self):
+        state_machine = self.get_statemachine()
+        folders = state_machine.GetSMSFolders()
+        self.assertEquals(len(folders), 5)

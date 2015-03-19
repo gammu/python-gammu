@@ -143,7 +143,6 @@ class BasicDummyTest(DummyTest):
                 )
             remain = remain - 1
 
-
     def test_calendar(self):
         state_machine = self.get_statemachine()
         status = state_machine.GetCalendarStatus()
@@ -211,10 +210,10 @@ class BasicDummyTest(DummyTest):
 
         while remain > 0:
             if start:
-                entry = state_machine.GetNextToDo(Start = True)
+                entry = state_machine.GetNextToDo(Start=True)
                 start = False
             else:
-                entry = state_machine.GetNextToDo(Location = entry['Location'])
+                entry = state_machine.GetNextToDo(Location=entry['Location'])
             remain = remain - 1
 
     def test_sms_folders(self):
@@ -333,7 +332,7 @@ class BasicDummyTest(DummyTest):
             "Finished": 0
         }
         state_machine.AddFolder('', 'testfolder')
-        while (not file_f["Finished"]):
+        while not file_f["Finished"]:
             file_f = state_machine.AddFilePart(file_f)
 
     def test_fileattributes(self):

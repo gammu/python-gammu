@@ -18,7 +18,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 import gammu.worker
-from test_dummy import DummyTest
+from .test_dummy import DummyTest
 
 
 WORKER_EXPECT = [

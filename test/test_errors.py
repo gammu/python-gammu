@@ -21,9 +21,13 @@ import unittest
 import gammu.exception
 
 
+def error_function():
+    raise gammu.exception.ERR_WRONGCRC()
+
+
 class ErrorTest(unittest.TestCase):
     def test_catching(self):
-        try:
-            raise gammu.exception.ERR_WRONGCRC()
-        except gammu.exception.GSMError:
-            pass
+        self.assertRaises(
+            gammu.exception.GSMError,
+            error_function,
+        )

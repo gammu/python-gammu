@@ -17,7 +17,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
-from test_dummy import DummyTest
+from .test_dummy import DummyTest
 import gammu.smsd
 import os
 import os.path

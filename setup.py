@@ -33,23 +33,9 @@ with open(os.path.join(os.path.dirname(__file__), 'README.rst')) as readme:
     README = readme.read()
 
 
-_pkgcfg = -1
-
-
-def get_pkgcfg():
-    global _pkgcfg
-    if _pkgcfg == -1:
-        _pkgcfg = distutils.spawn.find_executable("pkg-config")
-    if _pkgcfg is None:
-        raise Exception(
-            "pkg-config binary is required to compile python-gammu"
-        )
-    return _pkgcfg
-
-
 def check_minimum_gammu_version():
     distutils.spawn.spawn([
-        get_pkgcfg(),
+        'pkg-config',
         "--print-errors",
         "--atleast-version={0}".format(GAMMU_REQUIRED),
         "gammu"
@@ -58,7 +44,7 @@ def check_minimum_gammu_version():
 
 def get_pkgconfig_data(args, mod, required=True):
     """Run pkg-config to and return content associated with it"""
-    f = os.popen("%s %s %s" % (get_pkgcfg(), " ".join(args), mod))
+    f = os.popen("pkg-config %s %s" % (" ".join(args), mod))
 
     line = f.readline()
     if line is not None:

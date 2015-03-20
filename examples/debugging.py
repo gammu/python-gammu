@@ -20,15 +20,15 @@ def main():
 
     state_machine.Init()
 
-    Manufacturer = state_machine.GetManufacturer()
-    Model = state_machine.GetModel()
-    IMEI = state_machine.GetIMEI()
-    Firmware = state_machine.GetFirmware()
+    manufacturer = state_machine.GetManufacturer()
+    model = state_machine.GetModel()
+    imei = state_machine.GetIMEI()
+    firmware = state_machine.GetFirmware()
     print('Phone infomation:')
-    print(('%-15s: %s' % ('Manufacturer', Manufacturer)))
-    print(('%-15s: %s (%s)' % ('Model', Model[0], Model[1])))
-    print(('%-15s: %s' % ('IMEI', IMEI)))
-    print(('%-15s: %s' % ('Firmware', Firmware[0])))
+    print(('%-15s: %s' % ('Manufacturer', manufacturer)))
+    print(('%-15s: %s (%s)' % ('Model', model[0], model[1])))
+    print(('%-15s: %s' % ('IMEI', imei)))
+    print(('%-15s: %s' % ('Firmware', firmware[0])))
 
 
 if __name__ == '__main__':

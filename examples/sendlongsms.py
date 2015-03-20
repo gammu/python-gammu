@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # Sample script to show how to send long (multipart) SMS
 
+from __future__ import print_function
 import gammu
 import sys
 

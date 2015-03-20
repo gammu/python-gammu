@@ -23,6 +23,7 @@ python-gammu - Test script to test several Gammu operations
 (usually using dummy driver, but it depends on config)
 '''
 
+from __future__ import print_function
 import gammu
 import sys
 if len(sys.argv) != 2:

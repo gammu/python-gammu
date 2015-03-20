@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # sample script to show how to send SMS through SMSD
 
+from __future__ import print_function
 import gammu.smsd
 import sys
 

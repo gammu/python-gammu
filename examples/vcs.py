@@ -3,6 +3,7 @@
 # Example for reading data from phone and convering it to and from
 # vCard, vTodo, vCalendar
 
+from __future__ import print_function
 import gammu
 import sys
 

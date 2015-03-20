@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # Example for reading calendar from phone
 
+from __future__ import print_function
 import gammu
 
 # Create object for talking with phone

@@ -11,6 +11,7 @@
 #
 # Matthias Blaesing <matthias.blaesing@rwth-aachen.de>
 
+from __future__ import print_function
 import gammu
 import locale
 from optparse import OptionParser

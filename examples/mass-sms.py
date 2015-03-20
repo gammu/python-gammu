@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # sample script to show how to same SMS to multiple recipients
 
+from __future__ import print_function
 import gammu
 import sys
 

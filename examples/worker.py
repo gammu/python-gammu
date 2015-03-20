@@ -26,6 +26,7 @@ only about handling received data and not about phone communication
 details.
 '''
 
+from __future__ import print_function
 import sys
 import gammu
 import gammu.worker

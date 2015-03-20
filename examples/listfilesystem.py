@@ -67,54 +67,54 @@ locale.setlocale(locale.LC_ALL, '')
 # 'Hidden'
 # 'System'
 def NextFile(start=0):
-    file = None
+    file_obj = None
     try:
-        file = state_machine.GetNextFileFolder(start)
+        file_obj = state_machine.GetNextFileFolder(start)
     except gammu.ERR_EMPTY:
         pass
-    return file
+    return file_obj
 
 
 # Format File Attributes as String as a shorted Version
-def FileToAttributeString(file, filled=1):
+def FileToAttributeString(file_obj, filled=1):
     protected = readonly = hidden = system = ""
     if filled:
         protected = readonly = hidden = system = u" "
-    if file["Protected"]:
+    if file_obj["Protected"]:
         protected = u"P"
-    if file["ReadOnly"]:
+    if file_obj["ReadOnly"]:
         readonly = u"R"
-    if file["Hidden"]:
+    if file_obj["Hidden"]:
         hidden = u"H"
-    if file["System"]:
+    if file_obj["System"]:
         system = u"S"
     return protected + readonly + hidden + system
 
 # Make sure we reset the pointer of the current entry to the first
-file = NextFile(1)
+file_obj = NextFile(1)
 
 # Iterate over Files and print the Info
-while file:
+while file_obj:
     if mode == "flat":
         # Output:
         # <ID>;<NAME>;<TYPE>;<MODDATE>;<SIZE>;<ATTRIBUTES>
         # We have to catch the situations, where no Modification Time is
         # provided
         try:
-            time = file["Modified"].strftime("%x %X") + ";"
+            time = file_obj["Modified"].strftime("%x %X") + ";"
         except AttributeError:
             time = ";"
 
         print((
-            file["ID_FullName"] + ";" +
-            file["Name"] + ";" +
-            file["Type"] + ";" +
-            time + str(file["Used"]) + ";" +
-            FileToAttributeString(file, 0)
+            file_obj["ID_FullName"] + ";" +
+            file_obj["Name"] + ";" +
+            file_obj["Type"] + ";" +
+            time + str(file_obj["Used"]) + ";" +
+            FileToAttributeString(file_obj, 0)
         ))
     elif mode == "level":
-        attrib = FileToAttributeString(file, 1)
-        level = file["Level"]
+        attrib = FileToAttributeString(file_obj, 1)
+        level = file_obj["Level"]
         spacer = ""
 
         for i in range(1, (level-1)):
@@ -122,8 +122,8 @@ while file:
         if(level > 1):
             spacer = spacer + " |-- "
 
-        title = '"' + file["Name"] + '"'
-        if file["Folder"]:
+        title = '"' + file_obj["Name"] + '"'
+        if file_obj["Folder"]:
             title = "Folder " + title
         print(attrib + spacer + title)
-    file = NextFile()
+    file_obj = NextFile()

@@ -26,16 +26,9 @@ python-gammu - Test script to test several Gammu operations
 from __future__ import print_function
 import gammu
 import sys
-if len(sys.argv) != 2:
-    print('This requires one parameter with location of config file!')
-    sys.exit(1)
-
-state_machine = gammu.StateMachine()
-state_machine.ReadConfig(Filename=sys.argv[1])
-state_machine.Init()
 
 
-def GetAllMemory(memory_type):
+def get_all_memory(state_machine, memory_type):
     status = state_machine.GetMemoryStatus(Type=memory_type)
 
     remain = status['Used']
@@ -63,7 +56,7 @@ def GetAllMemory(memory_type):
                 ))
 
 
-def GetAllCalendar():
+def get_all_calendar(state_machine):
     status = state_machine.GetCalendarStatus()
 
     remain = status['Used']
@@ -85,7 +78,7 @@ def GetAllCalendar():
             print(('%-20s: %s' % (v['Type'], str(v['Value']).encode('utf-8'))))
 
 
-def Battery():
+def get_battery_status(state_machine):
     status = state_machine.GetBatteryCharge()
 
     for x in status:
@@ -93,7 +86,7 @@ def Battery():
             print(("%20s: %s" % (x, status[x])))
 
 
-def GetAllSMS():
+def get_all_sms(state_machine):
     status = state_machine.GetSMSStatus()
 
     remain = status['SIMUsed'] + status['PhoneUsed'] + status['TemplatesUsed']
@@ -113,7 +106,7 @@ def GetAllSMS():
     return sms
 
 
-def PrintSMSHeader(message, folders):
+def print_sms_header(message, folders):
     print()
     print('%-15s: %s' % ('Number', message['Number'].encode('utf-8')))
     print('%-15s: %s' % ('Date', str(message['DateTime'])))
@@ -127,20 +120,20 @@ def PrintSMSHeader(message, folders):
     print('%-15s: %s' % ('Validity', message['SMSC']['Validity']))
 
 
-def PrintAllSMS(sms, folders):
+def print_all_sms(sms, folders):
     for m in sms:
-        PrintSMSHeader(m, folders)
+        print_sms_header(m, folders)
         print('\n%s' % m['Text'].encode('utf-8'))
 
 
-def LinkAllSMS(sms, folders):
+def link_all_sms(sms, folders):
     data = gammu.LinkSMS([[msg] for msg in sms])
 
     for x in data:
         v = gammu.DecodeSMS(x)
 
         m = x[0]
-        PrintSMSHeader(m, folders)
+        print_sms_header(m, folders)
         loc = []
         for m in x:
             loc.append(str(m['Location']))
@@ -163,7 +156,7 @@ def LinkAllSMS(sms, folders):
                     print()
 
 
-def GetAllTodo():
+def get_all_todo(state_machine):
     status = state_machine.GetToDoStatus()
 
     remain = status['Used']
@@ -185,7 +178,7 @@ def GetAllTodo():
             print('%-15s: %s' % (v['Type'], str(v['Value']).encode('utf-8')))
 
 
-def GetSMSFolders():
+def get_sms_folders(state_machine):
     folders = state_machine.GetSMSFolders()
     for i, folder in enumerate(folders):
         print('Folder %d: %s (%s)' % (
@@ -196,24 +189,34 @@ def GetSMSFolders():
     return folders
 
 
-def DateTime():
+def get_set_date_time(state_machine):
     dt = state_machine.GetDateTime()
     print(dt)
     state_machine.SetDateTime(dt)
     return dt
 
 
+def main():
+    if len(sys.argv) != 2:
+        print('This requires one parameter with location of config file!')
+        sys.exit(1)
+
+    state_machine = gammu.StateMachine()
+    state_machine.ReadConfig(Filename=sys.argv[1])
+    state_machine.Init()
+    smsfolders = get_sms_folders(state_machine)
+    get_all_memory(state_machine, 'ME')
+    get_all_memory(state_machine, 'SM')
+    get_all_memory(state_machine, 'MC')
+    get_all_memory(state_machine, 'RC')
+    get_all_memory(state_machine, 'DC')
+    get_battery_status(state_machine)
+    get_all_calendar(state_machine)
+    get_all_todo(state_machine)
+    smslist = get_all_sms(state_machine)
+    print_all_sms(smslist, smsfolders)
+    link_all_sms(smslist, smsfolders)
+    get_set_date_time(state_machine)
+
 if __name__ == '__main__':
-    smsfolders = GetSMSFolders()
-    GetAllMemory('ME')
-    GetAllMemory('SM')
-    GetAllMemory('MC')
-    GetAllMemory('RC')
-    GetAllMemory('DC')
-    Battery()
-    GetAllCalendar()
-    GetAllTodo()
-    smslist = GetAllSMS()
-    PrintAllSMS(smslist, smsfolders)
-    LinkAllSMS(smslist, smsfolders)
-    DateTime()
+    main()

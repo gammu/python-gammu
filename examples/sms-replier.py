@@ -9,6 +9,11 @@ import collections
 verbose = False
 
 
+def verbose_print(text):
+    if verbose:
+        print(text)
+
+
 def ReplyTest(message):
     if message['Number'] == '999':
         # No reply to this number
@@ -29,14 +34,12 @@ replies = [
 
 
 def Callback(state_machine, callback_type, data):
-    if verbose:
-        print('Received incoming event type %s, data:' % callback_type)
+    verbose_print('Received incoming event type %s, data:' % callback_type)
     if callback_type != 'SMS':
         print('Unsupported event!')
     if 'Number' not in data:
         data = state_machine.GetSMS(data['Folder'], data['Location'])[0]
-    if verbose:
-        print(data)
+    verbose_print(data)
 
     for reply in replies:
         if data['Text'].startswith(reply[0]):
@@ -51,12 +54,10 @@ def Callback(state_machine, callback_type, data):
                     'SMSC': {'Location': 1},
                     'Number': data['Number']
                 }
-                if verbose:
-                    print(message)
+                verbose_print(message)
                 state_machine.SendSMS(message)
             else:
-                if verbose:
-                    print('No reply!')
+                verbose_print('No reply!')
             break
 
 

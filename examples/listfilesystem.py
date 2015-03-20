@@ -116,12 +116,11 @@ def Main():
         elif mode == "level":
             attrib = FileToAttributeString(file_obj, 1)
             level = file_obj["Level"]
-            spacer = ""
 
-            for i in range(1, (level-1)):
-                spacer = spacer + " |   "
-            if(level > 1):
-                spacer = spacer + " |-- "
+            spacer = " |   " * (level - 2)
+
+            if level > 1:
+                spacer += " |-- "
 
             title = '"' + file_obj["Name"] + '"'
             if file_obj["Folder"]:

@@ -22,5 +22,5 @@ for number in sys.argv[2:]:
     message['Number'] = number
     try:
         state_machine.SendSMS(message)
-    except Exception as exc:
+    except gammu.GSMError as exc:
         print('Sending to %s failed: %s' % (number, exc))

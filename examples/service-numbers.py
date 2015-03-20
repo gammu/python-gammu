@@ -47,7 +47,6 @@ def init():
     '''
     Intializes gammu and callbacks.
     '''
-    global state_machine
     state_machine = gammu.StateMachine()
     if len(sys.argv) >= 2:
         state_machine.ReadConfig(Filename=sys.argv[1])
@@ -78,7 +77,11 @@ def do_service(state_machine):
         state_machine.DialService(code)
 
 
-if __name__ == '__main__':
+def main():
     state_machine = init()
     print('This example shows interaction with network using service codes')
     do_service(state_machine)
+
+
+if __name__ == '__main__':
+    main()

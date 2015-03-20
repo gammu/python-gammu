@@ -38,7 +38,7 @@ def Callback(state_machine, type, data):
         print(data)
 
     for reply in replies:
-        if reply[0] == data['Text'][:len(reply[0])]:
+        if data['Text'].startswith(reply[0]):
             if isinstance(reply[1], collections.Callable):
                 response = reply[1](data)
             else:

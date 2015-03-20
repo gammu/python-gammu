@@ -5,48 +5,53 @@ import gammu
 import sys
 import codecs
 
-if len(sys.argv) != 2:
-    print('This requires parameter: backup file!')
-    sys.exit(1)
 
-charsetencoder = codecs.getencoder(sys.getdefaultencoding())
+def main():
+    if len(sys.argv) != 2:
+        print('This requires parameter: backup file!')
+        sys.exit(1)
 
-filename = sys.argv[1]
+    charsetencoder = codecs.getencoder(sys.getdefaultencoding())
 
-backup = gammu.ReadSMSBackup(filename)
+    filename = sys.argv[1]
 
-# Make nested array
-messages = [[x] for x in backup]
+    backup = gammu.ReadSMSBackup(filename)
 
-data = gammu.LinkSMS(messages)
+    # Make nested array
+    messages = [[message] for message in backup]
 
-for x in data:
-    v = gammu.DecodeSMS(x)
+    data = gammu.LinkSMS(messages)
 
-    m = x[0]
-    print()
-    print('%-15s: %s' % ('Number', m['Number']))
-    print('%-15s: %s' % ('Date', str(m['DateTime'])))
-    print('%-15s: %s' % ('State', m['State']))
-    print('%-15s: %s' % ('Folder', m['Folder']))
-    print('%-15s: %s' % ('Validity', m['SMSC']['Validity']))
-    loc = []
-    for m in x:
-        loc.append(str(m['Location']))
-    print('%-15s: %s' % ('Location(s)', ', '.join(loc)))
-    if v is None:
-        print('\n%s' % charsetencoder(m['Text'], 'replace')[0])
-    else:
-        for e in v['Entries']:
-            print()
-            print('%-15s: %s' % ('Type', e['ID']))
-            if e['Bitmap'] is not None:
-                for bmp in e['Bitmap']:
-                    print('Bitmap:')
-                    for row in bmp['XPM'][3:]:
-                        print(row)
+    for message in data:
+        decoded = gammu.DecodeSMS(message)
+
+        part = message[0]
+        print()
+        print('%-15s: %s' % ('Number', part['Number']))
+        print('%-15s: %s' % ('Date', str(part['DateTime'])))
+        print('%-15s: %s' % ('State', part['State']))
+        print('%-15s: %s' % ('Folder', part['Folder']))
+        print('%-15s: %s' % ('Validity', part['SMSC']['Validity']))
+        loc = []
+        for part in message:
+            loc.append(str(part['Location']))
+        print('%-15s: %s' % ('Location(s)', ', '.join(loc)))
+        if decoded is None:
+            print('\n%s' % charsetencoder(part['Text'], 'replace')[0])
+        else:
+            for entries in decoded['Entries']:
                 print()
-            if e['Buffer'] is not None:
-                print('Text:')
-                print(charsetencoder(e['Buffer'], 'replace'))
-                print()
+                print('%-15s: %s' % ('Type', entries['ID']))
+                if entries['Bitmap'] is not None:
+                    for bmp in entries['Bitmap']:
+                        print('Bitmap:')
+                        for row in bmp['XPM'][3:]:
+                            print(row)
+                    print()
+                if entries['Buffer'] is not None:
+                    print('Text:')
+                    print(charsetencoder(entries['Buffer'], 'replace'))
+                    print()
+
+if __name__ == '__main__':
+    main()

@@ -229,11 +229,7 @@ class GammuThread(threading.Thread):
                     try:
                         if task.get_name() != 'Init':
                             self._queue.task_done()
-                    except AttributeError:
-                        # This works since python 2.5
-                        pass
-                    except ValueError:
-                        # This works since python 2.5
+                    except (AttributeError, ValueError):
                         pass
             except queue.Empty:
                 if self._terminate:

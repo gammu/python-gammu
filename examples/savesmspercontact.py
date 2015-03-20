@@ -34,94 +34,93 @@ def getFilename(mydir, mysms):
 
     nextitem = 0
     for i in myfiles:
-        mo = re.match("^Unknown-([0-9]*)", i)
-        if mo and int(mo.group(1)) > nextitem:
-            nextitem = int(mo.group(1))
+        match = re.match("^Unknown-([0-9]*)", i)
+        if match and int(match.group(1)) > nextitem:
+            nextitem = int(match.group(1))
 
     return "Unknown-" + str(nextitem + 1)
 
 
-def saveSMS(mysms, allContacts):
-    myNumber = getInternationalizedNumber(mysms[0]["Number"])
+def saveSMS(mysms, all_contacts):
+    my_number = getInternationalizedNumber(mysms[0]["Number"])
 
     try:
-        mydir = allContacts[myNumber]
+        mydir = all_contacts[my_number]
     except KeyError:
-        mydir = myNumber
+        mydir = my_number
 
     createFolderIfNotExist(mydir)
 
     myfile = getFilename(mydir, mysms)
 
-    f = open(os.path.join(mydir, myfile), "a")
-    for i in mysms:
-        f.write(i["Text"].encode("UTF-8"))
-    f.write(u"\n".encode("UTF-8"))
-    f.close()
+    with open(os.path.join(mydir, myfile), "a") as handle:
+        for i in mysms:
+            handle.write(i["Text"].encode("UTF-8"))
+        handle.write(u"\n".encode("UTF-8"))
 
 
-def getContacts(myStMa):
+def getContacts(state_machine):
 
     # Get all contacts
-    numContacts = myStMa.GetMemoryStatus(Type="SM")["Used"]
-    myContacts = dict()
+    remaining = state_machine.GetMemoryStatus(Type="SM")["Used"]
+    contacts = dict()
 
     start = True
 
     try:
-        while numContacts > 0:
+        while remaining > 0:
             if start:
-                entry = myStMa.GetNextMemory(Start=True, Type="SM")
+                entry = state_machine.GetNextMemory(Start=True, Type="SM")
                 start = False
             else:
-                entry = myStMa.GetNextMemory(
+                entry = state_machine.GetNextMemory(
                     Location=entry["Location"], Type="SM"
                 )
-                numContacts = numContacts - 1
+                remaining = remaining - 1
 
             numbers = list()
-            for v in entry["Entries"]:
-                if v["Type"] == "Text_FirstName":
-                    name = v["Value"]
+            for entry in entry["Entries"]:
+                if entry["Type"] == "Text_FirstName":
+                    name = entry["Value"]
                 else:
-                    numbers.append(getInternationalizedNumber(v["Value"]))
+                    numbers.append(getInternationalizedNumber(entry["Value"]))
 
-            for v in numbers:
-                myContacts[v] = name
+            for number in numbers:
+                contacts[number] = name
 
     except gammu.ERR_EMPTY:
         # error is raised if memory is empty (this induces wrong reported
         # memory status)
         print('Failed to read contacts!')
 
-    return myContacts
+    return contacts
 
 
-def getAndDeleteAllSMS(myStMa):
+def getAndDeleteAllSMS(state_machine):
     # Read SMS memory status ...
-    memory = myStMa.GetSMSStatus()
+    memory = state_machine.GetSMSStatus()
     # ... and calculate number of messages
-    numMessages = memory["SIMUsed"] + memory["PhoneUsed"]
+    remaining = memory["SIMUsed"] + memory["PhoneUsed"]
 
     # Get all sms
     start = True
-    entriesAll = list()
+    entries = list()
 
     try:
-        while numMessages > 0:
+        while remaining > 0:
             if start:
-                entry = myStMa.GetNextSMS(Folder=0, Start=True)
+                entry = state_machine.GetNextSMS(Folder=0, Start=True)
                 start = False
             else:
-                entry = myStMa.GetNextSMS(
+                entry = state_machine.GetNextSMS(
                     Folder=0, Location=entry[0]["Location"]
                 )
 
-            numMessages = numMessages - 1
-            entriesAll.append(entry)
+            remaining = remaining - 1
+            entries.append(entry)
 
             # delete retrieved sms
-            myStMa.DeleteSMS(Folder=0, Location=entry[0]["Location"])
+            state_machine.DeleteSMS(Folder=0, Location=entry[0]["Location"])
 
     except gammu.ERR_EMPTY:
         # error is raised if memory is empty (this induces wrong reported
@@ -129,18 +128,17 @@ def getAndDeleteAllSMS(myStMa):
         print('Failed to read messages!')
 
     # Link all SMS when there are concatenated messages
-    entriesAll = gammu.LinkSMS(entriesAll)
+    entries = gammu.LinkSMS(entries)
 
-    return entriesAll
+    return entries
 
 
-if __name__ == "__main__":
-
+def main():
     # Get all contacts
     state_machine = gammu.StateMachine()
     state_machine.ReadConfig()
     state_machine.Init()
-    myNumbers = getContacts(state_machine)
+    contacts = getContacts(state_machine)
     state_machine.Terminate()
 
     # Get all sms
@@ -148,8 +146,12 @@ if __name__ == "__main__":
     state_machine = gammu.StateMachine()
     state_machine.ReadConfig()
     state_machine.Init()
-    myMessages = getAndDeleteAllSMS(state_machine)
+    messages = getAndDeleteAllSMS(state_machine)
     state_machine.Terminate()
 
-    for message in myMessages:
-        saveSMS(message, myNumbers)
+    for message in messages:
+        saveSMS(message, contacts)
+
+
+if __name__ == "__main__":
+    main()

@@ -106,15 +106,15 @@ while not file_f["Finished"]:
 
 # Check GetFilePart
 print("\n\nExpection: Get cgi.jpg from memorycard and write it as test.jpg")
-f = file('./test.jpg', 'w')
-file_f = {
-    "ID_FullName": options.folder + "/cgi.jpg",
-    "Finished": 0
-}
-while not file_f["Finished"]:
-    file_f = state_machine.GetFilePart(file_f)
-f.write(file_f["Buffer"])
-f.flush()
+with open('./test.jpg', 'w') as handle:
+    file_f = {
+        "ID_FullName": options.folder + "/cgi.jpg",
+        "Finished": 0
+    }
+    while not file_f["Finished"]:
+        file_f = state_machine.GetFilePart(file_f)
+    handle.write(file_f["Buffer"])
+    handle.flush()
 
 # Check correct transfer
 print("\n\nExpection: test.jpg and cgi.jpg to be the same")
@@ -130,11 +130,11 @@ os.remove("./test.jpg")
 # Check GetNextRootFolder
 print("\n\nExpection: Root Folder List")
 try:
-    file = state_machine.GetNextRootFolder(u"")
+    file_obj = state_machine.GetNextRootFolder(u"")
     while 1:
-        print(file["ID_FullName"] + " - " + file["Name"])
+        print(file_obj["ID_FullName"] + " - " + file_obj["Name"])
         try:
-            file = state_machine.GetNextRootFolder(file["ID_FullName"])
+            file_obj = state_machine.GetNextRootFolder(file_obj["ID_FullName"])
         except gammu.ERR_EMPTY:
             break
 except gammu.ERR_NOTSUPPORTED:

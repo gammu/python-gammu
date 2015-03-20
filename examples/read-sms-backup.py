@@ -40,13 +40,13 @@ for x in data:
         for e in v['Entries']:
             print()
             print('%-15s: %s' % ('Type', e['ID']))
-            if e['Bitmap'] != None:
+            if e['Bitmap'] is not None:
                 for bmp in e['Bitmap']:
                     print('Bitmap:')
                     for row in bmp['XPM'][3:]:
                         print(row)
                 print()
-            if e['Buffer'] != None:
+            if e['Buffer'] is not None:
                 print('Text:')
                 print(charsetencoder(e['Buffer'], 'replace'))
                 print()

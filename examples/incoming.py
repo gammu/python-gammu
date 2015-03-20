@@ -5,7 +5,7 @@ import gammu
 import time
 
 
-def Callback(state_machine, callback_type, data):
+def callback(state_machine, callback_type, data):
     '''
     This callback receives notification about incoming event.
 
@@ -20,6 +20,15 @@ def Callback(state_machine, callback_type, data):
     print(data)
 
 
+def try_enable(call, name):
+    try:
+        call()
+    except gammu.ERR_NOTSUPPORTED:
+        print('{0} notification is not supported.'.format(name))
+    except gammu.ERR_SOURCENOTAVAILABLE:
+        print('{0} notification is not enabled in Gammu.'.format(name))
+
+
 def main():
     # Create state machine
     state_machine = gammu.StateMachine()
@@ -28,40 +37,26 @@ def main():
     # Initialize state machine and connect to phone
     state_machine.Init()
     # Set callback handler for incoming notifications
-    state_machine.SetIncomingCallback(Callback)
+    state_machine.SetIncomingCallback(callback)
 
     # Enable notifications from calls
-    try:
-        state_machine.SetIncomingCall()
-    except gammu.ERR_NOTSUPPORTED:
-        print('Incoming calls notification is not supported.')
+    try_enable(state_machine.SetIncomingCall, 'Incoming calls')
 
     # Enable notifications from cell broadcast
-    try:
-        state_machine.SetIncomingCB()
-    except gammu.ERR_NOTSUPPORTED:
-        print('Incoming CB notification is not supported.')
-    except gammu.ERR_SOURCENOTAVAILABLE:
-        print('Cell broadcasts support not enabled in Gammu.')
+    try_enable(state_machine.SetIncomingCB, 'Incoming cell broadcasts')
 
     # Enable notifications from incoming SMS
-    try:
-        state_machine.SetIncomingSMS()
-    except gammu.ERR_NOTSUPPORTED:
-        print('Incoming SMS notification is not supported.')
+    try_enable(state_machine.SetIncomingSMS, 'Incoming SMS')
 
     # Enable notifications for incoming USSD
-    try:
-        state_machine.SetIncomingUSSD()
-    except gammu.ERR_NOTSUPPORTED:
-        print('Incoming USSD notification is not supported.')
+    try_enable(state_machine.SetIncomingUSSD, 'Incoming USSD')
 
     # Just a busy waiting for event
     # We need to keep communication with phone to get notifications
     print('Press Ctrl+C to interrupt')
     while 1:
-        q = state_machine.GetSignalQuality()
-        print('Signal is at %d%%' % q['SignalPercent'])
+        signal = state_machine.GetSignalQuality()
+        print('Signal is at %d%%' % signal['SignalPercent'])
         time.sleep(1)
 
 if __name__ == '__main__':

@@ -4,33 +4,39 @@ from __future__ import print_function
 import gammu
 import sys
 
-state_machine = gammu.StateMachine()
-state_machine.ReadConfig()
-state_machine.Init()
 
-if len(sys.argv) != 2:
-    print('This requires one parameter with memory type!')
-    sys.exit(1)
+def main():
+    state_machine = gammu.StateMachine()
+    state_machine.ReadConfig()
+    state_machine.Init()
 
-memory_type = sys.argv[1]
+    if len(sys.argv) != 2:
+        print('This requires one parameter with memory type!')
+        sys.exit(1)
 
-status = state_machine.GetMemoryStatus(Type=memory_type)
+    memory_type = sys.argv[1]
 
-remain = status['Used']
+    status = state_machine.GetMemoryStatus(Type=memory_type)
 
-start = True
+    remain = status['Used']
 
-while remain > 0:
-    if start:
-        entry = state_machine.GetNextMemory(Start=True, Type=memory_type)
-        start = False
-    else:
-        entry = state_machine.GetNextMemory(
-            Location=entry['Location'], Type=memory_type
-        )
-    remain = remain - 1
+    start = True
 
-    print()
-    print('%-15s: %d' % ('Location', entry['Location']))
-    for v in entry['Entries']:
-        print('%-15s: %s' % (v['Type'], str(v['Value'])))
+    while remain > 0:
+        if start:
+            entry = state_machine.GetNextMemory(Start=True, Type=memory_type)
+            start = False
+        else:
+            entry = state_machine.GetNextMemory(
+                Location=entry['Location'], Type=memory_type
+            )
+        remain = remain - 1
+
+        print()
+        print('%-15s: %d' % ('Location', entry['Location']))
+        for v in entry['Entries']:
+            print('%-15s: %s' % (v['Type'], str(v['Value'])))
+
+
+if __name__ == '__main__':
+    main()

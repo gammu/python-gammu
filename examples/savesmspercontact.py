@@ -89,9 +89,9 @@ def getContacts(myStMa):
                 myContacts[v] = name
 
     except gammu.ERR_EMPTY:
-        # error is raised if memory is empty (this induces wrong reportet
+        # error is raised if memory is empty (this induces wrong reported
         # memory status)
-        pass
+        print('Failed to read contacts!')
 
     return(myContacts)
 

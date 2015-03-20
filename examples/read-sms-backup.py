@@ -15,9 +15,9 @@ filename = sys.argv[1]
 backup = gammu.ReadSMSBackup(filename)
 
 # Make nested array
-list = [[x] for x in backup]
+messages = [[x] for x in backup]
 
-data = gammu.LinkSMS(list)
+data = gammu.LinkSMS(messages)
 
 for x in data:
     v = gammu.DecodeSMS(x)

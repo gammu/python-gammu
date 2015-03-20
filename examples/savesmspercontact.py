@@ -17,17 +17,17 @@ def createFolderIfNotExist(path):
 
 def getInternationalizedNumber(number):
     if not number:
-        return("Unknown")
+        return "Unknown"
 
     if number.startswith("0"):
-        return(number.replace("0", "+49", 1))
+        return number.replace("0", "+49", 1)
     else:
-        return(number)
+        return number
 
 
 def getFilename(mydir, mysms):
     if mysms[0]["DateTime"]:
-        return(mysms[0]["DateTime"].strftime("%Y-%m-%d-%Hh%Mm%Ss"))
+        return mysms[0]["DateTime"].strftime("%Y-%m-%d-%Hh%Mm%Ss")
 
     # no date available so calculate unknown number
     myfiles = os.listdir(mydir)
@@ -38,7 +38,7 @@ def getFilename(mydir, mysms):
         if mo and int(mo.group(1)) > nextitem:
             nextitem = int(mo.group(1))
 
-    return("Unknown-" + str(nextitem + 1))
+    return "Unknown-" + str(nextitem + 1)
 
 
 def saveSMS(mysms, allContacts):
@@ -94,7 +94,7 @@ def getContacts(myStMa):
         # memory status)
         print('Failed to read contacts!')
 
-    return(myContacts)
+    return myContacts
 
 
 def getAndDeleteAllSMS(myStMa):
@@ -131,7 +131,7 @@ def getAndDeleteAllSMS(myStMa):
     # Link all SMS when there are concatenated messages
     entriesAll = gammu.LinkSMS(entriesAll)
 
-    return(entriesAll)
+    return entriesAll
 
 
 if __name__ == "__main__":

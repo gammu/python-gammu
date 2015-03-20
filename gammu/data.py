@@ -57,7 +57,7 @@ Connections = [
     'fbusirda',
     'phonetblue',
     'bluerfgnapbus',
-    ]
+]
 
 MemoryValueTypes = [
     'Number_General',
@@ -149,7 +149,7 @@ CalendarTypes = [
     'ALARM',
     'DAILY_ALARM',
     'SHOPPING',
-    ]
+]
 
 CalendarValueTypes = [
     'START_DATETIME',
@@ -172,14 +172,14 @@ CalendarValueTypes = [
     'REPEAT_STOPDATE',
     'LUID',
     'LAST_MODIFIED',
-    ]
+]
 
 TodoPriorities = [
     'High',
     'Medium',
     'Low',
     'None',
-    ]
+]
 
 TodoValueTypes = [
     'END_DATETIME',
@@ -197,7 +197,7 @@ TodoValueTypes = [
     'CONTACTID',
     'PHONE',
     'LAST_MODIFIED',
-    ]
+]
 
 InternationalPrefixes = [
     '+1',
@@ -512,7 +512,7 @@ InternationalPrefixes = [
     '+997',
     '+998',
     '+999',
-    ]
+]
 
 __all__ = [
     'Errors',

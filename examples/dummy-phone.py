@@ -34,8 +34,8 @@ state_machine.ReadConfig(Filename=sys.argv[1])
 state_machine.Init()
 
 
-def GetAllMemory(type):
-    status = state_machine.GetMemoryStatus(Type=type)
+def GetAllMemory(memory_type):
+    status = state_machine.GetMemoryStatus(Type=memory_type)
 
     remain = status['Used']
 
@@ -43,11 +43,11 @@ def GetAllMemory(type):
 
     while remain > 0:
         if start:
-            entry = state_machine.GetNextMemory(Start=True, Type=type)
+            entry = state_machine.GetNextMemory(Start=True, Type=memory_type)
             start = False
         else:
             entry = state_machine.GetNextMemory(
-                Location=entry['Location'], Type=type
+                Location=entry['Location'], Type=memory_type
             )
         remain = remain - 1
 

@@ -4,18 +4,18 @@ import gammu
 import time
 
 
-def Callback(state_machine, type, data):
+def Callback(state_machine, callback_type, data):
     '''
     This callback receives notification about incoming event.
 
     @param state_machine: state machine which invoked action
     @type state_machine: gammu.StateMachine
-    @param type: type of action, one of Call, SMS, CB, USSD
-    @type type: string
+    @param callback_type: type of action, one of Call, SMS, CB, USSD
+    @type callback_type: string
     @param data: event data
     @type data: hash
     '''
-    print('Received incoming event type %s, data:' % type)
+    print('Received incoming event type %s, data:' % callback_type)
     print(data)
 
 

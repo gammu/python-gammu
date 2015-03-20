@@ -27,12 +27,12 @@ import gammu
 import sys
 
 
-def callback(state_machine, type, data):
+def callback(state_machine, callback_type, data):
     '''
     Callback on USSD data.
     '''
-    if type != 'USSD':
-        print('Unexpected event type: %s' % type)
+    if callback_type != 'USSD':
+        print('Unexpected event type: %s' % callback_type)
         sys.exit(1)
 
     print('Network reply:')

@@ -27,10 +27,10 @@ replies = [
 ]
 
 
-def Callback(state_machine, type, data):
+def Callback(state_machine, callback_type, data):
     if verbose:
-        print('Received incoming event type %s, data:' % type)
-    if type != 'SMS':
+        print('Received incoming event type %s, data:' % callback_type)
+    if callback_type != 'SMS':
         print('Unsupported event!')
     if 'Number' not in data:
         data = state_machine.GetSMS(data['Folder'], data['Location'])[0]

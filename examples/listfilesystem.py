@@ -67,12 +67,10 @@ locale.setlocale(locale.LC_ALL, '')
 # 'Hidden'
 # 'System'
 def NextFile(start=0):
-    file_obj = None
     try:
-        file_obj = state_machine.GetNextFileFolder(start)
+        return state_machine.GetNextFileFolder(start)
     except gammu.ERR_EMPTY:
-        pass
-    return file_obj
+        return None
 
 
 # Format File Attributes as String as a shorted Version

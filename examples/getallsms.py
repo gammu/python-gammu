@@ -32,4 +32,4 @@ try:
 except gammu.ERR_EMPTY:
     # This error is raised when we've reached last entry
     # It can happen when reported status does not match real counts
-    pass
+    print('Failed to read all messages!')

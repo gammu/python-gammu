@@ -123,9 +123,9 @@ def getAndDeleteAllSMS(myStMa):
             myStMa.DeleteSMS(Folder=0, Location=entry[0]["Location"])
 
     except gammu.ERR_EMPTY:
-        # error is raised if memory is empty (this induces wrong reportet
+        # error is raised if memory is empty (this induces wrong reported
         # memory status)
-        pass
+        print('Failed to read messages!')
 
     # Link all SMS when there are concatenated messages
     entriesAll = gammu.LinkSMS(entriesAll)

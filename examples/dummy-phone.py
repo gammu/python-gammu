@@ -112,12 +112,23 @@ def GetAllSMS():
     return sms
 
 
+def PrintSMSHeader(message, folders):
+    print()
+    print('%-15s: %s' % ('Number', message['Number'].encode('utf-8')))
+    print('%-15s: %s' % ('Date', str(message['DateTime'])))
+    print('%-15s: %s' % ('State', message['State']))
+    print('%-15s: %s %s (%d)' % (
+        'Folder',
+        folders[message['Folder']]['Name'].encode('utf-8'),
+        folders[message['Folder']]['Memory'].encode('utf-8'),
+        message['Folder']
+    ))
+    print('%-15s: %s' % ('Validity', message['SMSC']['Validity']))
+
+
 def PrintAllSMS(sms, folders):
     for m in sms:
-        print()
-        print('%-15s: %s' % ('Number', m['Number'].encode('utf-8')))
-        print('%-15s: %s' % ('Date', str(m['DateTime'])))
-        print('%-15s: %s' % ('State', m['State'].encode('utf-8')))
+        PrintSMSHeader(m, folders)
         print('\n%s' % m['Text'].encode('utf-8'))
 
 
@@ -128,17 +139,7 @@ def LinkAllSMS(sms, folders):
         v = gammu.DecodeSMS(x)
 
         m = x[0]
-        print()
-        print('%-15s: %s' % ('Number', m['Number'].encode('utf-8')))
-        print('%-15s: %s' % ('Date', str(m['DateTime'])))
-        print('%-15s: %s' % ('State', m['State']))
-        print('%-15s: %s %s (%d)' % (
-            'Folder',
-            folders[m['Folder']]['Name'].encode('utf-8'),
-            folders[m['Folder']]['Memory'].encode('utf-8'),
-            m['Folder']
-        ))
-        print('%-15s: %s' % ('Validity', m['SMSC']['Validity']))
+        PrintSMSHeader(m, folders)
         loc = []
         for m in x:
             loc.append(str(m['Location']))

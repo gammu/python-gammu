@@ -38,10 +38,13 @@ def callback(name, result, error, percents):
     this is called from different thread so it does not have to be save
     to work with GUI here.
     '''
-    print('-> %s completed %d%% with error %s , return value:' % (
+    print(
+        '-> %s completed %d%% with error %s , return value:' % (
             name,
             percents,
-            error))
+            error
+        )
+    )
     print(result)
 
 

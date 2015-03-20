@@ -7,46 +7,52 @@ from __future__ import print_function
 import gammu
 import sys
 
-state_machine = gammu.StateMachine()
-if len(sys.argv) == 2:
-    state_machine.ReadConfig(Filename=sys.argv[1])
-else:
-    state_machine.ReadConfig()
-state_machine.Init()
 
-# For calendar entry
+def main():
+    state_machine = gammu.StateMachine()
+    if len(sys.argv) == 2:
+        state_machine.ReadConfig(Filename=sys.argv[1])
+    else:
+        state_machine.ReadConfig()
+    state_machine.Init()
 
-# Read entry from phone
-entry = state_machine.GetNextCalendar(Start=True)
+    # For calendar entry
 
-# Convert it to vCard
-vc_entry = gammu.EncodeVCALENDAR(entry)
-ic_entry = gammu.EncodeICALENDAR(entry)
+    # Read entry from phone
+    entry = state_machine.GetNextCalendar(Start=True)
 
-# Convert it back to entry
-entry2 = gammu.DecodeVCS(vc_entry)
-entry3 = gammu.DecodeICS(ic_entry)
+    # Convert it to vCard
+    vc_entry = gammu.EncodeVCALENDAR(entry)
+    ic_entry = gammu.EncodeICALENDAR(entry)
 
-# For todo entry
+    # Convert it back to entry
+    entry2 = gammu.DecodeVCS(vc_entry)
+    entry3 = gammu.DecodeICS(ic_entry)
 
-# Read entry from phone
-entry = state_machine.GetNextToDo(Start=True)
+    # For todo entry
 
-# Convert it to vCard
-vt_entry = gammu.EncodeVTODO(entry)
-it_entry = gammu.EncodeITODO(entry)
+    # Read entry from phone
+    entry = state_machine.GetNextToDo(Start=True)
 
-# Convert it back to entry
-entry2 = gammu.DecodeVCS(vt_entry)
-entry3 = gammu.DecodeICS(it_entry)
+    # Convert it to vCard
+    vt_entry = gammu.EncodeVTODO(entry)
+    it_entry = gammu.EncodeITODO(entry)
 
-# For memory entry
+    # Convert it back to entry
+    entry2 = gammu.DecodeVCS(vt_entry)
+    entry3 = gammu.DecodeICS(it_entry)
 
-# Read entry from phone
-entry = state_machine.GetNextMemory(Start=True, Type='ME')
+    # For memory entry
 
-# Convert it to vCard
-vc_entry = gammu.EncodeVCARD(entry)
+    # Read entry from phone
+    entry = state_machine.GetNextMemory(Start=True, Type='ME')
 
-# Convert it back to entry
-entry2 = gammu.DecodeVCARD(vc_entry)
+    # Convert it to vCard
+    vc_entry = gammu.EncodeVCARD(entry)
+
+    # Convert it back to entry
+    entry2 = gammu.DecodeVCARD(vc_entry)
+
+
+if __name__ == '__main__':
+    main()

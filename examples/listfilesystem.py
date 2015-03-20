@@ -90,40 +90,46 @@ def FileToAttributeString(file_obj, filled=1):
         system = u"S"
     return protected + readonly + hidden + system
 
-# Make sure we reset the pointer of the current entry to the first
-file_obj = NextFile(1)
 
-# Iterate over Files and print the Info
-while file_obj:
-    if mode == "flat":
-        # Output:
-        # <ID>;<NAME>;<TYPE>;<MODDATE>;<SIZE>;<ATTRIBUTES>
-        # We have to catch the situations, where no Modification Time is
-        # provided
-        try:
-            time = file_obj["Modified"].strftime("%x %X") + ";"
-        except AttributeError:
-            time = ";"
+def Main():
+    # Make sure we reset the pointer of the current entry to the first
+    file_obj = NextFile(1)
 
-        print((
-            file_obj["ID_FullName"] + ";" +
-            file_obj["Name"] + ";" +
-            file_obj["Type"] + ";" +
-            time + str(file_obj["Used"]) + ";" +
-            FileToAttributeString(file_obj, 0)
-        ))
-    elif mode == "level":
-        attrib = FileToAttributeString(file_obj, 1)
-        level = file_obj["Level"]
-        spacer = ""
+    # Iterate over Files and print the Info
+    while file_obj:
+        if mode == "flat":
+            # Output:
+            # <ID>;<NAME>;<TYPE>;<MODDATE>;<SIZE>;<ATTRIBUTES>
+            # We have to catch the situations, where no Modification Time is
+            # provided
+            try:
+                time = file_obj["Modified"].strftime("%x %X") + ";"
+            except AttributeError:
+                time = ";"
 
-        for i in range(1, (level-1)):
-            spacer = spacer + " |   "
-        if(level > 1):
-            spacer = spacer + " |-- "
+            print((
+                file_obj["ID_FullName"] + ";" +
+                file_obj["Name"] + ";" +
+                file_obj["Type"] + ";" +
+                time + str(file_obj["Used"]) + ";" +
+                FileToAttributeString(file_obj, 0)
+            ))
+        elif mode == "level":
+            attrib = FileToAttributeString(file_obj, 1)
+            level = file_obj["Level"]
+            spacer = ""
 
-        title = '"' + file_obj["Name"] + '"'
-        if file_obj["Folder"]:
-            title = "Folder " + title
-        print(attrib + spacer + title)
-    file_obj = NextFile()
+            for i in range(1, (level-1)):
+                spacer = spacer + " |   "
+            if(level > 1):
+                spacer = spacer + " |-- "
+
+            title = '"' + file_obj["Name"] + '"'
+            if file_obj["Folder"]:
+                title = "Folder " + title
+            print(attrib + spacer + title)
+        file_obj = NextFile()
+
+
+if __name__ == '__main__':
+    Main()

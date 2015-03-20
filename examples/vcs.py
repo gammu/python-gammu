@@ -26,8 +26,8 @@ def main():
     ic_entry = gammu.EncodeICALENDAR(entry)
 
     # Convert it back to entry
-    entry2 = gammu.DecodeVCS(vc_entry)
-    entry3 = gammu.DecodeICS(ic_entry)
+    print(gammu.DecodeVCS(vc_entry))
+    print(gammu.DecodeICS(ic_entry))
 
     # For todo entry
 
@@ -39,8 +39,8 @@ def main():
     it_entry = gammu.EncodeITODO(entry)
 
     # Convert it back to entry
-    entry2 = gammu.DecodeVCS(vt_entry)
-    entry3 = gammu.DecodeICS(it_entry)
+    print(gammu.DecodeVCS(vt_entry))
+    print(gammu.DecodeICS(it_entry))
 
     # For memory entry
 
@@ -51,7 +51,7 @@ def main():
     vc_entry = gammu.EncodeVCARD(entry)
 
     # Convert it back to entry
-    entry2 = gammu.DecodeVCARD(vc_entry)
+    print(gammu.DecodeVCARD(vc_entry))
 
 
 if __name__ == '__main__':

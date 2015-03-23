@@ -201,34 +201,6 @@ int GetIntFromDict(PyObject * dict, const char *key)
 	return INT_INVALID;
 }
 
-char *GetCStringLengthFromDict(PyObject * dict, const char *key,
-			       Py_ssize_t * length)
-{
-	PyObject *o;
-	char *result, *data;
-
-	o = PyDict_GetItemString(dict, key);
-	if (o == NULL) {
-		PyErr_Format(PyExc_ValueError, "Missing key in dictionary: %s",
-			     key);
-		return NULL;
-	}
-	if (!PyBytes_Check(o)) {
-		PyErr_Format(PyExc_ValueError, "Not a bytes string: %s",
-			     key);
-		return NULL;
-	}
-	PyBytes_AsStringAndSize(o, &data, length);
-	result = (char *)malloc(*length);
-	if (result == NULL) {
-		PyErr_Format(PyExc_ValueError, "Failed to allocate memory!");
-		return NULL;
-	}
-	memcpy(result, data, *length);
-
-	return result;
-}
-
 char *GetCStringFromDict(PyObject * dict, const char *key)
 {
 	PyObject *o;
@@ -363,6 +335,24 @@ char *GetDataFromDict(PyObject * dict, const char *key, Py_ssize_t * len)
 	}
 	return ps;
 }
+
+char *GetCStringLengthFromDict(PyObject * dict, const char *key,
+			       Py_ssize_t * length)
+{
+	char *result, *data;
+
+	data = GetDataFromDict(dict, key, length);
+
+	result = (char *)malloc(*length);
+	if (result == NULL) {
+		PyErr_Format(PyExc_ValueError, "Failed to allocate memory!");
+		return NULL;
+	}
+	memcpy(result, data, *length);
+
+	return result;
+}
+
 
 /*
  * vim: noexpandtab sw=8 ts=8 sts=8:

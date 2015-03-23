@@ -213,7 +213,12 @@ char *GetCStringLengthFromDict(PyObject * dict, const char *key,
 			     key);
 		return NULL;
 	}
-	PyString_AsStringAndSize(o, &data, length);
+	if (!PyBytes_Check(o)) {
+		PyErr_Format(PyExc_ValueError, "Not a bytes string: %s",
+			     key);
+		return NULL;
+	}
+	PyBytes_AsStringAndSize(o, &data, length);
 	result = (char *)malloc(*length);
 	if (result == NULL) {
 		PyErr_Format(PyExc_ValueError, "Failed to allocate memory!");
@@ -346,7 +351,12 @@ char *GetDataFromDict(PyObject * dict, const char *key, Py_ssize_t * len)
 			     key);
 		return NULL;
 	}
-	if (PyString_AsStringAndSize(o, &ps, len) != 0) {
+	if (!PyBytes_Check(o)) {
+		PyErr_Format(PyExc_ValueError, "Not a bytes string: %s",
+			     key);
+		return NULL;
+	}
+	if (PyBytes_AsStringAndSize(o, &ps, len) != 0) {
 		PyErr_Format(PyExc_ValueError,
 			     "Can not get string value for key %s", key);
 		return NULL;

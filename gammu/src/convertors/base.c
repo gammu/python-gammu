@@ -24,11 +24,13 @@
 
 /* Strings */
 #include <strings.h>
+#include <bytesobject.h>
 
 gboolean BoolFromPython(PyObject * o, const char *key)
 {
 	char *s;
 	int i;
+	PyObject *o2;
 
 	if (o == Py_None) {
 		return FALSE;
@@ -50,7 +52,6 @@ gboolean BoolFromPython(PyObject * o, const char *key)
 			else
 				return TRUE;
 		}
-#endif
 		if (PyString_Check(o)) {
 			s = PyString_AsString(o);
 			if (isdigit((int)s[0])) {
@@ -68,6 +69,40 @@ gboolean BoolFromPython(PyObject * o, const char *key)
 			} else if (strcasecmp(s, "false") == 0) {
 				return FALSE;
 			} else {
+				PyErr_Format(PyExc_ValueError,
+					     "String value of '%s' doesn't seem to be boolean",
+					     key);
+				return BOOL_INVALID;
+			}
+		}
+#endif
+		if (PyUnicode_Check(o)) {
+			o2 = PyUnicode_AsASCIIString(o);
+			if (o2 == NULL) {
+				return BOOL_INVALID;
+			}
+			s = PyBytes_AsString(o2);
+			if (isdigit((int)s[0])) {
+				i = atoi(s);
+				Py_DECREF(o2);
+				if (i == 0)
+					return FALSE;
+				else
+					return TRUE;
+			} else if (strcasecmp(s, "yes") == 0) {
+				Py_DECREF(o2);
+				return TRUE;
+			} else if (strcasecmp(s, "true") == 0) {
+				Py_DECREF(o2);
+				return TRUE;
+			} else if (strcasecmp(s, "no") == 0) {
+				Py_DECREF(o2);
+				return FALSE;
+			} else if (strcasecmp(s, "false") == 0) {
+				Py_DECREF(o2);
+				return FALSE;
+			} else {
+				Py_DECREF(o2);
 				PyErr_Format(PyExc_ValueError,
 					     "String value of '%s' doesn't seem to be boolean",
 					     key);
@@ -107,6 +142,7 @@ gboolean GetBoolFromDict(PyObject * dict, const char *key)
 int GetIntFromDict(PyObject * dict, const char *key)
 {
 	PyObject *o;
+	PyObject *o2;
 	char *s;
 	int i;
 
@@ -126,7 +162,6 @@ int GetIntFromDict(PyObject * dict, const char *key)
 	if (PyInt_Check(o)) {
 		return PyInt_AsLong(o);
 	}
-#endif
 
 	if (PyString_Check(o)) {
 		s = PyString_AsString(o);
@@ -134,6 +169,26 @@ int GetIntFromDict(PyObject * dict, const char *key)
 			i = atoi(s);
 			return i;
 		} else {
+			PyErr_Format(PyExc_ValueError,
+				     "Value of '%s' doesn't seem to be integer",
+				     key);
+			return INT_INVALID;
+		}
+	}
+#endif
+
+	if (PyUnicode_Check(o)) {
+		o2 = PyUnicode_AsASCIIString(o);
+		if (o2 == NULL) {
+			return INT_INVALID;
+		}
+		s = PyBytes_AsString(o2);
+		if (isdigit((int)s[0])) {
+			i = atoi(s);
+			Py_DECREF(o2);
+			return i;
+		} else {
+			Py_DECREF(o2);
 			PyErr_Format(PyExc_ValueError,
 				     "Value of '%s' doesn't seem to be integer",
 				     key);

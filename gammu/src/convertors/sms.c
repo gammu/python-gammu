@@ -867,8 +867,8 @@ int SMSFromPython(PyObject * dict, GSM_SMSMessage * sms, int needslocation,
 		sms->PDU = SMS_Submit;
 		PyErr_Clear();
 	} else {
-		free(s);
 		sms->PDU = StringToSMSType(s);
+		free(s);
 		if (sms->PDU == 0)
 			return 0;
 	}
@@ -890,8 +890,8 @@ int SMSFromPython(PyObject * dict, GSM_SMSMessage * sms, int needslocation,
 		PyErr_Clear();
 		sms->State = SMS_UnSent;
 	} else {
-		free(s);
 		sms->State = StringToSMSState(s);
+		free(s);
 		if (sms->State == 0)
 			return 0;
 	}

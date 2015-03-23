@@ -311,8 +311,8 @@ int TodoFromPython(PyObject * dict, GSM_ToDoEntry * entry, int needs_location)
 	p = GetCharFromDict(dict, "Priority");
 	if (p == NULL)
 		return 0;
-	free(p);
 	entry->Priority = StringToTodoPriority(p);
+	free(p);
 	if (entry->Priority == GSM_Priority_INVALID)
 		return 0;
 

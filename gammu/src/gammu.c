@@ -1185,15 +1185,11 @@ StateMachine_SetAlarm(StateMachineObject *self, PyObject *args, PyObject *kwds) 
     gsm_alarm.Text[0] = 0;
     gsm_alarm.Repeating = TRUE;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwds, "O|IIO", kwlist,
+    if (!PyArg_ParseTupleAndKeywords(args, kwds, "U|IIO", kwlist,
                 &pydt, &(gsm_alarm.Location), &(gsm_alarm.Repeating), &(s)))
         return NULL;
 
     if (s != NULL) {
-        if (!PyString_Check(s) && !PyUnicode_Check(s)) {
-            PyErr_Format(PyExc_ValueError, "Text not string nor unicode!");
-            return NULL;
-        }
         gs = StringPythonToGammu(s);
         if (gs == NULL) return NULL;
 
@@ -1814,17 +1810,13 @@ StateMachine_AddCategory(StateMachineObject *self, PyObject *args, PyObject *kwd
     PyObject            *u;
     unsigned char       *name;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwds, "sO", kwlist,
+    if (!PyArg_ParseTupleAndKeywords(args, kwds, "sU", kwlist,
                 &s, &u))
         return NULL;
 
     Category.Type = StringToCategoryType(s);
     if (Category.Type == 0) return NULL;
 
-    if (!PyString_Check(u) && !PyUnicode_Check(u)) {
-        PyErr_Format(PyExc_ValueError, "Name not string nor unicode!");
-        return NULL;
-    }
     name = StringPythonToGammu(u);
     if (name == NULL) return NULL;
 
@@ -2849,14 +2841,9 @@ StateMachine_AddSMSFolder(StateMachineObject *self, PyObject *args, PyObject *kw
     unsigned char       *str;
     static char         *kwlist[] = {"Name", NULL};
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwds, "O", kwlist,
+    if (!PyArg_ParseTupleAndKeywords(args, kwds, "U", kwlist,
                 &val))
         return NULL;
-
-    if (!PyString_Check(val) && !PyUnicode_Check(val)) {
-        PyErr_Format(PyExc_ValueError, "Name not string nor unicode!");
-        return NULL;
-    }
 
     str = StringPythonToGammu(val);
     if (str == NULL) return NULL;
@@ -6232,14 +6219,9 @@ gammu_SMSCounter(PyObject *self, PyObject *args, PyObject *kwds)
     int SMSNum;
     size_t CharsLeft;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwds, "O|ss", kwlist,
+    if (!PyArg_ParseTupleAndKeywords(args, kwds, "U|ss", kwlist,
                 &o, &udh_s, &coding_s))
         return NULL;
-
-    if (!PyString_Check(o) && !PyUnicode_Check(o)) {
-        PyErr_Format(PyExc_ValueError, "Text not string nor unicode!");
-        return NULL;
-    }
 
     str = StringPythonToGammu(o);
     if (str == NULL) return NULL;

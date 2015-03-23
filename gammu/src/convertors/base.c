@@ -201,20 +201,6 @@ int GetIntFromDict(PyObject * dict, const char *key)
 	return INT_INVALID;
 }
 
-char *GetCStringFromDict(PyObject * dict, const char *key)
-{
-	PyObject *o;
-
-	o = PyDict_GetItemString(dict, key);
-	if (o == NULL) {
-		PyErr_Format(PyExc_ValueError, "Missing key in dictionary: %s",
-			     key);
-		return NULL;
-	}
-
-	return PyString_AsString(o);
-}
-
 unsigned char *GetStringFromDict(PyObject * dict, const char *key)
 {
 	PyObject *o;

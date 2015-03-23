@@ -674,7 +674,7 @@ int MemoryEntryFromPython(PyObject * dict, GSM_MemoryEntry * entry,
 					return 0;
 				}
 				bmptype =
-				    GetCStringFromDict(item, "PictureType");
+				    GetCharFromDict(item, "PictureType");
 				if (strcmp(bmptype, "BMP") == 0) {
 					entry->Entries[i].Picture.Type =
 					    PICTURE_BMP;

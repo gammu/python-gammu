@@ -163,11 +163,6 @@ char *GetCStringLengthFromDict(PyObject * dict, const char *key,
 			       Py_ssize_t * length);
 
 /**
- * Gets C string from dictionary dict with key key.
- */
-char *GetCStringFromDict(PyObject * dict, const char *key);
-
-/**
  * Gets gammu unicode string from dictionary dict with key key.
  */
 unsigned char *GetStringFromDict(PyObject * dict, const char *key);

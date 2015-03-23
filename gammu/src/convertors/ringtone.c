@@ -477,6 +477,7 @@ int RingCommadFromPython(PyObject * dict, GSM_RingCommand * cmd)
 	if (s == NULL)
 		return 0;
 	cmd->Type = StringToRingCommandType(s);
+	free(s);
 	if (cmd->Type == 0)
 		return 0;
 
@@ -496,6 +497,7 @@ int RingCommadFromPython(PyObject * dict, GSM_RingCommand * cmd)
 	if (s == NULL)
 		return 0;
 	cmd->Note.Style = StringToRingNoteStyle(s);
+	free(s);
 	if (cmd->Note.Style == INVALIDStyle)
 		return 0;
 
@@ -503,6 +505,7 @@ int RingCommadFromPython(PyObject * dict, GSM_RingCommand * cmd)
 	if (s == NULL)
 		return 0;
 	cmd->Note.Note = StringToRingNoteNote(s);
+	free(s);
 	if (cmd->Note.Note == Note_INVALID)
 		return 0;
 
@@ -510,6 +513,7 @@ int RingCommadFromPython(PyObject * dict, GSM_RingCommand * cmd)
 	if (s == NULL)
 		return 0;
 	cmd->Note.DurationSpec = StringToRingNoteDurationSpec(s);
+	free(s);
 	if (cmd->Note.DurationSpec == DurationSpec_INVALID)
 		return 0;
 
@@ -517,6 +521,7 @@ int RingCommadFromPython(PyObject * dict, GSM_RingCommand * cmd)
 	if (s == NULL)
 		return 0;
 	cmd->Note.Duration = StringToRingNoteDuration(s);
+	free(s);
 	if (cmd->Note.Duration == Duration_INVALID)
 		return 0;
 

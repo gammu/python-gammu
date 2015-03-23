@@ -242,6 +242,7 @@ int FileFromPython(PyObject * dict, GSM_File * file, gboolean check)
 		}
 	} else {
 		file->Type = StringToFileType(s);
+		free(s);
 		if (file->Type == GSM_File_INVALID) {
 			return 0;
 		}

@@ -343,7 +343,7 @@ int MemoryEntryFromPython(PyObject * dict, GSM_MemoryEntry * entry,
 	Py_ssize_t i;
 	char *type, *location;
 	char valuetype;
-	const char *bmptype;
+	char *bmptype;
 
 	if (!PyDict_Check(dict)) {
 		PyErr_Format(PyExc_ValueError,
@@ -415,6 +415,7 @@ int MemoryEntryFromPython(PyObject * dict, GSM_MemoryEntry * entry,
             } else {
                 entry->Entries[i].Location = PBK_Location_Unknown;
             }
+            free(location);
         }
 
 		/* Zero everything, just to be sure */
@@ -624,8 +625,10 @@ int MemoryEntryFromPython(PyObject * dict, GSM_MemoryEntry * entry,
 			PyErr_Format(PyExc_ValueError,
 				     "Element %" PY_FORMAT_SIZE_T
 				     "d in Entries has bad type: %s", i, type);
+            free(type);
 			return 0;
 		}
+        free(type);
 
 		switch (valuetype) {
 			case 'o':
@@ -693,6 +696,7 @@ int MemoryEntryFromPython(PyObject * dict, GSM_MemoryEntry * entry,
 				} else {
 					entry->Entries[i].Picture.Type = 0;
 				}
+                free(bmptype);
 				break;
 		}
 	}			/* end for */

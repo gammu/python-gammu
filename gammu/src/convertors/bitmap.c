@@ -126,6 +126,7 @@ int BitmapFromPython(PyObject * dict, GSM_Bitmap * entry)
 	if (s == NULL)
 		return 0;
 	entry->Type = StringToBitmapType(s);
+	free(s);
 	if (entry->Type == 0)
 		return 0;
 
@@ -135,6 +136,7 @@ int BitmapFromPython(PyObject * dict, GSM_Bitmap * entry)
 		entry->NetworkCode[0] = 0;
 	} else {
 		mystrncpy(entry->NetworkCode, s, 6);
+		free(s);
 	}
 
 	i = GetIntFromDict(dict, "Location");

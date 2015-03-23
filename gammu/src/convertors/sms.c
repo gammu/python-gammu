@@ -317,6 +317,7 @@ int SMSCFromPython(PyObject * dict, GSM_SMSC * smsc, gboolean complete)
 			PyErr_Clear();
 		} else {
 			smsc->Format = StringToSMSFormat(s);
+			free(s);
 			if (smsc->Format == 0)
 				return 0;
 		}
@@ -326,6 +327,7 @@ int SMSCFromPython(PyObject * dict, GSM_SMSC * smsc, gboolean complete)
 			PyErr_Clear();
 		} else {
 			smsc->Validity = StringToSMSValidity(s);
+			free(s);
 			if (smsc->Validity.Format == 0)
 				return 0;
 		}
@@ -351,6 +353,7 @@ int SMSCFromPython(PyObject * dict, GSM_SMSC * smsc, gboolean complete)
 		if (s == NULL)
 			return 0;
 		smsc->Format = StringToSMSFormat(s);
+		free(s);
 		if (smsc->Format == 0)
 			return 0;
 
@@ -358,6 +361,7 @@ int SMSCFromPython(PyObject * dict, GSM_SMSC * smsc, gboolean complete)
 		if (s == NULL)
 			return 0;
 		smsc->Validity = StringToSMSValidity(s);
+		free(s);
 		if (smsc->Validity.Format == 0)
 			return 0;
 	}
@@ -648,6 +652,7 @@ int UDHFromPython(PyObject * dict, GSM_UDHHeader * udh)
 	if (s == NULL)
 		return 0;
 	udh->Type = StringToUDHType(s);
+	free(s);
 	if (udh->Type == 0)
 		return 0;
 
@@ -762,6 +767,7 @@ int SMSFromPython(PyObject * dict, GSM_SMSMessage * sms, int needslocation,
 		PyErr_Clear();
 	} else {
 		sms->Coding = StringToSMSCoding(s);
+		free(s);
 		if (sms->Coding == 0)
 			return 0;
 	}
@@ -851,6 +857,7 @@ int SMSFromPython(PyObject * dict, GSM_SMSMessage * sms, int needslocation,
 		PyErr_Clear();
 	} else {
 		sms->Memory = StringToMemoryType(s);
+		free(s);
 		if (sms->Memory == 0)
 			return 0;
 	}
@@ -860,6 +867,7 @@ int SMSFromPython(PyObject * dict, GSM_SMSMessage * sms, int needslocation,
 		sms->PDU = SMS_Submit;
 		PyErr_Clear();
 	} else {
+		free(s);
 		sms->PDU = StringToSMSType(s);
 		if (sms->PDU == 0)
 			return 0;
@@ -882,6 +890,7 @@ int SMSFromPython(PyObject * dict, GSM_SMSMessage * sms, int needslocation,
 		PyErr_Clear();
 		sms->State = SMS_UnSent;
 	} else {
+		free(s);
 		sms->State = StringToSMSState(s);
 		if (sms->State == 0)
 			return 0;
@@ -1697,6 +1706,7 @@ int SMSPartFromPython(PyObject * dict, GSM_MultiPartSMSEntry * entry)
 		return 0;
 
 	entry->ID = StringToMultiPartSMSID(s);
+	free(s);
 	if (entry->ID == 0)
 		return 0;
 

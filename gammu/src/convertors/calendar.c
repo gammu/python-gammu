@@ -547,6 +547,7 @@ int CalendarFromPython(PyObject * dict, GSM_CalendarEntry * entry,
 	if (t == NULL)
 		return 0;
 	entry->Type = StringToCalendarType(t);
+	free(t);
 	if (entry->Type == 0)
 		return 0;
 
@@ -655,8 +656,10 @@ int CalendarFromPython(PyObject * dict, GSM_CalendarEntry * entry,
 			PyErr_Format(PyExc_ValueError,
 				     "Element %" PY_FORMAT_SIZE_T
 				     "d in Values has bad type: %s", i, type);
+			free(type);
 			return 0;
 		}
+		free(type);
 
 		switch (valuetype) {
 			case 'n':

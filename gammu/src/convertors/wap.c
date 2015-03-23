@@ -103,23 +103,29 @@ int MMSIndicatorFromPython(PyObject * dict, GSM_MMSIndicator * mms)
 	s = GetCharFromDict(dict, "Address");
 	if (strlen(s) > 499) {
 		PyErr_Format(PyExc_ValueError, "Address too long!");
+		free(s);
 		return 0;
 	}
 	strcpy(s, mms->Address);
+	free(s);
 
 	s = GetCharFromDict(dict, "Title");
 	if (strlen(s) > 499) {
+		free(s);
 		PyErr_Format(PyExc_ValueError, "Title too long!");
 		return 0;
 	}
 	strcpy(s, mms->Title);
+	free(s);
 
 	s = GetCharFromDict(dict, "Sender");
 	if (strlen(s) > 499) {
+		free(s);
 		PyErr_Format(PyExc_ValueError, "Sender too long!");
 		return 0;
 	}
 	strcpy(s, mms->Sender);
+	free(s);
 
 	mms->MessageSize = GetIntFromDict(dict, "MessageSender");
 	if (mms->MessageSize == INT_INVALID) {
@@ -129,6 +135,7 @@ int MMSIndicatorFromPython(PyObject * dict, GSM_MMSIndicator * mms)
 	s = GetCharFromDict(dict, "Class");
 	if (s != NULL) {
 		mms->Class = MMSClassFromString(s);
+		free(s);
 		if (mms->Class == GSM_MMS_INVALID) {
 			return 0;
 		}

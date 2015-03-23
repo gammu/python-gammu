@@ -72,11 +72,15 @@ char *MemoryTypeToString(GSM_MemoryType t)
 GSM_MemoryType GetMemoryTypeFromDict(PyObject * dict, const char *key)
 {
 	char *s;
+	GSM_MemoryType result;
+
 	s = GetCharFromDict(dict, key);
 	if (s == NULL)
 		return MEM_INVALID;
 
-	return StringToMemoryType(s);
+	result = StringToMemoryType(s);
+	free(s);
+	return result;
 }
 
 PyObject *CBToPython(GSM_CBMessage * cb)

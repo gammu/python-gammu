@@ -279,8 +279,9 @@ GSM_DateTime GetDateFromDict(PyObject * dict, const char *key)
 
 char *GetCharFromDict(PyObject * dict, const char *key)
 {
-	PyObject *o;
-	char *ps;
+	PyObject *o, *o2 = NULL;
+	char *ps = NULL, *result = NULL;
+	size_t length;
 
 	o = PyDict_GetItemString(dict, key);
 	if (o == NULL) {
@@ -289,13 +290,38 @@ char *GetCharFromDict(PyObject * dict, const char *key)
 		return NULL;
 	}
 
-	ps = PyString_AsString(o);
+#if PY_MAJOR_VERSION < 3
+	if (PyString_Check(o)) {
+		ps = PyString_AsString(o);
+	} else
+#endif
+	if (!PyUnicode_Check(o)) {
+			o2 = PyUnicode_AsASCIIString(o);
+			if (o2 == NULL) {
+				return NULL;
+			}
+			ps = PyBytes_AsString(o2);
+	}
+
+
 	if (ps == NULL) {
 		PyErr_Format(PyExc_ValueError,
 			     "Can not get string value for key %s", key);
-		return NULL;
+		goto out;
 	}
-	return ps;
+	length = strlen(ps) + 1;
+	result = (char *)malloc(length);
+	if (result == NULL) {
+		PyErr_Format(PyExc_ValueError, "Failed to allocate memory!");
+		goto out;
+	}
+	memcpy(result, ps, length);
+
+out:
+	if (o2 != NULL) {
+		Py_DECREF(o2);
+	}
+	return result;
 }
 
 char *GetDataFromDict(PyObject * dict, const char *key, Py_ssize_t * len)

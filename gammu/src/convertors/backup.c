@@ -169,6 +169,7 @@ int BackupFromPython(PyObject * dict, GSM_Backup * backup)
 			len = GSM_MAX_IMEI_LENGTH - 1;
 		}
 		strncat(backup->IMEI, s, len);
+		free(s);
 	}
 
 	backup->Model[0] = 0;
@@ -181,6 +182,7 @@ int BackupFromPython(PyObject * dict, GSM_Backup * backup)
 			len = GSM_MAX_MODEL_LENGTH + GSM_MAX_VERSION_LENGTH - 1;
 		}
 		strncat(backup->Model, s, len);
+		free(s);
 	}
 
 	backup->Creator[0] = 0;
@@ -193,6 +195,7 @@ int BackupFromPython(PyObject * dict, GSM_Backup * backup)
 		if (len > 50 - 1)
 			len = 50 - 1;
 		mystrncpy(backup->Creator, s, len);
+		free(s);
 	}
 
 	GET_ONE("PhonePhonebook", PhonePhonebook, GSM_BACKUP_MAX_PHONEPHONEBOOK,

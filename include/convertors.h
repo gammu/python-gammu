@@ -184,7 +184,7 @@ GSM_DateTime GetDateTimeFromDict(PyObject * dict, const char *key);
 GSM_DateTime GetDateFromDict(PyObject * dict, const char *key);
 
 /**
- * Gets char* from dictionary dict with key key. (doesn't allocate it!)
+ * Gets char* from dictionary dict with key key. (does allocate it!)
  */
 char *GetCharFromDict(PyObject * dict, const char *key);
 

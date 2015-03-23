@@ -304,12 +304,14 @@ int TodoFromPython(PyObject * dict, GSM_ToDoEntry * entry, int needs_location)
 	if (t == NULL)
 		return 0;
 	entry->Type = StringToCalendarType(t);
+	free(t);
 	if (entry->Type == 0)
 		return 0;
 
 	p = GetCharFromDict(dict, "Priority");
 	if (p == NULL)
 		return 0;
+	free(p);
 	entry->Priority = StringToTodoPriority(p);
 	if (entry->Priority == GSM_Priority_INVALID)
 		return 0;
@@ -399,8 +401,10 @@ int TodoFromPython(PyObject * dict, GSM_ToDoEntry * entry, int needs_location)
 			PyErr_Format(PyExc_ValueError,
 				     "Element %" PY_FORMAT_SIZE_T
 				     "d in Values has bad type: %s", i, type);
+			free(type);
 			return 0;
 		}
+		free(type);
 
 		switch (valuetype) {
 			case 'n':

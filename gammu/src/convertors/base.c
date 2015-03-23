@@ -290,18 +290,18 @@ char *GetCharFromDict(PyObject * dict, const char *key)
 		return NULL;
 	}
 
-#if PY_MAJOR_VERSION < 3
-	if (PyString_Check(o)) {
-		ps = PyString_AsString(o);
-	} else
-#endif
-	if (!PyUnicode_Check(o)) {
-			o2 = PyUnicode_AsASCIIString(o);
-			if (o2 == NULL) {
-				return NULL;
-			}
-			ps = PyBytes_AsString(o2);
+	if (PyUnicode_Check(o)) {
+		o2 = PyUnicode_AsASCIIString(o);
+		if (o2 == NULL) {
+			return NULL;
+		}
+		ps = PyBytes_AsString(o2);
 	}
+#if PY_MAJOR_VERSION < 3
+	else if (PyString_Check(o)) {
+		ps = PyString_AsString(o);
+	}
+#endif
 
 
 	if (ps == NULL) {

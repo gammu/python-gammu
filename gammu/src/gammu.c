@@ -6439,40 +6439,70 @@ static char gammu_module_documentation[] =
 "@var ErrorNumbers: Mapping of gammu error codes to text representation. Reverse to L{Errors}.\n"
 ;
 
-#ifndef PyMODINIT_FUNC  /* doesn't exists in older python releases */
-#define PyMODINIT_FUNC void
+
+#if PY_MAJOR_VERSION >= 3
+
+static struct PyModuleDef moduledef = {
+        PyModuleDef_HEAD_INIT,
+        "gammu",
+        gammu_module_documentation,
+        -1,
+        gammu_methods,
+        NULL,
+        NULL,
+        NULL,
+        NULL
+};
+
+#define INITERROR return NULL
+
+PyObject *
+PyInit_gammu(void)
+
+#else
+#define INITERROR return
+
+void
+init_gammu(void)
 #endif
-PyMODINIT_FUNC init_gammu(void) {
-    PyObject *m, *d;
+{
+    PyObject *module, *d;
     GSM_Debug_Info *di;
 
     /* Create the module and add the functions */
-    m = Py_InitModule3("_gammu", gammu_methods, gammu_module_documentation);
+#if PY_MAJOR_VERSION >= 3
+    module = PyModule_Create(&moduledef);
+#else
+    module = Py_InitModule3("_gammu", gammu_methods, gammu_module_documentation);
+#endif
 
-    if (m == NULL)
-        return;
+    if (module == NULL)
+        INITERROR;
 
     DebugFile = NULL;
 
-    d = PyModule_GetDict(m);
+    d = PyModule_GetDict(module);
 
     if (PyType_Ready(&StateMachineType) < 0)
-        return;
+        INITERROR;
     Py_INCREF(&StateMachineType);
 
-    if (PyModule_AddObject(m, "StateMachine", (PyObject *)&StateMachineType) < 0)
-        return;
+    if (PyModule_AddObject(module, "StateMachine", (PyObject *)&StateMachineType) < 0)
+        INITERROR;
 
     /* SMSD object */
-    if (!gammu_smsd_init(m)) return;
+    if (!gammu_smsd_init(module))
+        INITERROR;
 
     /* Add some symbolic constants to the module */
 
     /* Define errors */
-    if (!gammu_create_errors(d)) return;
+    if (!gammu_create_errors(d))
+        INITERROR;
 
     /* Define data */
-    if (!gammu_create_data(d)) return;
+    if (!gammu_create_data(d))
+        INITERROR;
 
     /* Check for errors */
     if (PyErr_Occurred()) {
@@ -6484,6 +6514,10 @@ PyMODINIT_FUNC init_gammu(void) {
     di = GSM_GetGlobalDebug();
     GSM_SetDebugFileDescriptor(NULL, FALSE, di);
     GSM_SetDebugLevel("none", di);
+
+#if PY_MAJOR_VERSION >= 3
+    return module;
+#endif
 }
 /*
  * vim: expandtab sw=4 ts=4 sts=4:

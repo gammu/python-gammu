@@ -5338,7 +5338,7 @@ StateMachine_dealloc(StateMachineObject *self)
 #ifdef WITH_THREAD
     PyThread_free_lock(self->mutex);
 #endif
-    self->ob_type->tp_free((PyObject*)self);
+    Py_TYPE(self)->tp_free((PyObject*)self);
 }
 
 static PyObject *
@@ -5394,8 +5394,12 @@ static char StateMachineType__doc__[] =
 ;
 
 static PyTypeObject StateMachineType = {
+#if PY_MAJOR_VERSION >= 3
+    PyVarObject_HEAD_INIT(NULL, 0)
+#else
     PyObject_HEAD_INIT(NULL)
     0,				/*ob_size*/
+#endif
     "_gammu.StateMachine",			/*tp_name*/
     sizeof(StateMachineObject),		/*tp_basicsize*/
     0,				/*tp_itemsize*/

@@ -198,7 +198,7 @@ static PyObject *SMSD_str(SMSDObject * self)
 static void SMSD_dealloc(SMSDObject * self)
 {
 	SMSD_FreeConfig(self->config);
-	self->ob_type->tp_free((PyObject *) self);
+	Py_TYPE(self)->tp_free((PyObject *) self);
 }
 
 static PyObject *SMSD_new(PyTypeObject * type, PyObject * args, PyObject * kwds)
@@ -233,8 +233,12 @@ static int SMSD_init(SMSDObject * self, PyObject * args, PyObject * kwds)
 static char SMSDType__doc__[] = "SMSD object, that is used for communication with phone.";
 
 static PyTypeObject SMSDType = {
+#if PY_MAJOR_VERSION >= 3
+    PyVarObject_HEAD_INIT(NULL, 0)
+#else
 	PyObject_HEAD_INIT(NULL)
 	0,			/*ob_size */
+#endif
 	"_gammu.SMSD",		/*tp_name */
 	sizeof(SMSDObject),	/*tp_basicsize */
 	0,			/*tp_itemsize */

@@ -66,6 +66,7 @@ int gammu_create_errors(PyObject *d) {
     PyObject *id;
     GSM_Error error;
     char errname[100];
+    char errhelp[4096];
 
     /* Prepare dict for error codes */
     error_list = PyDict_New();
@@ -103,10 +104,14 @@ int gammu_create_errors(PyObject *d) {
         }
 
         /* Help text */
-        help_text = PyUnicode_FromFormat("Exception corresponding to gammu error ERR_%s.\n"
-                "Verbose error description: %s",
-                GSM_ErrorName(error),
-                GSM_ErrorString(error));
+        snprintf(
+            errhelp, sizeof(errhelp) - 1,
+            "Exception corresponding to gammu error ERR_%s.\n"
+            "Verbose error description: %s",
+            GSM_ErrorName(error),
+            GSM_ErrorString(error)
+        );
+        help_text = PyUnicode_FromString(errhelp);
         if (help_text == NULL)
             return 0;
 

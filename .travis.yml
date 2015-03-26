@@ -5,6 +5,7 @@ python:
   - "3.2"
   - "3.3"
   - "3.4"
+  - "pypy"
 before_install:
   - sudo add-apt-repository ppa:nijel/ppa -y
   - sudo apt-get update
@@ -24,3 +25,4 @@ matrix:
     - python: "3.2"
     - python: "3.3"
     - python: "3.4"
+    - python: "pypy"

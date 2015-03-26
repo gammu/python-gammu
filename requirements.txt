@@ -1,8 +1,4 @@
 setuptools
 coverage
-pep8
 coveralls
-pylint
-pylint-django
-pyflakes
 scrutinizer-ocular

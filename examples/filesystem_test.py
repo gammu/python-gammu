@@ -106,9 +106,10 @@ def main():
     while not file_f["Finished"]:
         file_f = state_machine.AddFilePart(file_f)
 
-
     # Check GetFilePart
-    print("\n\nExpection: Get cgi.jpg from memorycard and write it as test.jpg")
+    print(
+        "\n\nExpection: Get cgi.jpg from memorycard and write it as test.jpg"
+    )
     with open('./test.jpg', 'w') as handle:
         file_f = {
             "ID_FullName": options.folder + "/cgi.jpg",
@@ -123,7 +124,7 @@ def main():
     print("\n\nExpection: test.jpg and cgi.jpg to be the same")
     f1 = open(options.testfile, "r")
     f2 = open("./test.jpg", "r")
-    if(f1.read() == f2.read()):
+    if f1.read() == f2.read():
         print("Same files")
     else:
         print("Files differ!")
@@ -137,18 +138,19 @@ def main():
         while 1:
             print(file_obj["ID_FullName"] + " - " + file_obj["Name"])
             try:
-                file_obj = state_machine.GetNextRootFolder(file_obj["ID_FullName"])
+                file_obj = state_machine.GetNextRootFolder(
+                    file_obj["ID_FullName"]
+                )
             except gammu.ERR_EMPTY:
                 break
     except gammu.ERR_NOTSUPPORTED:
         print("Not supported...")
 
-
     # Check GetNextFileFolder
     print("\n\nExpection: Info for a file of the phone (cgi.jpg)")
     file_f = state_machine.GetNextFileFolder(1)
     while 1:
-        if(file_f["Name"] != "cgi.jpg"):
+        if file_f["Name"] != "cgi.jpg":
             file_f = state_machine.GetNextFileFolder(0)
         else:
             attribute = ""
@@ -187,7 +189,7 @@ def main():
     print("\n\nExpection: Listing of cgi.jpg's properties")
     file_f = state_machine.GetFolderListing(unicode(options.folder), 1)
     while 1:
-        if(file_f["Name"] != "cgi.jpg"):
+        if file_f["Name"] != "cgi.jpg":
             file_f = state_machine.GetFolderListing(unicode(options.folder), 0)
         else:
             attribute = ""
@@ -228,7 +230,7 @@ def main():
     print("\n\nExpection: Print properties of newly created folder")
     file_f = state_machine.GetFolderListing(unicode(options.folder), 1)
     while 1:
-        if(file_f["Name"] != "42alpha"):
+        if file_f["Name"] != "42alpha":
             file_f = state_machine.GetFolderListing(unicode(options.folder), 0)
         else:
             attribute = ""

@@ -585,7 +585,7 @@ StateMachine_ReadConfig(StateMachineObject *self, PyObject *args, PyObject *kwds
     }
 
     error = GSM_FindGammuRC(&cfg, cfg_path);
-    if (!checkError(self->s, error, "FindGammuRC via ReadConfig"))
+    if (!checkError(error, "FindGammuRC via ReadConfig"))
         return NULL;
     if (cfg == NULL) {
         PyErr_SetString(PyExc_IOError, "Can not read gammurc");
@@ -593,7 +593,7 @@ StateMachine_ReadConfig(StateMachineObject *self, PyObject *args, PyObject *kwds
     }
 
     error = GSM_ReadConfig(cfg, Config, section);
-    if (!checkError(self->s, error, "ReadConfig")) {
+    if (!checkError(error, "ReadConfig")) {
         INI_Free(cfg);
         return NULL;
     }
@@ -630,7 +630,7 @@ StateMachine_Init(StateMachineObject *self, PyObject *args, PyObject *kwds)
     BEGIN_PHONE_COMM
     error = GSM_InitConnection(self->s, replies);
     END_PHONE_COMM
-    if (!checkError(self->s, error, "Init"))
+    if (!checkError(error, "Init"))
         return NULL;
 
     /* Set callbacks */
@@ -664,7 +664,7 @@ StateMachine_Abort(StateMachineObject *self, PyObject *args, PyObject *kwds)
 
     error = GSM_AbortOperation(self->s);
 
-    if (!checkError(self->s, error, "Abort")) return NULL;
+    if (!checkError(error, "Abort")) return NULL;
 
     Py_RETURN_NONE;
 }
@@ -704,7 +704,7 @@ StateMachine_Terminate(StateMachineObject *self, PyObject *args, PyObject *kwds)
     error = GSM_TerminateConnection(self->s);
     END_PHONE_COMM
 
-    if (!checkError(self->s, error, "Terminate")) return NULL;
+    if (!checkError(error, "Terminate")) return NULL;
 
     Py_RETURN_NONE;
 }
@@ -768,7 +768,7 @@ StateMachine_GetManufacturer(StateMachineObject *self, PyObject *args, PyObject 
     error = GSM_GetManufacturer(self->s, value);
     END_PHONE_COMM
 
-    if (!checkError(self->s, error, "GetManufacturer")) return NULL;
+    if (!checkError(error, "GetManufacturer")) return NULL;
 
     return Py_BuildValue("s", value);
 }
@@ -796,7 +796,7 @@ StateMachine_GetModel(StateMachineObject *self, PyObject *args, PyObject *kwds) 
     error = GSM_GetModel(self->s, value);
     END_PHONE_COMM
 
-    if (!checkError(self->s, error, "GetModel")) return NULL;
+    if (!checkError(error, "GetModel")) return NULL;
 
     return Py_BuildValue("ss", GSM_GetModelInfo(self->s)->model, value);
 }
@@ -826,7 +826,7 @@ StateMachine_GetFirmware(StateMachineObject *self, PyObject *args, PyObject *kwd
     error = GSM_GetFirmware(self->s, firmware, date, &ver);
     END_PHONE_COMM
 
-    if (!checkError(self->s, error, "GetFirmware")) return NULL;
+    if (!checkError(error, "GetFirmware")) return NULL;
 
     return Py_BuildValue("(s,s,d)",
            firmware,
@@ -857,7 +857,7 @@ StateMachine_GetIMEI(StateMachineObject *self, PyObject *args, PyObject *kwds) {
     error = GSM_GetIMEI(self->s, value);
     END_PHONE_COMM
 
-    if (!checkError(self->s, error, "GetIMEI")) return NULL;
+    if (!checkError(error, "GetIMEI")) return NULL;
 
     return Py_BuildValue("s", value);
 }
@@ -885,7 +885,7 @@ StateMachine_GetOriginalIMEI(StateMachineObject *self, PyObject *args, PyObject 
     error = GSM_GetOriginalIMEI(self->s, buffer);
     END_PHONE_COMM
 
-    if (!checkError(self->s, error, "GetOriginalIMEI")) return NULL;
+    if (!checkError(error, "GetOriginalIMEI")) return NULL;
 
     return Py_BuildValue("s", buffer);
 }
@@ -913,7 +913,7 @@ StateMachine_GetManufactureMonth(StateMachineObject *self, PyObject *args, PyObj
     error = GSM_GetManufactureMonth(self->s, buffer);
     END_PHONE_COMM
 
-    if (!checkError(self->s, error, "GetManufactureMonth")) return NULL;
+    if (!checkError(error, "GetManufactureMonth")) return NULL;
 
     return Py_BuildValue("s", buffer);
 }
@@ -941,7 +941,7 @@ StateMachine_GetProductCode(StateMachineObject *self, PyObject *args, PyObject *
     error = GSM_GetProductCode(self->s, buffer);
     END_PHONE_COMM
 
-    if (!checkError(self->s, error, "GetProductCode")) return NULL;
+    if (!checkError(error, "GetProductCode")) return NULL;
 
     return Py_BuildValue("s", buffer);
 }
@@ -969,7 +969,7 @@ StateMachine_GetHardware(StateMachineObject *self, PyObject *args, PyObject *kwd
     error = GSM_GetHardware(self->s, buffer);
     END_PHONE_COMM
 
-    if (!checkError(self->s, error, "GetHardware")) return NULL;
+    if (!checkError(error, "GetHardware")) return NULL;
 
     return Py_BuildValue("s", buffer);
 }
@@ -997,7 +997,7 @@ StateMachine_GetPPM(StateMachineObject *self, PyObject *args, PyObject *kwds) {
     error = GSM_GetPPM(self->s, buffer);
     END_PHONE_COMM
 
-    if (!checkError(self->s, error, "GetPPM")) return NULL;
+    if (!checkError(error, "GetPPM")) return NULL;
 
     return Py_BuildValue("s", buffer);
 }
@@ -1025,7 +1025,7 @@ StateMachine_GetSIMIMSI(StateMachineObject *self, PyObject *args, PyObject *kwds
     error = GSM_GetSIMIMSI(self->s, buffer);
     END_PHONE_COMM
 
-    if (!checkError(self->s, error, "GetSIMIMSI")) return NULL;
+    if (!checkError(error, "GetSIMIMSI")) return NULL;
 
     return Py_BuildValue("s", buffer);
 }
@@ -1053,7 +1053,7 @@ StateMachine_GetDateTime(StateMachineObject *self, PyObject *args, PyObject *kwd
     error = GSM_GetDateTime(self->s, &dt);
     END_PHONE_COMM
 
-    if (!checkError(self->s, error, "GetDateTime")) return NULL;
+    if (!checkError(error, "GetDateTime")) return NULL;
 
     return BuildPythonDateTime(&dt);
 }
@@ -1087,7 +1087,7 @@ StateMachine_SetDateTime(StateMachineObject *self, PyObject *args, PyObject *kwd
     error = GSM_SetDateTime(self->s, &dt);
     END_PHONE_COMM
 
-    if (!checkError(self->s, error, "SetDateTime")) return NULL;
+    if (!checkError(error, "SetDateTime")) return NULL;
 
     Py_RETURN_NONE;
 }
@@ -1123,7 +1123,7 @@ StateMachine_GetAlarm(StateMachineObject *self, PyObject *args, PyObject *kwds) 
     error = GSM_GetAlarm(self->s, &gsm_alarm);
     END_PHONE_COMM
 
-    if (!checkError(self->s, error, "GetAlarm")) return NULL;
+    if (!checkError(error, "GetAlarm")) return NULL;
 
     s = strGammuToPython(gsm_alarm.Text);
     if (s == NULL) return NULL;
@@ -1210,7 +1210,7 @@ StateMachine_SetAlarm(StateMachineObject *self, PyObject *args, PyObject *kwds) 
     error = GSM_SetAlarm(self->s, &gsm_alarm);
     END_PHONE_COMM
 
-    if (!checkError(self->s, error, "SetAlarm")) return NULL;
+    if (!checkError(error, "SetAlarm")) return NULL;
 
     Py_RETURN_NONE;
 }
@@ -1241,7 +1241,7 @@ StateMachine_GetLocale(StateMachineObject *self, PyObject *args, PyObject *kwds)
     error = GSM_GetLocale(self->s, &locale);
     END_PHONE_COMM
 
-    if (!checkError(self->s, error, "GetLocale")) return NULL;
+    if (!checkError(error, "GetLocale")) return NULL;
 
     s[0] = locale.DateSeparator;
     s[1] = 0;
@@ -1300,7 +1300,7 @@ StateMachine_SetLocale(StateMachineObject *self, PyObject *args, PyObject *kwds)
     error = GSM_SetLocale(self->s, &locale);
     END_PHONE_COMM
 
-    if (!checkError(self->s, error, "SetLocale")) return NULL;
+    if (!checkError(error, "SetLocale")) return NULL;
 
     Py_RETURN_NONE;
 }
@@ -1339,13 +1339,13 @@ StateMachine_PressKey(StateMachineObject *self, PyObject *args, PyObject *kwds) 
     }
 
     error = MakeKeySequence(key,  KeyCode, &Length);
-    if (!checkError(self->s, error, "MakeKeySequence")) return NULL;
+    if (!checkError(error, "MakeKeySequence")) return NULL;
 
     BEGIN_PHONE_COMM
     error = GSM_PressKey(self->s, KeyCode[0], press);
     END_PHONE_COMM
 
-    if (!checkError(self->s, error, "PressKey")) return NULL;
+    if (!checkError(error, "PressKey")) return NULL;
 
     Py_RETURN_NONE;
 }
@@ -1377,7 +1377,7 @@ StateMachine_Reset(StateMachineObject *self, PyObject *args, PyObject *kwds) {
     error = GSM_Reset(self->s, hard);
     END_PHONE_COMM
 
-    if (!checkError(self->s, error, "Reset")) return NULL;
+    if (!checkError(error, "Reset")) return NULL;
 
     Py_RETURN_NONE;
 }
@@ -1420,7 +1420,7 @@ StateMachine_ResetPhoneSettings(StateMachineObject *self, PyObject *args, PyObje
     error = GSM_ResetPhoneSettings(self->s, Type);
     END_PHONE_COMM
 
-    if (!checkError(self->s, error, "ResetPhoneSettings")) return NULL;
+    if (!checkError(error, "ResetPhoneSettings")) return NULL;
 
     Py_RETURN_NONE;
 }
@@ -1475,7 +1475,7 @@ StateMachine_EnterSecurityCode(StateMachineObject *self, PyObject *args, PyObjec
     error = GSM_EnterSecurityCode(self->s, &Code);
     END_PHONE_COMM
 
-    if (!checkError(self->s, error, "EnterSecurityCode")) return NULL;
+    if (!checkError(error, "EnterSecurityCode")) return NULL;
 
     Py_RETURN_NONE;
 }
@@ -1503,7 +1503,7 @@ StateMachine_GetSecurityStatus(StateMachineObject *self, PyObject *args, PyObjec
     error = GSM_GetSecurityStatus(self->s, &Status);
     END_PHONE_COMM
 
-    if (!checkError(self->s, error, "GetSecurityStatus")) return NULL;
+    if (!checkError(error, "GetSecurityStatus")) return NULL;
 
     switch (Status) {
         case SEC_SecurityCode: return Py_BuildValue("s", "SecurityCode");
@@ -1545,7 +1545,7 @@ StateMachine_GetDisplayStatus(StateMachineObject *self, PyObject *args, PyObject
     error = GSM_GetDisplayStatus(self->s, &features);
     END_PHONE_COMM
 
-    if (!checkError(self->s, error, "GetDisplayStatus")) return NULL;
+    if (!checkError(error, "GetDisplayStatus")) return NULL;
 
     list = PyList_New(0);
 
@@ -1594,7 +1594,7 @@ StateMachine_SetAutoNetworkLogin(StateMachineObject *self, PyObject *args, PyObj
     error = GSM_SetAutoNetworkLogin(self->s);
     END_PHONE_COMM
 
-    if (!checkError(self->s, error, "SetAutoNetworkLogin")) return NULL;
+    if (!checkError(error, "SetAutoNetworkLogin")) return NULL;
 
     Py_RETURN_NONE;
 }
@@ -1624,7 +1624,7 @@ StateMachine_GetBatteryCharge(StateMachineObject *self, PyObject *args, PyObject
     error = GSM_GetBatteryCharge(self->s, &bat);
     END_PHONE_COMM
 
-    if (!checkError(self->s, error, "GetBatteryCharge")) return NULL;
+    if (!checkError(error, "GetBatteryCharge")) return NULL;
 
     buffer = "Unknown";
 
@@ -1673,7 +1673,7 @@ StateMachine_GetSignalQuality(StateMachineObject *self, PyObject *args, PyObject
     error = GSM_GetSignalQuality(self->s, &sig);
     END_PHONE_COMM
 
-    if (!checkError(self->s, error, "GetSignalQuality")) return NULL;
+    if (!checkError(error, "GetSignalQuality")) return NULL;
 
     return Py_BuildValue("{s:i,s:i,s:i}",
             "SignalStrength", sig.SignalStrength,
@@ -1705,7 +1705,7 @@ StateMachine_GetNetworkInfo(StateMachineObject *self, PyObject *args, PyObject *
     error = GSM_GetNetworkInfo(self->s, &netinfo);
     END_PHONE_COMM
 
-    if (!checkError(self->s, error, "GetNetworkInfo")) return NULL;
+    if (!checkError(error, "GetNetworkInfo")) return NULL;
 
     buffer = "Unknown";
 
@@ -1776,7 +1776,7 @@ StateMachine_GetCategory(StateMachineObject *self, PyObject *args, PyObject *kwd
     error = GSM_GetCategory(self->s, &Category);
     END_PHONE_COMM
 
-    if (!checkError(self->s, error, "GetCategory")) return NULL;
+    if (!checkError(error, "GetCategory")) return NULL;
 
     u = strGammuToPython(Category.Name);
     if (u == NULL) return NULL;
@@ -1833,7 +1833,7 @@ StateMachine_AddCategory(StateMachineObject *self, PyObject *args, PyObject *kwd
     error = GSM_AddCategory(self->s, &Category);
     END_PHONE_COMM
 
-    if (!checkError(self->s, error, "AddCategory")) return NULL;
+    if (!checkError(error, "AddCategory")) return NULL;
 
     return Py_BuildValue("i", Category.Location);
 }
@@ -1869,7 +1869,7 @@ StateMachine_GetCategoryStatus(StateMachineObject *self, PyObject *args, PyObjec
     error = GSM_GetCategoryStatus(self->s, &Status);
     END_PHONE_COMM
 
-    if (!checkError(self->s, error, "GetCategoryStatus")) return NULL;
+    if (!checkError(error, "GetCategoryStatus")) return NULL;
 
     return Py_BuildValue("{s:i}", "Used", Status.Used);
 }
@@ -1905,7 +1905,7 @@ StateMachine_GetMemoryStatus(StateMachineObject *self, PyObject *args, PyObject 
     error = GSM_GetMemoryStatus(self->s, &Status);
     END_PHONE_COMM
 
-    if (!checkError(self->s, error, "GetMemoryStatus")) return NULL;
+    if (!checkError(error, "GetMemoryStatus")) return NULL;
 
     return Py_BuildValue("{s:i,s:i}", "Used", Status.MemoryUsed, "Free", Status.MemoryFree);
 }
@@ -1942,7 +1942,7 @@ StateMachine_GetMemory(StateMachineObject *self, PyObject *args, PyObject *kwds)
     error = GSM_GetMemory(self->s, &entry);
     END_PHONE_COMM
 
-    if (!checkError(self->s, error, "GetMemory")) return NULL;
+    if (!checkError(error, "GetMemory")) return NULL;
 
     result = MemoryEntryToPython(&entry);
     GSM_FreeMemoryEntry(&entry);
@@ -1993,7 +1993,7 @@ StateMachine_GetNextMemory(StateMachineObject *self, PyObject *args, PyObject *k
     error = GSM_GetNextMemory(self->s, &entry, start);
     END_PHONE_COMM
 
-    if (!checkError(self->s, error, "GetNextMemory")) return NULL;
+    if (!checkError(error, "GetNextMemory")) return NULL;
 
     result = MemoryEntryToPython(&entry);
     GSM_FreeMemoryEntry(&entry);
@@ -2030,7 +2030,7 @@ StateMachine_SetMemory(StateMachineObject *self, PyObject *args, PyObject *kwds)
     error = GSM_SetMemory(self->s, &entry);
     END_PHONE_COMM
 
-    if (!checkError(self->s, error, "SetMemory")) return NULL;
+    if (!checkError(error, "SetMemory")) return NULL;
 
     return PyLong_FromLong(entry.Location);
 }
@@ -2097,7 +2097,7 @@ StateMachine_AddMemory(StateMachineObject *self, PyObject *args, PyObject *kwds)
     }
     END_PHONE_COMM
 
-    if (!checkError(self->s, error, "AddMemory")) return NULL;
+    if (!checkError(error, "AddMemory")) return NULL;
 
     return PyLong_FromLong(entry.Location);
 }
@@ -2140,7 +2140,7 @@ StateMachine_DeleteMemory(StateMachineObject *self, PyObject *args, PyObject *kw
     error = GSM_DeleteMemory(self->s, &entry);
     END_PHONE_COMM
 
-    if (!checkError(self->s, error, "DeleteMemory")) return NULL;
+    if (!checkError(error, "DeleteMemory")) return NULL;
 
     Py_RETURN_NONE;
 }
@@ -2176,7 +2176,7 @@ StateMachine_DeleteAllMemory(StateMachineObject *self, PyObject *args, PyObject 
     error = GSM_DeleteAllMemory(self->s, MemoryType);
     END_PHONE_COMM
 
-    if (!checkError(self->s, error, "DeleteAllMemory")) return NULL;
+    if (!checkError(error, "DeleteAllMemory")) return NULL;
 
     Py_RETURN_NONE;
 }
@@ -2210,7 +2210,7 @@ StateMachine_GetSpeedDial(StateMachineObject *self, PyObject *args, PyObject *kw
     error = GSM_GetSpeedDial(self->s, &Speed);
     END_PHONE_COMM
 
-    if (!checkError(self->s, error, "GetSpeedDial")) return NULL;
+    if (!checkError(error, "GetSpeedDial")) return NULL;
 
     s = MemoryTypeToString(Speed.MemoryType);
 
@@ -2264,7 +2264,7 @@ StateMachine_SetSpeedDial(StateMachineObject *self, PyObject *args, PyObject *kw
     error = GSM_SetSpeedDial(self->s, &Speed);
     END_PHONE_COMM
 
-    if (!checkError(self->s, error, "SetSpeedDial")) return NULL;
+    if (!checkError(error, "SetSpeedDial")) return NULL;
 
     Py_RETURN_NONE;
 }
@@ -2298,7 +2298,7 @@ StateMachine_GetSMSC(StateMachineObject *self, PyObject *args, PyObject *kwds) {
     error = GSM_GetSMSC(self->s, &smsc);
     END_PHONE_COMM
 
-    if (!checkError(self->s, error, "GetSMSC")) return NULL;
+    if (!checkError(error, "GetSMSC")) return NULL;
 
     return SMSCToPython(&smsc);
 }
@@ -2333,7 +2333,7 @@ StateMachine_SetSMSC(StateMachineObject *self, PyObject *args, PyObject *kwds) {
     error = GSM_SetSMSC(self->s, &smsc);
     END_PHONE_COMM
 
-    if (!checkError(self->s, error, "SetSMSC")) return NULL;
+    if (!checkError(error, "SetSMSC")) return NULL;
 
     Py_RETURN_NONE;
 }
@@ -2361,7 +2361,7 @@ StateMachine_GetSMSStatus(StateMachineObject *self, PyObject *args, PyObject *kw
     error = GSM_GetSMSStatus(self->s, &status);
     END_PHONE_COMM
 
-    if (!checkError(self->s, error, "GetSMSStatus")) return NULL;
+    if (!checkError(error, "GetSMSStatus")) return NULL;
 
     return Py_BuildValue("{s:i,s:i,s:i,s:i,s:i,s:i,s:i}",
             "SIMUnRead", status.SIMUnRead,
@@ -2409,7 +2409,7 @@ StateMachine_GetSMS(StateMachineObject *self, PyObject *args, PyObject *kwds) {
     error = GSM_GetSMS(self->s, &sms);
     END_PHONE_COMM
 
-    if (!checkError(self->s, error, "GetSMS")) return NULL;
+    if (!checkError(error, "GetSMS")) return NULL;
 
     return MultiSMSToPython(&sms);
 }
@@ -2462,7 +2462,7 @@ StateMachine_GetNextSMS(StateMachineObject *self, PyObject *args, PyObject *kwds
     error = GSM_GetNextSMS(self->s, &sms, start);
     END_PHONE_COMM
 
-    if (!checkError(self->s, error, "GetNextSMS")) return NULL;
+    if (!checkError(error, "GetNextSMS")) return NULL;
 
     return MultiSMSToPython(&sms);
 }
@@ -2497,7 +2497,7 @@ StateMachine_SetSMS(StateMachineObject *self, PyObject *args, PyObject *kwds) {
     error = GSM_SetSMS(self->s, &sms);
     END_PHONE_COMM
 
-    if (!checkError(self->s, error, "SetSMS")) return NULL;
+    if (!checkError(error, "SetSMS")) return NULL;
 
     return Py_BuildValue("i,i", sms.Location, sms.Folder);
 }
@@ -2532,7 +2532,7 @@ StateMachine_AddSMS(StateMachineObject *self, PyObject *args, PyObject *kwds) {
     error = GSM_AddSMS(self->s, &sms);
     END_PHONE_COMM
 
-    if (!checkError(self->s, error, "AddSMS")) return NULL;
+    if (!checkError(error, "AddSMS")) return NULL;
 
     return Py_BuildValue("i,i", sms.Location, sms.Folder);
 }
@@ -2566,7 +2566,7 @@ StateMachine_DeleteSMS(StateMachineObject *self, PyObject *args, PyObject *kwds)
     error = GSM_DeleteSMS(self->s, &sms);
     END_PHONE_COMM
 
-    if (!checkError(self->s, error, "DeleteSMS")) return NULL;
+    if (!checkError(error, "DeleteSMS")) return NULL;
 
     Py_RETURN_NONE;
 }
@@ -2604,7 +2604,7 @@ StateMachine_SendSMS(StateMachineObject *self, PyObject *args, PyObject *kwds) {
     error = GSM_SendSMS(self->s, &sms);
     END_PHONE_COMM
 
-    if (!checkError(self->s, error, "SendSMS")) return NULL;
+    if (!checkError(error, "SendSMS")) return NULL;
 
     while (self->SMSStatus != ERR_NONE) {
         i++;
@@ -2612,7 +2612,7 @@ StateMachine_SendSMS(StateMachineObject *self, PyObject *args, PyObject *kwds) {
         GSM_ReadDevice(self->s, TRUE);
         END_PHONE_COMM
         if (self->SMSStatus == ERR_FULL || self->SMSStatus == ERR_UNKNOWN || i == 100) {
-            if (!checkError(self->s, self->SMSStatus, "SendSMS")) {
+            if (!checkError(self->SMSStatus, "SendSMS")) {
                 return NULL;
             }
         }
@@ -2651,7 +2651,7 @@ StateMachine_SendSavedSMS(StateMachineObject *self, PyObject *args, PyObject *kw
 
     self->SMSStatus = ERR_TIMEOUT;
 
-    if (!checkError(self->s, error, "SendSavedSMS")) return NULL;
+    if (!checkError(error, "SendSavedSMS")) return NULL;
 
     while (self->SMSStatus != ERR_NONE) {
         i++;
@@ -2659,7 +2659,7 @@ StateMachine_SendSavedSMS(StateMachineObject *self, PyObject *args, PyObject *kw
         GSM_ReadDevice(self->s,TRUE);
         END_PHONE_COMM
         if (self->SMSStatus == ERR_FULL || self->SMSStatus == ERR_UNKNOWN || i == 100) {
-            if (!checkError(self->s, self->SMSStatus, "SendSavedSMS")) {
+            if (!checkError(self->SMSStatus, "SendSavedSMS")) {
                 return NULL;
             }
         }
@@ -2695,7 +2695,7 @@ StateMachine_SetIncomingSMS(StateMachineObject *self, PyObject *args, PyObject *
     error = GSM_SetIncomingSMS(self->s, enable);
     END_PHONE_COMM
 
-    if (!checkError(self->s, error, "SetIncomingSMS")) return NULL;
+    if (!checkError(error, "SetIncomingSMS")) return NULL;
 
     Py_RETURN_NONE;
 }
@@ -2726,7 +2726,7 @@ StateMachine_SetIncomingCB(StateMachineObject *self, PyObject *args, PyObject *k
     error = GSM_SetIncomingCB(self->s, enable);
     END_PHONE_COMM
 
-    if (!checkError(self->s, error, "SetIncomingCB")) return NULL;
+    if (!checkError(error, "SetIncomingCB")) return NULL;
 
     Py_RETURN_NONE;
 }
@@ -2757,7 +2757,7 @@ StateMachine_SetIncomingCall(StateMachineObject *self, PyObject *args, PyObject 
     error = GSM_SetIncomingCall(self->s, enable);
     END_PHONE_COMM
 
-    if (!checkError(self->s, error, "SetIncomingCall")) return NULL;
+    if (!checkError(error, "SetIncomingCall")) return NULL;
 
     Py_RETURN_NONE;
 }
@@ -2788,7 +2788,7 @@ StateMachine_SetIncomingUSSD(StateMachineObject *self, PyObject *args, PyObject 
     error = GSM_SetIncomingUSSD(self->s, enable);
     END_PHONE_COMM
 
-    if (!checkError(self->s, error, "SetIncomingUSSD")) return NULL;
+    if (!checkError(error, "SetIncomingUSSD")) return NULL;
 
     Py_RETURN_NONE;
 }
@@ -2816,7 +2816,7 @@ StateMachine_GetSMSFolders(StateMachineObject *self, PyObject *args, PyObject *k
     error = GSM_GetSMSFolders(self->s, &folders);
     END_PHONE_COMM
 
-    if (!checkError(self->s, error, "GetSMSFolders")) return NULL;
+    if (!checkError(error, "GetSMSFolders")) return NULL;
 
     return SMSFoldersToPython(&folders);
 }
@@ -2854,7 +2854,7 @@ StateMachine_AddSMSFolder(StateMachineObject *self, PyObject *args, PyObject *kw
 
     free(str);
 
-    if (!checkError(self->s, error, "AddSMSFolder")) return NULL;
+    if (!checkError(error, "AddSMSFolder")) return NULL;
 
     Py_RETURN_NONE;
 }
@@ -2886,7 +2886,7 @@ StateMachine_DeleteSMSFolder(StateMachineObject *self, PyObject *args, PyObject 
     error = GSM_DeleteSMSFolder(self->s, val);
     END_PHONE_COMM
 
-    if (!checkError(self->s, error, "DeleteSMSFolder")) return NULL;
+    if (!checkError(error, "DeleteSMSFolder")) return NULL;
 
     Py_RETURN_NONE;
 }
@@ -2936,7 +2936,7 @@ StateMachine_DialVoice(StateMachineObject *self, PyObject *args, PyObject *kwds)
     error = GSM_DialVoice(self->s, s, ShowNumber);
     END_PHONE_COMM
 
-    if (!checkError(self->s, error, "DialVoice")) return NULL;
+    if (!checkError(error, "DialVoice")) return NULL;
 
     Py_RETURN_NONE;
 }
@@ -2968,7 +2968,7 @@ StateMachine_DialService(StateMachineObject *self, PyObject *args, PyObject *kwd
     error = GSM_DialService(self->s, s);
     END_PHONE_COMM
 
-    if (!checkError(self->s, error, "DialService")) return NULL;
+    if (!checkError(error, "DialService")) return NULL;
 
     Py_RETURN_NONE;
 }
@@ -3010,7 +3010,7 @@ StateMachine_AnswerCall(StateMachineObject *self, PyObject *args, PyObject *kwds
     error = GSM_AnswerCall(self->s, id, all);
     END_PHONE_COMM
 
-    if (!checkError(self->s, error, "AnswerCall")) return NULL;
+    if (!checkError(error, "AnswerCall")) return NULL;
 
     Py_RETURN_NONE;
 }
@@ -3051,7 +3051,7 @@ StateMachine_CancelCall(StateMachineObject *self, PyObject *args, PyObject *kwds
     error = GSM_CancelCall(self->s, id, all);
     END_PHONE_COMM
 
-    if (!checkError(self->s, error, "CancelCall")) return NULL;
+    if (!checkError(error, "CancelCall")) return NULL;
 
     Py_RETURN_NONE;
 }
@@ -3083,7 +3083,7 @@ StateMachine_HoldCall(StateMachineObject *self, PyObject *args, PyObject *kwds) 
     error = GSM_HoldCall(self->s, id);
     END_PHONE_COMM
 
-    if (!checkError(self->s, error, "HoldCall")) return NULL;
+    if (!checkError(error, "HoldCall")) return NULL;
 
     Py_RETURN_NONE;
 }
@@ -3116,7 +3116,7 @@ StateMachine_UnholdCall(StateMachineObject *self, PyObject *args, PyObject *kwds
     error = GSM_UnholdCall(self->s, id);
     END_PHONE_COMM
 
-    if (!checkError(self->s, error, "UnholdCall")) return NULL;
+    if (!checkError(error, "UnholdCall")) return NULL;
 
     Py_RETURN_NONE;
 }
@@ -3149,7 +3149,7 @@ StateMachine_ConferenceCall(StateMachineObject *self, PyObject *args, PyObject *
     error = GSM_ConferenceCall(self->s, id);
     END_PHONE_COMM
 
-    if (!checkError(self->s, error, "ConferenceCall")) return NULL;
+    if (!checkError(error, "ConferenceCall")) return NULL;
 
     Py_RETURN_NONE;
 }
@@ -3182,7 +3182,7 @@ StateMachine_SplitCall(StateMachineObject *self, PyObject *args, PyObject *kwds)
     error = GSM_SplitCall(self->s, id);
     END_PHONE_COMM
 
-    if (!checkError(self->s, error, "SplitCall")) return NULL;
+    if (!checkError(error, "SplitCall")) return NULL;
 
     Py_RETURN_NONE;
 }
@@ -3221,7 +3221,7 @@ StateMachine_TransferCall(StateMachineObject *self, PyObject *args, PyObject *kw
     error = GSM_TransferCall(self->s, id, next);
     END_PHONE_COMM
 
-    if (!checkError(self->s, error, "TransferCall")) return NULL;
+    if (!checkError(error, "TransferCall")) return NULL;
 
     Py_RETURN_NONE;
 }
@@ -3260,7 +3260,7 @@ StateMachine_SwitchCall(StateMachineObject *self, PyObject *args, PyObject *kwds
     error = GSM_SwitchCall(self->s, id, next);
     END_PHONE_COMM
 
-    if (!checkError(self->s, error, "SwitchCall")) return NULL;
+    if (!checkError(error, "SwitchCall")) return NULL;
 
     Py_RETURN_NONE;
 }
@@ -3292,7 +3292,7 @@ StateMachine_SendDTMF(StateMachineObject *self, PyObject *args, PyObject *kwds) 
     error = GSM_SendDTMF(self->s, s);
     END_PHONE_COMM
 
-    if (!checkError(self->s, error, "SendDTMF")) return NULL;
+    if (!checkError(error, "SendDTMF")) return NULL;
 
     Py_RETURN_NONE;
 }
@@ -3339,7 +3339,7 @@ StateMachine_GetCallDivert(StateMachineObject *self, PyObject *args, PyObject *k
     error = GSM_GetCallDivert(self->s, &request, &result);
     END_PHONE_COMM
 
-    if (!checkError(self->s, error, "GetCallDivert")) return NULL;
+    if (!checkError(error, "GetCallDivert")) return NULL;
 
     return CallDivertsToPython(&result);
 }
@@ -3382,7 +3382,7 @@ StateMachine_SetCallDivert(StateMachineObject *self, PyObject *args, PyObject *k
     error = GSM_SetCallDivert(self->s, &divert);
     END_PHONE_COMM
 
-    if (!checkError(self->s, error, "SetCallDivert")) return NULL;
+    if (!checkError(error, "SetCallDivert")) return NULL;
 
     Py_RETURN_NONE;
 }
@@ -3403,7 +3403,7 @@ StateMachine_CancelAllDiverts(StateMachineObject *self, PyObject *args, PyObject
     error = GSM_CancelAllDiverts(self->s);
     END_PHONE_COMM
 
-    if (!checkError(self->s, error, "CancelAllDiverts")) return NULL;
+    if (!checkError(error, "CancelAllDiverts")) return NULL;
 
     Py_RETURN_NONE;
 }
@@ -3425,7 +3425,7 @@ StateMachine_GetRingtone(StateMachineObject *self, PyObject *args, PyObject *kwd
     error = GSM_GetRingtone(self->s);
     END_PHONE_COMM
 
-    if (!checkError(self->s, error, "GetRingtone")) return NULL;
+    if (!checkError(error, "GetRingtone")) return NULL;
 
     Py_RETURN_NONE;
 }
@@ -3446,7 +3446,7 @@ StateMachine_SetRingtone(StateMachineObject *self, PyObject *args, PyObject *kwd
     error = GSM_SetRingtone(self->s);
     END_PHONE_COMM
 
-    if (!checkError(self->s, error, "SetRingtone")) return NULL;
+    if (!checkError(error, "SetRingtone")) return NULL;
 
     Py_RETURN_NONE;
 }
@@ -3467,7 +3467,7 @@ StateMachine_GetRingtonesInfo(StateMachineObject *self, PyObject *args, PyObject
     error = GSM_GetRingtonesInfo(self->s);
     END_PHONE_COMM
 
-    if (!checkError(self->s, error, "GetRingtonesInfo")) return NULL;
+    if (!checkError(error, "GetRingtonesInfo")) return NULL;
 
     Py_RETURN_NONE;
 }
@@ -3488,7 +3488,7 @@ StateMachine_DeleteUserRingtones(StateMachineObject *self, PyObject *args, PyObj
     error = GSM_DeleteUserRingtones(self->s);
     END_PHONE_COMM
 
-    if (!checkError(self->s, error, "DeleteUserRingtones")) return NULL;
+    if (!checkError(error, "DeleteUserRingtones")) return NULL;
 
     Py_RETURN_NONE;
 }
@@ -3509,7 +3509,7 @@ StateMachine_PlayTone(StateMachineObject *self, PyObject *args, PyObject *kwds) 
     error = GSM_PlayTone(self->s);
     END_PHONE_COMM
 
-    if (!checkError(self->s, error, "PlayTone")) return NULL;
+    if (!checkError(error, "PlayTone")) return NULL;
 
     Py_RETURN_NONE;
 }
@@ -3530,7 +3530,7 @@ StateMachine_GetWAPBookmark(StateMachineObject *self, PyObject *args, PyObject *
     error = GSM_GetWAPBookmark(self->s);
     END_PHONE_COMM
 
-    if (!checkError(self->s, error, "GetWAPBookmark")) return NULL;
+    if (!checkError(error, "GetWAPBookmark")) return NULL;
 
     Py_RETURN_NONE;
 }
@@ -3551,7 +3551,7 @@ StateMachine_SetWAPBookmark(StateMachineObject *self, PyObject *args, PyObject *
     error = GSM_SetWAPBookmark(self->s);
     END_PHONE_COMM
 
-    if (!checkError(self->s, error, "SetWAPBookmark")) return NULL;
+    if (!checkError(error, "SetWAPBookmark")) return NULL;
 
     Py_RETURN_NONE;
 }
@@ -3572,7 +3572,7 @@ StateMachine_DeleteWAPBookmark(StateMachineObject *self, PyObject *args, PyObjec
     error = GSM_DeleteWAPBookmark(self->s);
     END_PHONE_COMM
 
-    if (!checkError(self->s, error, "DeleteWAPBookmark")) return NULL;
+    if (!checkError(error, "DeleteWAPBookmark")) return NULL;
 
     Py_RETURN_NONE;
 }
@@ -3593,7 +3593,7 @@ StateMachine_GetWAPSettings(StateMachineObject *self, PyObject *args, PyObject *
     error = GSM_GetWAPSettings(self->s);
     END_PHONE_COMM
 
-    if (!checkError(self->s, error, "GetWAPSettings")) return NULL;
+    if (!checkError(error, "GetWAPSettings")) return NULL;
 
     Py_RETURN_NONE;
 }
@@ -3614,7 +3614,7 @@ StateMachine_SetWAPSettings(StateMachineObject *self, PyObject *args, PyObject *
     error = GSM_SetWAPSettings(self->s);
     END_PHONE_COMM
 
-    if (!checkError(self->s, error, "SetWAPSettings")) return NULL;
+    if (!checkError(error, "SetWAPSettings")) return NULL;
 
     Py_RETURN_NONE;
 }
@@ -3635,7 +3635,7 @@ StateMachine_GetMMSSettings(StateMachineObject *self, PyObject *args, PyObject *
     error = GSM_GetMMSSettings(self->s);
     END_PHONE_COMM
 
-    if (!checkError(self->s, error, "GetMMSSettings")) return NULL;
+    if (!checkError(error, "GetMMSSettings")) return NULL;
 
     Py_RETURN_NONE;
 }
@@ -3656,7 +3656,7 @@ StateMachine_SetMMSSettings(StateMachineObject *self, PyObject *args, PyObject *
     error = GSM_SetMMSSettings(self->s);
     END_PHONE_COMM
 
-    if (!checkError(self->s, error, "SetMMSSettings")) return NULL;
+    if (!checkError(error, "SetMMSSettings")) return NULL;
 
     Py_RETURN_NONE;
 }
@@ -3677,7 +3677,7 @@ StateMachine_GetBitmap(StateMachineObject *self, PyObject *args, PyObject *kwds)
     error = GSM_GetBitmap(self->s);
     END_PHONE_COMM
 
-    if (!checkError(self->s, error, "GetBitmap")) return NULL;
+    if (!checkError(error, "GetBitmap")) return NULL;
 
     Py_RETURN_NONE;
 }
@@ -3698,7 +3698,7 @@ StateMachine_SetBitmap(StateMachineObject *self, PyObject *args, PyObject *kwds)
     error = GSM_SetBitmap(self->s);
     END_PHONE_COMM
 
-    if (!checkError(self->s, error, "SetBitmap")) return NULL;
+    if (!checkError(error, "SetBitmap")) return NULL;
 
     Py_RETURN_NONE;
 }
@@ -3727,7 +3727,7 @@ StateMachine_GetToDoStatus(StateMachineObject *self, PyObject *args, PyObject *k
     error = GSM_GetToDoStatus(self->s, &status);
     END_PHONE_COMM
 
-    if (!checkError(self->s, error, "GetToDoStatus")) return NULL;
+    if (!checkError(error, "GetToDoStatus")) return NULL;
 
     return Py_BuildValue("{s:i,s:i}", "Used", status.Used, "Free", status.Free);
 }
@@ -3758,7 +3758,7 @@ StateMachine_GetToDo(StateMachineObject *self, PyObject *args, PyObject *kwds) {
     error = GSM_GetToDo(self->s, &todo);
     END_PHONE_COMM
 
-    if (!checkError(self->s, error, "GetToDo")) return NULL;
+    if (!checkError(error, "GetToDo")) return NULL;
 
     return TodoToPython(&todo);
 }
@@ -3800,7 +3800,7 @@ StateMachine_GetNextToDo(StateMachineObject *self, PyObject *args, PyObject *kwd
     error = GSM_GetNextToDo(self->s, &todo, start);
     END_PHONE_COMM
 
-    if (!checkError(self->s, error, "GetNextToDo")) return NULL;
+    if (!checkError(error, "GetNextToDo")) return NULL;
 
     return TodoToPython(&todo);
 }
@@ -3835,7 +3835,7 @@ StateMachine_SetToDo(StateMachineObject *self, PyObject *args, PyObject *kwds) {
     error = GSM_SetToDo(self->s, &entry);
     END_PHONE_COMM
 
-    if (!checkError(self->s, error, "SetToDo")) return NULL;
+    if (!checkError(error, "SetToDo")) return NULL;
 
     return PyLong_FromLong(entry.Location);
 }
@@ -3897,7 +3897,7 @@ StateMachine_AddToDo(StateMachineObject *self, PyObject *args, PyObject *kwds) {
     }
     END_PHONE_COMM
 
-    if (!checkError(self->s, error, "AddToDo")) return NULL;
+    if (!checkError(error, "AddToDo")) return NULL;
 
     return PyLong_FromLong(entry.Location);
 }
@@ -3932,7 +3932,7 @@ StateMachine_DeleteToDo(StateMachineObject *self, PyObject *args, PyObject *kwds
     error = GSM_DeleteToDo(self->s, &entry);
     END_PHONE_COMM
 
-    if (!checkError(self->s, error, "DeleteToDo")) return NULL;
+    if (!checkError(error, "DeleteToDo")) return NULL;
 
     Py_RETURN_NONE;
 }
@@ -3959,7 +3959,7 @@ StateMachine_DeleteAllToDo(StateMachineObject *self, PyObject *args, PyObject *k
     error = GSM_DeleteAllToDo(self->s);
     END_PHONE_COMM
 
-    if (!checkError(self->s, error, "DeleteAllToDo")) return NULL;
+    if (!checkError(error, "DeleteAllToDo")) return NULL;
 
     Py_RETURN_NONE;
 }
@@ -3987,7 +3987,7 @@ StateMachine_GetCalendarStatus(StateMachineObject *self, PyObject *args, PyObjec
     error = GSM_GetCalendarStatus(self->s, &status);
     END_PHONE_COMM
 
-    if (!checkError(self->s, error, "GetCalendarStatus")) return NULL;
+    if (!checkError(error, "GetCalendarStatus")) return NULL;
 
     return Py_BuildValue("{s:i,s:i}", "Used", status.Used, "Free", status.Free);
 }
@@ -4018,7 +4018,7 @@ StateMachine_GetCalendar(StateMachineObject *self, PyObject *args, PyObject *kwd
     error = GSM_GetCalendar(self->s, &entry);
     END_PHONE_COMM
 
-    if (!checkError(self->s, error, "GetCalendar")) return NULL;
+    if (!checkError(error, "GetCalendar")) return NULL;
 
     return CalendarToPython(&entry);
 }
@@ -4059,7 +4059,7 @@ StateMachine_GetNextCalendar(StateMachineObject *self, PyObject *args, PyObject 
     error = GSM_GetNextCalendar(self->s, &entry, start);
     END_PHONE_COMM
 
-    if (!checkError(self->s, error, "GetNextCalendar")) return NULL;
+    if (!checkError(error, "GetNextCalendar")) return NULL;
 
     return CalendarToPython(&entry);
 }
@@ -4094,7 +4094,7 @@ StateMachine_SetCalendar(StateMachineObject *self, PyObject *args, PyObject *kwd
     error = GSM_SetCalendar(self->s, &entry);
     END_PHONE_COMM
 
-    if (!checkError(self->s, error, "SetCalendar")) return NULL;
+    if (!checkError(error, "SetCalendar")) return NULL;
 
     return PyLong_FromLong(entry.Location);
 }
@@ -4156,7 +4156,7 @@ StateMachine_AddCalendar(StateMachineObject *self, PyObject *args, PyObject *kwd
     }
     END_PHONE_COMM
 
-    if (!checkError(self->s, error, "AddCalendar")) return NULL;
+    if (!checkError(error, "AddCalendar")) return NULL;
 
     return PyLong_FromLong(entry.Location);
 }
@@ -4191,7 +4191,7 @@ StateMachine_DeleteCalendar(StateMachineObject *self, PyObject *args, PyObject *
     error = GSM_DeleteCalendar(self->s, &entry);
     END_PHONE_COMM
 
-    if (!checkError(self->s, error, "DeleteCalendar")) return NULL;
+    if (!checkError(error, "DeleteCalendar")) return NULL;
 
     Py_RETURN_NONE;
 }
@@ -4218,7 +4218,7 @@ StateMachine_DeleteAllCalendar(StateMachineObject *self, PyObject *args, PyObjec
     error = GSM_DeleteAllCalendar(self->s);
     END_PHONE_COMM
 
-    if (!checkError(self->s, error, "DeleteAllCalendar")) return NULL;
+    if (!checkError(error, "DeleteAllCalendar")) return NULL;
 
     Py_RETURN_NONE;
 }
@@ -4240,7 +4240,7 @@ StateMachine_GetCalendarSettings(StateMachineObject *self, PyObject *args, PyObj
     error = GSM_GetCalendarSettings(self->s);
     END_PHONE_COMM
 
-    if (!checkError(self->s, error, "GetCalendarSettings")) return NULL;
+    if (!checkError(error, "GetCalendarSettings")) return NULL;
 
     Py_RETURN_NONE;
 }
@@ -4261,7 +4261,7 @@ StateMachine_SetCalendarSettings(StateMachineObject *self, PyObject *args, PyObj
     error = GSM_SetCalendarSettings(self->s);
     END_PHONE_COMM
 
-    if (!checkError(self->s, error, "SetCalendarSettings")) return NULL;
+    if (!checkError(error, "SetCalendarSettings")) return NULL;
 
     Py_RETURN_NONE;
 }
@@ -4282,7 +4282,7 @@ StateMachine_GetNote(StateMachineObject *self, PyObject *args, PyObject *kwds) {
     error = GSM_GetNote(self->s);
     END_PHONE_COMM
 
-    if (!checkError(self->s, error, "GetNote")) return NULL;
+    if (!checkError(error, "GetNote")) return NULL;
 
     Py_RETURN_NONE;
 }
@@ -4303,7 +4303,7 @@ StateMachine_GetProfile(StateMachineObject *self, PyObject *args, PyObject *kwds
     error = GSM_GetProfile(self->s);
     END_PHONE_COMM
 
-    if (!checkError(self->s, error, "GetProfile")) return NULL;
+    if (!checkError(error, "GetProfile")) return NULL;
 
     Py_RETURN_NONE;
 }
@@ -4324,7 +4324,7 @@ StateMachine_SetProfile(StateMachineObject *self, PyObject *args, PyObject *kwds
     error = GSM_SetProfile(self->s);
     END_PHONE_COMM
 
-    if (!checkError(self->s, error, "SetProfile")) return NULL;
+    if (!checkError(error, "SetProfile")) return NULL;
 
     Py_RETURN_NONE;
 }
@@ -4345,7 +4345,7 @@ StateMachine_GetFMStation(StateMachineObject *self, PyObject *args, PyObject *kw
     error = GSM_GetFMStation(self->s);
     END_PHONE_COMM
 
-    if (!checkError(self->s, error, "GetFMStation")) return NULL;
+    if (!checkError(error, "GetFMStation")) return NULL;
 
     Py_RETURN_NONE;
 }
@@ -4366,7 +4366,7 @@ StateMachine_SetFMStation(StateMachineObject *self, PyObject *args, PyObject *kw
     error = GSM_SetFMStation(self->s);
     END_PHONE_COMM
 
-    if (!checkError(self->s, error, "SetFMStation")) return NULL;
+    if (!checkError(error, "SetFMStation")) return NULL;
 
     Py_RETURN_NONE;
 }
@@ -4387,7 +4387,7 @@ StateMachine_ClearFMStations(StateMachineObject *self, PyObject *args, PyObject 
     error = GSM_ClearFMStations(self->s);
     END_PHONE_COMM
 
-    if (!checkError(self->s, error, "ClearFMStations")) return NULL;
+    if (!checkError(error, "ClearFMStations")) return NULL;
 
     Py_RETURN_NONE;
 }
@@ -4423,7 +4423,7 @@ StateMachine_GetNextFileFolder(StateMachineObject *self, PyObject *args, PyObjec
     error = GSM_GetNextFileFolder(self->s, &File, start);
     END_PHONE_COMM
 
-    if (!checkError(self->s, error, "GetNextFileFolder")) return NULL;
+    if (!checkError(error, "GetNextFileFolder")) return NULL;
 
     return FileToPython(&File);
 }
@@ -4468,7 +4468,7 @@ StateMachine_GetFolderListing(StateMachineObject *self, PyObject *args, PyObject
     error = GSM_GetFolderListing(self->s, &File, start);
     END_PHONE_COMM
 
-    if (!checkError(self->s, error, "GetFolderListing")) return NULL;
+    if (!checkError(error, "GetFolderListing")) return NULL;
 
     return FileToPython(&File);
 }
@@ -4510,7 +4510,7 @@ StateMachine_GetNextRootFolder(StateMachineObject *self, PyObject *args, PyObjec
     error = GSM_GetNextRootFolder(self->s, &File);
     END_PHONE_COMM
 
-    if (!checkError(self->s, error, "GetNextRootFolder")) return NULL;
+    if (!checkError(error, "GetNextRootFolder")) return NULL;
 
     return FileToPython(&File);
 }
@@ -4569,7 +4569,7 @@ StateMachine_SetFileAttributes(StateMachineObject *self, PyObject *args, PyObjec
     error = GSM_SetFileAttributes(self->s, &File);
     END_PHONE_COMM
 
-    if (!checkError(self->s, error, "SetFileAttributes")) return NULL;
+    if (!checkError(error, "SetFileAttributes")) return NULL;
 
     Py_RETURN_NONE;
 }
@@ -4618,7 +4618,7 @@ StateMachine_GetFilePart(StateMachineObject *self, PyObject *args, PyObject *kwd
 
     // We can not throw exception here, we need to return rest of data
     if (error != ERR_EMPTY) {
-        if (!checkError(self->s, error, "GetFilePart")) return NULL;
+        if (!checkError(error, "GetFilePart")) return NULL;
     }
 
     result = FileToPython(&File);
@@ -4693,7 +4693,7 @@ StateMachine_AddFilePart(StateMachineObject *self, PyObject *args, PyObject *kwd
 
     // Do not throw exception here to be compatible with GetFilePart
     if (error != ERR_EMPTY) {
-        if (!checkError(self->s, error, "AddFilePart")) return NULL;
+        if (!checkError(error, "AddFilePart")) return NULL;
     }
 
     result = FileToPython(&File);
@@ -4768,7 +4768,7 @@ StateMachine_SendFilePart(StateMachineObject *self, PyObject *args, PyObject *kw
 
     // Do not throw exception here to be compatible with GetFilePart
     if (error != ERR_EMPTY) {
-        if (!checkError(self->s, error, "SendFilePart")) return NULL;
+        if (!checkError(error, "SendFilePart")) return NULL;
     }
 
     result = FileToPython(&File);
@@ -4822,7 +4822,7 @@ StateMachine_GetFileSystemStatus(StateMachineObject *self, PyObject *args, PyObj
     error = GSM_GetFileSystemStatus(self->s, &Status);
     END_PHONE_COMM
 
-    if (!checkError(self->s, error, "GetFileSystemStatus")) return NULL;
+    if (!checkError(error, "GetFileSystemStatus")) return NULL;
 
     return Py_BuildValue("{s:i,s:i,s:i,s:i,s:i}",
         "Used", Status.Used,
@@ -4864,7 +4864,7 @@ StateMachine_DeleteFile(StateMachineObject *self, PyObject *args, PyObject *kwds
 
     free(folder_g);
 
-    if (!checkError(self->s, error, "DeleteFile")) return NULL;
+    if (!checkError(error, "DeleteFile")) return NULL;
 
     Py_RETURN_NONE;
 }
@@ -4914,7 +4914,7 @@ StateMachine_AddFolder(StateMachineObject *self, PyObject *args, PyObject *kwds)
     error = GSM_AddFolder(self->s, &File);
     END_PHONE_COMM
 
-    if (!checkError(self->s, error, "AddFolder")) return NULL;
+    if (!checkError(error, "AddFolder")) return NULL;
 
     return UnicodeStringToPython(File.ID_FullName);
 }
@@ -4950,7 +4950,7 @@ StateMachine_DeleteFolder(StateMachineObject *self, PyObject *args, PyObject *kw
     END_PHONE_COMM
     free(folder_g);
 
-    if (!checkError(self->s, error, "DeleteFolder")) return NULL;
+    if (!checkError(error, "DeleteFolder")) return NULL;
 
     Py_RETURN_NONE;
 }
@@ -4973,7 +4973,7 @@ StateMachine_GetGPRSAccessPoint(StateMachineObject *self, PyObject *args, PyObje
     error = GSM_GetGPRSAccessPoint(self->s);
     END_PHONE_COMM
 
-    if (!checkError(self->s, error, "GetGPRSAccessPoint")) return NULL;
+    if (!checkError(error, "GetGPRSAccessPoint")) return NULL;
 
     Py_RETURN_NONE;
 }
@@ -4994,7 +4994,7 @@ StateMachine_SetGPRSAccessPoint(StateMachineObject *self, PyObject *args, PyObje
     error = GSM_SetGPRSAccessPoint(self->s);
     END_PHONE_COMM
 
-    if (!checkError(self->s, error, "SetGPRSAccessPoint")) return NULL;
+    if (!checkError(error, "SetGPRSAccessPoint")) return NULL;
 
     Py_RETURN_NONE;
 }
@@ -5037,7 +5037,7 @@ StateMachine_SetDebugFile(StateMachineObject *self, PyObject *args, PyObject *kw
 
     if (value == Py_None) {
         error = GSM_SetDebugFileDescriptor(NULL, TRUE, di);
-        if (!checkError(NULL, error, "SetDebugFileDescriptor")) return NULL;
+        if (!checkError(error, "SetDebugFileDescriptor")) return NULL;
     } else if (PyFile_Check(value)) {
         f = PyFile_AsFile(value);
         if (f == NULL) return NULL;
@@ -5045,12 +5045,12 @@ StateMachine_SetDebugFile(StateMachineObject *self, PyObject *args, PyObject *kw
         Py_INCREF(value);
 
         error = GSM_SetDebugFileDescriptor(f, FALSE, di);
-        if (!checkError(NULL, error, "SetDebugFileDescriptor")) return NULL;
+        if (!checkError(error, "SetDebugFileDescriptor")) return NULL;
     } else if (PyString_Check(value)) {
         s = PyString_AsString(value);
         if (s == NULL) return NULL;
         error = GSM_SetDebugFile(s, di);
-        if (!checkError(NULL, error, "SetDebugFile")) return NULL;
+        if (!checkError(error, "SetDebugFile")) return NULL;
     } else {
         PyErr_SetString(PyExc_TypeError, "Valid are only None, string or file parameters!");
         return NULL;
@@ -5504,7 +5504,7 @@ gammu_SetDebugFile(PyObject *self, PyObject *args, PyObject *kwds)
             DebugFile = NULL;
         }
         error = GSM_SetDebugFileDescriptor(NULL, FALSE, GSM_GetGlobalDebug());
-        if (!checkError(NULL, error, "SetDebugFileDescriptor")) return NULL;
+        if (!checkError(error, "SetDebugFileDescriptor")) return NULL;
     } else if (PyFile_Check(value)) {
         if (DebugFile != NULL) {
             Py_DECREF(DebugFile);
@@ -5515,7 +5515,7 @@ gammu_SetDebugFile(PyObject *self, PyObject *args, PyObject *kwds)
         DebugFile = value;
         Py_INCREF(DebugFile);
         error = GSM_SetDebugFileDescriptor(f, FALSE, GSM_GetGlobalDebug());
-        if (!checkError(NULL, error, "SetDebugFileDescriptor")) return NULL;
+        if (!checkError(error, "SetDebugFileDescriptor")) return NULL;
     } else if (PyString_Check(value)) {
         if (DebugFile != NULL) {
             Py_DECREF(DebugFile);
@@ -5524,7 +5524,7 @@ gammu_SetDebugFile(PyObject *self, PyObject *args, PyObject *kwds)
         s = PyString_AsString(value);
         if (s == NULL) return NULL;
         error = GSM_SetDebugFile(s, GSM_GetGlobalDebug());
-        if (!checkError(NULL, error, "SetDebugFile")) return NULL;
+        if (!checkError(error, "SetDebugFile")) return NULL;
     } else {
         PyErr_SetString(PyExc_TypeError, "Valid are only None, string or file parameters!");
         return NULL;
@@ -5602,7 +5602,7 @@ gammu_LinkSMS(PyObject *self, PyObject *args, PyObject *kwds)
     smsout = (GSM_MultiSMSMessage **)malloc((len + 1) * sizeof(GSM_MultiSMSMessage *));
 
     error = GSM_LinkSMS(GSM_GetGlobalDebug(), smsin, smsout, ems);
-    if (!checkError(NULL, error, "LinkSMS")) return NULL;
+    if (!checkError(error, "LinkSMS")) return NULL;
 
     ret = MultiSMSListToPython(smsout);
 
@@ -5719,7 +5719,7 @@ gammu_DecodeVCARD(PyObject *self, PyObject *args, PyObject *kwds)
         return NULL;
 
     error = GSM_DecodeVCARD(GSM_GetGlobalDebug(), buffer, &pos, &entry, SonyEricsson_VCard21);
-    if (!checkError(NULL, error, "DecodeVCARD")) return NULL;
+    if (!checkError(error, "DecodeVCARD")) return NULL;
 
     result = MemoryEntryToPython(&entry);
     GSM_FreeMemoryEntry(&entry);
@@ -5753,7 +5753,7 @@ gammu_EncodeVCARD(PyObject *self, PyObject *args, PyObject *kwds)
     if (!MemoryEntryFromPython(value, &entry, 1)) return NULL;
 
     error = GSM_EncodeVCARD(GSM_GetGlobalDebug(), buffer, sizeof(buffer), &pos, &entry, TRUE, SonyEricsson_VCard21);
-    if (!checkError(NULL, error, "EncodeVCARD")) return NULL;
+    if (!checkError(error, "EncodeVCARD")) return NULL;
 
     return PyString_FromString(buffer);
 }
@@ -5785,7 +5785,7 @@ gammu_DecodeVCS(PyObject *self, PyObject *args, PyObject *kwds)
     calendar_entry.Location = 0;
 
     error = GSM_DecodeVCALENDAR_VTODO(GSM_GetGlobalDebug(), buffer, &pos, &calendar_entry, &todo_entry, SonyEricsson_VCalendar, SonyEricsson_VToDo);
-    if (!checkError(NULL, error, "DecodeVCS")) return NULL;
+    if (!checkError(error, "DecodeVCS")) return NULL;
 
     if (calendar_entry.EntriesNum > 0) {
         return CalendarToPython(&calendar_entry);
@@ -5821,7 +5821,7 @@ gammu_DecodeICS(PyObject *self, PyObject *args, PyObject *kwds)
         return NULL;
 
     error = GSM_DecodeVCALENDAR_VTODO(GSM_GetGlobalDebug(), buffer, &pos, &calendar_entry, &todo_entry, Mozilla_iCalendar, Mozilla_VToDo);
-    if (!checkError(NULL, error, "DecodeICS")) return NULL;
+    if (!checkError(error, "DecodeICS")) return NULL;
 
     if (calendar_entry.EntriesNum > 0) {
         return CalendarToPython(&calendar_entry);
@@ -5856,7 +5856,7 @@ gammu_EncodeVCALENDAR(PyObject *self, PyObject *args, PyObject *kwds)
     if (!CalendarFromPython(value, &entry, 1)) return NULL;
 
     error = GSM_EncodeVCALENDAR(buffer, sizeof(buffer), &pos, &entry, TRUE, SonyEricsson_VCalendar);
-    if (!checkError(NULL, error, "EncodeVCALENDAR")) return NULL;
+    if (!checkError(error, "EncodeVCALENDAR")) return NULL;
 
     return PyString_FromString(buffer);
 }
@@ -5887,7 +5887,7 @@ gammu_EncodeICALENDAR(PyObject *self, PyObject *args, PyObject *kwds)
     if (!CalendarFromPython(value, &entry, 1)) return NULL;
 
     error = GSM_EncodeVCALENDAR(buffer, sizeof(buffer), &pos, &entry, TRUE, Mozilla_iCalendar);
-    if (!checkError(NULL, error, "EncodeICALENDAR")) return NULL;
+    if (!checkError(error, "EncodeICALENDAR")) return NULL;
 
     return PyString_FromString(buffer);
 }
@@ -5918,7 +5918,7 @@ gammu_EncodeVTODO(PyObject *self, PyObject *args, PyObject *kwds)
     if (!TodoFromPython(value, &entry, 1)) return NULL;
 
     error = GSM_EncodeVTODO(buffer, sizeof(buffer), &pos, &entry, TRUE, SonyEricsson_VToDo);
-    if (!checkError(NULL, error, "EncodeVTODO")) return NULL;
+    if (!checkError(error, "EncodeVTODO")) return NULL;
 
     return PyString_FromString(buffer);
 }
@@ -5949,7 +5949,7 @@ gammu_EncodeITODO(PyObject *self, PyObject *args, PyObject *kwds)
     if (!TodoFromPython(value, &entry, 1)) return NULL;
 
     error = GSM_EncodeVTODO(buffer, sizeof(buffer), &pos, &entry, TRUE, Mozilla_VToDo);
-    if (!checkError(NULL, error, "EncodeITODO")) return NULL;
+    if (!checkError(error, "EncodeITODO")) return NULL;
 
     return PyString_FromString(buffer);
 }
@@ -6075,7 +6075,7 @@ gammu_SaveBackup(PyObject *self, PyObject *args, PyObject *kwds)
     backup.DateTimeAvailable = TRUE;
 
     error = GSM_SaveBackupFile(filename, &backup, format);
-    if (!checkError(NULL, error, "SaveBackup")) return NULL;
+    if (!checkError(error, "SaveBackup")) return NULL;
 
     GSM_FreeBackup(&backup);
 
@@ -6125,7 +6125,7 @@ gammu_ReadBackup(PyObject *self, PyObject *args, PyObject *kwds)
     }
 
     error = GSM_ReadBackupFile(filename, &backup, format);
-    if (!checkError(NULL, error, "ReadBackup")) return NULL;
+    if (!checkError(error, "ReadBackup")) return NULL;
 
     result = BackupToPython(&backup);
 
@@ -6163,7 +6163,7 @@ gammu_SaveSMSBackup(PyObject *self, PyObject *args, PyObject *kwds)
         return NULL;
 
     error = GSM_AddSMSBackupFile(filename, &backup);
-    if (!checkError(NULL, error, "SaveSMSBackup")) return NULL;
+    if (!checkError(error, "SaveSMSBackup")) return NULL;
 
     GSM_FreeSMSBackup(&backup);
     Py_RETURN_NONE;
@@ -6192,7 +6192,7 @@ gammu_ReadSMSBackup(PyObject *self, PyObject *args, PyObject *kwds)
         return NULL;
 
     error = GSM_ReadSMSBackupFile(filename, &backup);
-    if (!checkError(NULL, error, "ReadSMSBackup")) return NULL;
+    if (!checkError(error, "ReadSMSBackup")) return NULL;
 
     result = SMSBackupToPython(&backup);
     GSM_FreeSMSBackup(&backup);
@@ -6287,7 +6287,7 @@ gammu_DecodePDU(PyObject *self, PyObject *args, PyObject *kwds)
 
     GSM_SetDefaultSMSData(&sms);
 	error = GSM_DecodePDUFrame(NULL, &sms,  pdu, pdulen, &parse_len, smsc);
-    if (!checkError(NULL, error, "DecodePDUFrame")) return NULL;
+    if (!checkError(error, "DecodePDUFrame")) return NULL;
 
     result = SMSToPython(&sms);
     return result;
@@ -6335,7 +6335,7 @@ gammu_EncodePDU(PyObject *self, PyObject *args, PyObject *kwds)
     }
 
     error = GSM_EncodeSMSFrame(NULL, &sms, buffer, *msg_layout, &length, TRUE);
-    if (!checkError(NULL, error, "EncodeSMSFrame")) return NULL;
+    if (!checkError(error, "EncodeSMSFrame")) return NULL;
 
     if (msg_layout == &PHONE_SMSDeliver) {
         length = length - PHONE_SMSDeliver.Text;

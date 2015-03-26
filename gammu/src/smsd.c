@@ -67,7 +67,7 @@ static PyObject *Py_SMSD_MainLoop(SMSDObject * self, PyObject * args, PyObject *
 	error = SMSD_MainLoop(self->config, FALSE, max_failures);
 	Py_END_ALLOW_THREADS
 
-	if (!checkError(NULL, error, "SMSD_MainLoop"))
+	if (!checkError(error, "SMSD_MainLoop"))
 		 return NULL;
 
 	Py_RETURN_NONE;
@@ -86,7 +86,7 @@ static PyObject *Py_SMSD_Shutdown(SMSDObject * self, PyObject * args, PyObject *
 	error = SMSD_Shutdown(self->config);
 	Py_END_ALLOW_THREADS
 
-	if (!checkError(NULL, error, "SMSD_Shutdown"))
+	if (!checkError(error, "SMSD_Shutdown"))
 		 return NULL;
 
 	Py_RETURN_NONE;
@@ -106,7 +106,7 @@ static PyObject *Py_SMSD_GetStatus(SMSDObject * self, PyObject * args, PyObject 
 	error = SMSD_GetStatus(self->config, &status);
 	Py_END_ALLOW_THREADS
 
-	if (!checkError(NULL, error, "SMSD_GetStatus"))
+	if (!checkError(error, "SMSD_GetStatus"))
 		 return NULL;
 
 	return Py_BuildValue("{s:s,s:s,s:s,s:i,s:i,s:i,s:i,s:i}",
@@ -138,7 +138,7 @@ static PyObject *Py_SMSD_InjectSMS(SMSDObject * self, PyObject * args, PyObject 
 	error = SMSD_InjectSMS(self->config, &smsin, newid);
 	Py_END_ALLOW_THREADS
 
-	if (!checkError(NULL, error, "SMSD_InjectSMS"))
+	if (!checkError(error, "SMSD_InjectSMS"))
 		 return NULL;
 
 	return Py_BuildValue("s", newid);
@@ -224,7 +224,7 @@ static int SMSD_init(SMSDObject * self, PyObject * args, PyObject * kwds)
 		return 0;
 
 	error = SMSD_ReadConfig(s, self->config, TRUE);
-	if (!checkError(NULL, error, "SMSD_ReadConfig"))
+	if (!checkError(error, "SMSD_ReadConfig"))
 		return 0;
 
 	return 1;

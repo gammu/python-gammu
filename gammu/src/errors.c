@@ -25,7 +25,7 @@ PyObject *GammuError;
 
 PyObject *gammu_error_map[ERR_LAST_VALUE + 1];
 
-int checkError(GSM_StateMachine *s, GSM_Error error, const char *where) {
+int checkError(GSM_Error error, const char *where) {
     PyObject    *val;
     PyObject    *text;
     PyObject    *err = GammuError;

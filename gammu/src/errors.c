@@ -26,7 +26,7 @@ PyObject *GammuError;
 PyObject *gammu_error_map[ERR_LAST_VALUE + 1];
 
 int checkError(GSM_Error error, const char *where) {
-    PyObject    *val;
+    PyObject    *val = NULL;
     PyObject    *text;
     PyObject    *err = GammuError;
     const char  *msg;
@@ -39,15 +39,14 @@ int checkError(GSM_Error error, const char *where) {
     msg = GSM_ErrorString(error);
 
     text = LocaleStringToPython(msg);
-    if (text == NULL) {
-        return 0;
-    }
+    if (text != NULL) {
 
-    val = Py_BuildValue("{s:O,s:s,s:i}",
-            "Text", text,
-            "Where", where,
-            "Code", error);
-    Py_DECREF(text);
+        val = Py_BuildValue("{s:O,s:s,s:i}",
+                "Text", text,
+                "Where", where,
+                "Code", error);
+        Py_DECREF(text);
+    }
 
     if (val == NULL) {
         PyErr_Format(err, "GSM Error %d (%s) in %s", error, msg, where);

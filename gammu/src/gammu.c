@@ -149,7 +149,6 @@ gammu_set_debug(GSM_Debug_Info *di, PyObject *value, PyObject **debug_object)
         str = PyUnicode_AsUTF8String(value);
 #endif
         if (str == NULL) {
-            PyErr_Format(PyExc_ValueError, "Non string value for %s (unicode)", s);
             return NULL;
         }
         s = PyBytes_AsString(str);

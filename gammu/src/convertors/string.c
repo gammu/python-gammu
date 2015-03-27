@@ -101,6 +101,7 @@ Py_UNICODE *strGammuToPythonL(const unsigned char *src, const int len)
 	}
 
 	/* Convert string including zero at the end. */
+	/* TODO: Handle possible UTF-16 chars */
 	for (i = 0; i <= len; i++) {
 		dest[i] = (src[2 * i] << 8) + src[(2 * i) + 1];
 	}

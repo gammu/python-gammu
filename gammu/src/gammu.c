@@ -580,7 +580,7 @@ StateMachine_SetConfig(StateMachineObject *self, PyObject *args, PyObject *kwds)
                     str = value;
                     Py_INCREF(str);
                 }
-                v = PyBytes_AsString(value);
+                v = PyBytes_AsString(str);
                 if (v == NULL) {
                     PyErr_Format(PyExc_ValueError, "Non string value for (string) %s", s);
                     return NULL;

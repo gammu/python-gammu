@@ -133,7 +133,7 @@ class GammuTask(object):
             else:
                 cmd = commands[i]
                 params = None
-            percents = 100 * (i + 1) / len(commands)
+            percents = round(100 * (i + 1) / len(commands))
             self._list.append(GammuCommand(cmd, params, percents))
 
     def get_next(self):

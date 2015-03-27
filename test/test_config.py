@@ -95,7 +95,7 @@ class DebugTest(unittest.TestCase):
         sms = gammu.DecodePDU(PDU_DATA.decode('hex'))
         if filename is not None:
             with open(filename, 'r') as handle:
-                self.assertIn('SMS type: Status report', handle.read())
+                self.assertTrue('SMS type: Status report' in handle.read())
 
     def test_file(self):
         testfile = tempfile.NamedTemporaryFile(suffix='.debug')

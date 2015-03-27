@@ -93,13 +93,17 @@ PyObject *BackupToPython(GSM_Backup * backup)
 		dt = Py_None;
 	}
 
-	o = Py_BuildValue("{s:s,s:s,s:s,s:O,s:O,s:O,s:O,s:O}",
-			  "IMEI", backup->IMEI,
-			  "Model", backup->Model,
-			  "Creator", backup->Creator,
-			  "PhonePhonebook", phone,
-			  "SIMPhonebook", sim,
-			  "Calendar", calendar, "ToDo", todo, "DateTime", dt);
+	o = Py_BuildValue(
+		"{s:s,s:s,s:s,s:O,s:O,s:O,s:O,s:O}",
+		"IMEI", backup->IMEI,
+		"Model", backup->Model,
+		"Creator", backup->Creator,
+		"PhonePhonebook", phone,
+		"SIMPhonebook", sim,
+		"Calendar", calendar,
+		"ToDo", todo,
+		"DateTime", dt
+	);
 
 	Py_DECREF(phone);
 	Py_DECREF(sim);

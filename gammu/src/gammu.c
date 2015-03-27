@@ -154,8 +154,8 @@ gammu_set_debug(GSM_Debug_Info *di, PyObject *value, PyObject **debug_object)
         s = PyBytes_AsString(str);
         if (s == NULL) return NULL;
         error = GSM_SetDebugFile(s, di);
-        if (!checkError(error, "SetDebugFile")) return NULL;
         Py_DECREF(str);
+        if (!checkError(error, "SetDebugFile")) return NULL;
 #if PY_MAJOR_VERSION < 3
     } else if (PyString_Check(value)) {
         s = PyString_AsString(value);
@@ -5992,7 +5992,8 @@ gammu_SaveRingtone(PyObject *self, PyObject *args, PyObject *kwds)
     char                        *name;
     FILE                        *f;
     GSM_Ringtone                ringtone;
-    gboolean                        closefile = FALSE;
+    gboolean                    closefile = FALSE;
+    PyObject                    *str;
 #if PY_MAJOR_VERSION >= 3
     int                 fd;
 #endif
@@ -6020,6 +6021,25 @@ gammu_SaveRingtone(PyObject *self, PyObject *args, PyObject *kwds)
         f = PyFile_AsFile(file);
         if (f == NULL) return NULL;
 #endif
+    } else if (PyUnicode_Check(value)) {
+#if PY_MAJOR_VERSION >= 3
+        str = PyUnicode_EncodeFSDefault(value);
+#else
+        str = PyUnicode_AsUTF8String(value);
+#endif
+        if (str == NULL) {
+            return NULL;
+        }
+        name = PyBytes_AsString(str);
+        if (name == NULL) return NULL;
+        f = fopen(name, "wb");
+        Py_DECREF(str);
+        if (f == NULL) {
+            PyErr_SetString(PyExc_IOError, "Can not open file for writing!");
+            return NULL;
+        }
+        closefile = TRUE;
+#if PY_MAJOR_VERSION < 3
     } else if (PyString_Check(file)) {
         name = PyString_AsString(file);
         if (name == NULL) return NULL;
@@ -6029,6 +6049,7 @@ gammu_SaveRingtone(PyObject *self, PyObject *args, PyObject *kwds)
             return NULL;
         }
         closefile = TRUE;
+#endif
     } else {
         PyErr_SetString(PyExc_TypeError, "Valid are only string or file parameters!");
         return NULL;

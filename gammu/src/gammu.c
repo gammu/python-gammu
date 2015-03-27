@@ -508,7 +508,7 @@ StateMachine_SetConfig(StateMachineObject *self, PyObject *args, PyObject *kwds)
 {
     int             section = 0;
     static char     *kwlist[] = {"Section", "Values", NULL};
-    PyObject        *key, *value, *str, *typeobj, *typestr;
+    PyObject        *key, *value, *str, *typeobj, *typestr, *keystr;
     PyObject        *dict;
     char            *s, *v, *setv;
     Py_ssize_t      pos = 0;
@@ -526,7 +526,20 @@ StateMachine_SetConfig(StateMachineObject *self, PyObject *args, PyObject *kwds)
     }
 
     while (PyDict_Next(dict, &pos, &key, &value)) {
-        s = PyString_AsString(key);
+        keystr = NULL;
+        s = NULL;
+        if (PyUnicode_Check(key)) {
+            keystr = PyUnicode_AsASCIIString(key);
+            if (keystr == NULL) {
+                return NULL;
+            }
+            s = PyBytes_AsString(keystr);
+#if PY_MAJOR_VERSION < 3
+        } else {
+            s = PyString_AsString(key);
+#endif
+        }
+
         if (s == NULL) {
             PyErr_Format(PyExc_ValueError, "Non string key in configuration values");
             return NULL;
@@ -615,6 +628,9 @@ StateMachine_SetConfig(StateMachineObject *self, PyObject *args, PyObject *kwds)
                 PyErr_Format(PyExc_ValueError, "Uknown key: %s", s);
                 return NULL;
             }
+        }
+        if (keystr != NULL) {
+            Py_DECREF(keystr);
         }
     }
 

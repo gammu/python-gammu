@@ -18,7 +18,11 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 import unittest
+import tempfile
 import gammu
+import sys
+
+PDU_DATA = '079124602009999002AB098106845688F8907080517375809070805183018000'
 
 
 class ConfigTest(unittest.TestCase):
@@ -78,3 +82,48 @@ class ConfigTest(unittest.TestCase):
         )
         cfg = state_machine.GetConfig(0)
         self.assertEqual(cfg['StartInfo'], 0)
+
+
+class DebugTest(unittest.TestCase):
+    def setUp(self):
+        gammu.SetDebugLevel('textall')
+
+    def check_operation(self, filename):
+        """
+        Executes gammu operation which causes debug logs.
+        """
+        sms = gammu.DecodePDU(PDU_DATA.decode('hex'))
+        if filename is not None:
+            with open(filename, 'r') as handle:
+                self.assertIn('SMS type: Status report', handle.read())
+
+    def test_file(self):
+        testfile = tempfile.NamedTemporaryFile(suffix='.debug')
+        try:
+            gammu.SetDebugFile(testfile.file)
+            self.check_operation(testfile.name)
+        finally:
+            testfile.close()
+
+    def test_filename(self):
+        testfile = tempfile.NamedTemporaryFile(suffix='.debug')
+        try:
+            gammu.SetDebugFile(testfile.name)
+            self.check_operation(testfile.name)
+        finally:
+            testfile.close()
+
+    def test_none(self):
+        gammu.SetDebugFile(None)
+        self.check_operation(None)
+
+    def test_nothing(self):
+        gammu.SetDebugLevel('nothing')
+        testfile = tempfile.NamedTemporaryFile(suffix='.debug')
+        try:
+            gammu.SetDebugFile(testfile.file)
+            self.check_operation(None)
+            with open(testfile.name, 'r') as handle:
+                self.assertEqual('', handle.read())
+        finally:
+            testfile.close()

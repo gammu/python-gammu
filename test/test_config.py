@@ -21,8 +21,7 @@ import unittest
 import tempfile
 import gammu
 import sys
-
-PDU_DATA = '079124602009999002AB098106845688F8907080517375809070805183018000'
+from .test_sms import PDU_DATA
 
 
 class ConfigTest(unittest.TestCase):
@@ -92,7 +91,7 @@ class DebugTest(unittest.TestCase):
         """
         Executes gammu operation which causes debug logs.
         """
-        sms = gammu.DecodePDU(PDU_DATA.decode('hex'))
+        sms = gammu.DecodePDU(PDU_DATA)
         if filename is not None:
             with open(filename, 'r') as handle:
                 self.assertTrue('SMS type: Status report' in handle.read())

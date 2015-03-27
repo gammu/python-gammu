@@ -23,9 +23,12 @@ import unittest
 import gammu
 import sys
 import os
+import binascii
 
+PDU_DATA = binascii.unhexlify(
+    '079124602009999002AB098106845688F8907080517375809070805183018000'
+)
 
-PDU_DATA = '079124602009999002AB098106845688F8907080517375809070805183018000'
 MESSAGE = (
     '.........1.........2.........3.........4.........5.........6.........7'
     '.........8.........9........0.........1.........2.........3.........4'
@@ -56,7 +59,7 @@ class PDUTest(unittest.TestCase):
             gammu.SetDebugLevel('textall')
 
     def test_decode(self):
-        sms = gammu.DecodePDU(PDU_DATA.decode('hex'))
+        sms = gammu.DecodePDU(PDU_DATA)
         self.assertEqual(sms['Number'], '604865888')
         self.assertEqual(sms['Text'], 'Delivered')
 

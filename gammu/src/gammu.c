@@ -129,6 +129,8 @@ gammu_set_debug(GSM_Debug_Info *di, PyObject *value, PyObject **debug_object)
 #if PY_MAJOR_VERSION >= 3
     } else if (fd != -1) {
         new_debug_object = value;
+        fd = dup(fd);
+        if (fd == -1) return NULL;
         f = fdopen(fd, "a");
         if (f == NULL) return NULL;
 
@@ -6029,6 +6031,8 @@ gammu_SaveRingtone(PyObject *self, PyObject *args, PyObject *kwds)
     }
 
     if (fd != -1) {
+        fd = dup(fd);
+        if (fd == -1) return NULL;
         f = fdopen(fd, "wb");
         if (f == NULL) return NULL;
         closefile = TRUE;

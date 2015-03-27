@@ -5770,7 +5770,7 @@ gammu_EncodeVCARD(PyObject *self, PyObject *args, PyObject *kwds)
     error = GSM_EncodeVCARD(GSM_GetGlobalDebug(), buffer, sizeof(buffer), &pos, &entry, TRUE, SonyEricsson_VCard21);
     if (!checkError(error, "EncodeVCARD")) return NULL;
 
-    return PyString_FromString(buffer);
+    return PyUnicode_FromString(buffer);
 }
 
 static char gammu_DecodeVCS__doc__[] =
@@ -5873,7 +5873,7 @@ gammu_EncodeVCALENDAR(PyObject *self, PyObject *args, PyObject *kwds)
     error = GSM_EncodeVCALENDAR(buffer, sizeof(buffer), &pos, &entry, TRUE, SonyEricsson_VCalendar);
     if (!checkError(error, "EncodeVCALENDAR")) return NULL;
 
-    return PyString_FromString(buffer);
+    return PyUnicode_FromString(buffer);
 }
 
 static char gammu_EncodeICALENDAR__doc__[] =
@@ -5904,7 +5904,7 @@ gammu_EncodeICALENDAR(PyObject *self, PyObject *args, PyObject *kwds)
     error = GSM_EncodeVCALENDAR(buffer, sizeof(buffer), &pos, &entry, TRUE, Mozilla_iCalendar);
     if (!checkError(error, "EncodeICALENDAR")) return NULL;
 
-    return PyString_FromString(buffer);
+    return PyUnicode_FromString(buffer);
 }
 
 static char gammu_EncodeVTODO__doc__[] =
@@ -5935,7 +5935,7 @@ gammu_EncodeVTODO(PyObject *self, PyObject *args, PyObject *kwds)
     error = GSM_EncodeVTODO(buffer, sizeof(buffer), &pos, &entry, TRUE, SonyEricsson_VToDo);
     if (!checkError(error, "EncodeVTODO")) return NULL;
 
-    return PyString_FromString(buffer);
+    return PyUnicode_FromString(buffer);
 }
 
 static char gammu_EncodeITODO__doc__[] =
@@ -5966,7 +5966,7 @@ gammu_EncodeITODO(PyObject *self, PyObject *args, PyObject *kwds)
     error = GSM_EncodeVTODO(buffer, sizeof(buffer), &pos, &entry, TRUE, Mozilla_VToDo);
     if (!checkError(error, "EncodeITODO")) return NULL;
 
-    return PyString_FromString(buffer);
+    return PyUnicode_FromString(buffer);
 }
 
 static char gammu_SaveRingtone__doc__[] =

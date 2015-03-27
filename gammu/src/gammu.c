@@ -565,7 +565,7 @@ StateMachine_SetConfig(StateMachineObject *self, PyObject *args, PyObject *kwds)
                 return NULL;
             }
         } else {
-            if (PyString_Check(value) || PyUnicode_Check(value)) {
+            if (PyBytes_Check(value) || PyUnicode_Check(value)) {
                 if (PyUnicode_Check(value)) {
                     str = PyUnicode_AsASCIIString(value);
                     if (str == NULL) {
@@ -576,7 +576,7 @@ StateMachine_SetConfig(StateMachineObject *self, PyObject *args, PyObject *kwds)
                     str = value;
                     Py_INCREF(str);
                 }
-                v = PyString_AsString(value);
+                v = PyBytes_AsString(value);
                 if (v == NULL) {
                     PyErr_Format(PyExc_ValueError, "Non string value for (string) %s", s);
                     return NULL;

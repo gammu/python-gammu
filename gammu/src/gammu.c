@@ -170,9 +170,9 @@ gammu_set_debug(GSM_Debug_Info *di, PyObject *value, PyObject **debug_object)
 
     if (*debug_object != NULL) {
         Py_DECREF(*debug_object);
-        debug_object = NULL;
+        *debug_object = NULL;
     }
-    if (new_debug_object) {
+    if (new_debug_object != NULL) {
         Py_INCREF(new_debug_object);
         *debug_object = new_debug_object;
     }

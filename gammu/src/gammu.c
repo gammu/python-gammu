@@ -508,7 +508,7 @@ StateMachine_SetConfig(StateMachineObject *self, PyObject *args, PyObject *kwds)
 {
     int             section = 0;
     static char     *kwlist[] = {"Section", "Values", NULL};
-    PyObject        *key, *value, *str, *typeobj, *typestr, *keystr;
+    PyObject        *key, *value, *str, *keystr;
     PyObject        *dict;
     char            *s, *v, *setv;
     Py_ssize_t      pos = 0;
@@ -593,11 +593,7 @@ StateMachine_SetConfig(StateMachineObject *self, PyObject *args, PyObject *kwds)
                 if (value == Py_None) {
                     setv = NULL;
                 } else {
-                    typeobj = PyObject_Type(value);
-                    typestr = PyObject_Str(typeobj);
-                    PyErr_Format(PyExc_ValueError, "Non string value for %s: %s", s, PyString_AsString(typestr));
-                    Py_DECREF(typeobj);
-                    Py_DECREF(typestr);
+                    PyErr_Format(PyExc_ValueError, "Non string value for %s", s);
                     return NULL;
                 }
             }

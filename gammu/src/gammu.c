@@ -567,7 +567,11 @@ StateMachine_SetConfig(StateMachineObject *self, PyObject *args, PyObject *kwds)
         } else {
             if (PyBytes_Check(value) || PyUnicode_Check(value)) {
                 if (PyUnicode_Check(value)) {
-                    str = PyUnicode_AsASCIIString(value);
+#if PY_MAJOR_VERSION >= 3
+                    str = PyUnicode_EncodeFSDefault(value);
+#else
+                    str = PyUnicode_AsUTF8String(value);
+#endif
                     if (str == NULL) {
                         PyErr_Format(PyExc_ValueError, "Non string value for %s (unicode)", s);
                         return NULL;

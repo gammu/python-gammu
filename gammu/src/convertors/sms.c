@@ -1035,19 +1035,30 @@ PyObject *SMSToPython(GSM_SMSMessage * sms)
 		return NULL;
 	}
 
-	val =
-	    Py_BuildValue
-	    ("{s:O,s:O,s:i,s:i,s:s,s:i,s:u,s:u,s:O,s:s,s:s,s:O,s:O,s:i,s:i,s:s,s:i,s:i,s:i,s:i,s:i}",
-	     "SMSC", smsc, "UDH", udh, "Folder", (int)sms->Folder,
-	     "InboxFolder", (int)sms->InboxFolder, "Memory", mt, "Location",
-	     (int)sms->Location, "Name", name, "Number", number, "Text", text,
-	     "Type", type, "Coding", coding, "DateTime", dt, "SMSCDateTime",
-	     smscdt, "DeliveryStatus", (int)sms->DeliveryStatus,
-	     "ReplyViaSameSMSC", (int)sms->ReplyViaSameSMSC, "State", state,
-	     "Class", (int)sms->Class, "MessageReference",
-	     (int)sms->MessageReference, "ReplaceMessage",
-	     (int)sms->ReplaceMessage, "RejectDuplicates",
-	     (int)sms->RejectDuplicates, "Length", sms->Length);
+	val = Py_BuildValue(
+		"{s:O,s:O,s:i,s:i,s:s,s:i,s:u,s:u,s:O,s:s,s:s,s:O,s:O,s:i,s:i,s:s,s:i,s:i,s:i,s:i,s:i}",
+		"SMSC", smsc,
+		"UDH", udh,
+		"Folder", (int)sms->Folder,
+		"InboxFolder", (int)sms->InboxFolder,
+		"Memory", mt,
+		"Location", (int)sms->Location,
+		"Name", name,
+		"Number", number,
+		"Text", text,
+		"Type", type,
+		"Coding", coding,
+		"DateTime", dt,
+		"SMSCDateTime", smscdt,
+		"DeliveryStatus", (int)sms->DeliveryStatus,
+		"ReplyViaSameSMSC", (int)sms->ReplyViaSameSMSC,
+		"State", state,
+		"Class", (int)sms->Class,
+		"MessageReference", (int)sms->MessageReference,
+		"ReplaceMessage", (int)sms->ReplaceMessage,
+		"RejectDuplicates", (int)sms->RejectDuplicates,
+		"Length", sms->Length
+	);
 
 	Py_DECREF(smsc);
 	Py_DECREF(udh);

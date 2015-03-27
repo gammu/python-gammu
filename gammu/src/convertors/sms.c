@@ -681,13 +681,19 @@ PyObject *UDHToPython(GSM_UDHHeader * udh)
 	if (type == NULL)
 		return NULL;
 
-	val = Py_BuildValue("{s:s,s:s#,s:i,s:i,s:i,s:i}",
-			    "Type", type,
-			    "Text", udh->Text, udh->Length,
-			    "ID8bit", udh->ID8bit,
-			    "ID16bit", udh->ID16bit,
-			    "PartNumber", udh->PartNumber,
-			    "AllParts", udh->AllParts);
+	val = Py_BuildValue(
+#if PY_MAJOR_VERSION >= 3
+		"{s:s,s:y#,s:i,s:i,s:i,s:i}",
+#else
+		"{s:s,s:s#,s:i,s:i,s:i,s:i}",
+#endif
+		"Type", type,
+		"Text", udh->Text, udh->Length,
+		"ID8bit", udh->ID8bit,
+		"ID16bit", udh->ID16bit,
+		"PartNumber", udh->PartNumber,
+		"AllParts", udh->AllParts
+	);
 
 	free(type);
 

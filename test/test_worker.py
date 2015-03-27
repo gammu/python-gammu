@@ -340,4 +340,5 @@ class WorkerDummyTest(DummyTest):
                 del self.results[i]
                 break
 
-        self.assertEqual(self.results, WORKER_EXPECT)
+        self.maxDiff = None
+        self.assertEqual(WORKER_EXPECT, self.results)

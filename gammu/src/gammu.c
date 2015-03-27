@@ -6524,7 +6524,7 @@ static struct PyModuleDef moduledef = {
 #define INITERROR return NULL
 
 PyObject *
-PyInit_gammu(void)
+PyInit__gammu(void)
 
 #else
 #define INITERROR return

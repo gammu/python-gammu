@@ -1,27 +1,25 @@
 python-gammu
 ============
 
-.. image:: https://travis-ci.org/nijel/python-gammu.svg?branch=master
-    :target: https://travis-ci.org/nijel/python-gammu
+.. image:: https://travis-ci.org/gammu/python-gammu.svg?branch=master
+    :target: https://travis-ci.org/gammu/python-gammu
 
-.. image:: https://www.codacy.com/project/badge/9a3a183894e3427a8b205f4c57672f63
-    :target: https://www.codacy.com/public/michal_2/python-gammu
+.. image:: https://www.codacy.com/project/badge/c7e87df480fb4609aa48482873f5c46b
+    :target: https://www.codacy.com/public/michal_2/python-gammu_2
 
-.. image:: https://scrutinizer-ci.com/g/nijel/python-gammu/badges/quality-score.png?b=master
-   :target: https://scrutinizer-ci.com/g/nijel/python-gammu/?branch=master
+.. image:: https://scrutinizer-ci.com/g/gammu/python-gammu/badges/quality-score.png?b=master
+   :target: https://scrutinizer-ci.com/g/gammu/python-gammu/?branch=master
 
-.. image:: https://landscape.io/github/nijel/python-gammu/master/landscape.svg?style=flat
-   :target: https://landscape.io/github/nijel/python-gammu/master
+.. image:: https://landscape.io/github/gammu/python-gammu/master/landscape.svg?style=flat
+   :target: https://landscape.io/github/gammu/python-gammu/master
 
-.. image:: https://coveralls.io/repos/nijel/python-gammu/badge.svg
-    :target: https://coveralls.io/r/nijel/python-gammu
+.. image:: https://coveralls.io/repos/gammu/python-gammu/badge.svg
+    :target: https://coveralls.io/r/gammu/python-gammu
 
-.. image:: https://buildtimetrend.herokuapp.com/badge/nijel/python-gammu/latest
-    :target: https://buildtimetrend.herokuapp.com/dashboard/nijel/python-gammu
+.. image:: https://buildtimetrend.herokuapp.com/badge/gammu/python-gammu/latest
+    :target: https://buildtimetrend.herokuapp.com/dashboard/gammu/python-gammu
 
-Python bindings for Gammu library are now part of Gammu source package
-(in python subdirectory).  They are built automatically if you have
-installed Python with all needed tools.
+Python bindings for Gammu library.
 
 Homepage
 ========

@@ -197,7 +197,7 @@ class GammuThread(threading.Thread):
             else:
                 result = func(*params)
         except gammu.GSMError as info:
-            errcode = info[0]['Code']
+            errcode = info.args[0]['Code']
             error = gammu.ErrorNumbers[errcode]
 
         self._callback(name, result, error, percentage)

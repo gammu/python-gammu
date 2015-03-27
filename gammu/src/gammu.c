@@ -105,6 +105,67 @@ typedef struct {
 #endif
 } StateMachineObject;
 
+
+static PyObject *
+gammu_set_debug(GSM_Debug_Info *di, PyObject *value, PyObject **debug_object)
+{
+    char                *s;
+    FILE                *f;
+    GSM_Error           error;
+    PyObject            *new_debug_object = NULL;
+#if PY_MAJOR_VERSION >= 3
+    int                 fd;
+#endif
+
+#if PY_MAJOR_VERSION >= 3
+    fd = PyObject_AsFileDescriptor(value);
+    if (fd == -1) {
+        PyErr_Clear();
+    }
+#endif
+    if (value == Py_None) {
+        error = GSM_SetDebugFileDescriptor(NULL, FALSE, di);
+        if (!checkError(error, "SetDebugFileDescriptor")) return NULL;
+#if PY_MAJOR_VERSION >= 3
+    } else if (fd != -1) {
+        new_debug_object = value;
+        f = fdopen(fd, "a");
+        if (f == NULL) return NULL;
+
+        error = GSM_SetDebugFileDescriptor(f, TRUE, di);
+        if (!checkError(error, "SetDebugFileDescriptor")) return NULL;
+#else
+    } else if (PyFile_Check(value)) {
+        f = PyFile_AsFile(value);
+        if (f == NULL) return NULL;
+        new_debug_object = value;
+        error = GSM_SetDebugFileDescriptor(f, FALSE, di);
+        if (!checkError(error, "SetDebugFileDescriptor")) return NULL;
+#endif
+    } else if (PyString_Check(value)) {
+        s = PyString_AsString(value);
+        if (s == NULL) return NULL;
+        error = GSM_SetDebugFile(s, di);
+        if (!checkError(error, "SetDebugFile")) return NULL;
+    } else {
+        PyErr_SetString(PyExc_TypeError, "Valid are only None, string or file parameters!");
+        return NULL;
+    }
+
+    if (*debug_object != NULL) {
+        Py_DECREF(*debug_object);
+        debug_object = NULL;
+    }
+    if (new_debug_object) {
+        Py_INCREF(new_debug_object);
+        *debug_object = new_debug_object;
+    }
+
+    Py_RETURN_NONE;
+}
+
+
+
 /* ---------------------------------------------------------------- */
 
 /*
@@ -5015,48 +5076,18 @@ static PyObject *
 StateMachine_SetDebugFile(StateMachineObject *self, PyObject *args, PyObject *kwds)
 {
     PyObject            *value;
-    char                *s;
     int                 global = 0;
-    FILE                *f;
     static char         *kwlist[] = {"File", "Global", NULL};
-    GSM_Error           error;
     GSM_Debug_Info *    di;
 
     di = GSM_GetDebug(self->s);
     if (!PyArg_ParseTupleAndKeywords(args, kwds, "O|i", kwlist, &value, &global))
         return NULL;
 
-    /* We will drop our current file */
-    if (self->DebugFile != NULL) {
-        Py_DECREF(self->DebugFile);
-        self->DebugFile = NULL;
-    }
-
     /* Set global debug config */
     GSM_SetDebugGlobal(global, di);
 
-    if (value == Py_None) {
-        error = GSM_SetDebugFileDescriptor(NULL, TRUE, di);
-        if (!checkError(error, "SetDebugFileDescriptor")) return NULL;
-    } else if (PyFile_Check(value)) {
-        f = PyFile_AsFile(value);
-        if (f == NULL) return NULL;
-        self->DebugFile = value;
-        Py_INCREF(value);
-
-        error = GSM_SetDebugFileDescriptor(f, FALSE, di);
-        if (!checkError(error, "SetDebugFileDescriptor")) return NULL;
-    } else if (PyString_Check(value)) {
-        s = PyString_AsString(value);
-        if (s == NULL) return NULL;
-        error = GSM_SetDebugFile(s, di);
-        if (!checkError(error, "SetDebugFile")) return NULL;
-    } else {
-        PyErr_SetString(PyExc_TypeError, "Valid are only None, string or file parameters!");
-        return NULL;
-    }
-
-    Py_RETURN_NONE;
+    return gammu_set_debug(di, value, &(self->DebugFile));
 }
 
 static char StateMachine_SetDebugLevel__doc__[] =
@@ -5479,6 +5510,7 @@ gammu_Version(PyObject *self)
     return Py_BuildValue("s,s,s", GetGammuVersion(), PYTHON_GAMMU_VERSION, GAMMU_VERSION);
 }
 
+
 static char gammu_SetDebugFile__doc__[] =
 "SetDebugFile(File)\n\n"
 "Sets global debug file.\n\n"
@@ -5492,47 +5524,12 @@ static PyObject *
 gammu_SetDebugFile(PyObject *self, PyObject *args, PyObject *kwds)
 {
     PyObject            *value;
-    char                *s;
-    FILE                *f;
     static char         *kwlist[] = {"File", NULL};
-    GSM_Error           error;
 
     if (!PyArg_ParseTupleAndKeywords(args, kwds, "O", kwlist, &value))
         return NULL;
 
-    if (value == Py_None) {
-        if (DebugFile != NULL) {
-            Py_DECREF(DebugFile);
-            DebugFile = NULL;
-        }
-        error = GSM_SetDebugFileDescriptor(NULL, FALSE, GSM_GetGlobalDebug());
-        if (!checkError(error, "SetDebugFileDescriptor")) return NULL;
-    } else if (PyFile_Check(value)) {
-        if (DebugFile != NULL) {
-            Py_DECREF(DebugFile);
-            DebugFile = NULL;
-        }
-        f = PyFile_AsFile(value);
-        if (f == NULL) return NULL;
-        DebugFile = value;
-        Py_INCREF(DebugFile);
-        error = GSM_SetDebugFileDescriptor(f, FALSE, GSM_GetGlobalDebug());
-        if (!checkError(error, "SetDebugFileDescriptor")) return NULL;
-    } else if (PyString_Check(value)) {
-        if (DebugFile != NULL) {
-            Py_DECREF(DebugFile);
-            DebugFile = NULL;
-        }
-        s = PyString_AsString(value);
-        if (s == NULL) return NULL;
-        error = GSM_SetDebugFile(s, GSM_GetGlobalDebug());
-        if (!checkError(error, "SetDebugFile")) return NULL;
-    } else {
-        PyErr_SetString(PyExc_TypeError, "Valid are only None, string or file parameters!");
-        return NULL;
-    }
-
-    Py_RETURN_NONE;
+    return gammu_set_debug(GSM_GetGlobalDebug(), value, &DebugFile);
 }
 
 static char gammu_SetDebugLevel__doc__[] =

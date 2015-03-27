@@ -81,8 +81,7 @@ Py_UNICODE *strGammuToPython(const unsigned char *src)
 	int len = 0;
 
 	/* Get string length */
-	while (src[len * 2] != 0 || src[(len * 2) + 1] != 0)
-		len++;
+	len = UnicodeLength(src);
 
 	return strGammuToPythonL(src, len);
 }

@@ -83,7 +83,7 @@ def main():
 
     # Check AddFilePart
     print("\n\nExpection: Put cgi.jpg onto Memorycard on phone")
-    file_handle = open(options.testfile, "r")
+    file_handle = open(options.testfile, "rb")
     file_stat = os.stat(options.testfile)
     ttime = datetime.datetime.fromtimestamp(file_stat[8])
     file_f = {
@@ -110,7 +110,7 @@ def main():
     print(
         "\n\nExpection: Get cgi.jpg from memorycard and write it as test.jpg"
     )
-    with open('./test.jpg', 'w') as handle:
+    with open('./test.jpg', 'wb') as handle:
         file_f = {
             "ID_FullName": options.folder + "/cgi.jpg",
             "Finished": 0
@@ -122,8 +122,8 @@ def main():
 
     # Check correct transfer
     print("\n\nExpection: test.jpg and cgi.jpg to be the same")
-    f1 = open(options.testfile, "r")
-    f2 = open("./test.jpg", "r")
+    f1 = open(options.testfile, "rb")
+    f2 = open("./test.jpg", "rb")
     if f1.read() == f2.read():
         print("Same files")
     else:

@@ -11,7 +11,7 @@ def main():
         print('This requires two parameters: file to upload and path!')
         sys.exit(1)
 
-    with open(sys.argv[1], 'r') as handle:
+    with open(sys.argv[1], 'rb') as handle:
         data = handle.read()
 
     state_machine = gammu.StateMachine()

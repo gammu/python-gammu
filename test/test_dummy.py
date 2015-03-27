@@ -312,7 +312,7 @@ class BasicDummyTest(DummyTest):
         state_machine = self.get_statemachine()
         file_stat = os.stat(TEST_FILE)
         ttime = datetime.datetime.fromtimestamp(file_stat[8])
-        with open(TEST_FILE, 'r') as handle:
+        with open(TEST_FILE, 'rb') as handle:
             content = handle.read()
         file_f = {
             "ID_FullName": 'testfolder',

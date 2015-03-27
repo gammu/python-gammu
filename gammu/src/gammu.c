@@ -19,6 +19,7 @@
 
 /* Python-gammu configuration */
 #include <Python.h>
+#include <bytesobject.h>
 
 /* Gammu includes */
 #include <gammu.h>
@@ -113,6 +114,7 @@ gammu_set_debug(GSM_Debug_Info *di, PyObject *value, PyObject **debug_object)
     FILE                *f;
     GSM_Error           error;
     PyObject            *new_debug_object = NULL;
+    PyObject            *str;
 #if PY_MAJOR_VERSION >= 3
     int                 fd;
 #endif
@@ -142,11 +144,28 @@ gammu_set_debug(GSM_Debug_Info *di, PyObject *value, PyObject **debug_object)
         error = GSM_SetDebugFileDescriptor(f, FALSE, di);
         if (!checkError(error, "SetDebugFileDescriptor")) return NULL;
 #endif
+    } else if (PyUnicode_Check(value)) {
+#if PY_MAJOR_VERSION >= 3
+        str = PyUnicode_EncodeFSDefault(value);
+#else
+        str = PyUnicode_AsUTF8String(value);
+#endif
+        if (str == NULL) {
+            PyErr_Format(PyExc_ValueError, "Non string value for %s (unicode)", s);
+            return NULL;
+        }
+        s = PyBytes_AsString(str);
+        if (s == NULL) return NULL;
+        error = GSM_SetDebugFile(s, di);
+        if (!checkError(error, "SetDebugFile")) return NULL;
+        Py_DECREF(str);
+#if PY_MAJOR_VERSION < 3
     } else if (PyString_Check(value)) {
         s = PyString_AsString(value);
         if (s == NULL) return NULL;
         error = GSM_SetDebugFile(s, di);
         if (!checkError(error, "SetDebugFile")) return NULL;
+#endif
     } else {
         PyErr_SetString(PyExc_TypeError, "Valid are only None, string or file parameters!");
         return NULL;

@@ -117,9 +117,7 @@ gammu_set_debug(GSM_Debug_Info *di, PyObject *value, PyObject **debug_object)
     PyObject            *str;
 #if PY_MAJOR_VERSION >= 3
     int                 fd;
-#endif
 
-#if PY_MAJOR_VERSION >= 3
     fd = PyObject_AsFileDescriptor(value);
     if (fd == -1) {
         PyErr_Clear();
@@ -5996,6 +5994,9 @@ gammu_SaveRingtone(PyObject *self, PyObject *args, PyObject *kwds)
     FILE                        *f;
     GSM_Ringtone                ringtone;
     gboolean                        closefile = FALSE;
+#if PY_MAJOR_VERSION >= 3
+    int                 fd;
+#endif
 
     if (!PyArg_ParseTupleAndKeywords(args, kwds, "OO!s", kwlist,
                 &file, &PyDict_Type, &(value), &s))
@@ -6005,9 +6006,21 @@ gammu_SaveRingtone(PyObject *self, PyObject *args, PyObject *kwds)
         return NULL;
     }
 
+#if PY_MAJOR_VERSION >= 3
+    fd = PyObject_AsFileDescriptor(value);
+    if (fd == -1) {
+        PyErr_Clear();
+    }
+
+    if (fd != -1) {
+        f = fdopen(fd, "wb");
+        if (f == NULL) return NULL;
+        closefile = TRUE;
+#else
     if (PyFile_Check(file)) {
         f = PyFile_AsFile(file);
         if (f == NULL) return NULL;
+#endif
     } else if (PyString_Check(file)) {
         name = PyString_AsString(file);
         if (name == NULL) return NULL;

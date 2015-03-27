@@ -6412,7 +6412,7 @@ gammu_EncodePDU(PyObject *self, PyObject *args, PyObject *kwds)
         req[current+1]='\0';
     }
 
-    return PyString_FromStringAndSize(req, current);
+    return PyBytes_FromStringAndSize(req, current);
 }
 
 /* List of methods defined in the module */

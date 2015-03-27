@@ -14,7 +14,7 @@ before_install:
 install:
   - pip install -r requirements.txt
 script:
-  - CFLAGS="-Wall -Wextra" ./setup.py build
+  - CFLAGS="-Wall -Wextra -Werror=implicit-function-declaration" ./setup.py build
   - coverage run --source=. ./setup.py test
 after_script:
   - coveralls

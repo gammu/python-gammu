@@ -1,0 +1,16 @@
+#!/bin/sh
+# Script to make python-gammu release
+
+VERSION=`sed -n "s/VERSION = '\(.*\)'/\\1/p" setup.py`
+
+# Create tag 
+git tag -s "$VERSION" -m "Version $VERSION"
+
+# Register at pypi
+./setup.py register
+
+# Upload to pypi
+./setup.py sdist --formats=gztar,zip upload
+
+# Upload to primary mirror
+scp dist/python-gammu-$VERSION.tar.gz dist/python-gammu-$VERSION.zip web:/srv/http/dl.cihar.com/python-gammu

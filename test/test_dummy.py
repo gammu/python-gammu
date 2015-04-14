@@ -39,7 +39,7 @@ logformat = none
 
 [smsd]
 commtimeout = 1
-debuglevel = 255
+debuglevel = 0
 logfile = stderr
 service = sql
 driver = sqlite3

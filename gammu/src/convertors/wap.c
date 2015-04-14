@@ -119,7 +119,10 @@ int MMSIndicatorFromPython(PyObject * dict, GSM_MMSIndicator * mms)
 	free(s);
 
 	s = GetCharFromDict(dict, "Sender");
-	if (strlen(s) > 499) {
+	if (s == NULL) {
+		PyErr_Format(PyExc_ValueError, "Sender is missing!");
+		return 0;
+	} else if (strlen(s) > 499) {
 		free(s);
 		PyErr_Format(PyExc_ValueError, "Sender too long!");
 		return 0;

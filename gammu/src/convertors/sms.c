@@ -861,6 +861,9 @@ int SMSFromPython(PyObject * dict, GSM_SMSMessage * sms, int needslocation,
 	if (s == NULL || strcmp(s, "") == 0) {
 		sms->Memory = 0;
 		PyErr_Clear();
+		if (s != NULL) {
+			free(s);
+		}
 	} else {
 		sms->Memory = StringToMemoryType(s);
 		free(s);

@@ -101,7 +101,10 @@ int MMSIndicatorFromPython(PyObject * dict, GSM_MMSIndicator * mms)
 	memset(mms, 0, sizeof(GSM_MMSIndicator));
 
 	s = GetCharFromDict(dict, "Address");
-	if (strlen(s) > 499) {
+	if (s == NULL) {
+		PyErr_Format(PyExc_ValueError, "Address is missing!");
+		return 0;
+	} else if (strlen(s) > 499) {
 		PyErr_Format(PyExc_ValueError, "Address too long!");
 		free(s);
 		return 0;
@@ -110,7 +113,10 @@ int MMSIndicatorFromPython(PyObject * dict, GSM_MMSIndicator * mms)
 	free(s);
 
 	s = GetCharFromDict(dict, "Title");
-	if (strlen(s) > 499) {
+	if (s == NULL) {
+		PyErr_Format(PyExc_ValueError, "Title is missing!");
+		return 0;
+	} else if (strlen(s) > 499) {
 		free(s);
 		PyErr_Format(PyExc_ValueError, "Title too long!");
 		return 0;

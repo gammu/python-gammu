@@ -1236,7 +1236,10 @@ StateMachine_GetAlarm(StateMachineObject *self, PyObject *args, PyObject *kwds) 
         Py_DECREF(dt);
     } else {
         dt = BuildPythonTime(&(gsm_alarm.DateTime));
-        if (dt == NULL) return NULL;
+        if (dt == NULL) {
+            free(s);
+            return NULL;
+        }
 
         result = Py_BuildValue("{s:i,s:O,s:i,s:u}",
                 "Location", gsm_alarm.Location,

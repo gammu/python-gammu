@@ -4,6 +4,7 @@
 * Include data required for tests in tarball.
 * Include NEWS.rst in tarball.
 * Fixed possible crash when changing debug file.
+* Fixed various errors found by coverity.
 
 2.0
 ===

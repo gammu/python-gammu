@@ -19,6 +19,9 @@ python-gammu
 .. image:: https://buildtimetrend.herokuapp.com/badge/gammu/python-gammu/latest
     :target: https://buildtimetrend.herokuapp.com/dashboard/gammu/python-gammu
 
+.. image:: https://scan.coverity.com/projects/4837/badge.svg
+    :target: https://scan.coverity.com/projects/4837
+
 Python bindings for Gammu library.
 
 Homepage

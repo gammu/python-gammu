@@ -4,5 +4,6 @@ include README.rst
 include include/*.h
 recursive-include examples *.py
 recursive-include test *.py
+recursive-include test/data/gammu-dummy *
 include test/data/*.*
 include examples/data/*.jpg

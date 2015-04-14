@@ -324,7 +324,7 @@ static void CheckIncomingEvents(StateMachineObject *sm) {
         do {
             sm->IncomingCallQueue[i] = sm->IncomingCallQueue[i + 1];
             i++;
-        } while (sm->IncomingCallQueue[i] != NULL && i < MAX_EVENTS);
+        } while (i < MAX_EVENTS && sm->IncomingCallQueue[i] != NULL);
 
         if (arglist == NULL) {
             pyg_error("Discarding incoming call event due to error while building params!\n");
@@ -362,7 +362,7 @@ static void CheckIncomingEvents(StateMachineObject *sm) {
         do {
             sm->IncomingSMSQueue[i] = sm->IncomingSMSQueue[i + 1];
             i++;
-        } while (sm->IncomingSMSQueue[i] != NULL && i < MAX_EVENTS);
+        } while (i < MAX_EVENTS && sm->IncomingSMSQueue[i] != NULL);
 
         arglist = Py_BuildValue("(OsO)", sm, "SMS", event);
         Py_DECREF(event);
@@ -395,7 +395,7 @@ static void CheckIncomingEvents(StateMachineObject *sm) {
         do {
             sm->IncomingCBQueue[i] = sm->IncomingCBQueue[i + 1];
             i++;
-        } while (sm->IncomingCBQueue[i] != NULL && i < MAX_EVENTS);
+        } while (i < MAX_EVENTS && sm->IncomingCBQueue[i] != NULL);
 
         if (arglist == NULL) {
             pyg_error("Discarding incoming CB event due to error while building params!\n");
@@ -426,7 +426,7 @@ static void CheckIncomingEvents(StateMachineObject *sm) {
         do {
             sm->IncomingUSSDQueue[i] = sm->IncomingUSSDQueue[i + 1];
             i++;
-        } while (sm->IncomingUSSDQueue[i] != NULL && i < MAX_EVENTS);
+        } while (i < MAX_EVENTS && sm->IncomingUSSDQueue[i] != NULL);
 
         if (arglist == NULL) {
             pyg_error("Discarding incoming USSD event due to error while building params!\n");

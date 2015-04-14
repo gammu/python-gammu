@@ -134,7 +134,7 @@ PyObject *CallDivertsToPython(GSM_MultiCallDivert *cd)
             return NULL;
         }
         ct = DivertCallTypeToString(cd->Entries[i].CallType);
-        if (dt == NULL) {
+        if (ct == NULL) {
             Py_DECREF(ret);
             Py_DECREF(num);
             free(dt);

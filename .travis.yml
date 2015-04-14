@@ -26,3 +26,11 @@ matrix:
   allow_failures:
     - python: "pypy"
     - python: "pypy3"
+addons:
+  coverity_scan:
+    project:
+      name: "gammu/python-gammu"
+      description: "Build submitted via Travis CI"
+    notification_email: michal@cihar.com
+    build_command: ./setup.py build
+    branch_pattern: coverity_scan

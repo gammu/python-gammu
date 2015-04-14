@@ -1,6 +1,7 @@
 include AUTHORS
 include COPYING
 include README.rst
+include NEWS.rst
 include include/*.h
 recursive-include examples *.py
 recursive-include test *.py

@@ -2,6 +2,7 @@
 ===
 
 * Include data required for tests in tarball.
+* Include NEWS.rst in tarball.
 
 2.0
 ===

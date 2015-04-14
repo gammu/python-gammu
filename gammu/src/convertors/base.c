@@ -239,7 +239,7 @@ GSM_DateTime GetDateTimeFromDict(PyObject * dict, const char *key)
 	PyObject *o;
 	GSM_DateTime dt;
 
-	memset(dt, 0, sizeof(GSM_DateTime));
+	memset(&dt, 0, sizeof(GSM_DateTime));
 
 	o = PyDict_GetItemString(dict, key);
 	if (o == NULL) {
@@ -265,7 +265,7 @@ GSM_DateTime GetDateFromDict(PyObject * dict, const char *key)
 	PyObject *o;
 	GSM_DateTime dt;
 
-	memset(dt, 0, sizeof(GSM_DateTime));
+	memset(&dt, 0, sizeof(GSM_DateTime));
 
 	o = PyDict_GetItemString(dict, key);
 	if (o == NULL) {

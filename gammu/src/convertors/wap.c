@@ -154,8 +154,10 @@ PyObject *WAPBookmarkToPython(GSM_WAPBookmark * wap)
 		return NULL;
 
 	address = strGammuToPython(wap->Address);
-	if (address == NULL)
+	if (address == NULL) {
+		free(title);
 		return NULL;
+	}
 
 	ret = Py_BuildValue("{s:s,s:s,s:i}",
 			    "Address", address,

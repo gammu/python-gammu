@@ -56,7 +56,7 @@ unsigned char *strPythonToGammu(const Py_UNICODE * src, const size_t len)
 	size_t i;
 
 	/* Allocate memory */
-	dest = malloc((len + 1) * 2 * sizeof(char));
+	dest = malloc((len + 1) * 2 * sizeof(unsigned char));
 	if (dest == NULL) {
 		PyErr_SetString(PyExc_MemoryError,
 				"Not enough memory to allocate string");

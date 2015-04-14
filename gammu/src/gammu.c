@@ -1226,7 +1226,10 @@ StateMachine_GetAlarm(StateMachineObject *self, PyObject *args, PyObject *kwds) 
 
     if (gsm_alarm.Repeating) {
         dt = BuildPythonTime(&(gsm_alarm.DateTime));
-        if (dt == NULL) return NULL;
+        if (dt == NULL) {
+            free(s);
+            return NULL;
+        }
 
         result = Py_BuildValue("{s:i,s:O,s:i,s:u}",
                 "Location", gsm_alarm.Location,

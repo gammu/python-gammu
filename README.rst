@@ -47,6 +47,13 @@ You can also install it using pip installer::
 
     pip install python-gammu
 
+Requirements
+============
+
+To compile python-gammu, you need Gammu development files (usually shipped as
+``libgammu-dev`` or ``gammu-devel`` in Linux distributions) and pkg-config,
+which is used to discover location of dependencies.
+
 Documentation
 =============
 

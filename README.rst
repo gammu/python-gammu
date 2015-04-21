@@ -38,7 +38,7 @@ Installing
 ==========
 
 You can install in a usual way for Python modules using distutils, so use
-`setup.py` is placed in the top level directory::
+``setup.py`` which is placed in the top level directory::
 
     ./setup.py build
     sudo ./setup.py install

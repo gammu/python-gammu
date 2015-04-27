@@ -22,6 +22,14 @@ python-gammu
 .. image:: https://scan.coverity.com/projects/4837/badge.svg
     :target: https://scan.coverity.com/projects/4837
 
+.. image:: https://img.shields.io/gratipay/Gammu.svg
+    :alt: Gratipay
+    :target: https://gratipay.com/Gammu/
+
+.. image:: https://www.bountysource.com/badge/team?team_id=23177&style=bounties_received
+    :alt: Bountysource
+    :target: https://www.bountysource.com/teams/gammu/issues?utm_source=Gammu&utm_medium=shield&utm_campaign=bounties_received
+
 Python bindings for Gammu library.
 
 Homepage

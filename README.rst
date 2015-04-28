@@ -30,6 +30,10 @@ python-gammu
     :alt: Bountysource
     :target: https://www.bountysource.com/teams/gammu/issues?utm_source=Gammu&utm_medium=shield&utm_campaign=bounties_received
 
+.. image:: https://img.shields.io/pypi/dm/python-gammu.svg
+    :alt: PyPI
+    :target: https://pypi.python.org/pypi/python-gammu/
+
 Python bindings for Gammu library.
 
 Homepage

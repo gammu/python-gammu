@@ -1,6 +1,9 @@
 2.2
 ===
 
+* Documentation improvements.
+* Code cleanups.
+
 2.1
 ===
 

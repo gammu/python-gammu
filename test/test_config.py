@@ -20,7 +20,6 @@
 import unittest
 import tempfile
 import gammu
-import sys
 from .test_sms import PDU_DATA
 
 
@@ -91,7 +90,7 @@ class DebugTest(unittest.TestCase):
         """
         Executes gammu operation which causes debug logs.
         """
-        sms = gammu.DecodePDU(PDU_DATA)
+        gammu.DecodePDU(PDU_DATA)
         if filename is not None:
             with open(filename, 'r') as handle:
                 self.assertTrue('SMS type: Status report' in handle.read())

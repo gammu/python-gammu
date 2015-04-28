@@ -23,9 +23,8 @@ Phone communication libary - python wrapper for Gammu library.
 
 from gammu._gammu import *
 
-__version__ = 'Gammu %s, python-gammu %s' % (
-    Version()[0],
-    Version()[1]
+__version__ = 'Gammu {0}, python-gammu {1}'.format(
+    *Version()
 )
 
 # Submodules

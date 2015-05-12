@@ -117,7 +117,7 @@ setup(
     ],
     license='GPLv2',
     url='http://wammu.eu/python-gammu/',
-    download_url='http://wammu.eu/download/gammu/',
+    download_url='http://wammu.eu/download/python-gammu/source/',
     classifiers=[
         'Development Status :: 5 - Production/Stable',
         'License :: OSI Approved :: GNU General Public License (GPL)',

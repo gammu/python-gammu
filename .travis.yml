@@ -19,6 +19,7 @@ script:
 after_script:
   - coveralls
   - ocular --data-file ".coverage" --config-file ".coveragerc"
+  - codecov
 notifications:
   webhooks:
     - https://buildtimetrend.herokuapp.com/travis

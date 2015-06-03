@@ -1,15 +1,35 @@
 #!/usr/bin/env python
+# -*- coding: UTF-8 -*-
+# vim: expandtab sw=4 ts=4 sts=4:
 #
-# Example for usage of GetNextFileFolder, which is oriented at
+# Copyright © 2003 - 2015 Matthias Blaesing <matthias.blaesing@rwth-aachen.de>
 #
-# gammu --getfilesystem
+# This file is part of Gammu <http://wammu.eu/>
 #
-# Without argument you get a hierarchical list, provide flat as
-# argument and get somethink like (not exactly!)
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
 #
-# gammu --getfilesystem -flatall
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
 #
-# Matthias Blaesing <matthias.blaesing@rwth-aachen.de>
+# You should have received a copy of the GNU General Public License along
+# with this program; if not, write to the Free Software Foundation, Inc.,
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+#
+"""
+Example for usage of GetNextFileFolder, which is oriented at
+
+gammu --getfilesystem
+
+Without argument you get a hierarchical list, provide flat as
+argument and get somethink like (not exactly!)
+
+gammu --getfilesystem -flatall
+"""
 
 from __future__ import print_function
 import gammu

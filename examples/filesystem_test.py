@@ -1,28 +1,48 @@
 #!/usr/bin/env python
+# -*- coding: UTF-8 -*-
+# vim: expandtab sw=4 ts=4 sts=4:
 #
-# This file should provide me with a test frame for the filesystem
-# functions. It can't be run automatically, but you should be able
-# to decide, wheather the output looks sensible
+# Copyright © 2003 - 2015 Matthias Blaesing <matthias.blaesing@rwth-aachen.de>
 #
-# BEWARE - the test WILL TOUCH AND WRITE FILESYSTEM!!
+# This file is part of Gammu <http://wammu.eu/>
 #
-# Matthias Blaesing <matthias.blaesing@rwth-aachen.de>
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
 #
-# I asume you call the script from the directory were it lays and
-# have the grafic there and you have write permission there and that
-# there is a file called cgi.jpg to be used as test file
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
 #
-# READY:
-# - DeleteFile
-# - AddFilePart
-# - GetFilePart
-# - GetNextRootFolder
-# - GetNextFileFolder
-# - GetFolderListing
-# - SetFileAttributes
-# - DeleteFolder
-# - GetFileSystemStatus
-# - AddFolder
+# You should have received a copy of the GNU General Public License along
+# with this program; if not, write to the Free Software Foundation, Inc.,
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+#
+"""
+This file should provide me with a test frame for the filesystem
+functions. It can't be run automatically, but you should be able
+to decide, wheather the output looks sensible
+
+BEWARE - the test WILL TOUCH AND WRITE FILESYSTEM!!
+
+I asume you call the script from the directory were it lays and
+have the grafic there and you have write permission there and that
+there is a file called cgi.jpg to be used as test file
+
+READY:
+- DeleteFile
+- AddFilePart
+- GetFilePart
+- GetNextRootFolder
+- GetNextFileFolder
+- GetFolderListing
+- SetFileAttributes
+- DeleteFolder
+- GetFileSystemStatus
+- AddFolder
+"""
 
 from __future__ import print_function
 import gammu

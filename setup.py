@@ -27,11 +27,13 @@ python-gammu - Phone communication libary
 import distutils.spawn
 from setuptools import setup, Extension
 import os
+import codecs
 
 # some defines
 VERSION = '2.3'
 GAMMU_REQUIRED = '1.34.0'
-with open(os.path.join(os.path.dirname(__file__), 'README.rst')) as readme:
+README_FILE = os.path.join(os.path.dirname(__file__), 'README.rst')
+with codecs.open(README_FILE, 'r', 'utf-8') as readme:
     README = readme.read()
 
 

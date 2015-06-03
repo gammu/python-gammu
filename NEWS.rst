@@ -1,6 +1,9 @@
 2.3
 ===
 
+* License changed tp GPL version 2 or later.
+* Documentation improvements.
+
 2.2
 ===
 

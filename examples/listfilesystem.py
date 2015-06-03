@@ -4,7 +4,7 @@
 #
 # Copyright © 2003 - 2015 Matthias Blaesing <matthias.blaesing@rwth-aachen.de>
 #
-# This file is part of Gammu <http://wammu.eu/>
+# This file is part of python-gammu <http://wammu.eu/python-gammu/>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by

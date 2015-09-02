@@ -2,6 +2,7 @@
 ===
 
 * Fixed possible crash when initializing SMSD with invalid parameters.
+* Fixed crash on handling diverts on certain architectures.
 
 2.3
 ===

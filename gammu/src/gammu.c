@@ -5432,7 +5432,7 @@ StateMachine_init(StateMachineObject *self, PyObject *args, PyObject *kwds)
     static char         *kwlist[] = {"Locale", NULL};
 
     if (!PyArg_ParseTupleAndKeywords(args, kwds, "|s", kwlist, &s))
-        return 0;
+        return -1;
 
     if (s != NULL && strcmp(s, "auto") == 0) {
         s = NULL;
@@ -5455,7 +5455,7 @@ StateMachine_init(StateMachineObject *self, PyObject *args, PyObject *kwds)
     /* Init Gammu locales, we don't care about NULL, it's handled correctly */
     GSM_InitLocales(s);
 
-    return 1;
+    return 0;
 }
 
 static char StateMachineType__doc__[] =

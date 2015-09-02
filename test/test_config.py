@@ -83,6 +83,9 @@ class ConfigTest(unittest.TestCase):
         cfg = state_machine.GetConfig(0)
         self.assertEqual(cfg['StartInfo'], 0)
 
+    def test_init_error(self):
+        self.assertRaises(TypeError, gammu.StateMachine, Bar=1)
+
 
 class DebugTest(unittest.TestCase):
     def setUp(self):

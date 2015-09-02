@@ -52,6 +52,9 @@ class SMSDDummyTest(DummyTest):
     def get_smsd(self):
         return gammu.smsd.SMSD(self.config_name)
 
+    def test_init_error(self):
+        self.assertRaises(TypeError, gammu.smsd.SMSD, Bar=1)
+
     def test_inject(self):
         smsd = self.get_smsd()
         smsd.InjectSMS([MESSAGE_1])

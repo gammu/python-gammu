@@ -3461,7 +3461,7 @@ StateMachine_SetCallDivert(StateMachineObject *self, PyObject *args, PyObject *k
     GSM_CallDivert divert;
     static char         *kwlist[] = {"Divert", "Type", "Number", "Timeout", NULL};
     char                *cond, *type, *number;
-    size_t number_len;
+    int number_len;
 
     divert.Timeout = 0;
 

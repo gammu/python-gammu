@@ -223,13 +223,13 @@ static int SMSD_init(SMSDObject * self, PyObject * args, PyObject * kwds)
 	GSM_Error error;
 
 	if (!PyArg_ParseTupleAndKeywords(args, kwds, "s", kwlist, &s))
-		return 0;
+		return -1;
 
 	error = SMSD_ReadConfig(s, self->config, TRUE);
 	if (!checkError(error, "SMSD_ReadConfig"))
-		return 0;
+		return -1;
 
-	return 1;
+	return 0;
 }
 
 static char SMSDType__doc__[] = "SMSD object, that is used for communication with phone.";

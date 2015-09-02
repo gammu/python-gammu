@@ -5422,6 +5422,20 @@ StateMachine_new(PyTypeObject *type, PyObject *args, PyObject *kwds)
     self = (StateMachineObject *)type->tp_alloc(type, 0);
     self->s = GSM_AllocStateMachine();
 
+    /* Reset our structures */
+    self->DebugFile         = NULL;
+    self->IncomingCallback  = NULL;
+
+    self->IncomingCallQueue[0] = NULL;
+    self->IncomingSMSQueue[0] = NULL;
+    self->IncomingCBQueue[0] = NULL;
+    self->IncomingUSSDQueue[0] = NULL;
+
+    /* Create phone communication lock */
+#ifdef WITH_THREAD
+    self->mutex = PyThread_allocate_lock();
+#endif
+
     return (PyObject *)self;
 }
 
@@ -5437,20 +5451,6 @@ StateMachine_init(StateMachineObject *self, PyObject *args, PyObject *kwds)
     if (s != NULL && strcmp(s, "auto") == 0) {
         s = NULL;
     }
-
-    /* Reset our structures */
-    self->DebugFile         = NULL;
-    self->IncomingCallback  = NULL;
-
-    self->IncomingCallQueue[0] = NULL;
-    self->IncomingSMSQueue[0] = NULL;
-    self->IncomingCBQueue[0] = NULL;
-    self->IncomingUSSDQueue[0] = NULL;
-
-    /* Create phone communication lock */
-#ifdef WITH_THREAD
-    self->mutex = PyThread_allocate_lock();
-#endif
 
     /* Init Gammu locales, we don't care about NULL, it's handled correctly */
     GSM_InitLocales(s);

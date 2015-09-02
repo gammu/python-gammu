@@ -1,6 +1,8 @@
 2.4
 ===
 
+* Fixed possible crash when initializing SMSD with invalid parameters.
+
 2.3
 ===
 

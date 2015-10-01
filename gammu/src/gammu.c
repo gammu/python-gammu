@@ -200,6 +200,7 @@ gammu_set_debug(GSM_Debug_Info *di, PyObject *value, PyObject **debug_object)
 static void SendSMSStatus (GSM_StateMachine *s, int status, int mr, void *user) {
     StateMachineObject  *sm = (StateMachineObject  *)user;
     if (sm == NULL) return;
+    assert(sm->s == s);
 
     sm->MessageReference = mr;
     if (status == 0) {
@@ -219,6 +220,7 @@ static void IncomingCall (GSM_StateMachine *s, GSM_Call *call, void *user) {
     int i = 0;
 
     if (sm == NULL) return;
+    assert(sm->s == s);
 
     while (i < MAX_EVENTS && sm->IncomingCallQueue[i] != NULL) i++;
 
@@ -241,6 +243,7 @@ static void IncomingSMS (GSM_StateMachine *s, GSM_SMSMessage *msg, void *user) {
     int i = 0;
 
     if (sm == NULL) return;
+    assert(sm->s == s);
 
     while (i < MAX_EVENTS && sm->IncomingSMSQueue[i] != NULL) i++;
 
@@ -263,6 +266,7 @@ static void IncomingCB (GSM_StateMachine *s, GSM_CBMessage *cb, void *user) {
     int i = 0;
 
     if (sm == NULL) return;
+    assert(sm->s == s);
 
     while (i < MAX_EVENTS && sm->IncomingCBQueue[i] != NULL) i++;
 
@@ -285,6 +289,7 @@ static void IncomingUSSD (GSM_StateMachine *s, GSM_USSDMessage *ussd, void *user
     int i = 0;
 
     if (sm == NULL) return;
+    assert(sm->s == s);
 
     while (i < MAX_EVENTS && sm->IncomingUSSDQueue[i] != NULL) i++;
 

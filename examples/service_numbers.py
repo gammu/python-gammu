@@ -28,14 +28,19 @@ from __future__ import print_function
 import gammu
 import sys
 
+REPLY = False
+
 
 def callback(state_machine, callback_type, data):
     '''
     Callback on USSD data.
     '''
+    global REPLY
     if callback_type != 'USSD':
         print('Unexpected event type: %s' % callback_type)
         sys.exit(1)
+
+    REPLY = True
 
     print('Network reply:')
     print('Status: %s' % data['Status'])
@@ -68,6 +73,8 @@ def do_service(state_machine):
     '''
     Main code to talk with worker.
     '''
+    global REPLY
+
     if len(sys.argv) >= 3:
         code = sys.argv[2]
         del sys.argv[2]
@@ -76,7 +83,12 @@ def do_service(state_machine):
         code = input()
     if code != '':
         print('Talking to network...')
+        REPLY = False
         state_machine.DialService(code)
+        loops = 0
+        while not REPLY and loops < 100:
+            state_machine.ReadDevice()
+            loops += 1
 
 
 def main():

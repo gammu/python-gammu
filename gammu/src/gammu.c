@@ -5538,6 +5538,9 @@ static PyTypeObject StateMachineType = {
 	0,                         /* tp_weaklist */
 	0,                          /* tp_del */
     0,                          /* tp_version_tag */
+#ifdef Py_TPFLAGS_HAVE_FINALIZE
+    0,                          /* tp_finalize */
+#endif
 };
 
 /* End of code for StateMachine objects */

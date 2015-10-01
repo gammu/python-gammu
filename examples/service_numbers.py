@@ -86,7 +86,7 @@ def do_service(state_machine):
         REPLY = False
         state_machine.DialService(code)
         loops = 0
-        while not REPLY and loops < 100:
+        while not REPLY and loops < 10:
             state_machine.ReadDevice()
             loops += 1
 

@@ -233,6 +233,7 @@ static void IncomingCall (GSM_StateMachine *s, GSM_Call *call, void *user) {
     if (sm->IncomingCallQueue[i] == NULL) return;
 
     *(sm->IncomingCallQueue[i]) = *call;
+    sm->IncomingCallQueue[i + 1] = NULL;
 }
 
 /**
@@ -256,6 +257,7 @@ static void IncomingSMS (GSM_StateMachine *s, GSM_SMSMessage *msg, void *user) {
     if (sm->IncomingSMSQueue[i] == NULL) return;
 
     *(sm->IncomingSMSQueue[i]) = *msg;
+    sm->IncomingSMSQueue[i + 1] = NULL;
 }
 
 /**
@@ -279,6 +281,7 @@ static void IncomingCB (GSM_StateMachine *s, GSM_CBMessage *cb, void *user) {
     if (sm->IncomingCBQueue[i] == NULL) return;
 
     *(sm->IncomingCBQueue[i]) = *cb;
+    sm->IncomingCBQueue[i + 1] = NULL;
 }
 
 /**
@@ -302,6 +305,7 @@ static void IncomingUSSD (GSM_StateMachine *s, GSM_USSDMessage *ussd, void *user
     if (sm->IncomingUSSDQueue[i] == NULL) return;
 
     *(sm->IncomingUSSDQueue[i]) = *ussd;
+    sm->IncomingUSSDQueue[i + 1] = NULL;
 }
 
 /**

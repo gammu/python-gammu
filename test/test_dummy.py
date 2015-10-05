@@ -74,6 +74,8 @@ class DummyTest(unittest.TestCase):
 
 
 class BasicDummyTest(DummyTest):
+    _called = False
+
     def test_model(self):
         state_machine = self.get_statemachine()
         self.assertEqual(state_machine.GetModel()[1], 'Dummy')
@@ -227,15 +229,18 @@ class BasicDummyTest(DummyTest):
         '''
         Callback on USSD data.
         '''
+        self._called = True
         self.assertEqual(response, 'USSD')
         self.assertEqual(data['Text'], 'Reply for 1234')
         self.assertEqual(data['Status'], 'NoActionNeeded')
 
     def test_ussd(self):
+        self._called = False
         state_machine = self.get_statemachine()
         state_machine.SetIncomingCallback(self.ussd_callback)
         state_machine.SetIncomingUSSD()
         state_machine.DialService('1234')
+        self.assertTrue(self._called)
 
     def test_sendsms(self):
         state_machine = self.get_statemachine()

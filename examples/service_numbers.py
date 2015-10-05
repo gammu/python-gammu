@@ -79,11 +79,11 @@ def do_service(state_machine):
         code = sys.argv[2]
         del sys.argv[2]
     else:
-        print('Enter code (empty string to end):', end=' ')
+        prompt = 'Enter code (empty string to end): '
         try:
-            code = raw_input()
+            code = raw_input(prompt)
         except NameError:
-            code = input()
+            code = input(prompt)
     if code != '':
         print('Talking to network...')
         REPLY = False

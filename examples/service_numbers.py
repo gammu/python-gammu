@@ -80,7 +80,10 @@ def do_service(state_machine):
         del sys.argv[2]
     else:
         print('Enter code (empty string to end):', end=' ')
-        code = input()
+        try:
+            code = raw_input()
+        except NameError:
+            code = input()
     if code != '':
         print('Talking to network...')
         REPLY = False

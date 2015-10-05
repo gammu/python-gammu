@@ -50,7 +50,7 @@ state_machine.Init()
 
 # Create SMS info structure
 smsinfo = {
-    'Class': 1,
+    'Class': -1,
     'Unicode': False,
     'Entries':  [
         {

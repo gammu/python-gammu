@@ -259,7 +259,7 @@ class BasicDummyTest(DummyTest):
             'from example python script. '
         ) * 10
         smsinfo = {
-            'Class': 1,
+            'Class': -1,
             'Unicode': False,
             'Entries':  [
                 {

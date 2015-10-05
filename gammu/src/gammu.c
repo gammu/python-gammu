@@ -332,6 +332,8 @@ static void IncomingUSSD (GSM_StateMachine *s, GSM_USSDMessage *ussd, void *user
         return;
     }
 
+    pyg_warning("Adding USSD to queue, position %d\n", i);
+
     sm->IncomingUSSDQueue[i] = (GSM_USSDMessage *)malloc(sizeof(GSM_USSDMessage));
     if (sm->IncomingUSSDQueue[i] == NULL) return;
 

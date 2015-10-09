@@ -224,6 +224,7 @@ static void SendSMSStatus (GSM_StateMachine *s, int status, int mr, void *user) 
  */
 static void IncomingCall (GSM_StateMachine *s, GSM_Call *call, void *user) {
     StateMachineObject  *sm = (StateMachineObject  *)user;
+    GSM_Call *message;
     int i = 0;
 
     if (sm == NULL) {
@@ -242,11 +243,13 @@ static void IncomingCall (GSM_StateMachine *s, GSM_Call *call, void *user) {
         return;
     }
 
-    sm->IncomingCallQueue[i] = (GSM_Call *)malloc(sizeof(GSM_Call));
-    if (sm->IncomingCallQueue[i] == NULL) return;
+    message = malloc(sizeof(GSM_Call));
+    if (message == NULL) return;
 
-    *(sm->IncomingCallQueue[i]) = *call;
+    *message = *call;
+
     sm->IncomingCallQueue[i + 1] = NULL;
+    sm->IncomingCallQueue[i] = message;
 }
 
 /**
@@ -254,6 +257,7 @@ static void IncomingCall (GSM_StateMachine *s, GSM_Call *call, void *user) {
  */
 static void IncomingSMS (GSM_StateMachine *s, GSM_SMSMessage *msg, void *user) {
     StateMachineObject  *sm = (StateMachineObject  *)user;
+    GSM_SMSMessage *message;
     int i = 0;
 
     if (sm == NULL) {
@@ -272,11 +276,13 @@ static void IncomingSMS (GSM_StateMachine *s, GSM_SMSMessage *msg, void *user) {
         return;
     }
 
-    sm->IncomingSMSQueue[i] = (GSM_SMSMessage *)malloc(sizeof(GSM_SMSMessage));
-    if (sm->IncomingSMSQueue[i] == NULL) return;
+    message = malloc(sizeof(GSM_SMSMessage));
+    if (message == NULL) return;
 
-    *(sm->IncomingSMSQueue[i]) = *msg;
+    *message = *msg;
+
     sm->IncomingSMSQueue[i + 1] = NULL;
+    sm->IncomingSMSQueue[i] = message;
 }
 
 /**
@@ -284,6 +290,7 @@ static void IncomingSMS (GSM_StateMachine *s, GSM_SMSMessage *msg, void *user) {
  */
 static void IncomingCB (GSM_StateMachine *s, GSM_CBMessage *cb, void *user) {
     StateMachineObject  *sm = (StateMachineObject  *)user;
+    GSM_CBMessage *message;
     int i = 0;
 
     if (sm == NULL) {
@@ -302,11 +309,13 @@ static void IncomingCB (GSM_StateMachine *s, GSM_CBMessage *cb, void *user) {
         return;
     }
 
-    sm->IncomingCBQueue[i] = (GSM_CBMessage *)malloc(sizeof(GSM_CBMessage));
-    if (sm->IncomingCBQueue[i] == NULL) return;
+    message = malloc(sizeof(GSM_CBMessage));
+    if (message == NULL) return;
 
-    *(sm->IncomingCBQueue[i]) = *cb;
+    *message = *cb;
+
     sm->IncomingCBQueue[i + 1] = NULL;
+    sm->IncomingCBQueue[i] = message;
 }
 
 /**
@@ -314,6 +323,7 @@ static void IncomingCB (GSM_StateMachine *s, GSM_CBMessage *cb, void *user) {
  */
 static void IncomingUSSD (GSM_StateMachine *s, GSM_USSDMessage *ussd, void *user) {
     StateMachineObject  *sm = (StateMachineObject  *)user;
+    GSM_USSDMessage *message;
     int i = 0;
 
     if (sm == NULL) {
@@ -334,11 +344,15 @@ static void IncomingUSSD (GSM_StateMachine *s, GSM_USSDMessage *ussd, void *user
 
     pyg_warning("Adding USSD to queue, position %d\n", i);
 
-    sm->IncomingUSSDQueue[i] = (GSM_USSDMessage *)malloc(sizeof(GSM_USSDMessage));
+    message = malloc(sizeof(GSM_USSDMessage));
+    if (message == NULL) return;
+
+    *message = *ussd;
+
     if (sm->IncomingUSSDQueue[i] == NULL) return;
 
-    *(sm->IncomingUSSDQueue[i]) = *ussd;
     sm->IncomingUSSDQueue[i + 1] = NULL;
+    sm->IncomingUSSDQueue[i] = message;
 }
 
 /**

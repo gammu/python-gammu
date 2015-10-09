@@ -349,8 +349,6 @@ static void IncomingUSSD (GSM_StateMachine *s, GSM_USSDMessage *ussd, void *user
 
     *message = *ussd;
 
-    if (sm->IncomingUSSDQueue[i] == NULL) return;
-
     sm->IncomingUSSDQueue[i + 1] = NULL;
     sm->IncomingUSSDQueue[i] = message;
 }

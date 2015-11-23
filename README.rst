@@ -5,7 +5,7 @@ python-gammu
     :target: https://travis-ci.org/gammu/python-gammu
 
 .. image:: https://www.codacy.com/project/badge/c7e87df480fb4609aa48482873f5c46b
-    :target: https://www.codacy.com/public/michal_2/python-gammu_2
+    :target: https://www.codacy.com/public/nijel/python-gammu
 
 .. image:: https://scrutinizer-ci.com/g/gammu/python-gammu/badges/quality-score.png?b=master
    :target: https://scrutinizer-ci.com/g/gammu/python-gammu/?branch=master

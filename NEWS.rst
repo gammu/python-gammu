@@ -1,6 +1,8 @@
 2.5
 ===
 
+* Compatibility with Gammu >= 1.36.7
+
 2.4
 ===
 

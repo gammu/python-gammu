@@ -28,7 +28,7 @@ import datetime
 import os.path
 
 DUMMY_DIR = os.path.join(os.path.dirname(__file__), 'data', 'gammu-dummy')
-TEST_FILE = os.path.join(os.path.dirname(__file__), 'data', 'sqlite.sql')
+TEST_FILE = os.path.join(os.path.dirname(__file__), 'data', 'sqlite-14.sql')
 CONFIGURATION = '''
 # Configuration for Gammu testsuite
 

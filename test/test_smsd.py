@@ -27,7 +27,7 @@ import threading
 import time
 import sqlite3
 
-SQLITE_SCRIPT = os.path.join(os.path.dirname(__file__), 'data', 'sqlite.sql')
+
 MESSAGE_1 = {
     'Text': 'python-gammu testing message',
     'SMSC': {'Location': 1},
@@ -40,13 +40,34 @@ MESSAGE_2 = {
 }
 
 
+def get_script():
+    """Returns SQL script to create database
+
+    It returns correct script matching used Gammu version.
+    """
+    version = tuple(
+        [int(x) for x in gammu.Version()[0].split('.')]
+    )
+
+    if version < (1, 36, 7):
+        dbver = 14
+    else:
+        dbver = 15
+
+    return os.path.join(
+        os.path.dirname(__file__),
+        'data',
+        'sqlite-{0}.sql'.format(dbver)
+    )
+
+
 class SMSDDummyTest(DummyTest):
     def setUp(self):
         super(SMSDDummyTest, self).setUp()
         database = sqlite3.connect(
             os.path.join(self.test_dir, 'smsd.db')
         )
-        with open(SQLITE_SCRIPT, 'r') as handle:
+        with open(get_script(), 'r') as handle:
             database.executescript(handle.read())
 
     def get_smsd(self):

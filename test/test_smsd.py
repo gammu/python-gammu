@@ -19,6 +19,7 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #
+from __future__ import print_function
 from .test_dummy import DummyTest
 import gammu.smsd
 import os
@@ -53,6 +54,8 @@ def get_script():
         dbver = 14
     else:
         dbver = 15
+
+    print('Gammu version {0}, SMSD DB version {1}'.format(version, dbver))
 
     return os.path.join(
         os.path.dirname(__file__),

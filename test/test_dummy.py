@@ -1,7 +1,7 @@
 # -*- coding: UTF-8 -*-
 # vim: expandtab sw=4 ts=4 sts=4:
 #
-# Copyright © 2003 - 2015 Michal Čihař <michal@cihar.com>
+# Copyright © 2003 - 2016 Michal Čihař <michal@cihar.com>
 #
 # This file is part of python-gammu <http://wammu.eu/python-gammu/>
 #

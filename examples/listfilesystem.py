@@ -2,7 +2,7 @@
 # -*- coding: UTF-8 -*-
 # vim: expandtab sw=4 ts=4 sts=4:
 #
-# Copyright © 2003 - 2015 Matthias Blaesing <matthias.blaesing@rwth-aachen.de>
+# Copyright © 2003 - 2016 Matthias Blaesing <matthias.blaesing@rwth-aachen.de>
 #
 # This file is part of python-gammu <http://wammu.eu/python-gammu/>
 #

@@ -2,6 +2,7 @@
 ===
 
 * Fixed error when creating new contact.
+* Fixed possible testsuite errors.
 
 2.5
 ===

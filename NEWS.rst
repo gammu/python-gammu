@@ -1,6 +1,8 @@
 2.6
 ===
 
+* Fixed error when creating new contact.
+
 2.5
 ===
 

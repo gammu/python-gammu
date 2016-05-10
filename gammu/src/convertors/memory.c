@@ -407,17 +407,18 @@ int MemoryEntryFromPython(PyObject * dict, GSM_MemoryEntry * entry,
 
 		location = GetCharFromDict(item, "Location");
 		if (location == NULL) {
-            entry->Entries[i].Location = PBK_Location_Unknown;
-        } else {
-            if (strcmp(location, "Home") == 0) {
-                entry->Entries[i].Location = PBK_Location_Home;
-            } else if (strcmp(location, "Work") == 0) {
-                entry->Entries[i].Location = PBK_Location_Work;
-            } else {
-                entry->Entries[i].Location = PBK_Location_Unknown;
-            }
-            free(location);
-        }
+			PyErr_Clear();
+			entry->Entries[i].Location = PBK_Location_Unknown;
+		} else {
+			if (strcmp(location, "Home") == 0) {
+				entry->Entries[i].Location = PBK_Location_Home;
+			} else if (strcmp(location, "Work") == 0) {
+				entry->Entries[i].Location = PBK_Location_Work;
+			} else {
+				entry->Entries[i].Location = PBK_Location_Unknown;
+			}
+			free(location);
+		}
 
 		/* Zero everything, just to be sure */
 		entry->Entries[i].Text[0] = 0;

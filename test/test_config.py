@@ -106,6 +106,7 @@ class DebugTest(unittest.TestCase):
             gammu.SetDebugFile(testfile.file)
             self.check_operation(testfile.name)
         finally:
+            gammu.SetDebugFile(None)
             testfile.close()
 
     def test_filename(self):
@@ -114,6 +115,7 @@ class DebugTest(unittest.TestCase):
             gammu.SetDebugFile(testfile.name)
             self.check_operation(testfile.name)
         finally:
+            gammu.SetDebugFile(None)
             testfile.close()
 
     def test_none(self):
@@ -129,4 +131,5 @@ class DebugTest(unittest.TestCase):
             with open(testfile.name, 'r') as handle:
                 self.assertEqual('', handle.read())
         finally:
+            gammu.SetDebugFile(None)
             testfile.close()

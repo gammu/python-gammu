@@ -147,6 +147,22 @@ class BasicDummyTest(DummyTest):
                 )
             remain = remain - 1
 
+    def test_getmemory(self):
+        state_machine = self.get_statemachine()
+
+        location = state_machine.AddMemory(
+            {
+                'MemoryType': 'SM',
+                'Entries': [
+                    {'Type': 'Number_Mobile', 'Value': '123456'},
+                    {'Type': 'Text_Name', 'Value': 'Jmeno'},
+                ]
+            }
+        )
+
+        read = state_machine.GetMemory('SM', location)
+        self.assertEqual(len(read['Entries']), 2)
+
     def test_calendar(self):
         state_machine = self.get_statemachine()
         status = state_machine.GetCalendarStatus()

@@ -34,3 +34,4 @@ addons:
     packages:
     - libgammu-dev
     - libdbd-sqlite3
+    - pkg-config

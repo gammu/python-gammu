@@ -31,7 +31,7 @@ import codecs
 
 # some defines
 VERSION = '2.7'
-GAMMU_REQUIRED = '1.34.0'
+GAMMU_REQUIRED = '1.37.3'
 README_FILE = os.path.join(os.path.dirname(__file__), 'README.rst')
 with codecs.open(README_FILE, 'r', 'utf-8') as readme:
     README = readme.read()

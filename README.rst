@@ -34,9 +34,6 @@ python-gammu
     :alt: PyPI
     :target: https://pypi.python.org/pypi/python-gammu/
 
-.. image:: https://todofy.org/b/gammu/python-gammu
-    :target: https://todofy.org/r/gammu/python-gammu
-
 Python bindings for Gammu library.
 
 Homepage

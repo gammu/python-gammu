@@ -55,6 +55,7 @@ class DummyTest(unittest.TestCase):
     test_dir = None
     config_name = None
     dummy_dir = None
+    _called = False
 
     def setUp(self):
         self.test_dir = tempfile.mkdtemp()
@@ -87,10 +88,16 @@ class DummyTest(unittest.TestCase):
                 'Not supported in version {0}'.format(gammu.Version()[2])
             )
 
+    def call_callback(self, state_machine, response, data):
+        '''
+        Callback on USSD data.
+        '''
+        self._called = True
+        self.assertEqual(response, 'Call')
+        self.assertEqual(data['Number'], '+800123456')
+
 
 class BasicDummyTest(DummyTest):
-    _called = False
-
     def test_model(self):
         state_machine = self.get_statemachine()
         self.assertEqual(state_machine.GetModel()[1], 'Dummy')
@@ -406,11 +413,3 @@ class BasicDummyTest(DummyTest):
         self.fake_incoming_call()
         state_machine.GetSignalQuality()
         self.assertTrue(self._called)
-
-    def call_callback(self, state_machine, response, data):
-        '''
-        Callback on USSD data.
-        '''
-        self._called = True
-        self.assertEqual(response, 'Call')
-        self.assertEqual(data['Number'], '+800123456')

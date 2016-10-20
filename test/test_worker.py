@@ -303,6 +303,7 @@ class WorkerDummyTest(DummyTest):
         self.results.append((name, result, error, percents))
 
     def test_worker(self):
+        self.results = []
         worker = gammu.worker.GammuWorker(self.callback)
         worker.configure(self.get_statemachine().GetConfig())
         # We can directly invoke commands
@@ -344,3 +345,18 @@ class WorkerDummyTest(DummyTest):
 
         self.maxDiff = None
         self.assertEqual(WORKER_EXPECT, self.results)
+
+    def test_incoming(self):
+        self.check_incoming_call()
+        self.results = []
+        self._called = False
+        worker = gammu.worker.GammuWorker(self.callback)
+        worker.configure(self.get_statemachine().GetConfig())
+        worker.initiate()
+        worker.enqueue('SetIncomingCallback', (self.call_callback, ))
+        worker.enqueue('SetIncomingCall')
+        worker.enqueue('GetMemory', ('SM', 1))
+        self.fake_incoming_call()
+        worker.enqueue('GetMemory', ('SM', 1))
+        worker.terminate()
+        self.assertTrue(self._called)

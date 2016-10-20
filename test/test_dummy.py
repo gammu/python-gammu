@@ -54,12 +54,13 @@ dbdir = {path}
 class DummyTest(unittest.TestCase):
     test_dir = None
     config_name = None
+    dummy_dir = None
 
     def setUp(self):
         self.test_dir = tempfile.mkdtemp()
-        dummy_dir = os.path.join(self.test_dir, 'gammu-dummy')
+        self.dummy_dir = os.path.join(self.test_dir, 'gammu-dummy')
         self.config_name = os.path.join(self.test_dir, '.gammurc')
-        shutil.copytree(DUMMY_DIR, dummy_dir)
+        shutil.copytree(DUMMY_DIR, self.dummy_dir)
         with open(self.config_name, 'w') as handle:
             handle.write(CONFIGURATION.format(path=self.test_dir))
 
@@ -71,6 +72,20 @@ class DummyTest(unittest.TestCase):
         state_machine.ReadConfig(Filename=self.config_name)
         state_machine.Init()
         return state_machine
+
+    def fake_incoming_call(self):
+        """Fake incoming call"""
+        filename = os.path.join(self.dummy_dir, 'incoming-call')
+        with open(filename, 'w') as handle:
+            handle.write('\n')
+
+    def check_incoming_call(self):
+        """Checks whether incoming call faking is supported"""
+        current = tuple([int(x) for x in gammu.Version()[2].split('.')])
+        if current < (1, 37, 91):
+            raise unittest.SkipTest(
+                'Not supported in version {0}'.format(gammu.Version()[2])
+            )
 
 
 class BasicDummyTest(DummyTest):
@@ -380,3 +395,22 @@ class BasicDummyTest(DummyTest):
                 break
         self.assertEqual(folders, 3)
         self.assertEqual(files, 6)
+
+    def test_incoming_call(self):
+        self.check_incoming_call()
+        self._called = False
+        state_machine = self.get_statemachine()
+        state_machine.SetIncomingCallback(self.call_callback)
+        state_machine.SetIncomingCall()
+        state_machine.GetSignalQuality()
+        self.fake_incoming_call()
+        state_machine.GetSignalQuality()
+        self.assertTrue(self._called)
+
+    def call_callback(self, state_machine, response, data):
+        '''
+        Callback on USSD data.
+        '''
+        self._called = True
+        self.assertEqual(response, 'Call')
+        self.assertEqual(data['Number'], '+800123456')

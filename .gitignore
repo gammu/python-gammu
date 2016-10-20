@@ -6,3 +6,4 @@ tags
 python_gammu.egg-info/
 *.so
 .coverage
+/.cache/

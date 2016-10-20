@@ -355,8 +355,6 @@ class WorkerDummyTest(DummyTest):
         worker.initiate()
         worker.enqueue('SetIncomingCallback', (self.call_callback, ))
         worker.enqueue('SetIncomingCall')
-        worker.enqueue('GetMemory', ('SM', 1))
         self.fake_incoming_call()
-        worker.enqueue('GetMemory', ('SM', 1))
         worker.terminate()
         self.assertTrue(self._called)

@@ -4750,7 +4750,8 @@ StateMachine_GetFilePart(StateMachineObject *self, PyObject *args, PyObject *kwd
     static char         *kwlist[] = {"File", NULL};
     PyObject            *value, *result;
     GSM_File            File;
-    int                 handle, size;
+    int                 handle;
+    size_t              size;
 
     if (!PyArg_ParseTupleAndKeywords(args, kwds, "O!", kwlist,
                 &PyDict_Type, &(value)))
@@ -4825,7 +4826,8 @@ StateMachine_AddFilePart(StateMachineObject *self, PyObject *args, PyObject *kwd
     static char         *kwlist[] = {"File", NULL};
     PyObject            *value, *result;
     GSM_File            File;
-    int                 handle, pos;
+    int                 handle;
+    size_t              pos;
 
     if (!PyArg_ParseTupleAndKeywords(args, kwds, "O!", kwlist,
                 &PyDict_Type, &(value)))
@@ -4900,7 +4902,8 @@ StateMachine_SendFilePart(StateMachineObject *self, PyObject *args, PyObject *kw
     static char         *kwlist[] = {"File", NULL};
     PyObject            *value, *result;
     GSM_File            File;
-    int                 handle, pos;
+    int                 handle;
+    size_t              pos;
 
     if (!PyArg_ParseTupleAndKeywords(args, kwds, "O!", kwlist,
                 &PyDict_Type, &(value)))

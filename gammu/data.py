@@ -3,7 +3,7 @@
 #
 # Copyright © 2003 - 2016 Michal Čihař <michal@cihar.com>
 #
-# This file is part of python-gammu <http://wammu.eu/python-gammu/>
+# This file is part of python-gammu <https://wammu.eu/python-gammu/>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by

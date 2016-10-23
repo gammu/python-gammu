@@ -4,7 +4,7 @@
 #
 # Copyright © 2003 - 2016 Michal Čihař <michal@cihar.com>
 #
-# This file is part of python-gammu <http://wammu.eu/python-gammu/>
+# This file is part of python-gammu <https://wammu.eu/python-gammu/>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -120,8 +120,8 @@ setup(
         'mobile', 'phone', 'SMS', 'contact', 'gammu', 'calendar', 'todo'
     ],
     license='GPLv2+',
-    url='http://wammu.eu/python-gammu/',
-    download_url='http://wammu.eu/download/python-gammu/source/',
+    url='https://wammu.eu/python-gammu/',
+    download_url='https://wammu.eu/download/python-gammu/',
     classifiers=[
         'Development Status :: 6 - Mature',
         'Intended Audience :: Developers',

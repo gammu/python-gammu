@@ -1,6 +1,8 @@
 2.7
 ===
 
+* Needs Gammu >= 1.37.90 due to API changes.
+
 2.6
 ===
 

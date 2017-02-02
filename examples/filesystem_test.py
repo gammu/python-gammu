@@ -49,38 +49,38 @@ import gammu
 import os
 import datetime
 import sys
-from optparse import OptionParser
+import argparse
 
 
 def main():
-    parser = OptionParser(usage="usage: %prog [options]")
+    parser = argparse.ArgumentParser(usage="usage: %(prog)s [options]")
 
-    parser.add_option("-c", "--config",
-                      action="store", type="string",
-                      dest="config", default=None,
-                      help="Config file path")
-    parser.add_option("-f", "--folder",
-                      action="store", type="string",
-                      dest="folder", default=None,
-                      help="Folder to be used for testing")
-    parser.add_option("-t", "--test-file",
-                      action="store", type="string",
-                      dest="testfile", default="./data/cgi.jpg",
-                      help="Local file to be used for testing")
-    (options, args) = parser.parse_args()
+    parser.add_argument("-c", "--config",
+                        action="store", type=str,
+                        dest="config", default=None,
+                        help="Config file path")
+    parser.add_argument("-f", "--folder",
+                        action="store", type=str,
+                        dest="folder", default=None,
+                        help="Folder to be used for testing")
+    parser.add_argument("-t", "--test-file",
+                        action="store", type=str,
+                        dest="testfile", default="./data/cgi.jpg",
+                        help="Local file to be used for testing")
+    args = parser.parse_args()
 
-    if options.folder is None:
+    if args.folder is None:
         print("You have to select folder where testing will be done!")
         print("And even better, you should read the script before you run it.")
         sys.exit(1)
 
-    if not os.path.exists(options.testfile):
+    if not os.path.exists(args.testfile):
         print("You have to select file which will be used for testing!")
         sys.exit(1)
 
     state_machine = gammu.StateMachine()
-    if options.config is not None:
-        state_machine.ReadConfig(Filename=options.config)
+    if args.config is not None:
+        state_machine.ReadConfig(Filename=args.config)
     else:
         state_machine.ReadConfig()
     state_machine.Init()
@@ -97,17 +97,17 @@ def main():
     # Check DeleteFile
     print("\n\nExpection: Deleting cgi.jpg from memorycard")
     try:
-        state_machine.DeleteFile(unicode(options.folder + "/cgi.jpg"))
+        state_machine.DeleteFile(unicode(args.folder + "/cgi.jpg"))
     except gammu.ERR_FILENOTEXIST:
         print("Oh well - we copy it now ;-) (You SHOULD read this)")
 
     # Check AddFilePart
     print("\n\nExpection: Put cgi.jpg onto Memorycard on phone")
-    file_handle = open(options.testfile, "rb")
-    file_stat = os.stat(options.testfile)
+    file_handle = open(args.testfile, "rb")
+    file_stat = os.stat(args.testfile)
     ttime = datetime.datetime.fromtimestamp(file_stat[8])
     file_f = {
-        "ID_FullName": options.folder,
+        "ID_FullName": args.folder,
         "Name": u"cgi.jpg",
         "Modified": ttime,
         "Folder": 0,
@@ -132,7 +132,7 @@ def main():
     )
     with open('./test.jpg', 'wb') as handle:
         file_f = {
-            "ID_FullName": options.folder + "/cgi.jpg",
+            "ID_FullName": args.folder + "/cgi.jpg",
             "Finished": 0
         }
         while not file_f["Finished"]:
@@ -142,7 +142,7 @@ def main():
 
     # Check correct transfer
     print("\n\nExpection: test.jpg and cgi.jpg to be the same")
-    f1 = open(options.testfile, "rb")
+    f1 = open(args.testfile, "rb")
     f2 = open("./test.jpg", "rb")
     if f1.read() == f2.read():
         print("Same files")
@@ -202,15 +202,15 @@ def main():
         "(readonly=1, protected=0, system=1, hidden=1)"
     )
     state_machine.SetFileAttributes(
-        unicode(options.folder + "/cgi.jpg"), 1, 0, 1, 1
+        unicode(args.folder + "/cgi.jpg"), 1, 0, 1, 1
     )
 
     # Check GetFolderListing
     print("\n\nExpection: Listing of cgi.jpg's properties")
-    file_f = state_machine.GetFolderListing(unicode(options.folder), 1)
+    file_f = state_machine.GetFolderListing(unicode(args.folder), 1)
     while 1:
         if file_f["Name"] != "cgi.jpg":
-            file_f = state_machine.GetFolderListing(unicode(options.folder), 0)
+            file_f = state_machine.GetFolderListing(unicode(args.folder), 0)
         else:
             attribute = ""
             if file_f["Protected"]:
@@ -237,21 +237,21 @@ def main():
     # Check DeleteFile
     print("\n\nExpection: Deletion of cgi.jpg from memorycard")
     try:
-        state_machine.DeleteFile(unicode(options.folder + "cgi.jpg"))
+        state_machine.DeleteFile(unicode(args.folder + "cgi.jpg"))
         print("Deleted")
     except gammu.ERR_FILENOTEXIST:
         print("Something is wrong ...")
 
     # Check AddFolder
     print("\n\nExpection: Creation of a folder on the memorycard \"42alpha\"")
-    file_f = state_machine.AddFolder(unicode(options.folder), u"42alpha")
+    file_f = state_machine.AddFolder(unicode(args.folder), u"42alpha")
 
     # Check GetFolderListing again *wired*
     print("\n\nExpection: Print properties of newly created folder")
-    file_f = state_machine.GetFolderListing(unicode(options.folder), 1)
+    file_f = state_machine.GetFolderListing(unicode(args.folder), 1)
     while 1:
         if file_f["Name"] != "42alpha":
-            file_f = state_machine.GetFolderListing(unicode(options.folder), 0)
+            file_f = state_machine.GetFolderListing(unicode(args.folder), 0)
         else:
             attribute = ""
             if file_f["Protected"]:
@@ -277,7 +277,7 @@ def main():
 
     # Check DeleteFolder
     print("\n\nExpection: Deletion of previously created folder \"42alpha\"")
-    state_machine.DeleteFolder(unicode(options.folder + "/42alpha"))
+    state_machine.DeleteFolder(unicode(args.folder + "/42alpha"))
 
 
 if __name__ == '__main__':

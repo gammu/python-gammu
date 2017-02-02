@@ -34,34 +34,34 @@ gammu --getfilesystem -flatall
 from __future__ import print_function
 import gammu
 import locale
-from optparse import OptionParser
-parser = OptionParser(usage="usage: %prog [options]")
+import argparse
+parser = argparse.ArgumentParser(usage="usage: %(prog)s [options]")
 
-parser.add_option("-c", "--config",
-                  action="store", type="string",
-                  dest="config", default=None,
-                  help="Config file path")
-parser.add_option("-f", "--flat",
-                  action="store_true",
-                  dest="flat", default=False,
-                  help="Flat listing")
-parser.add_option("-l", "--level",
-                  action="store_true",
-                  dest="level", default=False,
-                  help="Level listing")
-(options, args) = parser.parse_args()
+parser.add_argument("-c", "--config",
+                    action="store", type=str,
+                    dest="config", default=None,
+                    help="Config file path")
+parser.add_argument("-f", "--flat",
+                    action="store_true",
+                    dest="flat", default=False,
+                    help="Flat listing")
+parser.add_argument("-l", "--level",
+                    action="store_true",
+                    dest="level", default=False,
+                    help="Level listing")
+args = parser.parse_args()
 
 # Init gammu module
 state_machine = gammu.StateMachine()
-if options.config is not None:
-    state_machine.ReadConfig(Filename=options.config)
+if args.config is not None:
+    state_machine.ReadConfig(Filename=args.config)
 else:
     state_machine.ReadConfig()
 state_machine.Init()
 
 # Get wished listing from commandline (if provided - else asume level)
 # On commandline level or flat can be provided as parameters
-if options.flat:
+if args.flat:
     mode = "flat"
 else:
     mode = "level"

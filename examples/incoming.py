@@ -37,7 +37,7 @@ def callback(state_machine, callback_type, data):
     @param data: event data
     @type data: hash
     '''
-    print('Received incoming event type %s, data:' % callback_type)
+    print('Received incoming event type {0!s}, data:'.format(callback_type))
     print(data)
 
 
@@ -77,7 +77,7 @@ def main():
     print('Press Ctrl+C to interrupt')
     while 1:
         signal = state_machine.GetSignalQuality()
-        print('Signal is at %d%%' % signal['SignalPercent'])
+        print('Signal is at {0:d}%'.format(signal['SignalPercent']))
         time.sleep(1)
 
 if __name__ == '__main__':

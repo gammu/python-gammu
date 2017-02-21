@@ -48,7 +48,7 @@ def check_minimum_gammu_version():
 
 def get_pkgconfig_data(args, mod, required=True):
     """Run pkg-config to and return content associated with it"""
-    f = os.popen("pkg-config %s %s" % (" ".join(args), mod))
+    f = os.popen("pkg-config {0!s} {1!s}".format(" ".join(args), mod))
 
     line = f.readline()
     if line is not None:
@@ -57,7 +57,7 @@ def get_pkgconfig_data(args, mod, required=True):
     if line is None or line == "":
         if required:
             raise Exception(
-                "Cannot determine '%s' from pkg-config" % " ".join(args)
+                "Cannot determine '{0!s}' from pkg-config".format(" ".join(args))
             )
         else:
             return ""

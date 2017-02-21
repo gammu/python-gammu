@@ -37,7 +37,7 @@ def callback(state_machine, callback_type, data):
     @param data: event data
     @type data: hash
     '''
-    print('Received incoming event type {0!s}, data:'.format(callback_type))
+    print('Received incoming event type {0}, data:'.format(callback_type))
     print(data)
 
 

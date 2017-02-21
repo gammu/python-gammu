@@ -58,21 +58,21 @@ for x in data:
 
     m = x[0]
     print()
-    print('{0:<15!s}: {1!s}'.format('Number', m['Number']))
-    print('{0:<15!s}: {1!s}'.format('Date', str(m['DateTime'])))
-    print('{0:<15!s}: {1!s}'.format('State', m['State']))
-    print('{0:<15!s}: {1!s}'.format('Folder', m['Folder']))
-    print('{0:<15!s}: {1!s}'.format('Validity', m['SMSC']['Validity']))
+    print('{0:<15}: {1}'.format('Number', m['Number']))
+    print('{0:<15}: {1}'.format('Date', str(m['DateTime'])))
+    print('{0:<15}: {1}'.format('State', m['State']))
+    print('{0:<15}: {1}'.format('Folder', m['Folder']))
+    print('{0:<15}: {1}'.format('Validity', m['SMSC']['Validity']))
     loc = []
     for m in x:
         loc.append(str(m['Location']))
-    print('{0:<15!s}: {1!s}'.format('Location(s)', ', '.join(loc)))
+    print('{0:<15}: {1}'.format('Location(s)', ', '.join(loc)))
     if v is None:
-        print('\n{0!s}'.format(m['Text']))
+        print('\n{0}'.format(m['Text']))
     else:
         for e in v['Entries']:
             print()
-            print('{0:<15!s}: {1!s}'.format('Type', e['ID']))
+            print('{0:<15}: {1}'.format('Type', e['ID']))
             if e['Bitmap'] is not None:
                 for bmp in e['Bitmap']:
                     print('Bitmap:')

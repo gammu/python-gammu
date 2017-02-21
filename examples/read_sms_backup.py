@@ -48,21 +48,21 @@ def main():
 
         part = message[0]
         print()
-        print('{0:<15!s}: {1!s}'.format('Number', part['Number']))
-        print('{0:<15!s}: {1!s}'.format('Date', str(part['DateTime'])))
-        print('{0:<15!s}: {1!s}'.format('State', part['State']))
-        print('{0:<15!s}: {1!s}'.format('Folder', part['Folder']))
-        print('{0:<15!s}: {1!s}'.format('Validity', part['SMSC']['Validity']))
+        print('{0:<15}: {1}'.format('Number', part['Number']))
+        print('{0:<15}: {1}'.format('Date', str(part['DateTime'])))
+        print('{0:<15}: {1}'.format('State', part['State']))
+        print('{0:<15}: {1}'.format('Folder', part['Folder']))
+        print('{0:<15}: {1}'.format('Validity', part['SMSC']['Validity']))
         loc = []
         for part in message:
             loc.append(str(part['Location']))
-        print('{0:<15!s}: {1!s}'.format('Location(s)', ', '.join(loc)))
+        print('{0:<15}: {1}'.format('Location(s)', ', '.join(loc)))
         if decoded is None:
-            print('\n{0!s}'.format(charsetencoder(part['Text'], 'replace')[0]))
+            print('\n{0}'.format(charsetencoder(part['Text'], 'replace')[0]))
         else:
             for entries in decoded['Entries']:
                 print()
-                print('{0:<15!s}: {1!s}'.format('Type', entries['ID']))
+                print('{0:<15}: {1}'.format('Type', entries['ID']))
                 if entries['Bitmap'] is not None:
                     for bmp in entries['Bitmap']:
                         print('Bitmap:')

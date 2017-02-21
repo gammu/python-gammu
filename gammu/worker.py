@@ -52,7 +52,7 @@ class InvalidCommand(Exception):
         '''
         Returns textual representation of exception.
         '''
-        return 'Invalid command: "{0!s}"'.format(self.value)
+        return 'Invalid command: "{0}"'.format(self.value)
 
 
 def check_worker_command(command):
@@ -104,9 +104,9 @@ class GammuCommand(object):
         Returns textual representation.
         '''
         if self._params is not None:
-            return '{0!s} {1!r}'.format(self._command, self._params)
+            return '{0} {1}'.format(self._command, self._params)
         else:
-            return '{0!s} ()'.format(self._command)
+            return '{0} ()'.format(self._command)
 
 
 class GammuTask(object):

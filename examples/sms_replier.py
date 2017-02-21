@@ -39,7 +39,7 @@ def reply_test(message):
     if message['Number'] == '999':
         # No reply to this number
         return None
-    return 'Reply to {0!s}'.format(message['Text'])
+    return 'Reply to {0}'.format(message['Text'])
 
 
 # Reply function, first element is matching string, second can be:
@@ -55,7 +55,7 @@ REPLIES = [
 
 
 def Callback(state_machine, callback_type, data):
-    verbose_print('Received incoming event type {0!s}, data:'.format(callback_type))
+    verbose_print('Received incoming event type {0}, data:'.format(callback_type))
     if callback_type != 'SMS':
         print('Unsupported event!')
     if 'Number' not in data:

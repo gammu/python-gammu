@@ -46,10 +46,10 @@ def main():
     imei = state_machine.GetIMEI()
     firmware = state_machine.GetFirmware()
     print('Phone infomation:')
-    print(('{0:<15!s}: {1!s}'.format('Manufacturer', manufacturer)))
-    print(('{0:<15!s}: {1!s} ({2!s})'.format('Model', model[0], model[1])))
-    print(('{0:<15!s}: {1!s}'.format('IMEI', imei)))
-    print(('{0:<15!s}: {1!s}'.format('Firmware', firmware[0])))
+    print(('{0:<15}: {1}'.format('Manufacturer', manufacturer)))
+    print(('{0:<15}: {1} ({2})'.format('Model', model[0], model[1])))
+    print(('{0:<15}: {1}'.format('IMEI', imei)))
+    print(('{0:<15}: {1}'.format('Firmware', firmware[0])))
 
 
 if __name__ == '__main__':

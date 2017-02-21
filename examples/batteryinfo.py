@@ -37,4 +37,4 @@ status = state_machine.GetBatteryCharge()
 
 for x in status:
     if status[x] != -1:
-        print(("{0:20!s}: {1!s}".format(x, status[x])))
+        print(("{0:20}: {1}".format(x, status[x])))

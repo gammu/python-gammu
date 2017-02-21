@@ -45,10 +45,10 @@ def main():
         remain = remain - 1
 
         print()
-        print('{0:<15!s}: {1:d}'.format('Location', entry['Location']))
-        print('{0:<15!s}: {1!s}'.format('Priority', entry['Priority']))
+        print('{0:<15}: {1:d}'.format('Location', entry['Location']))
+        print('{0:<15}: {1}'.format('Priority', entry['Priority']))
         for v in entry['Entries']:
-            print('{0:<15!s}: {1!s}'.format(v['Type'], str(v['Value'])))
+            print('{0:<15}: {1}'.format(v['Type'], str(v['Value'])))
 
 
 if __name__ == '__main__':

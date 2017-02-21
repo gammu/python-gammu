@@ -37,13 +37,13 @@ def callback(state_machine, callback_type, data):
     '''
     global REPLY
     if callback_type != 'USSD':
-        print('Unexpected event type: {0!s}'.format(callback_type))
+        print('Unexpected event type: {0}'.format(callback_type))
         sys.exit(1)
 
     REPLY = True
 
     print('Network reply:')
-    print('Status: {0!s}'.format(data['Status']))
+    print('Status: {0}'.format(data['Status']))
     print(data['Text'])
 
     if data['Status'] == 'ActionNeeded':

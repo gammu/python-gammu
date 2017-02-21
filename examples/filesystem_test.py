@@ -90,7 +90,7 @@ def main():
     try:
         fs_info = state_machine.GetFileSystemStatus()
         fs_info["Total"] = fs_info["Free"] + fs_info["Used"]
-        print("Used: %(Used)d, Free: %(Free)d, Total: %(Total)d" % fs_info)
+        print("Used: {Used:d}, Free: {Free:d}, Total: {Total:d}".format(**fs_info))
     except gammu.ERR_NOTSUPPORTED:
         print("You will have to live without this knowledge")
 

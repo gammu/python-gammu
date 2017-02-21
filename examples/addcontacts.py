@@ -46,7 +46,7 @@ def main():
     for item in backup['PhonePhonebook']:
         item['MemoryType'] = memory
         loc = state_machine.AddMemory(item)
-        print(('Added item to location %d' % loc))
+        print(('Added item to location {0:d}'.format(loc)))
 
 
 if __name__ == '__main__':

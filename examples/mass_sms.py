@@ -45,4 +45,4 @@ for number in sys.argv[2:]:
     try:
         state_machine.SendSMS(message)
     except gammu.GSMError as exc:
-        print('Sending to %s failed: %s' % (number, exc))
+        print('Sending to {0!s} failed: {1!s}'.format(number, exc))

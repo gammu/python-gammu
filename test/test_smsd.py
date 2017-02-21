@@ -113,14 +113,14 @@ class SMSDDummyTest(DummyTest):
             self.assertEqual(
                 status['Received'],
                 2,
-                'Messages were not received as expected (%d)!' %
-                status['Received']
+                'Messages were not received as expected ({0:d})!'.format(
+                status['Received'])
             )
             self.assertEqual(
                 status['Sent'],
                 2,
-                'Messages were not sent as expected (%d)!' %
-                status['Sent']
+                'Messages were not sent as expected ({0:d})!'.format(
+                status['Sent'])
             )
 
             time.sleep(1)

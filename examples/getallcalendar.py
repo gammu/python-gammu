@@ -52,7 +52,7 @@ while remain > 0:
 
     # Display it
     print()
-    print('%-20s: %d' % ('Location', entry['Location']))
-    print('%-20s: %s' % ('Type', entry['Type']))
+    print('{0:<20!s}: {1:d}'.format('Location', entry['Location']))
+    print('{0:<20!s}: {1!s}'.format('Type', entry['Type']))
     for v in entry['Entries']:
-        print('%-20s: %s' % (v['Type'], str(v['Value'])))
+        print('{0:<20!s}: {1!s}'.format(v['Type'], str(v['Value'])))

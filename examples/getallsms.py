@@ -49,10 +49,10 @@ def main():
 
             for m in sms:
                 print()
-                print('%-15s: %s' % ('Number', m['Number']))
-                print('%-15s: %s' % ('Date', str(m['DateTime'])))
-                print('%-15s: %s' % ('State', m['State']))
-                print('\n%s' % m['Text'])
+                print('{0:<15!s}: {1!s}'.format('Number', m['Number']))
+                print('{0:<15!s}: {1!s}'.format('Date', str(m['DateTime'])))
+                print('{0:<15!s}: {1!s}'.format('State', m['State']))
+                print('\n{0!s}'.format(m['Text']))
     except gammu.ERR_EMPTY:
         # This error is raised when we've reached last entry
         # It can happen when reported status does not match real counts

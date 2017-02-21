@@ -40,7 +40,7 @@ def callback(name, result, error, percents):
     to work with GUI here.
     '''
     print(
-        '-> %s completed %d%% with error %s , return value:' % (
+        '-> {0!s} completed {1:d}% with error {2!s} , return value:'.format(
             name,
             percents,
             error

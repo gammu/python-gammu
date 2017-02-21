@@ -39,7 +39,7 @@ def reply_test(message):
     if message['Number'] == '999':
         # No reply to this number
         return None
-    return 'Reply to %s' % message['Text']
+    return 'Reply to {0!s}'.format(message['Text'])
 
 
 # Reply function, first element is matching string, second can be:
@@ -55,7 +55,7 @@ REPLIES = [
 
 
 def Callback(state_machine, callback_type, data):
-    verbose_print('Received incoming event type %s, data:' % callback_type)
+    verbose_print('Received incoming event type {0!s}, data:'.format(callback_type))
     if callback_type != 'SMS':
         print('Unsupported event!')
     if 'Number' not in data:
@@ -97,7 +97,7 @@ def main():
     while 1:
         time.sleep(1)
         status = state_machine.GetBatteryCharge()
-        print('Battery is at %d%%' % status['BatteryPercent'])
+        print('Battery is at {0:d}%'.format(status['BatteryPercent']))
 
 
 if __name__ == '__main__':

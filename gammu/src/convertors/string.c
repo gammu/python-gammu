@@ -54,7 +54,8 @@ unsigned char *StringPythonToGammu(PyObject * o)
 unsigned char *strPythonToGammu(const Py_UNICODE * src, const size_t len)
 {
 	unsigned char *dest;
-	size_t i;
+	Py_UNICODE wc, tmp;
+	size_t i, j;
 
 	/* Allocate memory */
 	dest = malloc((len + 1) * 2 * sizeof(unsigned char));
@@ -65,14 +66,29 @@ unsigned char *strPythonToGammu(const Py_UNICODE * src, const size_t len)
 	}
 
 	/* Convert and copy string. */
-	for (i = 0; i < len; i++) {
-		dest[(i * 2)] = (src[i] >> 8) & 0xff;
-		dest[(i * 2) + 1] = src[i] & 0xff;
+	for (i = 0, j = 0; i < len; i++) {
+		if (src[i] > 0xffff) {
+			wc = src[i] - 0x10000;
+			tmp = 0xD800 | (wc >> 10);
+			dest[(j * 2)] = (tmp >> 8) & 0xff;
+			dest[(j * 2) + 1] = tmp & 0xff;
+			j++;
+
+			tmp = 0xDC00 | (wc & 0x3ff);
+
+			dest[(j * 2)] = (tmp >> 8) & 0xff;
+			dest[(j * 2) + 1] = tmp & 0xff;
+			j++;
+		} else {
+			dest[(j * 2)] = (src[i] >> 8) & 0xff;
+			dest[(j * 2) + 1] = src[i] & 0xff;
+			j++;
+		}
 	}
 
 	/* Zero terminate string. */
-	dest[(len * 2)] = 0;
-	dest[(len * 2) + 1] = 0;
+	dest[(j * 2)] = 0;
+	dest[(j * 2) + 1] = 0;
 
 	return dest;
 }
@@ -90,6 +106,7 @@ Py_UNICODE *strGammuToPython(const unsigned char *src)
 Py_UNICODE *strGammuToPythonL(const unsigned char *src, const int len)
 {
 	Py_UNICODE *dest;
+	Py_UNICODE value, second;
 	int i;
 
 	/* Allocate memory */
@@ -101,9 +118,19 @@ Py_UNICODE *strGammuToPythonL(const unsigned char *src, const int len)
 	}
 
 	/* Convert string including zero at the end. */
-	/* TODO: Handle possible UTF-16 chars */
 	for (i = 0; i <= len; i++) {
-		dest[i] = (src[2 * i] << 8) + src[(2 * i) + 1];
+		value = (src[2 * i] << 8) + src[(2 * i) + 1];
+		if (value >= 0xD800 && value <= 0xDBFF) {
+			second = src[(i + 1) * 2] * 256 + src[(i + 1) * 2 + 1];
+			if (second >= 0xDC00 && second <= 0xDFFF) {
+				value = ((value - 0xD800) << 10) + (second - 0xDC00) + 0x010000;
+				i++;
+			} else if (second == 0) {
+				/* Surrogate at the end of string */
+				value = 0xFFFD; /* REPLACEMENT CHARACTER */
+			}
+		}
+		dest[i] = value;
 	}
 
 	return dest;

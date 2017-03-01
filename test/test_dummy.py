@@ -353,6 +353,21 @@ class BasicDummyTest(DummyTest):
         state_machine.AddFolder('', 'testfolder')
         state_machine.DeleteFolder('testfolder')
 
+    def test_emoji_folder(self):
+        state_machine = self.get_statemachine()
+        name = 'test-😘'
+        self.assertRaises(
+            gammu.ERR_FILENOTEXIST,
+            state_machine.DeleteFolder,
+            name
+        )
+        state_machine.AddFolder('', name)
+        # Check the folder exists as expected on filesystem
+        self.assertTrue(
+            os.path.exists(os.path.join(self.dummy_dir, 'fs', name))
+        )
+        state_machine.DeleteFolder(name)
+
     def test_addfile(self):
         state_machine = self.get_statemachine()
         file_stat = os.stat(TEST_FILE)

@@ -1,3 +1,8 @@
+2.8
+===
+
+* Added support for UTF-16 Unicode chars (emojis).
+
 2.7
 ===
 

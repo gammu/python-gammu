@@ -20,7 +20,12 @@
  */
 
 #include "misc.h"
+#ifdef HAVE_STRING_H
 #include <string.h>
+#endif
+#ifdef HAVE_STRINGS_H
+#include <strings.h>
+#endif
 
 char *mystrncpy(char *dest, const char *src, size_t n) {
     strncpy(dest, src, n);

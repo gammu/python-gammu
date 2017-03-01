@@ -48,7 +48,7 @@ const char program_name[] = "python-gammu";
 
 /* Declarations for objects of type SMSD */
 typedef struct {
-	PyObject_HEAD;
+	PyObject_HEAD
 	GSM_SMSDConfig *config;
 } SMSDObject;
 

@@ -95,7 +95,7 @@ Py_UNICODE *strGammuToPython(const unsigned char *src);
 /**
  * Convert Gammu unicode string with defined length to unicode string that can be read by Python.
  */
-Py_UNICODE *strGammuToPythonL(const unsigned char *src, const int len);
+Py_UNICODE *strGammuToPythonL(const unsigned char *src, const int len, size_t *out_len);
 
 /**
  * Convert Gammu unicode string to python unicode object.

@@ -361,7 +361,10 @@ class BasicDummyTest(DummyTest):
             state_machine.DeleteFolder,
             name
         )
-        state_machine.AddFolder('', name)
+        self.assertEqual(
+            name,
+            state_machine.AddFolder('', name)
+        )
         # Check the folder exists as expected on filesystem
         self.assertTrue(
             os.path.exists(os.path.join(self.dummy_dir, 'fs', name))

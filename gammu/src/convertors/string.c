@@ -58,7 +58,7 @@ unsigned char *strPythonToGammu(const Py_UNICODE * src, const size_t len)
 	size_t i, j;
 
 	/* Allocate memory */
-	dest = malloc((len + 1) * 2 * sizeof(unsigned char));
+	dest = malloc((len + 1) * 2 * 2 * sizeof(unsigned char));
 	if (dest == NULL) {
 		PyErr_SetString(PyExc_MemoryError,
 				"Not enough memory to allocate string");
@@ -96,14 +96,15 @@ unsigned char *strPythonToGammu(const Py_UNICODE * src, const size_t len)
 Py_UNICODE *strGammuToPython(const unsigned char *src)
 {
 	int len = 0;
+	size_t out_len = 0;
 
 	/* Get string length */
 	len = UnicodeLength(src);
 
-	return strGammuToPythonL(src, len);
+	return strGammuToPythonL(src, len, &out_len);
 }
 
-Py_UNICODE *strGammuToPythonL(const unsigned char *src, const int len)
+Py_UNICODE *strGammuToPythonL(const unsigned char *src, const int len, size_t *out_len)
 {
 	Py_UNICODE *dest;
 	Py_UNICODE value, second;
@@ -117,8 +118,9 @@ Py_UNICODE *strGammuToPythonL(const unsigned char *src, const int len)
 		return NULL;
 	}
 
-	/* Convert string including zero at the end. */
-	for (i = 0; i <= len; i++) {
+	/* Convert string without zero at the end. */
+	*out_len = 0;
+	for (i = 0; i < len; i++) {
 		value = (src[2 * i] << 8) + src[(2 * i) + 1];
 		if (value >= 0xD800 && value <= 0xDBFF) {
 			second = src[(i + 1) * 2] * 256 + src[(i + 1) * 2 + 1];
@@ -130,8 +132,10 @@ Py_UNICODE *strGammuToPythonL(const unsigned char *src, const int len)
 				value = 0xFFFD; /* REPLACEMENT CHARACTER */
 			}
 		}
-		dest[i] = value;
+		dest[(*out_len)++] = value;
 	}
+	/* Add trailing zero */
+	dest[*out_len] = 0;
 
 	return dest;
 }
@@ -148,11 +152,12 @@ PyObject *UnicodeStringToPythonL(const unsigned char *src, const Py_ssize_t len)
 {
 	Py_UNICODE *val;
 	PyObject *res;
+	size_t out_len = 0;
 
-	val = strGammuToPythonL(src, len);
+	val = strGammuToPythonL(src, len, &out_len);
 	if (val == NULL)
 		return NULL;
-	res = PyUnicode_FromUnicode(val, len);
+	res = PyUnicode_FromUnicode(val, out_len);
 	free(val);
 	return res;
 }

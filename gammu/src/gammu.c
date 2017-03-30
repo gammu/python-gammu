@@ -3149,17 +3149,19 @@ static PyObject *
 StateMachine_AnswerCall(StateMachineObject *self, PyObject *args, PyObject *kwds) {
     GSM_Error           error;
     static char         *kwlist[] = {"ID", "All", NULL};
-    int                 id;
-    gboolean                all;
+    int                 id=0;
+    gboolean            all=TRUE;
     PyObject            *o = Py_None;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwds, "iO", kwlist,
+    if (!PyArg_ParseTupleAndKeywords(args, kwds, "|iO", kwlist,
                 &id, &o))
         return NULL;
 
-    all = BoolFromPython(o, "All");
-    if (all == BOOL_INVALID) {
-        return NULL;
+    if (o != Py_None) {
+        all = BoolFromPython(o, "All");
+        if (all == BOOL_INVALID) {
+            return NULL;
+        }
     }
 
 
@@ -3191,17 +3193,19 @@ static PyObject *
 StateMachine_CancelCall(StateMachineObject *self, PyObject *args, PyObject *kwds) {
     GSM_Error           error;
     static char         *kwlist[] = {"ID", "All", NULL};
-    int                 id;
-    gboolean                all;
+    int                 id=0;
+    gboolean            all=TRUE;
     PyObject            *o = Py_None;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwds, "iO", kwlist,
+    if (!PyArg_ParseTupleAndKeywords(args, kwds, "|iO", kwlist,
                 &id, &o))
         return NULL;
 
-    all = BoolFromPython(o, "All");
-    if (all == BOOL_INVALID) {
-        return NULL;
+    if (o != Py_None) {
+        all = BoolFromPython(o, "All");
+        if (all == BOOL_INVALID) {
+            return NULL;
+        }
     }
 
     BEGIN_PHONE_COMM

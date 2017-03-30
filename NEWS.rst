@@ -1,3 +1,8 @@
+2.9
+===
+
+* Make parameters to CancelCall and AnswerCall optional.
+
 2.8
 ===
 

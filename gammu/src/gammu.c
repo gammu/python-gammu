@@ -3178,7 +3178,7 @@ StateMachine_AnswerCall(StateMachineObject *self, PyObject *args, PyObject *kwds
 
 static char StateMachine_CancelCall__doc__[] =
 "CancelCall(ID, All)\n\n"
-"Deny current incoming call.\n"
+"Hangups call (either ongoing or incoming).\n"
 "@param ID: ID of call\n"
 "@type ID: integer\n"
 "@param All: Cancel all calls?\n"

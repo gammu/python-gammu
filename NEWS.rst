@@ -1,11 +1,7 @@
-2.9
-===
-
-* Make parameters to CancelCall and AnswerCall optional.
-
 2.8
 ===
 
+* Make parameters to CancelCall and AnswerCall optional.
 * Added support for UTF-16 Unicode chars (emojis).
 
 2.7

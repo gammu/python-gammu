@@ -13,15 +13,17 @@ environment:
     PYTHON_VERSION: "3.5.0"
     PYTHON_ARCH: "32"
     GAMMU_VERSION: "1.38.3"
+    GAMMU_PATH: "C:\\Gammu"
 
 install:
   - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"
   #  Install Gammu
   - appveyor DownloadFile https://dl.cihar.com/gammu/releases/windows/Gammu-%GAMMU_VERSION%-Windows.exe
-  - Gammu-%GAMMU_VERSION%-Windows.exe /S /D=C:\Program Files\Gammu
+  - Gammu-%GAMMU_VERSION%-Windows.exe /S /D=%GAMMU_PATH%
   # Install Python (from the official .msi of http://python.org) and pip when
   # not already installed.
   - ps: if (-not(Test-Path($env:PYTHON))) { & appveyor\install.ps1 }
+  - ps: Get-ChildItem -Path %GAMMU_PATH% -Recurse
 
 build_script:
   # Build the compiled extension

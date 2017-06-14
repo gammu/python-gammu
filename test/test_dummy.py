@@ -25,6 +25,7 @@ import gammu
 import tempfile
 import shutil
 import datetime
+import platform
 import os.path
 
 DUMMY_DIR = os.path.join(os.path.dirname(__file__), 'data', 'gammu-dummy')
@@ -357,6 +358,8 @@ class BasicDummyTest(DummyTest):
         state_machine.AddFolder('', 'testfolder')
         state_machine.DeleteFolder('testfolder')
 
+    @unittest.skipIf(platform.system() == 'Windows',
+        'Not supported on Windows')
     def test_emoji_folder(self):
         state_machine = self.get_statemachine()
         name = 'test-😘'

@@ -56,6 +56,7 @@ class DummyTest(unittest.TestCase):
     config_name = None
     dummy_dir = None
     _called = False
+    _state_machine = None
 
     def setUp(self):
         self.test_dir = tempfile.mkdtemp()
@@ -66,12 +67,15 @@ class DummyTest(unittest.TestCase):
             handle.write(CONFIGURATION.format(path=self.test_dir))
 
     def tearDown(self):
+        if self._state_machine:
+            self._state_machine.Terminate()
         shutil.rmtree(self.test_dir)
 
     def get_statemachine(self):
         state_machine = gammu.StateMachine()
         state_machine.ReadConfig(Filename=self.config_name)
         state_machine.Init()
+        self._state_machine = state_machine
         return state_machine
 
     def fake_incoming_call(self):

@@ -4,6 +4,9 @@ python-gammu
 .. image:: https://travis-ci.org/gammu/python-gammu.svg?branch=master
     :target: https://travis-ci.org/gammu/python-gammu
 
+.. image:: https://ci.appveyor.com/api/projects/status/19cefdo79bqrtq8l?svg=true
+    :target: https://ci.appveyor.com/project/nijel/python-gammu
+
 .. image:: https://www.codacy.com/project/badge/c7e87df480fb4609aa48482873f5c46b
     :target: https://www.codacy.com/public/nijel/python-gammu
 

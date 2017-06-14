@@ -30,6 +30,8 @@
 
 #include <gammu-config.h>
 
+#define PYTHON_GAMMU_VERSION #PYTHON_GAMMU_MAJOR_VERSION "." #PYTHON_GAMMU_MINOR_VERSION
+
 #ifndef HAVE_STRCASECMP
 #ifdef HAVE_STRICMP
 #define strcasecmp _stricmp

@@ -23,6 +23,7 @@ import unittest
 import gammu
 import glob
 import tempfile
+import os
 import os.path
 
 TEST_DIR = os.path.join(os.path.dirname(__file__), 'data')
@@ -40,10 +41,16 @@ TEST_CALENDAR = ('.vcs', '.ics', '.backup')
 class BackupTest(unittest.TestCase):
     def perform_test(self, filename, extensions):
         out_files = [
-            tempfile.NamedTemporaryFile(suffix=extension)
+            tempfile.NamedTemporaryFile(suffix=extension, delete=False)
             for extension in extensions
         ]
-        out_backup = tempfile.NamedTemporaryFile(suffix='.backup')
+        out_backup = tempfile.NamedTemporaryFile(
+            suffix='.backup', delete=False
+        )
+        # Close all files (needed on Windows)
+        for handle in out_files:
+            handle.close()
+        out_backup.close()
         try:
             backup = gammu.ReadBackup(filename)
             for out in out_files:
@@ -71,8 +78,8 @@ class BackupTest(unittest.TestCase):
                 gammu.SaveBackup(out_backup.name, backup)
         finally:
             for handle in out_files:
-                handle.close()
-            out_backup.close()
+                os.unlink(handle.name)
+            os.unlin(out_backup.name)
 
     def test_convert_contacts(self):
         for filename in TEST_FILES_CONTACTS:

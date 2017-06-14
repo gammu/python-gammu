@@ -70,7 +70,7 @@ def get_pkgconfig_data(args, mod, required=True):
 def get_module():
     path = os.environ.get('GAMMU_PATH')
     if path:
-        libs = ['Gammu', 'gsmsd']
+        libs = ['Gammu', 'gsmsd', 'Advapi32']
         ldflags = '/LIBPATH:{0}'.format(
             os.path.join(path, 'lib')
         )

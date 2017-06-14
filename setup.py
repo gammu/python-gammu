@@ -75,7 +75,7 @@ def get_module():
             os.path.join(path, 'lib')
         )
         cflags = '-I{0}'.format(
-            os.path.join(path, 'include')
+            os.path.join(path, 'include', 'gammu')
         )
     else:
         libs = get_pkgconfig_data(["--libs-only-l"], "gammu gammu-smsd", False)

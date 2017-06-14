@@ -24,6 +24,7 @@ install:
   # not already installed.
   - ps: if (-not(Test-Path($env:PYTHON))) { & appveyor\install.ps1 }
   - ps: Get-ChildItem -Path %GAMMU_PATH% -Recurse
+  - ps: Get-ChildItem -Path $env:GAMMU_PATH -Recurse
 
 build_script:
   # Build the compiled extension

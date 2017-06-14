@@ -92,24 +92,28 @@ class DebugTest(unittest.TestCase):
     def setUp(self):
         gammu.SetDebugLevel('textall')
 
-    def check_operation(self, filename):
+    def check_operation(self, filename, handle=None):
         """
         Executes gammu operation which causes debug logs.
         """
         gammu.DecodePDU(PDU_DATA)
         gammu.SetDebugFile(None)
+        if handle:
+            handle.close()
         if filename is not None:
             with open(filename, 'r') as handle:
                 self.assertTrue('SMS type: Status report' in handle.read())
 
     def test_file(self):
-        testfile = tempfile.NamedTemporaryFile(suffix='.debug')
+        testfile = tempfile.NamedTemporaryFile(suffix='.debug', delete=False)
+        testfile.close()
         try:
-            gammu.SetDebugFile(testfile.file)
-            self.check_operation(testfile.name)
+            handle = open(testfile.name, 'w')
+            gammu.SetDebugFile(handle)
+            self.check_operation(testfile.name, handle)
         finally:
             gammu.SetDebugFile(None)
-            testfile.close()
+            os.unlink(testfile.name)
 
     def test_filename(self):
         testfile = tempfile.NamedTemporaryFile(suffix='.debug', delete=False)
@@ -130,7 +134,7 @@ class DebugTest(unittest.TestCase):
         testfile = tempfile.NamedTemporaryFile(suffix='.debug', delete=False)
         testfile.close()
         try:
-            gammu.SetDebugFile(testfile.file)
+            gammu.SetDebugFile(testfile.name)
             self.check_operation(None)
             with open(testfile.name, 'r') as handle:
                 self.assertEqual('', handle.read())

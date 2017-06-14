@@ -79,7 +79,7 @@ class BackupTest(unittest.TestCase):
         finally:
             for handle in out_files:
                 os.unlink(handle.name)
-            os.unlin(out_backup.name)
+            os.unlink(out_backup.name)
 
     def test_convert_contacts(self):
         for filename in TEST_FILES_CONTACTS:

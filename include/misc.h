@@ -28,6 +28,14 @@
 /* PRINTF_STYLE definition */
 #include <gammu-misc.h>
 
+#include <gammu-config.h>
+
+#ifndef HAVE_STRCASECMP
+#ifdef HAVE_STRICMP
+#define strcasecmp _stricmp
+#endif
+#endif
+
 /**
  * Copies at most n chars from src to dest, dest will be \0 terminated.
  */

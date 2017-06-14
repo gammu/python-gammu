@@ -110,13 +110,14 @@ class DebugTest(unittest.TestCase):
             testfile.close()
 
     def test_filename(self):
-        testfile = tempfile.NamedTemporaryFile(suffix='.debug')
+        testfile = tempfile.NamedTemporaryFile(suffix='.debug', delete=False)
+        testfile.close()
         try:
             gammu.SetDebugFile(testfile.name)
             self.check_operation(testfile.name)
         finally:
             gammu.SetDebugFile(None)
-            testfile.close()
+            testfile.unlink(testfile.name)
 
     def test_none(self):
         gammu.SetDebugFile(None)

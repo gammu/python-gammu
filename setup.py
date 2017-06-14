@@ -93,6 +93,9 @@ def get_module():
         cflags = get_pkgconfig_data(["--cflags"], "gammu gammu-smsd", False)
     module = Extension(
         'gammu._gammu',
+        define_macros=[
+            ('PYTHON_GAMMU_VERSION', VERSION),
+        ],
         libraries=libs,
         include_dirs=['include/'],
         sources=[
@@ -117,9 +120,6 @@ def get_module():
             'gammu/src/gammu.c',
             'gammu/src/smsd.c',
         ]
-    )
-    module.extra_compile_args.append(
-        '-DPYTHON_GAMMU_VERSION="{0}"'.format(VERSION)
     )
     if cflags:
         module.extra_compile_args.append(cflags)

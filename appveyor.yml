@@ -9,10 +9,10 @@ clone_folder: c:\projects\python-gammu
 
 environment:
   global:
-    - PYTHON: "C:\\Python35"
-    - PYTHON_VERSION: "3.5.0"
-    - PYTHON_ARCH: "32"
-    - GAMMU_VERSION: "1.38.3"
+    PYTHON: "C:\\Python35"
+    PYTHON_VERSION: "3.5.0"
+    PYTHON_ARCH: "32"
+    GAMMU_VERSION: "1.38.3"
 
 install:
   - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"

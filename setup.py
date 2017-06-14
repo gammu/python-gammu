@@ -71,7 +71,7 @@ def get_module():
     path = os.environ.get('GAMMU_PATH')
     if path:
         libs = ['Gammu', 'gsmsd']
-        ldflags = '-L{0}'.format(
+        ldflags = '/LIBPATH:{0}'.format(
             os.path.join(path, 'lib')
         )
         cflags = '-I{0}'.format(

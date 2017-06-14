@@ -77,6 +77,8 @@ def get_module():
         )
         if platform.system() == 'Windows':
             libs.append('Advapi32')
+            libs.append('shfolder')
+            libs.append('shell32')
             ldflags = '/LIBPATH:{0}'.format(
                 os.path.join(path, 'lib')
             )

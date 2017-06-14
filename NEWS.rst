@@ -1,6 +1,8 @@
 2.9
 ===
 
+* Fixed compilation under Windows.
+
 2.8
 ===
 

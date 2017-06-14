@@ -126,7 +126,8 @@ class DebugTest(unittest.TestCase):
 
     def test_nothing(self):
         gammu.SetDebugLevel('nothing')
-        testfile = tempfile.NamedTemporaryFile(suffix='.debug')
+        testfile = tempfile.NamedTemporaryFile(suffix='.debug', delete=False)
+        testfile.close()
         try:
             gammu.SetDebugFile(testfile.file)
             self.check_operation(None)
@@ -134,4 +135,4 @@ class DebugTest(unittest.TestCase):
                 self.assertEqual('', handle.read())
         finally:
             gammu.SetDebugFile(None)
-            testfile.close()
+            os.unlink(testfile.name)

@@ -135,7 +135,7 @@ setup(
     version=VERSION,
     description='Gammu bindings',
     long_description=README,
-    author='Michal Čihař',
+    author='Michal Cihar',
     author_email='michal@cihar.com',
     platforms=['Linux', 'Mac OSX', 'Windows XP/2000/NT', 'Windows 95/98/ME'],
     keywords=[

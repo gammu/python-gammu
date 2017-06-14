@@ -38,6 +38,8 @@ with codecs.open(README_FILE, 'r', 'utf-8') as readme:
 
 
 def check_minimum_gammu_version():
+    if 'GAMMU_PATH' in os.environ:
+        return
     distutils.spawn.spawn([
         'pkg-config',
         "--print-errors",
@@ -66,8 +68,20 @@ def get_pkgconfig_data(args, mod, required=True):
 
 
 def get_module():
-    libs = get_pkgconfig_data(["--libs-only-l"], "gammu gammu-smsd", False)
-    libs = libs.replace('-l', '').split()
+    path = os.environ.get('GAMMU_PATH')
+    if path:
+        libs = ['Gammu', 'gsmsd']
+        ldflags = '-L{0}'.format(
+            os.path.join(path, 'lib')
+        )
+        cflags = '-I{0}'.format(
+            os.path.join(path, 'include')
+        )
+    else:
+        libs = get_pkgconfig_data(["--libs-only-l"], "gammu gammu-smsd", False)
+        libs = libs.replace('-l', '').split()
+        ldflags = get_pkgconfig_data(["--libs-only-L"], "gammu gammu-smsd", False)
+        cflags = get_pkgconfig_data(["--cflags"], "gammu gammu-smsd", False)
     module = Extension(
         'gammu._gammu',
         libraries=libs,
@@ -95,8 +109,6 @@ def get_module():
             'gammu/src/smsd.c',
         ]
     )
-    ldflags = get_pkgconfig_data(["--libs-only-L"], "gammu gammu-smsd", False)
-    cflags = get_pkgconfig_data(["--cflags"], "gammu gammu-smsd", False)
     module.extra_compile_args.append(
         '-DPYTHON_GAMMU_VERSION="{0}"'.format(VERSION)
     )

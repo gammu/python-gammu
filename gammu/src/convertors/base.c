@@ -161,7 +161,7 @@ int GetIntFromDict(PyObject * dict, const char *key)
 
 	if (PyLong_Check(o)) {
 		/* Well we loose here something, but it is intentional :-) */
-		return PyLong_AsLongLong(o);
+		return (int)PyLong_AsLongLong(o);
 	}
 
 #if PY_MAJOR_VERSION < 3

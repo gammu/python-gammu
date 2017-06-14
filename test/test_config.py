@@ -22,6 +22,7 @@
 import unittest
 import tempfile
 import gammu
+import os
 from .test_sms import PDU_DATA
 
 
@@ -117,7 +118,7 @@ class DebugTest(unittest.TestCase):
             self.check_operation(testfile.name)
         finally:
             gammu.SetDebugFile(None)
-            testfile.unlink(testfile.name)
+            os.unlink(testfile.name)
 
     def test_none(self):
         gammu.SetDebugFile(None)

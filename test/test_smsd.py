@@ -26,7 +26,9 @@ import os
 import os.path
 import threading
 import time
+import platform
 import sqlite3
+import unittest
 
 
 MESSAGE_1 = {
@@ -68,6 +70,8 @@ def get_script():
 
 class SMSDDummyTest(DummyTest):
     def setUp(self):
+        if platform.system() == 'Windows':
+            raise unittest.SkipTest('SMSD testing not supported on Windows (no DBI driver)')
         super(SMSDDummyTest, self).setUp()
         database = sqlite3.connect(
             os.path.join(self.test_dir, 'smsd.db')

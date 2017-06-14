@@ -27,6 +27,7 @@ python-gammu - Phone communication libary
 import distutils.spawn
 from setuptools import setup, Extension
 import os
+import platform
 import codecs
 
 # some defines
@@ -70,13 +71,19 @@ def get_pkgconfig_data(args, mod, required=True):
 def get_module():
     path = os.environ.get('GAMMU_PATH')
     if path:
-        libs = ['Gammu', 'gsmsd', 'Advapi32']
-        ldflags = '/LIBPATH:{0}'.format(
-            os.path.join(path, 'lib')
-        )
+        libs = ['Gammu', 'gsmsd']
         cflags = '-I{0}'.format(
             os.path.join(path, 'include', 'gammu')
         )
+        if platform.system() == 'Windows':
+            libs.append('Advapi32')
+            ldflags = '/LIBPATH:{0}'.format(
+                os.path.join(path, 'lib')
+            )
+        else:
+            ldflags = '-L{0}'.format(
+                os.path.join(path, 'lib')
+            )
     else:
         libs = get_pkgconfig_data(["--libs-only-l"], "gammu gammu-smsd", False)
         libs = libs.replace('-l', '').split()

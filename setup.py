@@ -46,7 +46,7 @@ with codecs.open(README_FILE, 'r', 'utf-8') as readme:
 class GammuConfig(object):
     def __init__(self):
         self.on_windows = platform.system() == 'Windows'
-        self.has_pkgconfig = False #self.check_pkconfig()
+        self.has_pkgconfig = self.check_pkconfig()
         self.has_env = 'GAMMU_PATH' in os.environ
         self.path = self.lookup_path()
         self.use_pkgconfig = self.has_pkgconfig and not self.has_env
@@ -88,11 +88,12 @@ class GammuConfig(object):
                     'pkg-config',
                     "--print-errors",
                     "--atleast-version={0}".format(GAMMU_REQUIRED),
-                    "gammu"
+                    "gammu",
+                    "gammu-smsd"
                 ])
                 return
             except subprocess.CalledProcessError:
-                print('Too old Gammu version, please upgrade!')
+                print('Can not find supported Gammu version using pkg-config!')
                 sys.exit(100)
 
         if self.path is None:

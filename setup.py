@@ -24,11 +24,16 @@
 python-gammu - Phone communication libary
 '''
 
-import distutils.spawn
-from setuptools import setup, Extension
+from __future__ import print_function
+
+from distutils.version import StrictVersion
+import codecs
+import glob
 import os
 import platform
-import codecs
+from setuptools import setup, Extension
+import subprocess
+import sys
 
 # some defines
 VERSION = '2.9'
@@ -38,66 +43,126 @@ with codecs.open(README_FILE, 'r', 'utf-8') as readme:
     README = readme.read()
 
 
-def check_minimum_gammu_version():
-    if 'GAMMU_PATH' in os.environ:
-        return
-    distutils.spawn.spawn([
-        'pkg-config',
-        "--print-errors",
-        "--atleast-version={0}".format(GAMMU_REQUIRED),
-        "gammu"
-    ])
+class GammuConfig(object):
+    def __init__(self):
+        self.on_windows = platform.system() == 'Windows'
+        self.has_pkgconfig = False #self.check_pkconfig()
+        self.has_env = 'GAMMU_PATH' in os.environ
+        self.path = self.lookup_path()
+        self.use_pkgconfig = self.has_pkgconfig and not self.has_env
 
+    def check_pkconfig(self):
+        try:
+            subprocess.check_output(['pkg-config', '--help'])
+            return True
+        except subprocess.CalledProcessError:
+            return False
 
-def get_pkgconfig_data(args, mod, required=True):
-    """Run pkg-config to and return content associated with it"""
-    f = os.popen("pkg-config {0} {1}".format(" ".join(args), mod))
+    def config_path(self, base):
+        return os.path.join(base, 'include', 'gammu', 'gammu-config.h')
 
-    line = f.readline()
-    if line is not None:
-        line = line.strip()
-
-    if line is None or line == "":
-        if required:
-            raise Exception(
-                "Cannot determine '{0}' from pkg-config".format(" ".join(args))
-            )
+    def lookup_path(self):
+        if self.has_env:
+            paths = [os.environ['GAMMU_PATH']]
+        elif self.on_windows:
+            paths = [
+                'C:\\Gammu',
+                'C:\\Program Files\\Gammu',
+                'C:\\Program Files (x86)\\Gammu',
+            ]
+            paths += glob.glob('C:\\Program Files\\Gammu*')
+            paths += glob.glob('C:\\Program Files (x86)\\Gammu*')
         else:
-            return ""
+            paths = ['/usr/local/', '/usr/']
+            paths += glob.glob('/opt/gammu*')
 
-    return line
+        for path in paths:
+            include = self.config_path(path)
+            if os.path.exists(include):
+                return path
 
+    def check_version(self):
+        if self.use_pkgconfig:
+            try:
+                subprocess.check_output([
+                    'pkg-config',
+                    "--print-errors",
+                    "--atleast-version={0}".format(GAMMU_REQUIRED),
+                    "gammu"
+                ])
+                return
+            except subprocess.CalledProcessError:
+                print('Too old Gammu version, please upgrade!')
+                sys.exit(100)
 
-def get_module():
-    path = os.environ.get('GAMMU_PATH')
-    if path:
+        if self.path is None:
+            print('Failed to find Gammu!')
+            print('Either it is not installed or not found.')
+            print('After install Gammu ensure that setup finds it by any of:')
+            print(' * Specify path to it using GAMMU_PATH in environment.')
+            print(' * Install pkg-config.')
+            sys.exit(101)
+
+        version = None
+        with open(self.config_path(self.path), 'r') as handle:
+            for line in handle:
+                if line.startswith('#define GAMMU_VERSION '):
+                    version = line.split('"')[1]
+
+        if (version is None or
+                StrictVersion(version) < StrictVersion(GAMMU_REQUIRED)):
+            print('Too old Gammu version, please upgrade!')
+            sys.exit(100)
+
+    def get_libs(self):
+        if self.use_pkgconfig:
+            output = subprocess.check_output([
+                'pkg-config', '--libs-only-l', 'gammu', 'gammu-smsd'
+            ])
+            return output.replace('-l', '').strip().split()
         libs = ['Gammu', 'gsmsd']
-        cflags = '-I{0}'.format(
-            os.path.join(path, 'include', 'gammu')
-        )
-        if platform.system() == 'Windows':
+        if self.on_windows:
             libs.append('Advapi32')
             libs.append('shfolder')
             libs.append('shell32')
-            ldflags = '/LIBPATH:{0}'.format(
-                os.path.join(path, 'lib')
-            )
         else:
-            ldflags = '-L{0}'.format(
-                os.path.join(path, 'lib')
+            libs.append('m')
+        return libs
+
+    def get_cflags(self):
+        if self.use_pkgconfig:
+            return subprocess.check_output([
+                'pkg-config', '--cflags', 'gammu', 'gammu-smsd'
+            ]).strip()
+        return '-I{0}'.format(
+            os.path.join(self.path, 'include', 'gammu')
+        )
+
+    def get_ldflags(self):
+        if self.use_pkgconfig:
+            return subprocess.check_output([
+                'pkg-config', '--libs-only-L', 'gammu', 'gammu-smsd'
+            ]).strip()
+        elif self.on_windows:
+            return '/LIBPATH:{0}'.format(
+                os.path.join(self.path, 'lib')
             )
-    else:
-        libs = get_pkgconfig_data(["--libs-only-l"], "gammu gammu-smsd", False)
-        libs = libs.replace('-l', '').split()
-        ldflags = get_pkgconfig_data(["--libs-only-L"], "gammu gammu-smsd", False)
-        cflags = get_pkgconfig_data(["--cflags"], "gammu gammu-smsd", False)
+        return '-L{0}'.format(
+            os.path.join(self.path, 'lib')
+        )
+
+
+def get_module():
+    config = GammuConfig()
+    config.check_version()
+
     module = Extension(
         'gammu._gammu',
         define_macros=[
             ('PYTHON_GAMMU_MAJOR_VERSION', VERSION.split('.')[0]),
             ('PYTHON_GAMMU_MINOR_VERSION', VERSION.split('.')[1]),
         ],
-        libraries=libs,
+        libraries=config.get_libs(),
         include_dirs=['include/'],
         sources=[
             'gammu/src/errors.c',
@@ -122,14 +187,15 @@ def get_module():
             'gammu/src/smsd.c',
         ]
     )
-    if cflags:
-        module.extra_compile_args.append(cflags)
-    if ldflags:
-        module.extra_link_args.append(ldflags)
+    flags = config.get_cflags()
+    if flags:
+        module.extra_compile_args.append(flags)
+    flags = config.get_ldflags()
+    if flags:
+        module.extra_link_args.append(flags)
     return module
 
 
-check_minimum_gammu_version()
 setup(
     name='python-gammu',
     version=VERSION,

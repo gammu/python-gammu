@@ -77,10 +77,21 @@ Requirements
 ============
 
 To compile python-gammu, you need Gammu development files (usually shipped as
-``libgammu-dev`` or ``gammu-devel`` in Linux distributions) and pkg-config,
-which is used to discover location of dependencies. Alternatively to using
-pkg-config, you can set ``GAMMU_PATH`` environment variable where Gammu is
-installed.
+``libgammu-dev`` or ``gammu-devel`` in Linux distributions).
+
+The location of the libraries is discovered using ``pkg-config``,
+``GAMMU_PATH`` environment variable and falls back to generic locations. In
+case it does not work, either install ``pkg-config`` or set ``GAMMU_PATH``.
+
+On Linux something like this should work::
+
+    GAMMU_PATH=/opt/gammu python setup.py build
+
+On Windows::
+
+    SET GAMMU_PATH="C:\Gammu"
+    python setup.py build
+
 
 Documentation
 =============

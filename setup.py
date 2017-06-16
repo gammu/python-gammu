@@ -119,7 +119,7 @@ class GammuConfig(object):
         if self.use_pkgconfig:
             output = subprocess.check_output([
                 'pkg-config', '--libs-only-l', 'gammu', 'gammu-smsd'
-            ])
+            ]).decode('utf-8')
             return output.replace('-l', '').strip().split()
         libs = ['Gammu', 'gsmsd']
         if self.on_windows:
@@ -134,7 +134,7 @@ class GammuConfig(object):
         if self.use_pkgconfig:
             return subprocess.check_output([
                 'pkg-config', '--cflags', 'gammu', 'gammu-smsd'
-            ]).strip()
+            ]).decode('utf-8').strip()
         return '-I{0}'.format(
             os.path.join(self.path, 'include', 'gammu')
         )
@@ -143,7 +143,7 @@ class GammuConfig(object):
         if self.use_pkgconfig:
             return subprocess.check_output([
                 'pkg-config', '--libs-only-L', 'gammu', 'gammu-smsd'
-            ]).strip()
+            ]).decode('utf-8').strip()
         elif self.on_windows:
             return '/LIBPATH:{0}'.format(
                 os.path.join(self.path, 'lib')

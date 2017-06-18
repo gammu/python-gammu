@@ -21,8 +21,7 @@ environment:
 install:
   - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"
   #  Install Gammu
-#  - appveyor DownloadFile https://dl.cihar.com/gammu/releases/windows/Gammu-%GAMMU_VERSION%-Windows.exe
-  - appveyor DownloadFile https://ci.appveyor.com/api/buildjobs/msk3l7g5lli5b733/artifacts/Gammu-1.38.4-Windows.exe
+  - appveyor DownloadFile https://dl.cihar.com/gammu/releases/windows/Gammu-%GAMMU_VERSION%-Windows.exe
   - Gammu-%GAMMU_VERSION%-Windows.exe /S /D=%GAMMU_PATH%
   # Install Python (from the official .msi of http://python.org) and pip when
   # not already installed.

@@ -7,8 +7,8 @@ python-gammu
 .. image:: https://ci.appveyor.com/api/projects/status/19cefdo79bqrtq8l?svg=true
     :target: https://ci.appveyor.com/project/nijel/python-gammu
 
-.. image:: https://www.codacy.com/project/badge/c7e87df480fb4609aa48482873f5c46b
-    :target: https://www.codacy.com/public/nijel/python-gammu
+.. image:: https://api.codacy.com/project/badge/Grade/c7e87df480fb4609aa48482873f5c46b
+    :target: https://www.codacy.com/app/Gammu/python-gammu
 
 .. image:: https://scrutinizer-ci.com/g/gammu/python-gammu/badges/quality-score.png?b=master
    :target: https://scrutinizer-ci.com/g/gammu/python-gammu/?branch=master

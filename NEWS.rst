@@ -1,6 +1,8 @@
 2.10
 ====
 
+* Testsuite compatibility with Gammu 1.38.5.
+
 2.9
 ===
 

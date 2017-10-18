@@ -56,8 +56,10 @@ def get_script():
         dbver = 14
     elif version < (1, 37, 90):
         dbver = 15
-    else:
+    elif version < (1, 38, 5):
         dbver = 16
+    else:
+        dbver = 17
 
     print('Gammu version {0}, SMSD DB version {1}'.format(version, dbver))
 

@@ -10,7 +10,7 @@ clone_folder: c:\projects\python-gammu
 environment:
   global:
     PYTHON_ARCH: "32"
-    GAMMU_VERSION: "1.38.4"
+    GAMMU_VERSION: "1.38.5"
     GAMMU_PATH: "C:\\Gammu"
   matrix:
     - PYTHON: "C:\\Python36"

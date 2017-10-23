@@ -38,7 +38,7 @@ Python bindings for the `Gammu library <https://wammu.eu/gammu/>`_.
     :alt: Bountysource
     :target: https://www.bountysource.com/teams/gammu/issues?utm_source=Gammu&utm_medium=shield&utm_campaign=bounties_received
 
-.. image:: https://img.shields.io/pypi/dm/python-gammu.svg
+.. image:: https://img.shields.io/pypi/v/python-gammu.svg
     :alt: PyPI
     :target: https://pypi.python.org/pypi/python-gammu/
 

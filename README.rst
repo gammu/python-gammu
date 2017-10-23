@@ -1,6 +1,14 @@
 python-gammu
 ============
 
+Python bindings for the `Gammu library <https://wammu.eu/gammu/>`_.
+
+.. image:: https://app.codesponsor.io/embed/e9cresCoq9fvHq4ya92dgNSj/gammu/gammu.svg
+   :width: 888
+   :height: 68
+   :target: https://app.codesponsor.io/link/e9cresCoq9fvHq4ya92dgNSj/gammu/gammu
+
+
 .. image:: https://travis-ci.org/gammu/python-gammu.svg?branch=master
     :target: https://travis-ci.org/gammu/python-gammu
 
@@ -33,8 +41,6 @@ python-gammu
 .. image:: https://img.shields.io/pypi/dm/python-gammu.svg
     :alt: PyPI
     :target: https://pypi.python.org/pypi/python-gammu/
-
-Python bindings for Gammu library.
 
 Homepage
 ========

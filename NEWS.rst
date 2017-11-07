@@ -1,6 +1,8 @@
 2.11
 ====
 
+* Add support for the USSD in SMSD.
+
 2.10
 ====
 

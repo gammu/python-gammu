@@ -55,7 +55,7 @@ class GammuConfig(object):
         try:
             subprocess.check_output(['pkg-config', '--help'])
             return True
-        except (subprocess.CalledProcessError, FileNotFoundError):
+        except (subprocess.CalledProcessError, EnvironmentError):
             return False
 
     def config_path(self, base):

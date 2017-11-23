@@ -1,27 +1,43 @@
 version: "{build}"
 
-image: Visual Studio 2015
-
 clone_depth: 100
 
 clone_folder: c:\projects\python-gammu
 
-
 environment:
   global:
-    PYTHON_ARCH: "32"
-    GAMMU_VERSION: "1.38.5"
+    GAMMU_VERSION: "1.38.6"
     GAMMU_PATH: "C:\\Gammu"
   matrix:
     - PYTHON: "C:\\Python36"
-      PYTHON_VERSION: "3.6.1"
+      PYTHON_VERSION: "3.6.x"
+      PYTHON_ARCH: "32"
+      GAMMU_URL: https://ci.appveyor.com/api/buildjobs/4dgntr59xhb44qx3/artifacts/Gammu-1.38.6-Windows.exe
+
+    - PYTHON: "C:\\Python36-x64"
+      PYTHON_VERSION: "3.6.x"
+      PYTHON_ARCH: "64"
+      GAMMU_URL: https://ci.appveyor.com/api/buildjobs/e58ma9rfaqpey66o/artifacts/Gammu-1.38.6-Windows.exe
+
     - PYTHON: "C:\\Python35"
-      PYTHON_VERSION: "3.5.3"
+      PYTHON_VERSION: "3.5.x"
+      PYTHON_ARCH: "32"
+      GAMMU_URL: https://ci.appveyor.com/api/buildjobs/4dgntr59xhb44qx3/artifacts/Gammu-1.38.6-Windows.exe
+
+    - PYTHON: "C:\\Python35-x64"
+      PYTHON_VERSION: "3.5.x"
+      PYTHON_ARCH: "64"
+      GAMMU_URL: https://ci.appveyor.com/api/buildjobs/e58ma9rfaqpey66o/artifacts/Gammu-1.38.6-Windows.exe
+
+    - PYTHON: "C:\\Python27"
+      PYTHON_VERSION: "2.7.x"
+      PYTHON_ARCH: "32"
+      GAMMU_URL: https://ci.appveyor.com/api/buildjobs/4cbn71qids3ppuj5/artifacts/Gammu-1.38.6-Windows.exe
 
 install:
   - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"
   #  Install Gammu
-  - appveyor DownloadFile https://dl.cihar.com/gammu/releases/windows/Gammu-%GAMMU_VERSION%-Windows.exe
+  - appveyor DownloadFile %GAMMU_URL%
   - Gammu-%GAMMU_VERSION%-Windows.exe /S /D=%GAMMU_PATH%
   # Install Python (from the official .msi of http://python.org) and pip when
   # not already installed.

@@ -3,12 +3,6 @@ python-gammu
 
 Python bindings for the `Gammu library <https://wammu.eu/gammu/>`_.
 
-.. image:: https://app.codesponsor.io/embed/e9cresCoq9fvHq4ya92dgNSj/gammu/python-gammu.svg
-   :width: 888
-   :height: 68
-   :target: https://app.codesponsor.io/link/e9cresCoq9fvHq4ya92dgNSj/gammu/python-gammu
-
-
 .. image:: https://travis-ci.org/gammu/python-gammu.svg?branch=master
     :target: https://travis-ci.org/gammu/python-gammu
 

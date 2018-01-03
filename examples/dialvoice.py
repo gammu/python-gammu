@@ -29,7 +29,7 @@ import sys
 state_machine = gammu.StateMachine()
 
 # Read the configuration (~/.gammurc or from command line)
-if len(sys.argv) >= 2:
+if len(sys.argv) > 2:
     state_machine.ReadConfig(Filename=sys.argv[1])
     del sys.argv[1]
 else:

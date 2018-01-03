@@ -27,7 +27,7 @@ import sys
 
 state_machine = gammu.StateMachine()
 
-if len(sys.argv) >= 2:
+if len(sys.argv) > 2:
     state_machine.ReadConfig(Filename=sys.argv[1])
     del sys.argv[1]
 else:

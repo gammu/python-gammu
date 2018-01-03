@@ -30,7 +30,7 @@ import sys
 state_machine = gammu.StateMachine()
 
 # Optionally load config file as defined by first parameter
-if len(sys.argv) >= 2:
+if len(sys.argv) > 2:
     # Read the configuration from given file
     state_machine.ReadConfig(Filename=sys.argv[1])
     # Remove file name from args list

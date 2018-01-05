@@ -2,6 +2,7 @@
 ====
 
 * Add support for the USSD in SMSD.
+* Python 2.7 binaries available for Windows.
 
 2.10
 ====

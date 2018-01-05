@@ -6,33 +6,33 @@ clone_folder: c:\projects\python-gammu
 
 environment:
   global:
-    GAMMU_VERSION: "1.38.6"
+    GAMMU_VERSION: "1.39.0"
     GAMMU_PATH: "C:\\Gammu"
   matrix:
     - PYTHON: "C:\\Python36"
       PYTHON_VERSION: "3.6.x"
       PYTHON_ARCH: "32"
-      GAMMU_URL: https://ci.appveyor.com/api/buildjobs/6e91p7349svt4n35/artifacts/Gammu-1.38.6-Windows.exe
+      GAMMU_URL: https://dl.cihar.com/gammu/releases/windows/Gammu-1.39.0-Windows.exe
 
     - PYTHON: "C:\\Python36-x64"
       PYTHON_VERSION: "3.6.x"
       PYTHON_ARCH: "64"
-      GAMMU_URL: https://ci.appveyor.com/api/buildjobs/6nslt2qjq7kplr37/artifacts/Gammu-1.38.6-Windows.exe
+      GAMMU_URL: https://dl.cihar.com/gammu/releases/windows/Gammu-1.39.0-Windows-64bit.exe
 
     - PYTHON: "C:\\Python35"
       PYTHON_VERSION: "3.5.x"
       PYTHON_ARCH: "32"
-      GAMMU_URL: https://ci.appveyor.com/api/buildjobs/6e91p7349svt4n35/artifacts/Gammu-1.38.6-Windows.exe
+      GAMMU_URL: https://dl.cihar.com/gammu/releases/windows/Gammu-1.39.0-Windows.exe
 
     - PYTHON: "C:\\Python35-x64"
       PYTHON_VERSION: "3.5.x"
       PYTHON_ARCH: "64"
-      GAMMU_URL: https://ci.appveyor.com/api/buildjobs/6nslt2qjq7kplr37/artifacts/Gammu-1.38.6-Windows.exe
+      GAMMU_URL: https://dl.cihar.com/gammu/releases/windows/Gammu-1.39.0-Windows-64bit.exe
 
     - PYTHON: "C:\\Python27"
       PYTHON_VERSION: "2.7.x"
       PYTHON_ARCH: "32"
-      GAMMU_URL: https://ci.appveyor.com/api/buildjobs/2i5989m795t3rxo2/artifacts/Gammu-1.38.6-Windows.exe
+      GAMMU_URL: https://dl.cihar.com/gammu/releases/windows/Gammu-1.39.0-Windows-msvc90.exe
 
 install:
   - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"

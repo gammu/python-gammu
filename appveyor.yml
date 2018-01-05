@@ -6,7 +6,6 @@ clone_folder: c:\projects\python-gammu
 
 environment:
   global:
-    GAMMU_VERSION: "1.39.0"
     GAMMU_PATH: "C:\\Gammu"
   matrix:
     - PYTHON: "C:\\Python36"
@@ -37,8 +36,8 @@ environment:
 install:
   - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"
   #  Install Gammu
-  - appveyor DownloadFile %GAMMU_URL%
-  - Gammu-%GAMMU_VERSION%-Windows.exe /S /D=%GAMMU_PATH%
+  - appveyor DownloadFile %GAMMU_URL% -FileName gammu-setup.exe
+  - gammu-setup.exe /S /D=%GAMMU_PATH%
   # Install Python (from the official .msi of http://python.org) and pip when
   # not already installed.
   - ps: if (-not(Test-Path($env:PYTHON))) { & appveyor\install.ps1 }

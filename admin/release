@@ -10,7 +10,7 @@ git tag -s "$VERSION" -m "Version $VERSION"
 ./setup.py sdist --formats=bztar,gztar,zip
 
 # Upload to pypi
-twine upload dist/python-gammu-$version.*
+twine upload dist/python-gammu-$VERSION.tar.gz
 
 # Upload to primary mirror
 scp dist/python-gammu-$VERSION.tar.bz2 dist/python-gammu-$VERSION.tar.gz dist/python-gammu-$VERSION.zip web:/srv/http/dl.cihar.com/python-gammu

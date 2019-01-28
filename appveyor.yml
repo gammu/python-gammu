@@ -11,27 +11,27 @@ environment:
     - PYTHON: "C:\\Python36"
       PYTHON_VERSION: "3.6.x"
       PYTHON_ARCH: "32"
-      GAMMU_URL: https://dl.cihar.com/gammu/releases/windows/Gammu-1.39.0-Windows.exe
+      GAMMU_URL: https://dl.cihar.com/gammu/releases/windows/Gammu-1.40.0-Windows.exe
 
     - PYTHON: "C:\\Python36-x64"
       PYTHON_VERSION: "3.6.x"
       PYTHON_ARCH: "64"
-      GAMMU_URL: https://dl.cihar.com/gammu/releases/windows/Gammu-1.39.0-Windows-64bit.exe
+      GAMMU_URL: https://dl.cihar.com/gammu/releases/windows/Gammu-1.40.0-Windows-64bit.exe
 
     - PYTHON: "C:\\Python35"
       PYTHON_VERSION: "3.5.x"
       PYTHON_ARCH: "32"
-      GAMMU_URL: https://dl.cihar.com/gammu/releases/windows/Gammu-1.39.0-Windows.exe
+      GAMMU_URL: https://dl.cihar.com/gammu/releases/windows/Gammu-1.40.0-Windows.exe
 
     - PYTHON: "C:\\Python35-x64"
       PYTHON_VERSION: "3.5.x"
       PYTHON_ARCH: "64"
-      GAMMU_URL: https://dl.cihar.com/gammu/releases/windows/Gammu-1.39.0-Windows-64bit.exe
+      GAMMU_URL: https://dl.cihar.com/gammu/releases/windows/Gammu-1.40.0-Windows-64bit.exe
 
     - PYTHON: "C:\\Python27"
       PYTHON_VERSION: "2.7.x"
       PYTHON_ARCH: "32"
-      GAMMU_URL: https://dl.cihar.com/gammu/releases/windows/Gammu-1.39.0-Windows-msvc90.exe
+      GAMMU_URL: https://dl.cihar.com/gammu/releases/windows/Gammu-1.40.0-Windows-msvc90.exe
 
 install:
   - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"

@@ -1,3 +1,8 @@
+2.12
+====
+
+* Windows binaries built with Gammu 1.40.0.
+
 2.11
 ====
 

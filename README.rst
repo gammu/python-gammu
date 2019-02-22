@@ -24,7 +24,7 @@ Python bindings for the `Gammu library <https://wammu.eu/gammu/>`_.
 .. image:: https://scan.coverity.com/projects/4837/badge.svg
     :target: https://scan.coverity.com/projects/4837
 
-.. image:: https://img.shields.io/gratipay/Gammu.svg
+.. image:: https://img.shields.io/liberapay/receives/Gammu.svg
     :alt: Liberapay
     :target: https://liberapay.com/Gammu/donate
 

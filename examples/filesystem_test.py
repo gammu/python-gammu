@@ -244,7 +244,7 @@ def main():
 
     # Check AddFolder
     print("\n\nExpection: Creation of a folder on the memorycard \"42alpha\"")
-    file_f = state_machine.AddFolder(unicode(args.folder), u"42alpha")
+    state_machine.AddFolder(unicode(args.folder), u"42alpha")
 
     # Check GetFolderListing again *wired*
     print("\n\nExpection: Print properties of newly created folder")

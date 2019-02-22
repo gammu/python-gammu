@@ -12,12 +12,6 @@ Python bindings for the `Gammu library <https://wammu.eu/gammu/>`_.
 .. image:: https://api.codacy.com/project/badge/Grade/c7e87df480fb4609aa48482873f5c46b
     :target: https://www.codacy.com/app/Gammu/python-gammu
 
-.. image:: https://scrutinizer-ci.com/g/gammu/python-gammu/badges/quality-score.png?b=master
-   :target: https://scrutinizer-ci.com/g/gammu/python-gammu/?branch=master
-
-.. image:: https://landscape.io/github/gammu/python-gammu/master/landscape.svg?style=flat
-   :target: https://landscape.io/github/gammu/python-gammu/master
-
 .. image:: https://coveralls.io/repos/gammu/python-gammu/badge.svg
     :target: https://coveralls.io/r/gammu/python-gammu
 

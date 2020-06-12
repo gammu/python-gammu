@@ -1,16 +1,44 @@
-import gammu
-import gammu.async
-import asyncio
-import logging
+#!/usr/bin/env python
+# -*- coding: UTF-8 -*-
+# vim: expandtab sw=4 ts=4 sts=4:
+#
+# Copyright © 2003 - 2018 Michal Čihař <michal@cihar.com>
+#
+# This file is part of python-gammu <https://wammu.eu/python-gammu/>
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License along
+# with this program; if not, write to the Free Software Foundation, Inc.,
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+'''
+python-gammu - Phone communication libary
+Gammu asynchronous wrapper example with asyncio. This allows your application to care
+only about handling received data and not about phone communication
+details.
+'''
 
 import sys
 import pprint
 pp = pprint.PrettyPrinter(indent=4)
 
+import gammu
+import gammu.async
+import asyncio
+
+
 def sms_callback(messages):
     pp.pprint(messages)
 
-async def send_sms(state_machine, number, message):
+async def send_message_async(state_machine, number, message):
     smsinfo = {
         'Class': -1,
         'Unicode': False,
@@ -28,7 +56,7 @@ async def send_sms(state_machine, number, message):
         message['SMSC'] = {'Location': 1}
         message['Number'] = number
         # Actually send the message
-        await state_machine.SendSMSAsync(message)
+        await state_machine.send_sms_async(message)
 
 async def get_network_info(worker):
     info = await worker.GetNetworkInfoAsync()
@@ -57,28 +85,23 @@ async def main():
     gammu.SetDebugFile(sys.stderr)
     gammu.SetDebugLevel('textall')
 
-    #config = dict(Device="/dev/ttyS7", Connection="at")
     config = dict(Device="/dev/ttyS16", Connection="at")
-    worker = sms_async.GammuAsyncWorker(loop)
+    worker = GammuAsyncWorker(loop)
     worker.configure(config)
 
     try:
-        await worker.InitAsync()
+        await worker.init_async()
 
-        print("Create receiver")
-        receiver = await sms_receiver.create_sms_receiver(worker, loop, sms_callback)
-        print("Create receiver done")
+        print(await worker.get_signal_quality_async())
 
-        print(await worker.GetSignalQualityAsync())
-
-        await send_sms(worker, '6700', 'BAL')
+        await send_message_async(worker, '6700', 'BAL')
 
         # Just a busy waiting for event
         # We need to keep communication with phone to get notifications
         print('Press Ctrl+C to interrupt')
         while 1:
             try:
-                signal = await worker.GetSignalQualityAsync()
+                signal = await worker.get_signal_quality_async()
                 print('Signal is at {0:d}%'.format(signal['SignalPercent']))
             except Exception as e:
                 print('Exception reading signal: {0}'.format(e))
@@ -90,7 +113,7 @@ async def main():
         print(e)
 
     print("Terminate Start")
-    await worker.TerminateAsync()
+    await worker.terminate_async()
     print("Terminate Done")
 
 if __name__ == '__main__':

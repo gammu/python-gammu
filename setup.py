@@ -36,7 +36,7 @@ import subprocess
 import sys
 
 # some defines
-VERSION = '2.12'
+VERSION = '2.13'
 GAMMU_REQUIRED = '1.37.90'
 README_FILE = os.path.join(os.path.dirname(__file__), 'README.rst')
 with codecs.open(README_FILE, 'r', 'utf-8') as readme:

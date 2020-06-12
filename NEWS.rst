@@ -1,3 +1,8 @@
+2.13
+====
+
+* Add support for asyncio in the gammu worker
+
 2.12
 ====
 

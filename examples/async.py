@@ -79,14 +79,11 @@ async def get_info(state_machine):
 
 async def main():
 
-    # Get the current event loop.
-    loop = asyncio.get_running_loop()
-
     gammu.SetDebugFile(sys.stderr)
     gammu.SetDebugLevel('textall')
 
     config = dict(Device="/dev/ttyS6", Connection="at")
-    worker = gammu.asyncworker.GammuAsyncWorker(loop)
+    worker = gammu.asyncworker.GammuAsyncWorker()
     worker.configure(config)
 
     try:

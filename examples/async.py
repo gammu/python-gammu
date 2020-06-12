@@ -31,7 +31,7 @@ import pprint
 pp = pprint.PrettyPrinter(indent=4)
 
 import gammu
-import gammu.async
+import gammu.asyncworker
 import asyncio
 
 
@@ -85,8 +85,8 @@ async def main():
     gammu.SetDebugFile(sys.stderr)
     gammu.SetDebugLevel('textall')
 
-    config = dict(Device="/dev/ttyS16", Connection="at")
-    worker = GammuAsyncWorker(loop)
+    config = dict(Device="/dev/ttyS6", Connection="at")
+    worker = gammu.asyncworker.GammuAsyncWorker(loop)
     worker.configure(config)
 
     try:

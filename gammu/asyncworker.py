@@ -1,8 +1,7 @@
 """Async extensions for gammu."""
 import asyncio
-
-import gammu  # pylint: disable=import-error, no-member
-import gammu.worker  # pylint: disable=import-error, no-member
+import gammu
+import gammu.worker
 
 class GammuAsyncThread(gammu.worker.GammuThread):
     """Thread for phone communication."""

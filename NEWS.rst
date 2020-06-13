@@ -1,3 +1,8 @@
+3.0
+===
+
+* Dropped support for Python 2.
+
 2.12
 ====
 

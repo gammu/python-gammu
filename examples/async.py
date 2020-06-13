@@ -27,9 +27,6 @@ details.
 '''
 
 import sys
-import pprint
-pp = pprint.PrettyPrinter(indent=4)
-
 import gammu
 import gammu.asyncworker
 import asyncio

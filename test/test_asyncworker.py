@@ -25,6 +25,9 @@ from .test_dummy import DummyTest
 
 WORKER_EXPECT = [
     ('Init', None),
+    ('GetIMEI', '999999999999999'),
+    ('GetManufacturer', 'Gammu'),
+    ('GetModel', 'Gammu'),
     ('Terminate', None)
 ]
 
@@ -35,7 +38,10 @@ class AsyncWorkerDummyTest(DummyTest):
         self.results = []
         worker = gammu.asyncworker.GammuAsyncWorker()
         worker.configure(self.get_statemachine().GetConfig())
-        self.results.append(('Init', await worker.init_asysc()))
+        self.results.append(('Init', await worker.init_async()))
+        self.results.append(('GetIMEI', await worker.get_imei_async()))
+        self.results.append(('GetManufacturer', await worker.get_manufacturer_async()))
+        self.results.append(('GetModel', await worker.get_model_async()))
         self.results.append(('Terminate', await worker.terminate_async()))
         self.maxDiff = None
         self.assertEqual(WORKER_EXPECT, self.results)

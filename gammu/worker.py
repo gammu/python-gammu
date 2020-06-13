@@ -28,10 +28,7 @@ which are used by this class.
 
 import gammu
 import threading
-try:
-    import queue
-except ImportError:
-    import Queue as queue
+import queue
 
 
 class InvalidCommand(Exception):

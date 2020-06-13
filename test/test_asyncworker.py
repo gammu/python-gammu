@@ -29,6 +29,11 @@ WORKER_EXPECT = [
     ('GetIMEI', '999999999999999'),
     ('GetManufacturer', 'Gammu'),
     ('GetModel', ('unknown', 'Dummy')),
+    ('GetFirmware', ('1.41.0', '20150101', 1.41)),
+    ('GetSignalQuality', {'BitErrorRate': 0, 'SignalPercent': 42, 'SignalStrength': 42}),
+#    ('SendSMS', ''),
+    ('SetIncomingCallback', None),
+    ('SetIncomingSMS',None),
     ('Terminate', None)
 ]
 
@@ -41,6 +46,9 @@ def async_test(coro):
 class AsyncWorkerDummyTest(DummyTest):
     results = []
 
+    def callback(self, name, result, error, percents):
+       self.results.append((name, result, error, percents))
+
     @async_test
     async def test_worker_async(self):
         self.results = []
@@ -50,6 +58,11 @@ class AsyncWorkerDummyTest(DummyTest):
         self.results.append(('GetIMEI', await worker.get_imei_async()))
         self.results.append(('GetManufacturer', await worker.get_manufacturer_async()))
         self.results.append(('GetModel', await worker.get_model_async()))
+        self.results.append(('GetFirmware', await worker.get_firmware_async()))
+        self.results.append(('GetSignalQuality', await worker.get_signal_quality_async()))
+#        self.results.append(('SendSMS', await worker.send_sms_async(None)))
+        self.results.append(('SetIncomingCallback', await worker.set_incoming_callback_async(self.callback)))
+        self.results.append(('SetIncomingSMS', await worker.set_incoming_sms_async()))
         self.results.append(('Terminate', await worker.terminate_async()))
         self.maxDiff = None
         self.assertEqual(WORKER_EXPECT, self.results)

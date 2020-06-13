@@ -35,9 +35,6 @@ import gammu.asyncworker
 import asyncio
 
 
-def sms_callback(messages):
-    pp.pprint(messages)
-
 async def send_message_async(state_machine, number, message):
     smsinfo = {
         'Class': -1,
@@ -59,22 +56,22 @@ async def send_message_async(state_machine, number, message):
         await state_machine.send_sms_async(message)
 
 async def get_network_info(worker):
-    info = await worker.GetNetworkInfoAsync()
+    info = await worker.get_network_info_async()
     print('NetworkName:',info['NetworkName'])
     print('  State:',info['State'])
     print('  NetworkCode:',info['NetworkCode'])
     print('  CID:',info['CID'])
     print('  LAC:',info['LAC'])
 
-async def get_info(state_machine):
+async def get_info(worker):
     print('Phone infomation:')
-    manufacturer = await state_machine.GetManufacturer()
+    manufacturer = await worker.get_manufacturer_async()
     print(('{0:<15}: {1}'.format('Manufacturer', manufacturer)))
-    model = await state_machine.GetModel()
+    model = await worker.get_model_async()
     print(('{0:<15}: {1} ({2})'.format('Model', model[0], model[1])))
-    imei = await state_machine.GetIMEI()
+    imei = await worker.get_imei_async()
     print(('{0:<15}: {1}'.format('IMEI', imei)))
-    firmware = await state_machine.GetFirmware()
+    firmware = await worker.get_firmware_async()
     print(('{0:<15}: {1}'.format('Firmware', firmware[0])))
 
 async def main():
@@ -89,7 +86,8 @@ async def main():
     try:
         await worker.init_async()
 
-        print(await worker.get_signal_quality_async())
+        await get_info(worker)
+        await get_network_info(worker)
 
         await send_message_async(worker, '6700', 'BAL')
 
@@ -103,7 +101,7 @@ async def main():
             except Exception as e:
                 print('Exception reading signal: {0}'.format(e))
 
-            await asyncio.sleep(30)
+            await asyncio.sleep(10);
 
     except Exception as e:
         print('Exception:')

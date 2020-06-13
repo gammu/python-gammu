@@ -76,6 +76,36 @@ class GammuAsyncWorker(gammu.worker.GammuWorker):
         await self._init_future
         self._init_future = None
 
+    async def get_imei_async(self):
+        """Get the IMEI of the device."""
+        future = self._loop.create_future()
+        self.enqueue(future, commands=[("GetIMEI", ())])
+        return await future
+
+    async def get_network_info_async(self):
+        """Get the network info in the device."""
+        future = self._loop.create_future()
+        self.enqueue(future, commands=[("GetNetworkInfo", ())])
+        return await future
+
+    async def get_manufacturer_async(self):
+        """Get the manufacturer of the device."""
+        future = self._loop.create_future()
+        self.enqueue(future, commands=[("GetManufacturer", ())])
+        return await future
+
+    async def get_model_async(self):
+        """Get the model of the device."""
+        future = self._loop.create_future()
+        self.enqueue(future, commands=[("GetModel", ())])
+        return await future
+
+    async def get_firmware_async(self):
+        """Get the firmware version of the device."""
+        future = self._loop.create_future()
+        self.enqueue(future, commands=[("GetFirmware", ())])
+        return await future
+
     async def get_signal_quality_async(self):
         """Get signal quality from phone."""
         future = self._loop.create_future()

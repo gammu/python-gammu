@@ -19,6 +19,7 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #
+import asyncio
 import gammu.asyncworker
 from .test_dummy import DummyTest
 
@@ -27,13 +28,20 @@ WORKER_EXPECT = [
     ('Init', None),
     ('GetIMEI', '999999999999999'),
     ('GetManufacturer', 'Gammu'),
-    ('GetModel', 'Gammu'),
+    ('GetModel', ('unknown', 'Dummy')),
     ('Terminate', None)
 ]
+
+def async_test(coro):
+    def wrapper(*args, **kwargs):
+        loop = asyncio.new_event_loop()
+        return loop.run_until_complete(coro(*args, **kwargs))
+    return wrapper
 
 class AsyncWorkerDummyTest(DummyTest):
     results = []
 
+    @async_test
     async def test_worker_async(self):
         self.results = []
         worker = gammu.asyncworker.GammuAsyncWorker()

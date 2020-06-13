@@ -31,7 +31,7 @@ WORKER_EXPECT = [
     ('GetModel', ('unknown', 'Dummy')),
     ('GetFirmware', ('1.41.0', '20150101', 1.41)),
     ('GetSignalQuality', {'BitErrorRate': 0, 'SignalPercent': 42, 'SignalStrength': 42}),
-#    ('SendSMS', ''),
+    ('SendSMS', 255),
     ('SetIncomingCallback', None),
     ('SetIncomingSMS',None),
     ('Terminate', None)
@@ -60,7 +60,16 @@ class AsyncWorkerDummyTest(DummyTest):
         self.results.append(('GetModel', await worker.get_model_async()))
         self.results.append(('GetFirmware', await worker.get_firmware_async()))
         self.results.append(('GetSignalQuality', await worker.get_signal_quality_async()))
-#        self.results.append(('SendSMS', await worker.send_sms_async(None)))
+        message = {
+           'Text': 'python-gammu testing message',
+           'SMSC': {'Location': 1},
+           'Number': '555-555-1234',
+        }
+        self.results.append(('SendSMS', await worker.send_sms_async(message)))
+        with self.assertRaises(TypeError):
+            await worker.send_sms_async(42)
+        with self.assertRaises(Exception):
+            await worker.send_sms_async(dict(42))
         self.results.append(('SetIncomingCallback', await worker.set_incoming_callback_async(self.callback)))
         self.results.append(('SetIncomingSMS', await worker.set_incoming_sms_async()))
         self.results.append(('Terminate', await worker.terminate_async()))

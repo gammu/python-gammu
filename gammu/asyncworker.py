@@ -1,4 +1,5 @@
 """Async extensions for gammu."""
+# pragma: no cover
 import asyncio
 import gammu
 import gammu.worker

@@ -36,7 +36,7 @@ import subprocess
 import sys
 
 # some defines
-VERSION = '2.13'
+VERSION = '3.0'
 GAMMU_REQUIRED = '1.37.90'
 README_FILE = os.path.join(os.path.dirname(__file__), 'README.rst')
 with codecs.open(README_FILE, 'r', 'utf-8') as readme:
@@ -223,18 +223,16 @@ setup(
         'Operating System :: Unix',
         'Programming Language :: C',
         'Programming Language :: Python',
-        'Programming Language :: Python :: 2.6',
-        'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.2',
-        'Programming Language :: Python :: 3.3',
-        'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 3.7',
+        'Programming Language :: Python :: 3.8',
         'Topic :: Communications :: Telephony',
         'Topic :: Software Development :: Libraries :: Python Modules',
         'Topic :: System :: Hardware',
     ],
+    python_requires=">=3.5",
     test_suite="test",
     packages=['gammu'],
     ext_modules=[get_module()]

@@ -2,6 +2,7 @@
 ===
 
 * Dropped support for Python 2.
+* Windows binaries built with Gammu 1.41.0.
 
 2.12
 ====

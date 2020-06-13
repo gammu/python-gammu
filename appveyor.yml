@@ -11,42 +11,42 @@ environment:
     - PYTHON: "C:\\Python36"
       PYTHON_VERSION: "3.6.x"
       PYTHON_ARCH: "32"
-      GAMMU_URL: https://dl.cihar.com/gammu/releases/windows/Gammu-1.40.0-Windows.exe
+      GAMMU_URL: https://dl.cihar.com/gammu/releases/windows/Gammu-1.41.0-Windows.exe
 
     - PYTHON: "C:\\Python37-x64"
       PYTHON_VERSION: "3.7.x"
       PYTHON_ARCH: "64"
-      GAMMU_URL: https://dl.cihar.com/gammu/releases/windows/Gammu-1.40.0-Windows-64bit.exe
+      GAMMU_URL: https://dl.cihar.com/gammu/releases/windows/Gammu-1.41.0-Windows-64bit.exe
 
     - PYTHON: "C:\\Python37"
       PYTHON_VERSION: "3.7.x"
       PYTHON_ARCH: "32"
-      GAMMU_URL: https://dl.cihar.com/gammu/releases/windows/Gammu-1.40.0-Windows.exe
+      GAMMU_URL: https://dl.cihar.com/gammu/releases/windows/Gammu-1.41.0-Windows.exe
 
     - PYTHON: "C:\\Python36-x64"
       PYTHON_VERSION: "3.6.x"
       PYTHON_ARCH: "64"
-      GAMMU_URL: https://dl.cihar.com/gammu/releases/windows/Gammu-1.40.0-Windows-64bit.exe
+      GAMMU_URL: https://dl.cihar.com/gammu/releases/windows/Gammu-1.41.0-Windows-64bit.exe
 
     - PYTHON: "C:\\Python35"
       PYTHON_VERSION: "3.5.x"
       PYTHON_ARCH: "32"
-      GAMMU_URL: https://dl.cihar.com/gammu/releases/windows/Gammu-1.40.0-Windows.exe
+      GAMMU_URL: https://dl.cihar.com/gammu/releases/windows/Gammu-1.41.0-Windows.exe
 
     - PYTHON: "C:\\Python35-x64"
       PYTHON_VERSION: "3.5.x"
       PYTHON_ARCH: "64"
-      GAMMU_URL: https://dl.cihar.com/gammu/releases/windows/Gammu-1.40.0-Windows-64bit.exe
+      GAMMU_URL: https://dl.cihar.com/gammu/releases/windows/Gammu-1.41.0-Windows-64bit.exe
 
     - PYTHON: "C:\\Python38-x64"
       PYTHON_VERSION: "3.8.x"
       PYTHON_ARCH: "64"
-      GAMMU_URL: https://dl.cihar.com/gammu/releases/windows/Gammu-1.40.0-Windows-64bit.exe
+      GAMMU_URL: https://dl.cihar.com/gammu/releases/windows/Gammu-1.41.0-Windows-64bit.exe
 
     - PYTHON: "C:\\Python38"
       PYTHON_VERSION: "3.8.x"
       PYTHON_ARCH: "32"
-      GAMMU_URL: https://dl.cihar.com/gammu/releases/windows/Gammu-1.40.0-Windows.exe
+      GAMMU_URL: https://dl.cihar.com/gammu/releases/windows/Gammu-1.41.0-Windows.exe
 
 
 install:

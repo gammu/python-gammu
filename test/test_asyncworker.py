@@ -28,6 +28,16 @@ WORKER_EXPECT = [
     ('Init', None),
     ('GetIMEI', '999999999999999'),
     ('GetManufacturer', 'Gammu'),
+    ('GetNetworkInfo',
+        {'CID': 'FACE',
+         'GPRS': 'Attached',
+         'LAC': 'B00B',
+         'NetworkCode': '999 99',
+         'NetworkName': '',
+         'PacketCID': 'DEAD',
+         'PacketLAC': 'BEEF',
+         'PacketState': 'HomeNetwork',
+         'State': 'HomeNetwork'}),
     ('GetModel', ('unknown', 'Dummy')),
     ('GetFirmware', ('1.41.0', '20150101', 1.41)),
     ('GetSignalQuality', {'BitErrorRate': 0, 'SignalPercent': 42, 'SignalStrength': 42}),
@@ -57,6 +67,7 @@ class AsyncWorkerDummyTest(DummyTest):
         self.results.append(('Init', await worker.init_async()))
         self.results.append(('GetIMEI', await worker.get_imei_async()))
         self.results.append(('GetManufacturer', await worker.get_manufacturer_async()))
+        self.results.append(('GetNetworkInfo', await worker.get_network_info_async()))
         self.results.append(('GetModel', await worker.get_model_async()))
         self.results.append(('GetFirmware', await worker.get_firmware_async()))
         self.results.append(('GetSignalQuality', await worker.get_signal_quality_async()))

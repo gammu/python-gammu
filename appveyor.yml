@@ -38,11 +38,6 @@ environment:
       PYTHON_ARCH: "64"
       GAMMU_URL: https://dl.cihar.com/gammu/releases/windows/Gammu-1.40.0-Windows-64bit.exe
 
-    - PYTHON: "C:\\Python27"
-      PYTHON_VERSION: "2.7.x"
-      PYTHON_ARCH: "32"
-      GAMMU_URL: https://dl.cihar.com/gammu/releases/windows/Gammu-1.40.0-Windows-msvc90.exe
-
 install:
   - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"
   #  Install Gammu

@@ -61,7 +61,7 @@ class GammuAsyncWorker(gammu.worker.GammuWorker):
         @param callback: See L{GammuThread.__init__} for description.
         """
         super().__init__(self.worker_callback)
-        self._loop = asyncio.get_running_loop()
+        self._loop = asyncio.get_event_loop()
         self._init_future = None
         self._terminate_future = None
         self._thread = None

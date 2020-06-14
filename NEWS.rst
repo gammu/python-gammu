@@ -1,6 +1,7 @@
 3.0
 ===
 
+* Add support for asyncio in the gammu worker
 * Dropped support for Python 2.
 * Windows binaries built with Gammu 1.41.0.
 

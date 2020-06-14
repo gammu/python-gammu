@@ -33,6 +33,7 @@ __version__ = 'Gammu {0}, python-gammu {1}'.format(
 __all__ = [
     'data',
     'worker',
+    'asyncworker',
     'smsd',
     'exception',
 ]

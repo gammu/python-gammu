@@ -1,3 +1,8 @@
+3.1
+===
+
+* Fix an issue where the gammu worker thread could be brought down if a callback throws an exception
+
 3.0
 ===
 

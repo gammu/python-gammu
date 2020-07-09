@@ -149,12 +149,14 @@ class GammuTask(object):
         '''
         return self._name
 
+def gammu_pull_device(state_machine):
+    state_machine.ReadDevice()
 
 class GammuThread(threading.Thread):
     '''
     Thread for phone communication.
     '''
-    def __init__(self, queue, config, callback):
+    def __init__(self, queue, config, callback, pull_func = gammu_pull_device):
         '''
         Initialises thread data.
 
@@ -180,6 +182,7 @@ class GammuThread(threading.Thread):
         self._callback = callback
         self._queue = queue
         self._sm.SetConfig(0, config)
+        self._pull_func = pull_func
 
     def _do_command(self, name, cmd, params, percentage=100):
         '''
@@ -234,7 +237,10 @@ class GammuThread(threading.Thread):
                 if self._terminate:
                     break
                 # Read the device to catch possible incoming events
-                self._sm.ReadDevice()
+                try:
+                    self._poll_func(self._sm)
+                except Exception as ex:
+                    self._callback("ReadDevice", None, ex, 0)
 
     def kill(self):
         '''
@@ -257,7 +263,7 @@ class GammuWorker(object):
     done, caller is notified via callback.
     '''
 
-    def __init__(self, callback):
+    def __init__(self, callback, pull_func = gammu_pull_device):
         '''
         Initializes worker class.
 
@@ -268,6 +274,7 @@ class GammuWorker(object):
         self._config = {}
         self._lock = threading.Lock()
         self._queue = queue.Queue()
+        self._pull_func = pull_func
 
     def enqueue_command(self, command, params):
         '''
@@ -331,7 +338,7 @@ class GammuWorker(object):
         '''
         Connects to phone.
         '''
-        self._thread = GammuThread(self._queue, self._config, self._callback)
+        self._thread = GammuThread(self._queue, self._config, self._callback, self._pull_func)
         self._thread.start()
 
     def terminate(self, timeout=None):

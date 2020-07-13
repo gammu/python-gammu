@@ -238,7 +238,7 @@ class GammuThread(threading.Thread):
                     break
                 # Read the device to catch possible incoming events
                 try:
-                    self._poll_func(self._sm)
+                    self._pull_func(self._sm)
                 except Exception as ex:
                     self._callback("ReadDevice", None, ex, 0)
 

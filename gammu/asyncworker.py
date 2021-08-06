@@ -6,9 +6,9 @@ import gammu.worker
 class GammuAsyncThread(gammu.worker.GammuThread):
     """Thread for phone communication."""
 
-    def __init__(self, queue, config, callback):
+    def __init__(self, queue, config, callback, pull_func):
         """Initialize thread."""
-        super().__init__(queue, config, callback)
+        super().__init__(queue, config, callback, pull_func)
 
     def _do_command(self, future, cmd, params, percentage=100):
         """Execute single command on phone."""
@@ -30,6 +30,8 @@ class GammuAsyncThread(gammu.worker.GammuThread):
         else:
             self._callback(future, result, None, percentage)
 
+def gammu_pull_device(sm):
+    sm.ReadDevice()
 
 class GammuAsyncWorker(gammu.worker.GammuWorker):
     """Extend gammu worker class for async operations."""
@@ -55,22 +57,23 @@ class GammuAsyncWorker(gammu.worker.GammuWorker):
                     exception = gammu.GSMError(error)
                 self._loop.call_soon_threadsafe(future.set_exception, exception)
 
-    def __init__(self):
+    def __init__(self, pull_func = gammu_pull_device):
         """Initialize the worker class.
 
         @param callback: See L{GammuThread.__init__} for description.
         """
-        super().__init__(self.worker_callback)
+        super().__init__(self.worker_callback, pull_func)
         self._loop = asyncio.get_event_loop()
         self._init_future = None
         self._terminate_future = None
         self._thread = None
+        self._pull_func = pull_func
 
     async def init_async(self):
         """Connect to phone."""
         self._init_future = self._loop.create_future()
 
-        self._thread = GammuAsyncThread(self._queue, self._config, self._callback)
+        self._thread = GammuAsyncThread(self._queue, self._config, self._callback, self._pull_func)
         self._thread.start()
 
         await self._init_future

@@ -44,6 +44,7 @@ WORKER_EXPECT = [
     ('SendSMS', 255),
     ('SetIncomingCallback', None),
     ('SetIncomingSMS',None),
+    ('pull_func', 1),
     ('Terminate', None)
 ]
 
@@ -59,10 +60,13 @@ class AsyncWorkerDummyTest(DummyTest):
     def callback(self, name, result, error, percents):
        self.results.append((name, result, error, percents))
 
+    def my_pull_func(self, sm):
+        self.results.append(('pull_func', sm.ReadDevice()))
+
     @async_test
     async def test_worker_async(self):
         self.results = []
-        worker = gammu.asyncworker.GammuAsyncWorker()
+        worker = gammu.asyncworker.GammuAsyncWorker(self.my_pull_func)
         worker.configure(self.get_statemachine().GetConfig())
         self.results.append(('Init', await worker.init_async()))
         self.results.append(('GetIMEI', await worker.get_imei_async()))
@@ -83,6 +87,9 @@ class AsyncWorkerDummyTest(DummyTest):
             await worker.send_sms_async(dict(42))
         self.results.append(('SetIncomingCallback', await worker.set_incoming_callback_async(self.callback)))
         self.results.append(('SetIncomingSMS', await worker.set_incoming_sms_async()))
+
+        await asyncio.sleep(15)
+
         self.results.append(('Terminate', await worker.terminate_async()))
         self.maxDiff = None
         self.assertEqual(WORKER_EXPECT, self.results)

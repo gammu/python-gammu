@@ -22,9 +22,11 @@
 #
 
 from __future__ import print_function
-import gammu
-import time
+
 import collections
+import time
+
+import gammu
 
 # Whether be a bit more verbose
 VERBOSE = False

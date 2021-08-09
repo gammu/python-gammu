@@ -32,9 +32,12 @@ gammu --getfilesystem -flatall
 """
 
 from __future__ import print_function
-import gammu
-import locale
+
 import argparse
+import locale
+
+import gammu
+
 parser = argparse.ArgumentParser(usage="usage: %(prog)s [options]")
 
 parser.add_argument("-c", "--config",

@@ -20,8 +20,8 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #
 import gammu.worker
-from .test_dummy import DummyTest
 
+from .test_dummy import DummyTest
 
 WORKER_EXPECT = [
     ('Init', None, 'ERR_NONE', 100),

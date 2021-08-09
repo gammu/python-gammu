@@ -22,8 +22,10 @@
 #
 
 from __future__ import print_function
-import gammu
+
 import time
+
+import gammu
 
 
 def callback(state_machine, callback_type, data):

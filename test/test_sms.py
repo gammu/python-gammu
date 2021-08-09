@@ -20,12 +20,14 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #
 from __future__ import unicode_literals
-import datetime
-import unittest
-import gammu
-import sys
-import os
+
 import binascii
+import datetime
+import os
+import sys
+import unittest
+
+import gammu
 
 PDU_DATA = binascii.unhexlify(
     b'079124602009999002AB098106845688F8907080517375809070805183018000'

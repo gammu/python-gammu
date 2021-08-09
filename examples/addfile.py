@@ -22,9 +22,11 @@
 #
 
 from __future__ import print_function
-import gammu
+
 import os
 import sys
+
+import gammu
 
 
 def main():

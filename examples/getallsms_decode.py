@@ -22,6 +22,7 @@
 #
 
 from __future__ import print_function
+
 import gammu
 
 state_machine = gammu.StateMachine()

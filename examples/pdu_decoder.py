@@ -22,9 +22,11 @@
 #
 
 from __future__ import print_function
-import gammu
 
 import sys
+
+import gammu
+
 if len(sys.argv) != 2:
     print('This requires parameter with hex encoded PDU data!')
     sys.exit(1)

@@ -1,7 +1,9 @@
 """Async extensions for gammu."""
 import asyncio
+
 import gammu
 import gammu.worker
+
 
 class GammuAsyncThread(gammu.worker.GammuThread):
     """Thread for phone communication."""

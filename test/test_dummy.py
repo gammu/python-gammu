@@ -20,13 +20,15 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #
 from __future__ import unicode_literals
-import unittest
-import gammu
-import tempfile
-import shutil
+
 import datetime
-import platform
 import os.path
+import platform
+import shutil
+import tempfile
+import unittest
+
+import gammu
 
 DUMMY_DIR = os.path.join(os.path.dirname(__file__), 'data', 'gammu-dummy')
 TEST_FILE = os.path.join(os.path.dirname(__file__), 'data', 'sqlite-14.sql')

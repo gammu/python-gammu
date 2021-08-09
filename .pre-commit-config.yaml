@@ -1,0 +1,30 @@
+# See https://pre-commit.com for more information
+# See https://pre-commit.com/hooks.html for more hooks
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.0.1
+    hooks:
+      - id: requirements-txt-fixer
+      - id: check-merge-conflict
+      - id: debug-statements
+  - repo: https://github.com/pycqa/isort
+    rev: 5.9.3
+    hooks:
+      - id: isort
+#  - repo: https://github.com/asottile/pyupgrade
+#    rev: v2.23.1
+#    hooks:
+#      - id: pyupgrade
+#        args: [--py36-plus]
+#  - repo: https://github.com/psf/black
+#    rev: 21.7b0
+#    hooks:
+#      - id: black
+  - repo: https://github.com/asottile/blacken-docs
+    rev: v1.10.0
+    hooks:
+      - id: blacken-docs
+  - repo: meta
+    hooks:
+      - id: check-hooks-apply
+      - id: check-useless-excludes

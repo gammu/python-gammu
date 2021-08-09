@@ -22,10 +22,12 @@
 #
 
 from __future__ import print_function
-import gammu
-import os
+
 import errno
+import os
 import re
+
+import gammu
 
 
 def createFolderIfNotExist(path):

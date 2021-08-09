@@ -1,5 +1,5 @@
-setuptools
-coverage
 codecov
+coverage
 coveralls
 scrutinizer-ocular
+setuptools

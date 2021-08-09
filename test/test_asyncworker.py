@@ -20,9 +20,10 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #
 import asyncio
-import gammu.asyncworker
-from .test_dummy import DummyTest
 
+import gammu.asyncworker
+
+from .test_dummy import DummyTest
 
 WORKER_EXPECT = [
     ('Init', None),

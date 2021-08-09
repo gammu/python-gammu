@@ -24,7 +24,6 @@ Gammu exceptions.
 '''
 
 import gammu._gammu
-
 # Import base exception
 from gammu import GSMError
 

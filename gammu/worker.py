@@ -26,9 +26,10 @@ Mostly you should use only L{GammuWorker} class, others are only helpers
 which are used by this class.
 '''
 
-import gammu
-import threading
 import queue
+import threading
+
+import gammu
 
 
 class InvalidCommand(Exception):

@@ -23,8 +23,10 @@
 """Sample script to show how to same SMS to multiple recipients"""
 
 from __future__ import print_function
-import gammu
+
 import sys
+
+import gammu
 
 # Check parameters count
 if len(sys.argv) < 3 or sys.argv[1] in ['--help', '-h', '-?']:

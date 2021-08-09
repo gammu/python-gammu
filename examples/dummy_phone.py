@@ -26,8 +26,10 @@ python-gammu - Test script to test several Gammu operations
 '''
 
 from __future__ import print_function
-import gammu
+
 import sys
+
+import gammu
 
 
 def get_all_memory(state_machine, memory_type):

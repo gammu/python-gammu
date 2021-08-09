@@ -19,12 +19,13 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #
-import unittest
-import gammu
 import glob
-import tempfile
 import os
 import os.path
+import tempfile
+import unittest
+
+import gammu
 
 TEST_DIR = os.path.join(os.path.dirname(__file__), 'data')
 TEST_FILES_CALENDAR = (

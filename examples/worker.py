@@ -28,7 +28,9 @@ details.
 '''
 
 from __future__ import print_function
+
 import sys
+
 import gammu
 import gammu.worker
 

@@ -22,9 +22,11 @@
 #
 
 from __future__ import print_function
-import gammu
 
 import sys
+
+import gammu
+
 if len(sys.argv) != 3:
     print(
         'This requires two parameter with file names!'

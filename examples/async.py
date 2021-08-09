@@ -26,10 +26,11 @@ only about handling received data and not about phone communication
 details.
 '''
 
+import asyncio
 import sys
+
 import gammu
 import gammu.asyncworker
-import asyncio
 
 
 async def send_message_async(state_machine, number, message):

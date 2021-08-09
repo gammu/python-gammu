@@ -19,10 +19,12 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #
-import unittest
-import tempfile
-import gammu
 import os
+import tempfile
+import unittest
+
+import gammu
+
 from .test_sms import PDU_DATA
 
 

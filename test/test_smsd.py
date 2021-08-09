@@ -20,16 +20,18 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #
 from __future__ import print_function
-from .test_dummy import DummyTest
-import gammu.smsd
+
 import os
 import os.path
-import threading
-import time
 import platform
 import sqlite3
+import threading
+import time
 import unittest
 
+import gammu.smsd
+
+from .test_dummy import DummyTest
 
 MESSAGE_1 = {
     'Text': 'python-gammu testing message',

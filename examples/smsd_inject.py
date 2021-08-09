@@ -23,8 +23,10 @@
 """Sample script to show how to send SMS through SMSD"""
 
 from __future__ import print_function
-import gammu.smsd
+
 import sys
+
+import gammu.smsd
 
 smsd = gammu.smsd.SMSD('/etc/gammu-smsdrc')
 

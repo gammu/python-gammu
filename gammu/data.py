@@ -31,7 +31,7 @@ Some static data.
 @var InternationalPrefixes: List of known internaltional prefixes.
 '''
 
-from gammu import Errors, ErrorNumbers
+from gammu import ErrorNumbers, Errors
 
 Connections = [
     'at',

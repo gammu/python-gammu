@@ -22,8 +22,10 @@
 #
 
 from __future__ import print_function
-import gammu
+
 import sys
+
+import gammu
 
 state_machine = gammu.StateMachine()
 if len(sys.argv) > 2:

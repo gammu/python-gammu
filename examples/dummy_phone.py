@@ -54,7 +54,7 @@ def get_all_memory(state_machine, memory_type):
                 print('{:<15}: {}...'.format(v['Type'], repr(v['Value'])[:30]))
             else:
                 print(
-                    '{:<15}: {}'.format(v['Type'], str(v['Value']).encode('utf-8'))
+                    '{:<15}: {}'.format(v['Type'], v['Value'])
                 )
 
 
@@ -77,7 +77,7 @@ def get_all_calendar(state_machine):
         print('{:<20}: {:d}'.format('Location', entry['Location']))
         print('{:<20}: {}'.format('Type', entry['Type']))
         for v in entry['Entries']:
-            print('{:<20}: {}'.format(v['Type'], str(v['Value']).encode('utf-8')))
+            print('{:<20}: {}'.format(v['Type'], v['Value']))
 
 
 def get_battery_status(state_machine):
@@ -110,13 +110,13 @@ def get_all_sms(state_machine):
 
 def print_sms_header(message, folders):
     print()
-    print('{:<15}: {}'.format('Number', message['Number'].encode('utf-8')))
-    print('{:<15}: {}'.format('Date', str(message['DateTime'])))
+    print('{:<15}: {}'.format('Number', message['Number']))
+    print('{:<15}: {}'.format('Date', message['DateTime']))
     print('{:<15}: {}'.format('State', message['State']))
     print('{:<15}: {} {} ({:d})'.format(
         'Folder',
-        folders[message['Folder']]['Name'].encode('utf-8'),
-        folders[message['Folder']]['Memory'].encode('utf-8'),
+        folders[message['Folder']]['Name'],
+        folders[message['Folder']]['Memory'],
         message['Folder']
     ))
     print('{:<15}: {}'.format('Validity', message['SMSC']['Validity']))
@@ -125,7 +125,7 @@ def print_sms_header(message, folders):
 def print_all_sms(sms, folders):
     for m in sms:
         print_sms_header(m, folders)
-        print('\n{}'.format(m['Text'].encode('utf-8')))
+        print('\n{}'.format(m['Text']))
 
 
 def link_all_sms(sms, folders):
@@ -138,10 +138,10 @@ def link_all_sms(sms, folders):
         print_sms_header(m, folders)
         loc = []
         for m in x:
-            loc.append(str(m['Location']))
+            loc.append(m['Location'])
         print('{:<15}: {}'.format('Location(s)', ', '.join(loc)))
         if v is None:
-            print('\n{}'.format(m['Text'].encode('utf-8')))
+            print('\n{}'.format(m['Text']))
         else:
             for e in v['Entries']:
                 print()
@@ -154,7 +154,7 @@ def link_all_sms(sms, folders):
                     print()
                 if e['Buffer'] is not None:
                     print('Text:')
-                    print(e['Buffer'].encode('utf-8'))
+                    print(e['Buffer'])
                     print()
 
 
@@ -177,7 +177,7 @@ def get_all_todo(state_machine):
         print('{:<15}: {:d}'.format('Location', entry['Location']))
         print('{:<15}: {}'.format('Priority', entry['Priority']))
         for v in entry['Entries']:
-            print('{:<15}: {}'.format(v['Type'], str(v['Value']).encode('utf-8')))
+            print('{:<15}: {}'.format(v['Type'], v['Value']))
 
 
 def get_sms_folders(state_machine):
@@ -185,8 +185,8 @@ def get_sms_folders(state_machine):
     for i, folder in enumerate(folders):
         print('Folder {:d}: {} ({})'.format(
             i,
-            folder['Name'].encode('utf-8'),
-            folder['Memory'].encode('utf-8')
+            folder['Name'],
+            folder['Memory']
         ))
     return folders
 

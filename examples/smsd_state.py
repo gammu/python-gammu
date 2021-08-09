@@ -24,6 +24,6 @@
 
 import gammu.smsd
 
-smsd = gammu.smsd.SMSD('/etc/gammu-smsdrc')
+smsd = gammu.smsd.SMSD("/etc/gammu-smsdrc")
 
 print(smsd.GetStatus())

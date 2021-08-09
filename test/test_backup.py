@@ -26,16 +26,13 @@ import unittest
 
 import gammu
 
-TEST_DIR = os.path.join(os.path.dirname(__file__), 'data')
-TEST_FILES_CALENDAR = (
-    glob.glob(os.path.join(TEST_DIR, '*.ics')) +
-    glob.glob(os.path.join(TEST_DIR, '*.vcs'))
+TEST_DIR = os.path.join(os.path.dirname(__file__), "data")
+TEST_FILES_CALENDAR = glob.glob(os.path.join(TEST_DIR, "*.ics")) + glob.glob(
+    os.path.join(TEST_DIR, "*.vcs")
 )
-TEST_FILES_CONTACTS = (
-    glob.glob(os.path.join(TEST_DIR, '*.vcf'))
-)
-TEST_CONTACTS = ('.lmb', '.vcf', '.backup')
-TEST_CALENDAR = ('.vcs', '.ics', '.backup')
+TEST_FILES_CONTACTS = glob.glob(os.path.join(TEST_DIR, "*.vcf"))
+TEST_CONTACTS = (".lmb", ".vcf", ".backup")
+TEST_CALENDAR = (".vcs", ".ics", ".backup")
 
 
 class BackupTest(unittest.TestCase):
@@ -44,9 +41,7 @@ class BackupTest(unittest.TestCase):
             tempfile.NamedTemporaryFile(suffix=extension, delete=False)
             for extension in extensions
         ]
-        out_backup = tempfile.NamedTemporaryFile(
-            suffix='.backup', delete=False
-        )
+        out_backup = tempfile.NamedTemporaryFile(suffix=".backup", delete=False)
         # Close all files (needed on Windows)
         for handle in out_files:
             handle.close()
@@ -62,16 +57,14 @@ class BackupTest(unittest.TestCase):
 
                 # Check content length
                 self.assertEqual(
-                    len(backup['Calendar']),
-                    len(backup_2['Calendar']),
-                    f'Failed to compare calendar in {filename}'
+                    len(backup["Calendar"]),
+                    len(backup_2["Calendar"]),
+                    f"Failed to compare calendar in {filename}",
                 )
                 self.assertEqual(
-                    len(backup['PhonePhonebook']) +
-                    len(backup['SIMPhonebook']),
-                    len(backup_2['PhonePhonebook']) +
-                    len(backup_2['SIMPhonebook']),
-                    f'Failed to compare phonebook in {filename}'
+                    len(backup["PhonePhonebook"]) + len(backup["SIMPhonebook"]),
+                    len(backup_2["PhonePhonebook"]) + len(backup_2["SIMPhonebook"]),
+                    f"Failed to compare phonebook in {filename}",
                 )
 
                 # Try converting to .backup
@@ -90,9 +83,7 @@ class BackupTest(unittest.TestCase):
             self.perform_test(filename, TEST_CALENDAR)
 
     def test_calendar(self):
-        entry = gammu.ReadBackup(
-            os.path.join(TEST_DIR, 'rrule.ics')
-        )['Calendar'][0]
+        entry = gammu.ReadBackup(os.path.join(TEST_DIR, "rrule.ics"))["Calendar"][0]
 
         # Convert it to vCard
         vc_entry = gammu.EncodeVCALENDAR(entry)
@@ -102,12 +93,10 @@ class BackupTest(unittest.TestCase):
         entry2 = gammu.DecodeVCS(vc_entry)
         entry3 = gammu.DecodeICS(ic_entry)
 
-        self.assertEqual(entry2['Type'], entry3['Type'])
+        self.assertEqual(entry2["Type"], entry3["Type"])
 
     def test_todo(self):
-        entry = gammu.ReadBackup(
-            os.path.join(TEST_DIR, '02.vcs')
-        )['ToDo'][0]
+        entry = gammu.ReadBackup(os.path.join(TEST_DIR, "02.vcs"))["ToDo"][0]
 
         # Convert it to vCard
         vt_entry = gammu.EncodeVTODO(entry)
@@ -117,12 +106,12 @@ class BackupTest(unittest.TestCase):
         entry2 = gammu.DecodeVCS(vt_entry)
         entry3 = gammu.DecodeICS(it_entry)
 
-        self.assertEqual(entry2['Type'], entry3['Type'])
+        self.assertEqual(entry2["Type"], entry3["Type"])
 
     def test_contact(self):
-        entry = gammu.ReadBackup(
-            os.path.join(TEST_DIR, 'gammu.vcf')
-        )['PhonePhonebook'][0]
+        entry = gammu.ReadBackup(os.path.join(TEST_DIR, "gammu.vcf"))["PhonePhonebook"][
+            0
+        ]
 
         # Convert it to vCard
         vc_entry = gammu.EncodeVCARD(entry)

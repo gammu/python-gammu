@@ -27,8 +27,7 @@ import gammu
 
 if len(sys.argv) != 3:
     print(
-        'This requires two parameter with file names!'
-        ' First is input, second output.'
+        "This requires two parameter with file names!" " First is input, second output."
     )
     sys.exit(1)
 

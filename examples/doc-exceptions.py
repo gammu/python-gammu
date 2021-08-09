@@ -26,13 +26,13 @@ import gammu.exception
 
 def main():
     for exc in sorted(gammu.exception.__all__):
-        print(f'.. exception:: gammu.{exc}')
+        print(f".. exception:: gammu.{exc}")
         print()
         doc = getattr(gammu.exception, exc).__doc__
         for doc in doc.splitlines():
-            print(f'    {doc}')
+            print(f"    {doc}")
         print()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

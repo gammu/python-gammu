@@ -29,7 +29,7 @@ import gammu
 
 def main():
     if len(sys.argv) != 2:
-        print('This requires parameter: backup file!')
+        print("This requires parameter: backup file!")
         sys.exit(1)
 
     charsetencoder = codecs.getencoder(sys.getdefaultencoding())
@@ -48,31 +48,32 @@ def main():
 
         part = message[0]
         print()
-        print('{:<15}: {}'.format('Number', part['Number']))
-        print('{:<15}: {}'.format('Date', str(part['DateTime'])))
-        print('{:<15}: {}'.format('State', part['State']))
-        print('{:<15}: {}'.format('Folder', part['Folder']))
-        print('{:<15}: {}'.format('Validity', part['SMSC']['Validity']))
+        print("{:<15}: {}".format("Number", part["Number"]))
+        print("{:<15}: {}".format("Date", str(part["DateTime"])))
+        print("{:<15}: {}".format("State", part["State"]))
+        print("{:<15}: {}".format("Folder", part["Folder"]))
+        print("{:<15}: {}".format("Validity", part["SMSC"]["Validity"]))
         loc = []
         for part in message:
-            loc.append(str(part['Location']))
-        print('{:<15}: {}'.format('Location(s)', ', '.join(loc)))
+            loc.append(str(part["Location"]))
+        print("{:<15}: {}".format("Location(s)", ", ".join(loc)))
         if decoded is None:
-            print('\n{}'.format(charsetencoder(part['Text'], 'replace')[0]))
+            print("\n{}".format(charsetencoder(part["Text"], "replace")[0]))
         else:
-            for entries in decoded['Entries']:
+            for entries in decoded["Entries"]:
                 print()
-                print('{:<15}: {}'.format('Type', entries['ID']))
-                if entries['Bitmap'] is not None:
-                    for bmp in entries['Bitmap']:
-                        print('Bitmap:')
-                        for row in bmp['XPM'][3:]:
+                print("{:<15}: {}".format("Type", entries["ID"]))
+                if entries["Bitmap"] is not None:
+                    for bmp in entries["Bitmap"]:
+                        print("Bitmap:")
+                        for row in bmp["XPM"][3:]:
                             print(row)
                     print()
-                if entries['Buffer'] is not None:
-                    print('Text:')
-                    print(charsetencoder(entries['Buffer'], 'replace'))
+                if entries["Buffer"] is not None:
+                    print("Text:")
+                    print(charsetencoder(entries["Buffer"], "replace"))
                     print()
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     main()

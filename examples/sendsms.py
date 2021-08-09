@@ -43,7 +43,7 @@ else:
 
 # Check parameters
 if len(sys.argv) != 2:
-    print('Usage: sendsms.py [configfile] RECIPIENT_NUMBER')
+    print("Usage: sendsms.py [configfile] RECIPIENT_NUMBER")
     sys.exit(1)
 
 # Connect to the phone
@@ -52,9 +52,9 @@ state_machine.Init()
 # Prepare message data
 # We tell that we want to use first SMSC number stored in phone
 message = {
-    'Text': 'python-gammu testing message',
-    'SMSC': {'Location': 1},
-    'Number': sys.argv[1],
+    "Text": "python-gammu testing message",
+    "SMSC": {"Location": 1},
+    "Number": sys.argv[1],
 }
 
 # Actually send the message

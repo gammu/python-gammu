@@ -25,8 +25,8 @@ import gammu.data
 
 class DataTest(unittest.TestCase):
     def test_connections(self):
-        self.assertTrue('at' in gammu.data.Connections)
+        self.assertTrue("at" in gammu.data.Connections)
 
     def test_errors(self):
-        self.assertTrue('ERR_INSTALL_NOT_FOUND' in gammu.data.Errors)
-        self.assertEqual(gammu.data.ErrorNumbers[73], 'ERR_NETWORK_ERROR')
+        self.assertTrue("ERR_INSTALL_NOT_FOUND" in gammu.data.Errors)
+        self.assertEqual(gammu.data.ErrorNumbers[73], "ERR_NETWORK_ERROR")

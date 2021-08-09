@@ -31,7 +31,7 @@ def main():
 
     status = state_machine.GetSMSStatus()
 
-    remain = status['SIMUsed'] + status['PhoneUsed'] + status['TemplatesUsed']
+    remain = status["SIMUsed"] + status["PhoneUsed"] + status["TemplatesUsed"]
 
     start = True
 
@@ -41,22 +41,20 @@ def main():
                 sms = state_machine.GetNextSMS(Start=True, Folder=0)
                 start = False
             else:
-                sms = state_machine.GetNextSMS(
-                    Location=sms[0]['Location'], Folder=0
-                )
+                sms = state_machine.GetNextSMS(Location=sms[0]["Location"], Folder=0)
             remain = remain - len(sms)
 
             for m in sms:
                 print()
-                print('{:<15}: {}'.format('Number', m['Number']))
-                print('{:<15}: {}'.format('Date', str(m['DateTime'])))
-                print('{:<15}: {}'.format('State', m['State']))
-                print('\n{}'.format(m['Text']))
+                print("{:<15}: {}".format("Number", m["Number"]))
+                print("{:<15}: {}".format("Date", str(m["DateTime"])))
+                print("{:<15}: {}".format("State", m["State"]))
+                print("\n{}".format(m["Text"]))
     except gammu.ERR_EMPTY:
         # This error is raised when we've reached last entry
         # It can happen when reported status does not match real counts
-        print('Failed to read all messages!')
+        print("Failed to read all messages!")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

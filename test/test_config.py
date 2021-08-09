@@ -33,57 +33,57 @@ class ConfigTest(unittest.TestCase):
         state_machine.SetConfig(
             0,
             {
-                'StartInfo': True,
-                'UseGlobalDebugFile': True,
-                'DebugFile': None,
-                'SyncTime': True,
-                'Connection': 'at',
-                'LockDevice': True,
-                'DebugLevel': 'textalldate',
-                'Device': '',
-                'Model': '',
+                "StartInfo": True,
+                "UseGlobalDebugFile": True,
+                "DebugFile": None,
+                "SyncTime": True,
+                "Connection": "at",
+                "LockDevice": True,
+                "DebugLevel": "textalldate",
+                "Device": "",
+                "Model": "",
             },
         )
         cfg = state_machine.GetConfig(0)
-        self.assertEqual(cfg['StartInfo'], 1)
+        self.assertEqual(cfg["StartInfo"], 1)
 
     def test_config_string(self):
         state_machine = gammu.StateMachine()
         state_machine.SetConfig(
             0,
             {
-                'StartInfo': 'yes',
-                'UseGlobalDebugFile': 'no',
-                'DebugFile': 'dbg.log',
-                'SyncTime': 'true',
-                'Connection': 'fbus',
-                'LockDevice': 'FALSE',
-                'DebugLevel': 'textall',
-                'Device': '',
-                'Model': '',
+                "StartInfo": "yes",
+                "UseGlobalDebugFile": "no",
+                "DebugFile": "dbg.log",
+                "SyncTime": "true",
+                "Connection": "fbus",
+                "LockDevice": "FALSE",
+                "DebugLevel": "textall",
+                "Device": "",
+                "Model": "",
             },
         )
         cfg = state_machine.GetConfig(0)
-        self.assertEqual(cfg['StartInfo'], 1)
+        self.assertEqual(cfg["StartInfo"], 1)
 
     def test_config_none(self):
         state_machine = gammu.StateMachine()
         state_machine.SetConfig(
             0,
             {
-                'StartInfo': None,
-                'UseGlobalDebugFile': None,
-                'DebugFile': 'dbg.log',
-                'SyncTime': 'true',
-                'Connection': 'dlr3',
-                'LockDevice': 'NO',
-                'DebugLevel': 'binary',
-                'Device': '',
-                'Model': '',
+                "StartInfo": None,
+                "UseGlobalDebugFile": None,
+                "DebugFile": "dbg.log",
+                "SyncTime": "true",
+                "Connection": "dlr3",
+                "LockDevice": "NO",
+                "DebugLevel": "binary",
+                "Device": "",
+                "Model": "",
             },
         )
         cfg = state_machine.GetConfig(0)
-        self.assertEqual(cfg['StartInfo'], 0)
+        self.assertEqual(cfg["StartInfo"], 0)
 
     def test_init_error(self):
         self.assertRaises(TypeError, gammu.StateMachine, Bar=1)
@@ -91,7 +91,7 @@ class ConfigTest(unittest.TestCase):
 
 class DebugTest(unittest.TestCase):
     def setUp(self):
-        gammu.SetDebugLevel('textall')
+        gammu.SetDebugLevel("textall")
 
     def check_operation(self, filename, handle=None):
         """
@@ -103,13 +103,13 @@ class DebugTest(unittest.TestCase):
             handle.close()
         if filename is not None:
             with open(filename) as handle:
-                self.assertTrue('SMS type: Status report' in handle.read())
+                self.assertTrue("SMS type: Status report" in handle.read())
 
     def test_file(self):
-        testfile = tempfile.NamedTemporaryFile(suffix='.debug', delete=False)
+        testfile = tempfile.NamedTemporaryFile(suffix=".debug", delete=False)
         testfile.close()
         try:
-            handle = open(testfile.name, 'w')
+            handle = open(testfile.name, "w")
             gammu.SetDebugFile(handle)
             self.check_operation(testfile.name, handle)
         finally:
@@ -117,7 +117,7 @@ class DebugTest(unittest.TestCase):
             os.unlink(testfile.name)
 
     def test_filename(self):
-        testfile = tempfile.NamedTemporaryFile(suffix='.debug', delete=False)
+        testfile = tempfile.NamedTemporaryFile(suffix=".debug", delete=False)
         testfile.close()
         try:
             gammu.SetDebugFile(testfile.name)
@@ -131,14 +131,14 @@ class DebugTest(unittest.TestCase):
         self.check_operation(None)
 
     def test_nothing(self):
-        gammu.SetDebugLevel('nothing')
-        testfile = tempfile.NamedTemporaryFile(suffix='.debug', delete=False)
+        gammu.SetDebugLevel("nothing")
+        testfile = tempfile.NamedTemporaryFile(suffix=".debug", delete=False)
         testfile.close()
         try:
             gammu.SetDebugFile(testfile.name)
             self.check_operation(None)
             with open(testfile.name) as handle:
-                self.assertEqual('', handle.read())
+                self.assertEqual("", handle.read())
         finally:
             gammu.SetDebugFile(None)
             os.unlink(testfile.name)

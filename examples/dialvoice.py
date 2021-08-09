@@ -40,7 +40,7 @@ state_machine.Init()
 
 # Check whether we have a number to dial
 if len(sys.argv) != 2:
-    print('Usage: dialvoice.py NUMBER')
+    print("Usage: dialvoice.py NUMBER")
     sys.exit(1)
 
 # Dial a number

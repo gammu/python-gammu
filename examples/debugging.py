@@ -29,14 +29,14 @@ import gammu
 def main():
     # Global debug level
     gammu.SetDebugFile(sys.stderr)
-    gammu.SetDebugLevel('textall')
+    gammu.SetDebugLevel("textall")
 
     state_machine = gammu.StateMachine()
     state_machine.ReadConfig()
 
     # Use global debug stub regardless configuration
     c = state_machine.GetConfig(0)
-    c['UseGlobalDebugFile'] = True
+    c["UseGlobalDebugFile"] = True
     state_machine.SetConfig(0, c)
 
     state_machine.Init()
@@ -45,12 +45,12 @@ def main():
     model = state_machine.GetModel()
     imei = state_machine.GetIMEI()
     firmware = state_machine.GetFirmware()
-    print('Phone infomation:')
-    print('{:<15}: {}'.format('Manufacturer', manufacturer))
-    print('{:<15}: {} ({})'.format('Model', model[0], model[1]))
-    print('{:<15}: {}'.format('IMEI', imei))
-    print('{:<15}: {}'.format('Firmware', firmware[0]))
+    print("Phone infomation:")
+    print("{:<15}: {}".format("Manufacturer", manufacturer))
+    print("{:<15}: {} ({})".format("Model", model[0], model[1]))
+    print("{:<15}: {}".format("IMEI", imei))
+    print("{:<15}: {}".format("Firmware", firmware[0]))
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

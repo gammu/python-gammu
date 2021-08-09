@@ -32,14 +32,14 @@ def main():
     state_machine.Init()
 
     if len(sys.argv) != 2:
-        print('This requires one parameter with memory type!')
+        print("This requires one parameter with memory type!")
         sys.exit(1)
 
     memory_type = sys.argv[1]
 
     status = state_machine.GetMemoryStatus(Type=memory_type)
 
-    remain = status['Used']
+    remain = status["Used"]
 
     start = True
 
@@ -49,15 +49,15 @@ def main():
             start = False
         else:
             entry = state_machine.GetNextMemory(
-                Location=entry['Location'], Type=memory_type
+                Location=entry["Location"], Type=memory_type
             )
         remain = remain - 1
 
         print()
-        print('{:<15}: {:d}'.format('Location', entry['Location']))
-        for v in entry['Entries']:
-            print('{:<15}: {}'.format(v['Type'], str(v['Value'])))
+        print("{:<15}: {:d}".format("Location", entry["Location"]))
+        for v in entry["Entries"]:
+            print("{:<15}: {}".format(v["Type"], str(v["Value"])))
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

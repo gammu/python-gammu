@@ -32,14 +32,14 @@ import gammu.smsd
 from .test_dummy import DummyTest
 
 MESSAGE_1 = {
-    'Text': 'python-gammu testing message',
-    'SMSC': {'Location': 1},
-    'Number': '1234567890'
+    "Text": "python-gammu testing message",
+    "SMSC": {"Location": 1},
+    "Number": "1234567890",
 }
 MESSAGE_2 = {
-    'Text': 'python-gammu second testing message',
-    'SMSC': {'Location': 1},
-    'Number': '1234567890'
+    "Text": "python-gammu second testing message",
+    "SMSC": {"Location": 1},
+    "Number": "1234567890",
 }
 
 
@@ -48,9 +48,7 @@ def get_script():
 
     It returns correct script matching used Gammu version.
     """
-    version = tuple(
-        int(x) for x in gammu.Version()[0].split('.')
-    )
+    version = tuple(int(x) for x in gammu.Version()[0].split("."))
 
     if version < (1, 36, 7):
         dbver = 14
@@ -61,23 +59,19 @@ def get_script():
     else:
         dbver = 17
 
-    print(f'Gammu version {version}, SMSD DB version {dbver}')
+    print(f"Gammu version {version}, SMSD DB version {dbver}")
 
-    return os.path.join(
-        os.path.dirname(__file__),
-        'data',
-        f'sqlite-{dbver}.sql'
-    )
+    return os.path.join(os.path.dirname(__file__), "data", f"sqlite-{dbver}.sql")
 
 
 class SMSDDummyTest(DummyTest):
     def setUp(self):
-        if platform.system() == 'Windows':
-            raise unittest.SkipTest('SMSD testing not supported on Windows (no DBI driver)')
+        if platform.system() == "Windows":
+            raise unittest.SkipTest(
+                "SMSD testing not supported on Windows (no DBI driver)"
+            )
         super().setUp()
-        database = sqlite3.connect(
-            os.path.join(self.test_dir, 'smsd.db')
-        )
+        database = sqlite3.connect(os.path.join(self.test_dir, "smsd.db"))
         with open(get_script()) as handle:
             database.executescript(handle.read())
 
@@ -111,22 +105,22 @@ class SMSDDummyTest(DummyTest):
             retries = 0
             while retries < 2:
                 status = smsd.GetStatus()
-                if status['Sent'] >= 2:
+                if status["Sent"] >= 2:
                     break
                 time.sleep(10)
                 retries += 1
 
             self.assertEqual(
-                status['Received'],
+                status["Received"],
                 2,
-                'Messages were not received as expected ({:d})!'.format(
-                status['Received'])
+                "Messages were not received as expected ({:d})!".format(
+                    status["Received"]
+                ),
             )
             self.assertEqual(
-                status['Sent'],
+                status["Sent"],
                 2,
-                'Messages were not sent as expected ({:d})!'.format(
-                status['Sent'])
+                "Messages were not sent as expected ({:d})!".format(status["Sent"]),
             )
 
             time.sleep(1)

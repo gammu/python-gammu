@@ -19,9 +19,9 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #
-'''
+"""
 Service numbers dialogue example.
-'''
+"""
 
 
 import sys
@@ -32,28 +32,28 @@ REPLY = False
 
 
 def callback(state_machine, callback_type, data):
-    '''
+    """
     Callback on USSD data.
-    '''
+    """
     global REPLY
-    if callback_type != 'USSD':
-        print(f'Unexpected event type: {callback_type}')
+    if callback_type != "USSD":
+        print(f"Unexpected event type: {callback_type}")
         sys.exit(1)
 
     REPLY = True
 
-    print('Network reply:')
-    print('Status: {}'.format(data['Status']))
-    print(data['Text'])
+    print("Network reply:")
+    print("Status: {}".format(data["Status"]))
+    print(data["Text"])
 
-    if data['Status'] == 'ActionNeeded':
+    if data["Status"] == "ActionNeeded":
         do_service(state_machine)
 
 
 def init():
-    '''
+    """
     Intializes gammu and callbacks.
-    '''
+    """
     state_machine = gammu.StateMachine()
     if len(sys.argv) >= 2:
         state_machine.ReadConfig(Filename=sys.argv[1])
@@ -64,28 +64,28 @@ def init():
     try:
         state_machine.SetIncomingUSSD()
     except gammu.ERR_NOTSUPPORTED:
-        print('Incoming USSD notification is not supported.')
+        print("Incoming USSD notification is not supported.")
         sys.exit(1)
     return state_machine
 
 
 def do_service(state_machine):
-    '''
+    """
     Main code to talk with worker.
-    '''
+    """
     global REPLY
 
     if len(sys.argv) >= 3:
         code = sys.argv[2]
         del sys.argv[2]
     else:
-        prompt = 'Enter code (empty string to end): '
+        prompt = "Enter code (empty string to end): "
         try:
             code = raw_input(prompt)
         except NameError:
             code = input(prompt)
-    if code != '':
-        print('Talking to network...')
+    if code != "":
+        print("Talking to network...")
         REPLY = False
         state_machine.DialService(code)
         loops = 0
@@ -96,9 +96,9 @@ def do_service(state_machine):
 
 def main():
     state_machine = init()
-    print('This example shows interaction with network using service codes')
+    print("This example shows interaction with network using service codes")
     do_service(state_machine)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

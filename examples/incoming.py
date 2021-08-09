@@ -27,7 +27,7 @@ import gammu
 
 
 def callback(state_machine, callback_type, data):
-    '''
+    """
     This callback receives notification about incoming event.
 
     @param state_machine: state machine which invoked action
@@ -36,8 +36,8 @@ def callback(state_machine, callback_type, data):
     @type callback_type: string
     @param data: event data
     @type data: hash
-    '''
-    print(f'Received incoming event type {callback_type}, data:')
+    """
+    print(f"Received incoming event type {callback_type}, data:")
     print(data)
 
 
@@ -45,9 +45,9 @@ def try_enable(call, name):
     try:
         call()
     except gammu.ERR_NOTSUPPORTED:
-        print(f'{name} notification is not supported.')
+        print(f"{name} notification is not supported.")
     except gammu.ERR_SOURCENOTAVAILABLE:
-        print(f'{name} notification is not enabled in Gammu.')
+        print(f"{name} notification is not enabled in Gammu.")
 
 
 def main():
@@ -61,24 +61,25 @@ def main():
     state_machine.SetIncomingCallback(callback)
 
     # Enable notifications from calls
-    try_enable(state_machine.SetIncomingCall, 'Incoming calls')
+    try_enable(state_machine.SetIncomingCall, "Incoming calls")
 
     # Enable notifications from cell broadcast
-    try_enable(state_machine.SetIncomingCB, 'Incoming cell broadcasts')
+    try_enable(state_machine.SetIncomingCB, "Incoming cell broadcasts")
 
     # Enable notifications from incoming SMS
-    try_enable(state_machine.SetIncomingSMS, 'Incoming SMS')
+    try_enable(state_machine.SetIncomingSMS, "Incoming SMS")
 
     # Enable notifications for incoming USSD
-    try_enable(state_machine.SetIncomingUSSD, 'Incoming USSD')
+    try_enable(state_machine.SetIncomingUSSD, "Incoming USSD")
 
     # Just a busy waiting for event
     # We need to keep communication with phone to get notifications
-    print('Press Ctrl+C to interrupt')
+    print("Press Ctrl+C to interrupt")
     while 1:
         signal = state_machine.GetSignalQuality()
-        print('Signal is at {:d}%'.format(signal['SignalPercent']))
+        print("Signal is at {:d}%".format(signal["SignalPercent"]))
         time.sleep(1)
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     main()

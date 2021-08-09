@@ -29,7 +29,7 @@ state_machine.Init()
 
 status = state_machine.GetSMSStatus()
 
-remain = status['SIMUsed'] + status['PhoneUsed'] + status['TemplatesUsed']
+remain = status["SIMUsed"] + status["PhoneUsed"] + status["TemplatesUsed"]
 
 sms = []
 start = True
@@ -40,15 +40,13 @@ try:
             cursms = state_machine.GetNextSMS(Start=True, Folder=0)
             start = False
         else:
-            cursms = state_machine.GetNextSMS(
-                Location=cursms[0]['Location'], Folder=0
-            )
+            cursms = state_machine.GetNextSMS(Location=cursms[0]["Location"], Folder=0)
         remain = remain - len(cursms)
         sms.append(cursms)
 except gammu.ERR_EMPTY:
     # This error is raised when we've reached last entry
     # It can happen when reported status does not match real counts
-    print('Failed to read all messages!')
+    print("Failed to read all messages!")
 
 data = gammu.LinkSMS(sms)
 
@@ -57,28 +55,28 @@ for x in data:
 
     m = x[0]
     print()
-    print('{:<15}: {}'.format('Number', m['Number']))
-    print('{:<15}: {}'.format('Date', str(m['DateTime'])))
-    print('{:<15}: {}'.format('State', m['State']))
-    print('{:<15}: {}'.format('Folder', m['Folder']))
-    print('{:<15}: {}'.format('Validity', m['SMSC']['Validity']))
+    print("{:<15}: {}".format("Number", m["Number"]))
+    print("{:<15}: {}".format("Date", str(m["DateTime"])))
+    print("{:<15}: {}".format("State", m["State"]))
+    print("{:<15}: {}".format("Folder", m["Folder"]))
+    print("{:<15}: {}".format("Validity", m["SMSC"]["Validity"]))
     loc = []
     for m in x:
-        loc.append(str(m['Location']))
-    print('{:<15}: {}'.format('Location(s)', ', '.join(loc)))
+        loc.append(str(m["Location"]))
+    print("{:<15}: {}".format("Location(s)", ", ".join(loc)))
     if v is None:
-        print('\n{}'.format(m['Text']))
+        print("\n{}".format(m["Text"]))
     else:
-        for e in v['Entries']:
+        for e in v["Entries"]:
             print()
-            print('{:<15}: {}'.format('Type', e['ID']))
-            if e['Bitmap'] is not None:
-                for bmp in e['Bitmap']:
-                    print('Bitmap:')
-                    for row in bmp['XPM'][3:]:
+            print("{:<15}: {}".format("Type", e["ID"]))
+            if e["Bitmap"] is not None:
+                for bmp in e["Bitmap"]:
+                    print("Bitmap:")
+                    for row in bmp["XPM"][3:]:
                         print(row)
                 print()
-            if e['Buffer'] is not None:
-                print('Text:')
-                print(e['Buffer'])
+            if e["Buffer"] is not None:
+                print("Text:")
+                print(e["Buffer"])
                 print()

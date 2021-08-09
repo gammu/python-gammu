@@ -32,8 +32,10 @@ class GammuAsyncThread(gammu.worker.GammuThread):
         else:
             self._callback(future, result, None, percentage)
 
+
 def gammu_pull_device(sm):
     sm.ReadDevice()
+
 
 class GammuAsyncWorker(gammu.worker.GammuWorker):
     """Extend gammu worker class for async operations."""
@@ -59,7 +61,7 @@ class GammuAsyncWorker(gammu.worker.GammuWorker):
                     exception = gammu.GSMError(error)
                 self._loop.call_soon_threadsafe(future.set_exception, exception)
 
-    def __init__(self, pull_func = gammu_pull_device):
+    def __init__(self, pull_func=gammu_pull_device):
         """Initialize the worker class.
 
         @param callback: See L{GammuThread.__init__} for description.
@@ -75,7 +77,9 @@ class GammuAsyncWorker(gammu.worker.GammuWorker):
         """Connect to phone."""
         self._init_future = self._loop.create_future()
 
-        self._thread = GammuAsyncThread(self._queue, self._config, self._callback, self._pull_func)
+        self._thread = GammuAsyncThread(
+            self._queue, self._config, self._callback, self._pull_func
+        )
         self._thread.start()
 
         await self._init_future

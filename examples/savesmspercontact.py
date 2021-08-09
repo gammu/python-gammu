@@ -112,7 +112,7 @@ def getContacts(state_machine):
     except gammu.ERR_EMPTY:
         # error is raised if memory is empty (this induces wrong reported
         # memory status)
-        print('Failed to read contacts!')
+        print("Failed to read contacts!")
 
     return contacts
 
@@ -146,7 +146,7 @@ def getAndDeleteAllSMS(state_machine):
     except gammu.ERR_EMPTY:
         # error is raised if memory is empty (this induces wrong reported
         # memory status)
-        print('Failed to read messages!')
+        print("Failed to read messages!")
 
     # Link all SMS when there are concatenated messages
     entries = gammu.LinkSMS(entries)

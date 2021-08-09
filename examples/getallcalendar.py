@@ -36,7 +36,7 @@ state_machine.Init()
 # Get number of calendar entries
 status = state_machine.GetCalendarStatus()
 
-remain = status['Used']
+remain = status["Used"]
 
 start = True
 
@@ -46,12 +46,12 @@ while remain > 0:
         entry = state_machine.GetNextCalendar(Start=True)
         start = False
     else:
-        entry = state_machine.GetNextCalendar(Location=entry['Location'])
+        entry = state_machine.GetNextCalendar(Location=entry["Location"])
     remain = remain - 1
 
     # Display it
     print()
-    print('{:<20}: {:d}'.format('Location', entry['Location']))
-    print('{:<20}: {}'.format('Type', entry['Type']))
-    for v in entry['Entries']:
-        print('{:<20}: {}'.format(v['Type'], str(v['Value'])))
+    print("{:<20}: {:d}".format("Location", entry["Location"]))
+    print("{:<20}: {}".format("Type", entry["Type"]))
+    for v in entry["Entries"]:
+        print("{:<20}: {}".format(v["Type"], str(v["Value"])))

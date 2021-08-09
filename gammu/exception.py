@@ -18,23 +18,22 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #
-'''
+"""
 Gammu exceptions.
-'''
+"""
 
 import gammu._gammu
-# Import base exception
 from gammu import GSMError
 
 __all__ = [
-    'GSMError',
+    "GSMError",
 ]
 
 # Import all exceptions
 for _name in dir(gammu._gammu):
-    if not _name.startswith('ERR_'):
+    if not _name.startswith("ERR_"):
         continue
-    _temp = __import__('gammu._gammu', globals(), locals(), [_name], 0)
+    _temp = __import__("gammu._gammu", globals(), locals(), [_name], 0)
     locals()[_name] = getattr(_temp, _name)
     __all__.append(_name)
 

@@ -36,10 +36,10 @@ def verbose_print(text):
 
 
 def reply_test(message):
-    if message['Number'] == '999':
+    if message["Number"] == "999":
         # No reply to this number
         return None
-    return 'Reply to {}'.format(message['Text'])
+    return "Reply to {}".format(message["Text"])
 
 
 # Reply function, first element is matching string, second can be:
@@ -48,22 +48,22 @@ def reply_test(message):
 #    sent
 #  - None = no reply
 REPLIES = [
-    ('1/1 www:', 'This is test'),
-    ('1/2 www:', reply_test),
-    ('2/2 www:', None),
+    ("1/1 www:", "This is test"),
+    ("1/2 www:", reply_test),
+    ("2/2 www:", None),
 ]
 
 
 def Callback(state_machine, callback_type, data):
-    verbose_print(f'Received incoming event type {callback_type}, data:')
-    if callback_type != 'SMS':
-        print('Unsupported event!')
-    if 'Number' not in data:
-        data = state_machine.GetSMS(data['Folder'], data['Location'])[0]
+    verbose_print(f"Received incoming event type {callback_type}, data:")
+    if callback_type != "SMS":
+        print("Unsupported event!")
+    if "Number" not in data:
+        data = state_machine.GetSMS(data["Folder"], data["Location"])[0]
     verbose_print(data)
 
     for reply in REPLIES:
-        if data['Text'].startswith(reply[0]):
+        if data["Text"].startswith(reply[0]):
             if isinstance(reply[1], collections.Callable):
                 response = reply[1](data)
             else:
@@ -71,14 +71,14 @@ def Callback(state_machine, callback_type, data):
 
             if response is not None:
                 message = {
-                    'Text': response,
-                    'SMSC': {'Location': 1},
-                    'Number': data['Number']
+                    "Text": response,
+                    "SMSC": {"Location": 1},
+                    "Number": data["Number"],
                 }
                 verbose_print(message)
                 state_machine.SendSMS(message)
             else:
-                verbose_print('No reply!')
+                verbose_print("No reply!")
             break
 
 
@@ -90,15 +90,15 @@ def main():
     try:
         state_machine.SetIncomingSMS()
     except gammu.ERR_NOTSUPPORTED:
-        print('Your phone does not support incoming SMS notifications!')
+        print("Your phone does not support incoming SMS notifications!")
 
-# We need to keep communication with phone to get notifications
-    print('Press Ctrl+C to interrupt')
+    # We need to keep communication with phone to get notifications
+    print("Press Ctrl+C to interrupt")
     while 1:
         time.sleep(1)
         status = state_machine.GetBatteryCharge()
-        print('Battery is at {:d}%'.format(status['BatteryPercent']))
+        print("Battery is at {:d}%".format(status["BatteryPercent"]))
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

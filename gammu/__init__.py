@@ -18,21 +18,19 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #
-'''
+"""
 Phone communication libary - python wrapper for Gammu library.
-'''
+"""
 
 from gammu._gammu import *
 
-__version__ = 'Gammu {}, python-gammu {}'.format(
-    *Version()
-)
+__version__ = "Gammu {}, python-gammu {}".format(*Version())
 
 # Submodules
 __all__ = [
-    'data',
-    'worker',
-    'asyncworker',
-    'smsd',
-    'exception',
+    "data",
+    "worker",
+    "asyncworker",
+    "smsd",
+    "exception",
 ]

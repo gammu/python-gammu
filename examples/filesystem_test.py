@@ -55,18 +55,33 @@ import gammu
 def main():
     parser = argparse.ArgumentParser(usage="usage: %(prog)s [options]")
 
-    parser.add_argument("-c", "--config",
-                        action="store", type=str,
-                        dest="config", default=None,
-                        help="Config file path")
-    parser.add_argument("-f", "--folder",
-                        action="store", type=str,
-                        dest="folder", default=None,
-                        help="Folder to be used for testing")
-    parser.add_argument("-t", "--test-file",
-                        action="store", type=str,
-                        dest="testfile", default="./data/cgi.jpg",
-                        help="Local file to be used for testing")
+    parser.add_argument(
+        "-c",
+        "--config",
+        action="store",
+        type=str,
+        dest="config",
+        default=None,
+        help="Config file path",
+    )
+    parser.add_argument(
+        "-f",
+        "--folder",
+        action="store",
+        type=str,
+        dest="folder",
+        default=None,
+        help="Folder to be used for testing",
+    )
+    parser.add_argument(
+        "-t",
+        "--test-file",
+        action="store",
+        type=str,
+        dest="testfile",
+        default="./data/cgi.jpg",
+        help="Local file to be used for testing",
+    )
     args = parser.parse_args()
 
     if args.folder is None:
@@ -121,20 +136,15 @@ def main():
         "System": 0,
         "Handle": 0,
         "Pos": 0,
-        "Finished": 0
+        "Finished": 0,
     }
     while not file_f["Finished"]:
         file_f = state_machine.AddFilePart(file_f)
 
     # Check GetFilePart
-    print(
-        "\n\nExpection: Get cgi.jpg from memorycard and write it as test.jpg"
-    )
-    with open('./test.jpg', 'wb') as handle:
-        file_f = {
-            "ID_FullName": args.folder + "/cgi.jpg",
-            "Finished": 0
-        }
+    print("\n\nExpection: Get cgi.jpg from memorycard and write it as test.jpg")
+    with open("./test.jpg", "wb") as handle:
+        file_f = {"ID_FullName": args.folder + "/cgi.jpg", "Finished": 0}
         while not file_f["Finished"]:
             file_f = state_machine.GetFilePart(file_f)
         handle.write(file_f["Buffer"])
@@ -158,9 +168,7 @@ def main():
         while 1:
             print(file_obj["ID_FullName"] + " - " + file_obj["Name"])
             try:
-                file_obj = state_machine.GetNextRootFolder(
-                    file_obj["ID_FullName"]
-                )
+                file_obj = state_machine.GetNextRootFolder(file_obj["ID_FullName"])
             except gammu.ERR_EMPTY:
                 break
     except gammu.ERR_NOTSUPPORTED:
@@ -183,14 +191,29 @@ def main():
             if file_f["System"]:
                 attribute = attribute + "S"
             print(
-                "ID:         " + file_f["ID_FullName"] + "\n" +
-                "Name:       " + file_f["Name"] + "\n" +
-                "Folder:     " + str(file_f["Folder"]) + "\n" +
-                "Used:       " + str(file_f["Used"]) + "\n" +
-                "Modified:   " + file_f["Modified"].strftime("%x %X") + "\n" +
-                "Type:       " + file_f["Type"] + "\n" +
-                "Level:      " + str(file_f["Level"]) + "\n" +
-                "Attribute:  " + attribute
+                "ID:         "
+                + file_f["ID_FullName"]
+                + "\n"
+                + "Name:       "
+                + file_f["Name"]
+                + "\n"
+                + "Folder:     "
+                + str(file_f["Folder"])
+                + "\n"
+                + "Used:       "
+                + str(file_f["Used"])
+                + "\n"
+                + "Modified:   "
+                + file_f["Modified"].strftime("%x %X")
+                + "\n"
+                + "Type:       "
+                + file_f["Type"]
+                + "\n"
+                + "Level:      "
+                + str(file_f["Level"])
+                + "\n"
+                + "Attribute:  "
+                + attribute
             )
 
             break
@@ -201,9 +224,7 @@ def main():
         "\n\nExpection: Modifying attributes "
         "(readonly=1, protected=0, system=1, hidden=1)"
     )
-    state_machine.SetFileAttributes(
-        unicode(args.folder + "/cgi.jpg"), 1, 0, 1, 1
-    )
+    state_machine.SetFileAttributes(unicode(args.folder + "/cgi.jpg"), 1, 0, 1, 1)
 
     # Check GetFolderListing
     print("\n\nExpection: Listing of cgi.jpg's properties")
@@ -222,14 +243,29 @@ def main():
             if file_f["System"]:
                 attribute = attribute + "S"
             print(
-                "ID:         " + file_f["ID_FullName"] + "\n" +
-                "Name:       " + file_f["Name"] + "\n" +
-                "Folder:     " + str(file_f["Folder"]) + "\n" +
-                "Used:       " + str(file_f["Used"]) + "\n" +
-                "Modified:   " + file_f["Modified"].strftime("%x %X") + "\n" +
-                "Type:       " + file_f["Type"] + "\n" +
-                "Level:      " + str(file_f["Level"]) + "\n" +
-                "Attribute:  " + attribute
+                "ID:         "
+                + file_f["ID_FullName"]
+                + "\n"
+                + "Name:       "
+                + file_f["Name"]
+                + "\n"
+                + "Folder:     "
+                + str(file_f["Folder"])
+                + "\n"
+                + "Used:       "
+                + str(file_f["Used"])
+                + "\n"
+                + "Modified:   "
+                + file_f["Modified"].strftime("%x %X")
+                + "\n"
+                + "Type:       "
+                + file_f["Type"]
+                + "\n"
+                + "Level:      "
+                + str(file_f["Level"])
+                + "\n"
+                + "Attribute:  "
+                + attribute
             )
 
             break
@@ -243,7 +279,7 @@ def main():
         print("Something is wrong ...")
 
     # Check AddFolder
-    print("\n\nExpection: Creation of a folder on the memorycard \"42alpha\"")
+    print('\n\nExpection: Creation of a folder on the memorycard "42alpha"')
     state_machine.AddFolder(unicode(args.folder), "42alpha")
 
     # Check GetFolderListing again *wired*
@@ -263,22 +299,37 @@ def main():
             if file_f["System"]:
                 attribute = attribute + "S"
             print(
-                "ID:         " + file_f["ID_FullName"] + "\n" +
-                "Name:       " + file_f["Name"] + "\n" +
-                "Folder:     " + str(file_f["Folder"]) + "\n" +
-                "Used:       " + str(file_f["Used"]) + "\n" +
-                "Modified:   " + file_f["Modified"].strftime("%x %X") + "\n" +
-                "Type:       " + file_f["Type"] + "\n" +
-                "Level:      " + str(file_f["Level"]) + "\n" +
-                "Attribute:  " + attribute
+                "ID:         "
+                + file_f["ID_FullName"]
+                + "\n"
+                + "Name:       "
+                + file_f["Name"]
+                + "\n"
+                + "Folder:     "
+                + str(file_f["Folder"])
+                + "\n"
+                + "Used:       "
+                + str(file_f["Used"])
+                + "\n"
+                + "Modified:   "
+                + file_f["Modified"].strftime("%x %X")
+                + "\n"
+                + "Type:       "
+                + file_f["Type"]
+                + "\n"
+                + "Level:      "
+                + str(file_f["Level"])
+                + "\n"
+                + "Attribute:  "
+                + attribute
             )
 
             break
 
     # Check DeleteFolder
-    print("\n\nExpection: Deletion of previously created folder \"42alpha\"")
+    print('\n\nExpection: Deletion of previously created folder "42alpha"')
     state_machine.DeleteFolder(unicode(args.folder + "/42alpha"))
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

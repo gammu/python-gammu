@@ -41,7 +41,7 @@ else:
 
 # Check parameters
 if len(sys.argv) != 2:
-    print('Usage: sendlongsms.py [configfile] RECIPIENT_NUMBER')
+    print("Usage: sendlongsms.py [configfile] RECIPIENT_NUMBER")
     sys.exit(1)
 
 # Connect to the phone
@@ -50,20 +50,20 @@ state_machine.Init()
 
 # Create SMS info structure
 smsinfo = {
-    'Class': -1,
-    'Unicode': False,
-    'Entries':  [
+    "Class": -1,
+    "Unicode": False,
+    "Entries": [
         {
-            'ID': 'ConcatenatedTextLong',
-            'Buffer':
-                'Very long python-gammu testing message '
-                'sent from example python script. '
-                'Very long python-gammu testing message '
-                'sent from example python script. '
-                'Very long python-gammu testing message '
-                'sent from example python script. '
+            "ID": "ConcatenatedTextLong",
+            "Buffer": "Very long python-gammu testing message "
+            "sent from example python script. "
+            "Very long python-gammu testing message "
+            "sent from example python script. "
+            "Very long python-gammu testing message "
+            "sent from example python script. ",
         }
-    ]}
+    ],
+}
 
 # Encode messages
 encoded = gammu.EncodeSMS(smsinfo)
@@ -71,8 +71,8 @@ encoded = gammu.EncodeSMS(smsinfo)
 # Send messages
 for message in encoded:
     # Fill in numbers
-    message['SMSC'] = {'Location': 1}
-    message['Number'] = sys.argv[1]
+    message["SMSC"] = {"Location": 1}
+    message["Number"] = sys.argv[1]
 
     # Actually send the message
     state_machine.SendSMS(message)

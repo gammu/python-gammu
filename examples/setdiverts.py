@@ -35,10 +35,10 @@ else:
 state_machine.Init()
 
 if len(sys.argv) != 2:
-    print('Usage: setdiverts.py NUMBER')
+    print("Usage: setdiverts.py NUMBER")
     sys.exit(1)
 
-state_machine.SetCallDivert('AllTypes', 'All', sys.argv[1])
+state_machine.SetCallDivert("AllTypes", "All", sys.argv[1])
 diverts = state_machine.GetCallDivert()
 
 for x in diverts:

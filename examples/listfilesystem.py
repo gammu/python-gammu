@@ -38,18 +38,26 @@ import gammu
 
 parser = argparse.ArgumentParser(usage="usage: %(prog)s [options]")
 
-parser.add_argument("-c", "--config",
-                    action="store", type=str,
-                    dest="config", default=None,
-                    help="Config file path")
-parser.add_argument("-f", "--flat",
-                    action="store_true",
-                    dest="flat", default=False,
-                    help="Flat listing")
-parser.add_argument("-l", "--level",
-                    action="store_true",
-                    dest="level", default=False,
-                    help="Level listing")
+parser.add_argument(
+    "-c",
+    "--config",
+    action="store",
+    type=str,
+    dest="config",
+    default=None,
+    help="Config file path",
+)
+parser.add_argument(
+    "-f", "--flat", action="store_true", dest="flat", default=False, help="Flat listing"
+)
+parser.add_argument(
+    "-l",
+    "--level",
+    action="store_true",
+    dest="level",
+    default=False,
+    help="Level listing",
+)
 args = parser.parse_args()
 
 # Init gammu module
@@ -68,7 +76,7 @@ else:
     mode = "level"
 
 # Set locale to default locale (here relevant for printing of date)
-locale.setlocale(locale.LC_ALL, '')
+locale.setlocale(locale.LC_ALL, "")
 
 
 # Wrapper around GetNextFileFolder, catching gammu.ERR_EMPTY
@@ -128,11 +136,16 @@ def Main():
                 time = ";"
 
             print(
-                file_obj["ID_FullName"] + ";" +
-                file_obj["Name"] + ";" +
-                file_obj["Type"] + ";" +
-                time + str(file_obj["Used"]) + ";" +
-                FileToAttributeString(file_obj, 0)
+                file_obj["ID_FullName"]
+                + ";"
+                + file_obj["Name"]
+                + ";"
+                + file_obj["Type"]
+                + ";"
+                + time
+                + str(file_obj["Used"])
+                + ";"
+                + FileToAttributeString(file_obj, 0)
             )
         elif mode == "level":
             attrib = FileToAttributeString(file_obj, 1)
@@ -150,5 +163,5 @@ def Main():
         file_obj = NextFile()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     Main()

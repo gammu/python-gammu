@@ -31,7 +31,7 @@ def main():
 
     status = state_machine.GetToDoStatus()
 
-    remain = status['Used']
+    remain = status["Used"]
 
     start = True
 
@@ -40,15 +40,15 @@ def main():
             entry = state_machine.GetNextToDo(Start=True)
             start = False
         else:
-            entry = state_machine.GetNextToDo(Location=entry['Location'])
+            entry = state_machine.GetNextToDo(Location=entry["Location"])
         remain = remain - 1
 
         print()
-        print('{:<15}: {:d}'.format('Location', entry['Location']))
-        print('{:<15}: {}'.format('Priority', entry['Priority']))
-        for v in entry['Entries']:
-            print('{:<15}: {}'.format(v['Type'], str(v['Value'])))
+        print("{:<15}: {:d}".format("Location", entry["Location"]))
+        print("{:<15}: {}".format("Priority", entry["Priority"]))
+        for v in entry["Entries"]:
+            print("{:<15}: {}".format(v["Type"], str(v["Value"])))
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

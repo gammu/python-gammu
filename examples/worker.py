@@ -18,13 +18,13 @@
 # You should have received a copy of the GNU General Public License along
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-'''
+"""
 python-gammu - Phone communication libary
 
 Gammu asynchronous wrapper example. This allows your application to care
 only about handling received data and not about phone communication
 details.
-'''
+"""
 
 
 import sys
@@ -34,25 +34,23 @@ import gammu.worker
 
 
 def callback(name, result, error, percents):
-    '''
+    """
     Callback which is executed when something is done. Please remember
     this is called from different thread so it does not have to be save
     to work with GUI here.
-    '''
+    """
     print(
-        '-> {} completed {:d}% with error {} , return value:'.format(
-            name,
-            percents,
-            error
+        "-> {} completed {:d}% with error {} , return value:".format(
+            name, percents, error
         )
     )
     print(result)
 
 
 def read_config():
-    '''
+    """
     Reads gammu configuration.
-    '''
+    """
     state_machine = gammu.StateMachine()
     # This is hack and should be as parameter of this function
     if len(sys.argv) == 2:
@@ -63,43 +61,44 @@ def read_config():
 
 
 def main():
-    '''
+    """
     Main code to talk with worker.
-    '''
+    """
     worker = gammu.worker.GammuWorker(callback)
     worker.configure(read_config())
     # We can directly invoke commands
-    worker.enqueue('GetManufacturer')
-    worker.enqueue('GetSIMIMSI')
-    worker.enqueue('GetIMEI')
-    worker.enqueue('GetOriginalIMEI')
-    worker.enqueue('GetManufactureMonth')
-    worker.enqueue('GetProductCode')
-    worker.enqueue('GetHardware')
-    worker.enqueue('GetDateTime')
+    worker.enqueue("GetManufacturer")
+    worker.enqueue("GetSIMIMSI")
+    worker.enqueue("GetIMEI")
+    worker.enqueue("GetOriginalIMEI")
+    worker.enqueue("GetManufactureMonth")
+    worker.enqueue("GetProductCode")
+    worker.enqueue("GetHardware")
+    worker.enqueue("GetDateTime")
     # We can create compound tasks
-    worker.enqueue('CustomGetInfo', commands=[
-        'GetModel',
-        'GetBatteryCharge'
-        ])
+    worker.enqueue("CustomGetInfo", commands=["GetModel", "GetBatteryCharge"])
     # We can pass parameters
-    worker.enqueue('GetMemory', ('SM', 1))
+    worker.enqueue("GetMemory", ("SM", 1))
     # We can create compound tasks with parameters:
-    worker.enqueue('CustomGetAllMemory', commands=[
-        ('GetMemory', ('SM', 1)),
-        ('GetMemory', ('SM', 2)),
-        ('GetMemory', ('SM', 3)),
-        ('GetMemory', ('SM', 4)),
-        ('GetMemory', ('SM', 5))
-        ])
-    print('All commands submitted')
+    worker.enqueue(
+        "CustomGetAllMemory",
+        commands=[
+            ("GetMemory", ("SM", 1)),
+            ("GetMemory", ("SM", 2)),
+            ("GetMemory", ("SM", 3)),
+            ("GetMemory", ("SM", 4)),
+            ("GetMemory", ("SM", 5)),
+        ],
+    )
+    print("All commands submitted")
     worker.initiate()
-    print('Worker started')
+    print("Worker started")
     # We can also pass commands with named parameters
-    worker.enqueue('GetSMSC', {'Location': 1})
-    print('Submitted additional command')
+    worker.enqueue("GetSMSC", {"Location": 1})
+    print("Submitted additional command")
     worker.terminate()
-    print('Worker done')
+    print("Worker done")
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     main()

@@ -67,7 +67,7 @@ def main():
     # For memory entry
 
     # Read entry from phone
-    entry = state_machine.GetNextMemory(Start=True, Type='ME')
+    entry = state_machine.GetNextMemory(Start=True, Type="ME")
 
     # Convert it to vCard
     vc_entry = gammu.EncodeVCARD(entry)
@@ -76,5 +76,5 @@ def main():
     print(gammu.DecodeVCARD(vc_entry))
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

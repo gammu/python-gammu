@@ -27,8 +27,8 @@ import sys
 import gammu
 
 # Check parameters count
-if len(sys.argv) < 3 or sys.argv[1] in ['--help', '-h', '-?']:
-    print('Usage: mass-sms <TEXT> [number]...')
+if len(sys.argv) < 3 or sys.argv[1] in ["--help", "-h", "-?"]:
+    print("Usage: mass-sms <TEXT> [number]...")
     sys.exit(1)
 
 # Configure Gammu
@@ -37,12 +37,12 @@ state_machine.ReadConfig()
 state_machine.Init()
 
 # Prepare SMS template
-message = {'Text': sys.argv[1], 'SMSC': {'Location': 1}}
+message = {"Text": sys.argv[1], "SMSC": {"Location": 1}}
 
 # Send SMS to all recipients on command line
 for number in sys.argv[2:]:
-    message['Number'] = number
+    message["Number"] = number
     try:
         state_machine.SendSMS(message)
     except gammu.GSMError as exc:
-        print(f'Sending to {number} failed: {exc}')
+        print(f"Sending to {number} failed: {exc}")

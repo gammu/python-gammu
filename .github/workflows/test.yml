@@ -23,12 +23,12 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
       - name: Install gammu
-        if:  matrix.os == ubuntu-latest
+        if: ${{ matrix.os == 'ubuntu-latest' }}
         run: |
           sudo apt-get update
           sudo apt-get install -y libgammu-dev libdbd-sqlite3
       - name: Install Gammu
-        if: matrix.os == windows-latest
+        if: ${{ matrix.os == 'windows-latest' }}
         run: |
           C:/msys64/usr/bin/wget.exe -O gammu-setup.exe https://dl.cihar.com/gammu/releases/windows/Gammu-1.41.0-Windows-64bit.exe
           ./gammu-setup.exe /S /D=C:/Gammu

@@ -52,6 +52,7 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
       - name: Install Gammu
+        shell: bash
         run: |
           wget -O gammu-setup.exe https://dl.cihar.com/gammu/releases/windows/Gammu-1.41.0-Windows-64bit.exe
           ./gammu-setup.exe /S /D=C:/Gammu

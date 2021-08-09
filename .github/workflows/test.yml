@@ -37,6 +37,7 @@ jobs:
           python -m pip install --upgrade pip wheel
           pip install -r requirements-test.txt
       - name: Build
+        shell: bash
         run: CFLAGS="-Wall -Wextra" ./setup.py build
       - name: Test
         run: coverage run --source=. ./setup.py test

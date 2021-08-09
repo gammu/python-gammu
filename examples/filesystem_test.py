@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: UTF-8 -*-
 # vim: expandtab sw=4 ts=4 sts=4:
 #
 # Copyright © 2003 - 2018 Matthias Blaesing <matthias.blaesing@rwth-aachen.de>
@@ -44,7 +43,6 @@ READY:
 - AddFolder
 """
 
-from __future__ import print_function
 
 import argparse
 import datetime
@@ -110,7 +108,7 @@ def main():
     ttime = datetime.datetime.fromtimestamp(file_stat[8])
     file_f = {
         "ID_FullName": args.folder,
-        "Name": u"cgi.jpg",
+        "Name": "cgi.jpg",
         "Modified": ttime,
         "Folder": 0,
         "Level": 1,
@@ -156,7 +154,7 @@ def main():
     # Check GetNextRootFolder
     print("\n\nExpection: Root Folder List")
     try:
-        file_obj = state_machine.GetNextRootFolder(u"")
+        file_obj = state_machine.GetNextRootFolder("")
         while 1:
             print(file_obj["ID_FullName"] + " - " + file_obj["Name"])
             try:
@@ -184,7 +182,7 @@ def main():
                 attribute = attribute + "H"
             if file_f["System"]:
                 attribute = attribute + "S"
-            print((
+            print(
                 "ID:         " + file_f["ID_FullName"] + "\n" +
                 "Name:       " + file_f["Name"] + "\n" +
                 "Folder:     " + str(file_f["Folder"]) + "\n" +
@@ -193,7 +191,7 @@ def main():
                 "Type:       " + file_f["Type"] + "\n" +
                 "Level:      " + str(file_f["Level"]) + "\n" +
                 "Attribute:  " + attribute
-            ))
+            )
 
             break
 
@@ -223,7 +221,7 @@ def main():
                 attribute = attribute + "H"
             if file_f["System"]:
                 attribute = attribute + "S"
-            print((
+            print(
                 "ID:         " + file_f["ID_FullName"] + "\n" +
                 "Name:       " + file_f["Name"] + "\n" +
                 "Folder:     " + str(file_f["Folder"]) + "\n" +
@@ -232,7 +230,7 @@ def main():
                 "Type:       " + file_f["Type"] + "\n" +
                 "Level:      " + str(file_f["Level"]) + "\n" +
                 "Attribute:  " + attribute
-            ))
+            )
 
             break
 
@@ -246,7 +244,7 @@ def main():
 
     # Check AddFolder
     print("\n\nExpection: Creation of a folder on the memorycard \"42alpha\"")
-    state_machine.AddFolder(unicode(args.folder), u"42alpha")
+    state_machine.AddFolder(unicode(args.folder), "42alpha")
 
     # Check GetFolderListing again *wired*
     print("\n\nExpection: Print properties of newly created folder")
@@ -264,7 +262,7 @@ def main():
                 attribute = attribute + "H"
             if file_f["System"]:
                 attribute = attribute + "S"
-            print((
+            print(
                 "ID:         " + file_f["ID_FullName"] + "\n" +
                 "Name:       " + file_f["Name"] + "\n" +
                 "Folder:     " + str(file_f["Folder"]) + "\n" +
@@ -273,7 +271,7 @@ def main():
                 "Type:       " + file_f["Type"] + "\n" +
                 "Level:      " + str(file_f["Level"]) + "\n" +
                 "Attribute:  " + attribute
-            ))
+            )
 
             break
 

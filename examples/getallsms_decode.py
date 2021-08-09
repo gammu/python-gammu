@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: UTF-8 -*-
 # vim: expandtab sw=4 ts=4 sts=4:
 #
 # Copyright © 2003 - 2018 Michal Čihař <michal@cihar.com>
@@ -21,7 +20,6 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #
 
-from __future__ import print_function
 
 import gammu
 
@@ -59,21 +57,21 @@ for x in data:
 
     m = x[0]
     print()
-    print('{0:<15}: {1}'.format('Number', m['Number']))
-    print('{0:<15}: {1}'.format('Date', str(m['DateTime'])))
-    print('{0:<15}: {1}'.format('State', m['State']))
-    print('{0:<15}: {1}'.format('Folder', m['Folder']))
-    print('{0:<15}: {1}'.format('Validity', m['SMSC']['Validity']))
+    print('{:<15}: {}'.format('Number', m['Number']))
+    print('{:<15}: {}'.format('Date', str(m['DateTime'])))
+    print('{:<15}: {}'.format('State', m['State']))
+    print('{:<15}: {}'.format('Folder', m['Folder']))
+    print('{:<15}: {}'.format('Validity', m['SMSC']['Validity']))
     loc = []
     for m in x:
         loc.append(str(m['Location']))
-    print('{0:<15}: {1}'.format('Location(s)', ', '.join(loc)))
+    print('{:<15}: {}'.format('Location(s)', ', '.join(loc)))
     if v is None:
-        print('\n{0}'.format(m['Text']))
+        print('\n{}'.format(m['Text']))
     else:
         for e in v['Entries']:
             print()
-            print('{0:<15}: {1}'.format('Type', e['ID']))
+            print('{:<15}: {}'.format('Type', e['ID']))
             if e['Bitmap'] is not None:
                 for bmp in e['Bitmap']:
                     print('Bitmap:')

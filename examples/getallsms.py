@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: UTF-8 -*-
 # vim: expandtab sw=4 ts=4 sts=4:
 #
 # Copyright © 2003 - 2018 Michal Čihař <michal@cihar.com>
@@ -21,7 +20,6 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #
 
-from __future__ import print_function
 
 import gammu
 
@@ -50,10 +48,10 @@ def main():
 
             for m in sms:
                 print()
-                print('{0:<15}: {1}'.format('Number', m['Number']))
-                print('{0:<15}: {1}'.format('Date', str(m['DateTime'])))
-                print('{0:<15}: {1}'.format('State', m['State']))
-                print('\n{0}'.format(m['Text']))
+                print('{:<15}: {}'.format('Number', m['Number']))
+                print('{:<15}: {}'.format('Date', str(m['DateTime'])))
+                print('{:<15}: {}'.format('State', m['State']))
+                print('\n{}'.format(m['Text']))
     except gammu.ERR_EMPTY:
         # This error is raised when we've reached last entry
         # It can happen when reported status does not match real counts

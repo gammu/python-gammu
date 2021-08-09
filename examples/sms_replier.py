@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: UTF-8 -*-
 # vim: expandtab sw=4 ts=4 sts=4:
 #
 # Copyright © 2003 - 2018 Michal Čihař <michal@cihar.com>
@@ -21,7 +20,6 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #
 
-from __future__ import print_function
 
 import collections
 import time
@@ -41,7 +39,7 @@ def reply_test(message):
     if message['Number'] == '999':
         # No reply to this number
         return None
-    return 'Reply to {0}'.format(message['Text'])
+    return 'Reply to {}'.format(message['Text'])
 
 
 # Reply function, first element is matching string, second can be:
@@ -57,7 +55,7 @@ REPLIES = [
 
 
 def Callback(state_machine, callback_type, data):
-    verbose_print('Received incoming event type {0}, data:'.format(callback_type))
+    verbose_print(f'Received incoming event type {callback_type}, data:')
     if callback_type != 'SMS':
         print('Unsupported event!')
     if 'Number' not in data:
@@ -99,7 +97,7 @@ def main():
     while 1:
         time.sleep(1)
         status = state_machine.GetBatteryCharge()
-        print('Battery is at {0:d}%'.format(status['BatteryPercent']))
+        print('Battery is at {:d}%'.format(status['BatteryPercent']))
 
 
 if __name__ == '__main__':

@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: UTF-8 -*-
 # vim: expandtab sw=4 ts=4 sts=4:
 #
 # Copyright © 2003 - 2018 Michal Čihař <michal@cihar.com>
@@ -21,7 +20,6 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #
 
-from __future__ import print_function
 
 import gammu
 
@@ -46,10 +44,10 @@ def main():
         remain = remain - 1
 
         print()
-        print('{0:<15}: {1:d}'.format('Location', entry['Location']))
-        print('{0:<15}: {1}'.format('Priority', entry['Priority']))
+        print('{:<15}: {:d}'.format('Location', entry['Location']))
+        print('{:<15}: {}'.format('Priority', entry['Priority']))
         for v in entry['Entries']:
-            print('{0:<15}: {1}'.format(v['Type'], str(v['Value'])))
+            print('{:<15}: {}'.format(v['Type'], str(v['Value'])))
 
 
 if __name__ == '__main__':

@@ -1,4 +1,3 @@
-# -*- coding: UTF-8 -*-
 # vim: expandtab sw=4 ts=4 sts=4:
 #
 # Copyright © 2003 - 2018 Michal Čihař <michal@cihar.com>
@@ -19,7 +18,6 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #
-from __future__ import unicode_literals
 
 import datetime
 import os.path
@@ -89,10 +87,10 @@ class DummyTest(unittest.TestCase):
 
     def check_incoming_call(self):
         """Checks whether incoming call faking is supported"""
-        current = tuple([int(x) for x in gammu.Version()[2].split('.')])
+        current = tuple(int(x) for x in gammu.Version()[2].split('.'))
         if current < (1, 37, 91):
             raise unittest.SkipTest(
-                'Not supported in version {0}'.format(gammu.Version()[2])
+                f'Not supported in version {gammu.Version()[2]}'
             )
 
     def call_callback(self, state_machine, response, data):

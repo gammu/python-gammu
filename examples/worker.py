@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: UTF-8 -*-
 # vim: expandtab sw=4 ts=4 sts=4:
 #
 # Copyright © 2003 - 2018 Michal Čihař <michal@cihar.com>
@@ -27,7 +26,6 @@ only about handling received data and not about phone communication
 details.
 '''
 
-from __future__ import print_function
 
 import sys
 
@@ -42,7 +40,7 @@ def callback(name, result, error, percents):
     to work with GUI here.
     '''
     print(
-        '-> {0} completed {1:d}% with error {2} , return value:'.format(
+        '-> {} completed {:d}% with error {} , return value:'.format(
             name,
             percents,
             error

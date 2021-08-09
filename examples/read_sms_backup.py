@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: UTF-8 -*-
 # vim: expandtab sw=4 ts=4 sts=4:
 #
 # Copyright © 2003 - 2018 Michal Čihař <michal@cihar.com>
@@ -21,7 +20,6 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #
 
-from __future__ import print_function
 
 import codecs
 import sys
@@ -50,21 +48,21 @@ def main():
 
         part = message[0]
         print()
-        print('{0:<15}: {1}'.format('Number', part['Number']))
-        print('{0:<15}: {1}'.format('Date', str(part['DateTime'])))
-        print('{0:<15}: {1}'.format('State', part['State']))
-        print('{0:<15}: {1}'.format('Folder', part['Folder']))
-        print('{0:<15}: {1}'.format('Validity', part['SMSC']['Validity']))
+        print('{:<15}: {}'.format('Number', part['Number']))
+        print('{:<15}: {}'.format('Date', str(part['DateTime'])))
+        print('{:<15}: {}'.format('State', part['State']))
+        print('{:<15}: {}'.format('Folder', part['Folder']))
+        print('{:<15}: {}'.format('Validity', part['SMSC']['Validity']))
         loc = []
         for part in message:
             loc.append(str(part['Location']))
-        print('{0:<15}: {1}'.format('Location(s)', ', '.join(loc)))
+        print('{:<15}: {}'.format('Location(s)', ', '.join(loc)))
         if decoded is None:
-            print('\n{0}'.format(charsetencoder(part['Text'], 'replace')[0]))
+            print('\n{}'.format(charsetencoder(part['Text'], 'replace')[0]))
         else:
             for entries in decoded['Entries']:
                 print()
-                print('{0:<15}: {1}'.format('Type', entries['ID']))
+                print('{:<15}: {}'.format('Type', entries['ID']))
                 if entries['Bitmap'] is not None:
                     for bmp in entries['Bitmap']:
                         print('Bitmap:')

@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: UTF-8 -*-
 # vim: expandtab sw=4 ts=4 sts=4:
 #
 # Copyright © 2003 - 2018 Michal Čihař <michal@cihar.com>
@@ -24,7 +23,6 @@
 Service numbers dialogue example.
 '''
 
-from __future__ import print_function
 
 import sys
 
@@ -39,13 +37,13 @@ def callback(state_machine, callback_type, data):
     '''
     global REPLY
     if callback_type != 'USSD':
-        print('Unexpected event type: {0}'.format(callback_type))
+        print(f'Unexpected event type: {callback_type}')
         sys.exit(1)
 
     REPLY = True
 
     print('Network reply:')
-    print('Status: {0}'.format(data['Status']))
+    print('Status: {}'.format(data['Status']))
     print(data['Text'])
 
     if data['Status'] == 'ActionNeeded':

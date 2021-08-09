@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: UTF-8 -*-
 # vim: expandtab sw=4 ts=4 sts=4:
 #
 # Copyright © 2003 - 2018 Michal Čihař <michal@cihar.com>
@@ -21,18 +20,17 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #
 
-from __future__ import print_function
 
 import gammu.exception
 
 
 def main():
     for exc in sorted(gammu.exception.__all__):
-        print('.. exception:: gammu.{0}'.format(exc))
+        print(f'.. exception:: gammu.{exc}')
         print()
         doc = getattr(gammu.exception, exc).__doc__
         for doc in doc.splitlines():
-            print('    {0}'.format(doc))
+            print(f'    {doc}')
         print()
 
 

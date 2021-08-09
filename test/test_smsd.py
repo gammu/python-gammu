@@ -1,4 +1,3 @@
-# -*- coding: UTF-8 -*-
 # vim: expandtab sw=4 ts=4 sts=4:
 #
 # Copyright © 2003 - 2018 Michal Čihař <michal@cihar.com>
@@ -19,7 +18,6 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #
-from __future__ import print_function
 
 import os
 import os.path
@@ -51,7 +49,7 @@ def get_script():
     It returns correct script matching used Gammu version.
     """
     version = tuple(
-        [int(x) for x in gammu.Version()[0].split('.')]
+        int(x) for x in gammu.Version()[0].split('.')
     )
 
     if version < (1, 36, 7):
@@ -63,12 +61,12 @@ def get_script():
     else:
         dbver = 17
 
-    print('Gammu version {0}, SMSD DB version {1}'.format(version, dbver))
+    print(f'Gammu version {version}, SMSD DB version {dbver}')
 
     return os.path.join(
         os.path.dirname(__file__),
         'data',
-        'sqlite-{0}.sql'.format(dbver)
+        f'sqlite-{dbver}.sql'
     )
 
 
@@ -76,11 +74,11 @@ class SMSDDummyTest(DummyTest):
     def setUp(self):
         if platform.system() == 'Windows':
             raise unittest.SkipTest('SMSD testing not supported on Windows (no DBI driver)')
-        super(SMSDDummyTest, self).setUp()
+        super().setUp()
         database = sqlite3.connect(
             os.path.join(self.test_dir, 'smsd.db')
         )
-        with open(get_script(), 'r') as handle:
+        with open(get_script()) as handle:
             database.executescript(handle.read())
 
     def get_smsd(self):
@@ -121,13 +119,13 @@ class SMSDDummyTest(DummyTest):
             self.assertEqual(
                 status['Received'],
                 2,
-                'Messages were not received as expected ({0:d})!'.format(
+                'Messages were not received as expected ({:d})!'.format(
                 status['Received'])
             )
             self.assertEqual(
                 status['Sent'],
                 2,
-                'Messages were not sent as expected ({0:d})!'.format(
+                'Messages were not sent as expected ({:d})!'.format(
                 status['Sent'])
             )
 

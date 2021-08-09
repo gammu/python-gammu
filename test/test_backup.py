@@ -1,4 +1,3 @@
-# -*- coding: UTF-8 -*-
 # vim: expandtab sw=4 ts=4 sts=4:
 #
 # Copyright © 2003 - 2018 Michal Čihař <michal@cihar.com>
@@ -65,14 +64,14 @@ class BackupTest(unittest.TestCase):
                 self.assertEqual(
                     len(backup['Calendar']),
                     len(backup_2['Calendar']),
-                    'Failed to compare calendar in {0}'.format(filename)
+                    f'Failed to compare calendar in {filename}'
                 )
                 self.assertEqual(
                     len(backup['PhonePhonebook']) +
                     len(backup['SIMPhonebook']),
                     len(backup_2['PhonePhonebook']) +
                     len(backup_2['SIMPhonebook']),
-                    'Failed to compare phonebook in {0}'.format(filename)
+                    f'Failed to compare phonebook in {filename}'
                 )
 
                 # Try converting to .backup

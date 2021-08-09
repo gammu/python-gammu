@@ -1,4 +1,3 @@
-# -*- coding: UTF-8 -*-
 # vim: expandtab sw=4 ts=4 sts=4:
 #
 # Copyright © 2003 - 2018 Michal Čihař <michal@cihar.com>
@@ -50,7 +49,7 @@ class InvalidCommand(Exception):
         '''
         Returns textual representation of exception.
         '''
-        return 'Invalid command: "{0}"'.format(self.value)
+        return f'Invalid command: "{self.value}"'
 
 
 def check_worker_command(command):
@@ -66,7 +65,7 @@ def check_worker_command(command):
     raise InvalidCommand(command)
 
 
-class GammuCommand(object):
+class GammuCommand:
     '''
     Storage of single command for gammu.
     '''
@@ -102,12 +101,12 @@ class GammuCommand(object):
         Returns textual representation.
         '''
         if self._params is not None:
-            return '{0} {1}'.format(self._command, self._params)
+            return f'{self._command} {self._params}'
         else:
-            return '{0} ()'.format(self._command)
+            return f'{self._command} ()'
 
 
-class GammuTask(object):
+class GammuTask:
     '''
     Storage of taks for gammu.
     '''
@@ -257,7 +256,7 @@ class GammuThread(threading.Thread):
         threading.Thread.join(self, timeout)
 
 
-class GammuWorker(object):
+class GammuWorker:
     '''
     Wrapper class for asynchronous communication with Gammu. It spaws
     own thread and then passes all commands to this thread. When task is

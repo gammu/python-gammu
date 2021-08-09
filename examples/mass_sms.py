@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: UTF-8 -*-
 # vim: expandtab sw=4 ts=4 sts=4:
 #
 # Copyright © 2003 - 2018 Michal Čihař <michal@cihar.com>
@@ -22,7 +21,6 @@
 #
 """Sample script to show how to same SMS to multiple recipients"""
 
-from __future__ import print_function
 
 import sys
 
@@ -47,4 +45,4 @@ for number in sys.argv[2:]:
     try:
         state_machine.SendSMS(message)
     except gammu.GSMError as exc:
-        print('Sending to {0} failed: {1}'.format(number, exc))
+        print(f'Sending to {number} failed: {exc}')

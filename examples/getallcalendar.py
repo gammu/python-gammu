@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: UTF-8 -*-
 # vim: expandtab sw=4 ts=4 sts=4:
 #
 # Copyright © 2003 - 2018 Michal Čihař <michal@cihar.com>
@@ -22,7 +21,6 @@
 #
 """Example for reading calendar from phone"""
 
-from __future__ import print_function
 
 import gammu
 
@@ -53,7 +51,7 @@ while remain > 0:
 
     # Display it
     print()
-    print('{0:<20}: {1:d}'.format('Location', entry['Location']))
-    print('{0:<20}: {1}'.format('Type', entry['Type']))
+    print('{:<20}: {:d}'.format('Location', entry['Location']))
+    print('{:<20}: {}'.format('Type', entry['Type']))
     for v in entry['Entries']:
-        print('{0:<20}: {1}'.format(v['Type'], str(v['Value'])))
+        print('{:<20}: {}'.format(v['Type'], str(v['Value'])))

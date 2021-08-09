@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: UTF-8 -*-
 # vim: expandtab sw=4 ts=4 sts=4:
 #
 # Copyright © 2003 - 2018 Michal Čihař <michal@cihar.com>
@@ -21,7 +20,6 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #
 
-from __future__ import print_function
 
 import time
 
@@ -39,7 +37,7 @@ def callback(state_machine, callback_type, data):
     @param data: event data
     @type data: hash
     '''
-    print('Received incoming event type {0}, data:'.format(callback_type))
+    print(f'Received incoming event type {callback_type}, data:')
     print(data)
 
 
@@ -47,9 +45,9 @@ def try_enable(call, name):
     try:
         call()
     except gammu.ERR_NOTSUPPORTED:
-        print('{0} notification is not supported.'.format(name))
+        print(f'{name} notification is not supported.')
     except gammu.ERR_SOURCENOTAVAILABLE:
-        print('{0} notification is not enabled in Gammu.'.format(name))
+        print(f'{name} notification is not enabled in Gammu.')
 
 
 def main():
@@ -79,7 +77,7 @@ def main():
     print('Press Ctrl+C to interrupt')
     while 1:
         signal = state_machine.GetSignalQuality()
-        print('Signal is at {0:d}%'.format(signal['SignalPercent']))
+        print('Signal is at {:d}%'.format(signal['SignalPercent']))
         time.sleep(1)
 
 if __name__ == '__main__':

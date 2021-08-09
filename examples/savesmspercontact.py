@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: UTF-8 -*-
 # vim: expandtab sw=4 ts=4 sts=4:
 #
 # Copyright © 2003 - 2018 Michal Čihař <michal@cihar.com>
@@ -21,7 +20,6 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #
 
-from __future__ import print_function
 
 import errno
 import os
@@ -79,7 +77,7 @@ def saveSMS(mysms, all_contacts):
     with open(os.path.join(mydir, myfile), "a") as handle:
         for i in mysms:
             handle.write(i["Text"].encode("UTF-8"))
-        handle.write(u"\n".encode("UTF-8"))
+        handle.write(b"\n")
 
 
 def getContacts(state_machine):

@@ -1,4 +1,3 @@
-# -*- coding: UTF-8 -*-
 # vim: expandtab sw=4 ts=4 sts=4:
 #
 # Copyright © 2003 - 2018 Michal Čihař <michal@cihar.com>
@@ -25,7 +24,7 @@ Phone communication libary - python wrapper for Gammu library.
 
 from gammu._gammu import *
 
-__version__ = 'Gammu {0}, python-gammu {1}'.format(
+__version__ = 'Gammu {}, python-gammu {}'.format(
     *Version()
 )
 

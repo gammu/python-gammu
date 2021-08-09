@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: UTF-8 -*-
 # vim: expandtab sw=4 ts=4 sts=4:
 #
 # Copyright © 2003 - 2018 Michal Čihař <michal@cihar.com>
@@ -21,7 +20,6 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #
 
-from __future__ import print_function
 
 import sys
 
@@ -48,7 +46,7 @@ def main():
     for item in backup['PhonePhonebook']:
         item['MemoryType'] = memory
         loc = state_machine.AddMemory(item)
-        print(('Added item to location {0:d}'.format(loc)))
+        print(f'Added item to location {loc:d}')
 
 
 if __name__ == '__main__':

@@ -1,4 +1,3 @@
-# -*- coding: UTF-8 -*-
 # vim: expandtab sw=4 ts=4 sts=4:
 #
 # Copyright © 2003 - 2018 Michal Čihař <michal@cihar.com>
@@ -103,7 +102,7 @@ class DebugTest(unittest.TestCase):
         if handle:
             handle.close()
         if filename is not None:
-            with open(filename, 'r') as handle:
+            with open(filename) as handle:
                 self.assertTrue('SMS type: Status report' in handle.read())
 
     def test_file(self):
@@ -138,7 +137,7 @@ class DebugTest(unittest.TestCase):
         try:
             gammu.SetDebugFile(testfile.name)
             self.check_operation(None)
-            with open(testfile.name, 'r') as handle:
+            with open(testfile.name) as handle:
                 self.assertEqual('', handle.read())
         finally:
             gammu.SetDebugFile(None)

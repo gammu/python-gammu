@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: UTF-8 -*-
 # vim: expandtab sw=4 ts=4 sts=4:
 #
 # Copyright © 2003 - 2018 Michal Čihař <michal@cihar.com>
@@ -64,13 +63,13 @@ async def get_network_info(worker):
 async def get_info(worker):
     print('Phone infomation:')
     manufacturer = await worker.get_manufacturer_async()
-    print(('{0:<15}: {1}'.format('Manufacturer', manufacturer)))
+    print('{:<15}: {}'.format('Manufacturer', manufacturer))
     model = await worker.get_model_async()
-    print(('{0:<15}: {1} ({2})'.format('Model', model[0], model[1])))
+    print('{:<15}: {} ({})'.format('Model', model[0], model[1]))
     imei = await worker.get_imei_async()
-    print(('{0:<15}: {1}'.format('IMEI', imei)))
+    print('{:<15}: {}'.format('IMEI', imei))
     firmware = await worker.get_firmware_async()
-    print(('{0:<15}: {1}'.format('Firmware', firmware[0])))
+    print('{:<15}: {}'.format('Firmware', firmware[0]))
 
 async def main():
 
@@ -95,9 +94,9 @@ async def main():
         while 1:
             try:
                 signal = await worker.get_signal_quality_async()
-                print('Signal is at {0:d}%'.format(signal['SignalPercent']))
+                print('Signal is at {:d}%'.format(signal['SignalPercent']))
             except Exception as e:
-                print('Exception reading signal: {0}'.format(e))
+                print(f'Exception reading signal: {e}')
 
             await asyncio.sleep(10);
 

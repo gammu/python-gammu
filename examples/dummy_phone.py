@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: UTF-8 -*-
 # vim: expandtab sw=4 ts=4 sts=4:
 #
 # Copyright © 2003 - 2018 Michal Čihař <michal@cihar.com>
@@ -25,7 +24,6 @@ python-gammu - Test script to test several Gammu operations
 (usually using dummy driver, but it depends on config)
 '''
 
-from __future__ import print_function
 
 import sys
 
@@ -50,14 +48,14 @@ def get_all_memory(state_machine, memory_type):
         remain = remain - 1
 
         print()
-        print(('{0:<15}: {1:d}'.format('Location', entry['Location'])))
+        print('{:<15}: {:d}'.format('Location', entry['Location']))
         for v in entry['Entries']:
             if v['Type'] in ('Photo'):
-                print(('{0:<15}: {1}...'.format(v['Type'], repr(v['Value'])[:30])))
+                print('{:<15}: {}...'.format(v['Type'], repr(v['Value'])[:30]))
             else:
-                print((
-                    '{0:<15}: {1}'.format(v['Type'], str(v['Value']).encode('utf-8'))
-                ))
+                print(
+                    '{:<15}: {}'.format(v['Type'], str(v['Value']).encode('utf-8'))
+                )
 
 
 def get_all_calendar(state_machine):
@@ -76,10 +74,10 @@ def get_all_calendar(state_machine):
         remain = remain - 1
 
         print()
-        print(('{0:<20}: {1:d}'.format('Location', entry['Location'])))
-        print(('{0:<20}: {1}'.format('Type', entry['Type'])))
+        print('{:<20}: {:d}'.format('Location', entry['Location']))
+        print('{:<20}: {}'.format('Type', entry['Type']))
         for v in entry['Entries']:
-            print(('{0:<20}: {1}'.format(v['Type'], str(v['Value']).encode('utf-8'))))
+            print('{:<20}: {}'.format(v['Type'], str(v['Value']).encode('utf-8')))
 
 
 def get_battery_status(state_machine):
@@ -87,7 +85,7 @@ def get_battery_status(state_machine):
 
     for x in status:
         if status[x] != -1:
-            print(("{0:20}: {1}".format(x, status[x])))
+            print(f"{x:20}: {status[x]}")
 
 
 def get_all_sms(state_machine):
@@ -112,22 +110,22 @@ def get_all_sms(state_machine):
 
 def print_sms_header(message, folders):
     print()
-    print('{0:<15}: {1}'.format('Number', message['Number'].encode('utf-8')))
-    print('{0:<15}: {1}'.format('Date', str(message['DateTime'])))
-    print('{0:<15}: {1}'.format('State', message['State']))
-    print('{0:<15}: {1} {2} ({3:d})'.format(
+    print('{:<15}: {}'.format('Number', message['Number'].encode('utf-8')))
+    print('{:<15}: {}'.format('Date', str(message['DateTime'])))
+    print('{:<15}: {}'.format('State', message['State']))
+    print('{:<15}: {} {} ({:d})'.format(
         'Folder',
         folders[message['Folder']]['Name'].encode('utf-8'),
         folders[message['Folder']]['Memory'].encode('utf-8'),
         message['Folder']
     ))
-    print('{0:<15}: {1}'.format('Validity', message['SMSC']['Validity']))
+    print('{:<15}: {}'.format('Validity', message['SMSC']['Validity']))
 
 
 def print_all_sms(sms, folders):
     for m in sms:
         print_sms_header(m, folders)
-        print('\n{0}'.format(m['Text'].encode('utf-8')))
+        print('\n{}'.format(m['Text'].encode('utf-8')))
 
 
 def link_all_sms(sms, folders):
@@ -141,13 +139,13 @@ def link_all_sms(sms, folders):
         loc = []
         for m in x:
             loc.append(str(m['Location']))
-        print('{0:<15}: {1}'.format('Location(s)', ', '.join(loc)))
+        print('{:<15}: {}'.format('Location(s)', ', '.join(loc)))
         if v is None:
-            print('\n{0}'.format(m['Text'].encode('utf-8')))
+            print('\n{}'.format(m['Text'].encode('utf-8')))
         else:
             for e in v['Entries']:
                 print()
-                print('{0:<15}: {1}'.format('Type', e['ID']))
+                print('{:<15}: {}'.format('Type', e['ID']))
                 if e['Bitmap'] is not None:
                     for bmp in e['Bitmap']:
                         print('Bitmap:')
@@ -176,16 +174,16 @@ def get_all_todo(state_machine):
         remain = remain - 1
 
         print()
-        print('{0:<15}: {1:d}'.format('Location', entry['Location']))
-        print('{0:<15}: {1}'.format('Priority', entry['Priority']))
+        print('{:<15}: {:d}'.format('Location', entry['Location']))
+        print('{:<15}: {}'.format('Priority', entry['Priority']))
         for v in entry['Entries']:
-            print('{0:<15}: {1}'.format(v['Type'], str(v['Value']).encode('utf-8')))
+            print('{:<15}: {}'.format(v['Type'], str(v['Value']).encode('utf-8')))
 
 
 def get_sms_folders(state_machine):
     folders = state_machine.GetSMSFolders()
     for i, folder in enumerate(folders):
-        print('Folder {0:d}: {1} ({2})'.format(
+        print('Folder {:d}: {} ({})'.format(
             i,
             folder['Name'].encode('utf-8'),
             folder['Memory'].encode('utf-8')

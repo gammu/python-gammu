@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: UTF-8 -*-
 # vim: expandtab sw=4 ts=4 sts=4:
 #
 # Copyright © 2003 - 2018 Matthias Blaesing <matthias.blaesing@rwth-aachen.de>
@@ -31,7 +30,6 @@ argument and get somethink like (not exactly!)
 gammu --getfilesystem -flatall
 """
 
-from __future__ import print_function
 
 import argparse
 import locale
@@ -101,15 +99,15 @@ def NextFile(start=0):
 def FileToAttributeString(file_obj, filled=1):
     protected = readonly = hidden = system = ""
     if filled:
-        protected = readonly = hidden = system = u" "
+        protected = readonly = hidden = system = " "
     if file_obj["Protected"]:
-        protected = u"P"
+        protected = "P"
     if file_obj["ReadOnly"]:
-        readonly = u"R"
+        readonly = "R"
     if file_obj["Hidden"]:
-        hidden = u"H"
+        hidden = "H"
     if file_obj["System"]:
-        system = u"S"
+        system = "S"
     return protected + readonly + hidden + system
 
 
@@ -129,13 +127,13 @@ def Main():
             except AttributeError:
                 time = ";"
 
-            print((
+            print(
                 file_obj["ID_FullName"] + ";" +
                 file_obj["Name"] + ";" +
                 file_obj["Type"] + ";" +
                 time + str(file_obj["Used"]) + ";" +
                 FileToAttributeString(file_obj, 0)
-            ))
+            )
         elif mode == "level":
             attrib = FileToAttributeString(file_obj, 1)
             level = file_obj["Level"]

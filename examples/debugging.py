@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: UTF-8 -*-
 # vim: expandtab sw=4 ts=4 sts=4:
 #
 # Copyright © 2003 - 2018 Michal Čihař <michal@cihar.com>
@@ -21,7 +20,6 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #
 
-from __future__ import print_function
 
 import sys
 
@@ -48,10 +46,10 @@ def main():
     imei = state_machine.GetIMEI()
     firmware = state_machine.GetFirmware()
     print('Phone infomation:')
-    print(('{0:<15}: {1}'.format('Manufacturer', manufacturer)))
-    print(('{0:<15}: {1} ({2})'.format('Model', model[0], model[1])))
-    print(('{0:<15}: {1}'.format('IMEI', imei)))
-    print(('{0:<15}: {1}'.format('Firmware', firmware[0])))
+    print('{:<15}: {}'.format('Manufacturer', manufacturer))
+    print('{:<15}: {} ({})'.format('Model', model[0], model[1]))
+    print('{:<15}: {}'.format('IMEI', imei))
+    print('{:<15}: {}'.format('Firmware', firmware[0]))
 
 
 if __name__ == '__main__':

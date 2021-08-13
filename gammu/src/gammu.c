@@ -387,7 +387,7 @@ static void CheckIncomingEvents(StateMachineObject *sm) {
             return;
         }
 
-        PyEval_CallObject(sm->IncomingCallback, arglist);
+        PyObject_Call(sm->IncomingCallback, arglist);
 
         Py_DECREF(arglist);
     }
@@ -427,7 +427,7 @@ static void CheckIncomingEvents(StateMachineObject *sm) {
             return;
         }
 
-        PyEval_CallObject(sm->IncomingCallback, arglist);
+        PyObject_Call(sm->IncomingCallback, arglist);
 
         Py_DECREF(arglist);
     }
@@ -458,7 +458,7 @@ static void CheckIncomingEvents(StateMachineObject *sm) {
             return;
         }
 
-        PyEval_CallObject(sm->IncomingCallback, arglist);
+        PyObject_Call(sm->IncomingCallback, arglist);
 
         Py_DECREF(arglist);
     }
@@ -489,7 +489,7 @@ static void CheckIncomingEvents(StateMachineObject *sm) {
             return;
         }
 
-        PyEval_CallObject(sm->IncomingCallback, arglist);
+        PyObject_Call(sm->IncomingCallback, arglist);
     }
 }
 

@@ -3,11 +3,8 @@ python-gammu
 
 Python bindings for the `Gammu library <https://wammu.eu/gammu/>`_.
 
-.. image:: https://travis-ci.org/gammu/python-gammu.svg?branch=master
-    :target: https://travis-ci.org/gammu/python-gammu
-
-.. image:: https://ci.appveyor.com/api/projects/status/19cefdo79bqrtq8l?svg=true
-    :target: https://ci.appveyor.com/project/nijel/python-gammu
+.. image:: https://github.com/gammu/python-gammu/actions/workflows/test.yml/badge.svg
+    :target: https://github.com/gammu/python-gammu/actions/workflows/test.yml
 
 .. image:: https://api.codacy.com/project/badge/Grade/c7e87df480fb4609aa48482873f5c46b
     :target: https://www.codacy.com/app/Gammu/python-gammu

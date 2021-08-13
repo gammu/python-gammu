@@ -25,15 +25,14 @@ jobs:
           python -m pip install --upgrade pip wheel
           pip install -r requirements-test.txt
       - name: build
-        run: python ./setup.py sdist bdist_wheel
+        run: python ./setup.py sdist
       - name: twine
         run: twine check dist/*
-      - name: Publish package
-        if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags')
-        uses: pypa/gh-action-pypi-publish@v1.4.2
+      - name: Store the binary wheel
+        uses: actions/upload-artifact@v2
         with:
-          user: __token__
-          password: ${{ secrets.pypi_password }}
+          name: python-package-distributions
+          path: dist
 
   windows:
     runs-on: windows-latest
@@ -63,6 +62,24 @@ jobs:
         run: python ./setup.py bdist_wheel
       - name: twine
         run: twine check dist/*
+      - name: Store the binary wheel
+        uses: actions/upload-artifact@v2
+        with:
+          name: python-package-distributions
+          path: dist
+
+  publish:
+    runs-on: ubuntu-20.04
+    needs:
+      - linux
+      - windows
+
+    steps:
+      - name: Download all the dists
+        uses: actions/download-artifact@v2
+        with:
+          name: python-package-distributions
+          path: dist/
       - name: Publish package
         if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags')
         uses: pypa/gh-action-pypi-publish@v1.4.2

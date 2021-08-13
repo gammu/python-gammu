@@ -1,3 +1,9 @@
+3.2.2
+=====
+
+* Fixed metadata in published wheels.
+* Avoid using some of deprecated Python APIs.
+
 3.2.1
 =====
 

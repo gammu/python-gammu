@@ -35,7 +35,7 @@ from distutils.version import StrictVersion
 from setuptools import Extension, setup
 
 # some defines
-VERSION = "3.2.1"
+VERSION = "3.2.2"
 GAMMU_REQUIRED = "1.37.90"
 
 # readme

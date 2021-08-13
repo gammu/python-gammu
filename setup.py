@@ -204,6 +204,7 @@ setup(
     version=VERSION,
     description="Gammu bindings",
     long_description=README,
+    long_description_content_type="text/x-rst",
     author="Michal Cihar",
     author_email="michal@cihar.com",
     platforms=["Linux", "Mac OSX", "Windows XP/2000/NT", "Windows 95/98/ME"],

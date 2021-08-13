@@ -2,4 +2,5 @@ codecov
 coverage
 coveralls
 scrutinizer-ocular
-setuptools
+setuptools >= 38.6.0
+wheel >= 0.31.0

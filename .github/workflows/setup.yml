@@ -39,6 +39,7 @@ jobs:
     strategy:
       matrix:
         python-version: [3.6, 3.7, 3.8, 3.9]
+        architecture: [x64, x86]
 
     steps:
       - uses: actions/checkout@v2
@@ -50,9 +51,16 @@ jobs:
         uses: actions/setup-python@v2.2.2
         with:
           python-version: ${{ matrix.python-version }}
-      - name: Install Gammu
+          architecture: ${{ matrix.architecture }}
+      - name: Install Gammu x64
+        if: ${{ matrix.architecture == 'x64' }}
         run: |
           C:/msys64/usr/bin/wget.exe -O gammu-setup.exe https://dl.cihar.com/gammu/releases/windows/Gammu-1.41.0-Windows-64bit.exe
+          ./gammu-setup.exe /S /D=C:/Gammu
+      - name: Install Gammu x86
+        if: ${{ matrix.architecture == 'x86' }}
+        run: |
+          C:/msys64/usr/bin/wget.exe -O gammu-setup.exe https://dl.cihar.com/gammu/releases/windows/Gammu-1.41.0-Windows.exe
           ./gammu-setup.exe /S /D=C:/Gammu
       - name: Install dependencies
         run: |
@@ -75,6 +83,7 @@ jobs:
       - windows
 
     steps:
+      - uses: actions/checkout@v2
       - name: Download all the dists
         uses: actions/download-artifact@v2
         with:

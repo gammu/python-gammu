@@ -1,3 +1,8 @@
+3.2.1
+=====
+
+* Reintroduced 32-bit wheels for Windows.
+
 3.2
 ===
 

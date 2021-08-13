@@ -35,7 +35,7 @@ from distutils.version import StrictVersion
 from setuptools import Extension, setup
 
 # some defines
-VERSION = "3.2"
+VERSION = "3.2.1"
 GAMMU_REQUIRED = "1.37.90"
 README_FILE = os.path.join(os.path.dirname(__file__), "README.rst")
 with codecs.open(README_FILE, "r", "utf-8") as readme:

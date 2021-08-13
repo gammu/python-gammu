@@ -1,3 +1,10 @@
+3.2
+===
+
+* Add support for polling on the async worker
+* Utilize CI on GitHub
+* Modernize codebase using pyupgrade, isort and black
+
 3.1
 ===
 

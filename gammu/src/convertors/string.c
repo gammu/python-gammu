@@ -46,7 +46,7 @@ unsigned char *StringPythonToGammu(PyObject * o)
 		PyErr_Format(PyExc_ValueError, "Can not get unicode value");
 		return NULL;
 	}
-	gs = strPythonToGammu(ps, PyUnicode_GetSize(u));
+	gs = strPythonToGammu(ps, PyUnicode_GET_LENGTH(u));
 	Py_DECREF(u);
 	return gs;
 }

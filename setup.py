@@ -37,9 +37,12 @@ from setuptools import Extension, setup
 # some defines
 VERSION = "3.2.1"
 GAMMU_REQUIRED = "1.37.90"
-README_FILE = os.path.join(os.path.dirname(__file__), "README.rst")
-with codecs.open(README_FILE, "r", "utf-8") as readme:
-    README = readme.read()
+
+# readme
+THIS_DIRECTORY = os.path.abspath(path.dirname(__file__))
+README_FILE = os.path.join(THIS_DIRECTORY, "README.rst")
+with open(README_FILE, encoding="utf-8") as readme:
+    LONG_DESCRIPTION = readme.read()
 
 
 class GammuConfig:
@@ -203,7 +206,7 @@ setup(
     name="python-gammu",
     version=VERSION,
     description="Gammu bindings",
-    long_description=README,
+    long_description=LONG_DESCRIPTION,
     long_description_content_type="text/x-rst",
     author="Michal Cihar",
     author_email="michal@cihar.com",
@@ -227,6 +230,7 @@ setup(
         "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
+        "Programming Language :: Python :: 3.9",
         "Topic :: Communications :: Telephony",
         "Topic :: Software Development :: Libraries :: Python Modules",
         "Topic :: System :: Hardware",

@@ -2715,6 +2715,7 @@ StateMachine_DeleteSMS(StateMachineObject *self, PyObject *args, PyObject *kwds)
     GSM_SMSMessage      sms;
     static char         *kwlist[] = {"Folder", "Location", NULL};
 
+    memset(&sms, 0, sizeof(GSM_SMSMessage));
     if (!PyArg_ParseTupleAndKeywords(args, kwds, "ii", kwlist,
                 &(sms.Folder), &(sms.Location)))
         return NULL;

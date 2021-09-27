@@ -43,7 +43,7 @@ class InvalidCommand(Exception):
         @param value: Name of wrong command.
         @type value: string
         """
-        Exception.__init__(self)
+        super().__init__()
         self.value = value
 
     def __str__(self):
@@ -181,7 +181,7 @@ class GammuThread(threading.Thread):
         thread, so please take care of various threading issues in other
         modules you use.
         """
-        threading.Thread.__init__(self)
+        super().__init__()
         self._kill = False
         self._terminate = False
         self._sm = gammu.StateMachine()
@@ -259,7 +259,7 @@ class GammuThread(threading.Thread):
         Terminates thread and waits for it.
         """
         self._terminate = True
-        threading.Thread.join(self, timeout)
+        super().join(timeout)
 
 
 class GammuWorker:

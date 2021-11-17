@@ -4,7 +4,7 @@
 set -x
 set -e
 
-VERSION=`sed -n "s/VERSION = '\(.*\)'/\\1/p" setup.py`
+VERSION=`sed -n 's/VERSION = "\(.*\)"/\\1/p' setup.py`
 
 # Create tag 
 git tag -s "$VERSION" -m "Version $VERSION"

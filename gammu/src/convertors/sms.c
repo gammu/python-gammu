@@ -684,11 +684,7 @@ PyObject *UDHToPython(GSM_UDHHeader * udh)
 		return NULL;
 
 	val = Py_BuildValue(
-#if PY_MAJOR_VERSION >= 3
 		"{s:s,s:y#,s:i,s:i,s:i,s:i}",
-#else
-		"{s:s,s:s#,s:i,s:i,s:i,s:i}",
-#endif
 		"Type", type,
 		"Text", udh->Text, (Py_ssize_t)udh->Length,
 		"ID8bit", udh->ID8bit,

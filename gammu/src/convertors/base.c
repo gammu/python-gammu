@@ -50,38 +50,6 @@ gboolean BoolFromPython(PyObject * o, const char *key)
 			else
 				return TRUE;
 		}
-#if PY_MAJOR_VERSION < 3
-		if (PyInt_Check(o)) {
-			i = PyInt_AsLong(o);
-			if (i == 0)
-				return FALSE;
-			else
-				return TRUE;
-		}
-		if (PyString_Check(o)) {
-			s = PyString_AsString(o);
-			if (isdigit((int)s[0])) {
-				i = atoi(s);
-				if (i == 0)
-					return FALSE;
-				else
-					return TRUE;
-			} else if (strcasecmp(s, "yes") == 0) {
-				return TRUE;
-			} else if (strcasecmp(s, "true") == 0) {
-				return TRUE;
-			} else if (strcasecmp(s, "no") == 0) {
-				return FALSE;
-			} else if (strcasecmp(s, "false") == 0) {
-				return FALSE;
-			} else {
-				PyErr_Format(PyExc_ValueError,
-					     "String value of '%s' doesn't seem to be boolean",
-					     key);
-				return BOOL_INVALID;
-			}
-		}
-#endif
 		if (PyUnicode_Check(o)) {
 			o2 = PyUnicode_AsASCIIString(o);
 			if (o2 == NULL) {
@@ -163,25 +131,6 @@ int GetIntFromDict(PyObject * dict, const char *key)
 		/* Well we loose here something, but it is intentional :-) */
 		return (int)PyLong_AsLongLong(o);
 	}
-
-#if PY_MAJOR_VERSION < 3
-	if (PyInt_Check(o)) {
-		return PyInt_AsLong(o);
-	}
-
-	if (PyString_Check(o)) {
-		s = PyString_AsString(o);
-		if (isdigit((int)s[0])) {
-			i = atoi(s);
-			return i;
-		} else {
-			PyErr_Format(PyExc_ValueError,
-				     "Value of '%s' doesn't seem to be integer",
-				     key);
-			return INT_INVALID;
-		}
-	}
-#endif
 
 	if (PyUnicode_Check(o)) {
 		o2 = PyUnicode_AsASCIIString(o);
@@ -307,12 +256,6 @@ char *GetCharFromDict(PyObject * dict, const char *key)
 		}
 		ps = PyBytes_AsString(o2);
 	}
-#if PY_MAJOR_VERSION < 3
-	else if (PyString_Check(o)) {
-		ps = PyString_AsString(o);
-	}
-#endif
-
 
 	if (ps == NULL) {
 		PyErr_Format(PyExc_ValueError,

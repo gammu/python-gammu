@@ -237,12 +237,7 @@ static int SMSD_init(SMSDObject * self, PyObject * args, PyObject * kwds)
 static char SMSDType__doc__[] = "SMSD object, that is used for communication with phone.";
 
 static PyTypeObject SMSDType = {
-#if PY_MAJOR_VERSION >= 3
-    PyVarObject_HEAD_INIT(NULL, 0)
-#else
-	PyObject_HEAD_INIT(NULL)
-	0,			/*ob_size */
-#endif
+	PyVarObject_HEAD_INIT(NULL, 0)
 	"_gammu.SMSD",		/*tp_name */
 	sizeof(SMSDObject),	/*tp_basicsize */
 	0,			/*tp_itemsize */

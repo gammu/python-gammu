@@ -30,11 +30,7 @@ unsigned char *StringPythonToGammu(PyObject * o)
 	unsigned char *gs;
 	Py_ssize_t len;
 
-#if PY_MAJOR_VERSION >= 3
 	u = PyObject_Str(o);
-#else
-	u = PyObject_Unicode(o);
-#endif
 
 	if (u == NULL) {
 		PyErr_Format(PyExc_ValueError,

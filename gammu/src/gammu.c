@@ -117,18 +117,16 @@ gammu_set_debug(GSM_Debug_Info *di, PyObject *value, PyObject **debug_object)
     GSM_Error           error;
     PyObject            *new_debug_object = NULL;
     PyObject            *str;
-#if PY_MAJOR_VERSION >= 3
     int                 fd;
 
     fd = PyObject_AsFileDescriptor(value);
     if (fd == -1) {
         PyErr_Clear();
     }
-#endif
+
     if (value == Py_None) {
         error = GSM_SetDebugFileDescriptor(NULL, FALSE, di);
         if (!checkError(error, "SetDebugFileDescriptor")) return NULL;
-#if PY_MAJOR_VERSION >= 3
     } else if (fd != -1) {
         new_debug_object = value;
         fd = dup(fd);
@@ -138,20 +136,8 @@ gammu_set_debug(GSM_Debug_Info *di, PyObject *value, PyObject **debug_object)
 
         error = GSM_SetDebugFileDescriptor(f, TRUE, di);
         if (!checkError(error, "SetDebugFileDescriptor")) return NULL;
-#else
-    } else if (PyFile_Check(value)) {
-        f = PyFile_AsFile(value);
-        if (f == NULL) return NULL;
-        new_debug_object = value;
-        error = GSM_SetDebugFileDescriptor(f, FALSE, di);
-        if (!checkError(error, "SetDebugFileDescriptor")) return NULL;
-#endif
     } else if (PyUnicode_Check(value)) {
-#if PY_MAJOR_VERSION >= 3
         str = PyUnicode_EncodeFSDefault(value);
-#else
-        str = PyUnicode_AsUTF8String(value);
-#endif
         if (str == NULL) {
             return NULL;
         }
@@ -160,13 +146,6 @@ gammu_set_debug(GSM_Debug_Info *di, PyObject *value, PyObject **debug_object)
         error = GSM_SetDebugFile(s, di);
         Py_DECREF(str);
         if (!checkError(error, "SetDebugFile")) return NULL;
-#if PY_MAJOR_VERSION < 3
-    } else if (PyString_Check(value)) {
-        s = PyString_AsString(value);
-        if (s == NULL) return NULL;
-        error = GSM_SetDebugFile(s, di);
-        if (!checkError(error, "SetDebugFile")) return NULL;
-#endif
     } else {
         PyErr_SetString(PyExc_TypeError, "Valid are only None, string or file parameters!");
         return NULL;
@@ -593,10 +572,6 @@ StateMachine_SetConfig(StateMachineObject *self, PyObject *args, PyObject *kwds)
                 return NULL;
             }
             s = PyBytes_AsString(keystr);
-#if PY_MAJOR_VERSION < 3
-        } else {
-            s = PyString_AsString(key);
-#endif
         }
 
         if (s == NULL) {
@@ -626,11 +601,7 @@ StateMachine_SetConfig(StateMachineObject *self, PyObject *args, PyObject *kwds)
         } else {
             if (PyBytes_Check(value) || PyUnicode_Check(value)) {
                 if (PyUnicode_Check(value)) {
-#if PY_MAJOR_VERSION >= 3
                     str = PyUnicode_EncodeFSDefault(value);
-#else
-                    str = PyUnicode_AsUTF8String(value);
-#endif
                     if (str == NULL) {
                         PyErr_Format(PyExc_ValueError, "Non string value for %s (unicode)", s);
                         return NULL;
@@ -5530,12 +5501,7 @@ static char StateMachineType__doc__[] =
 ;
 
 static PyTypeObject StateMachineType = {
-#if PY_MAJOR_VERSION >= 3
     PyVarObject_HEAD_INIT(NULL, 0)
-#else
-    PyObject_HEAD_INIT(NULL)
-    0,				/*ob_size*/
-#endif
     "_gammu.StateMachine",			/*tp_name*/
     sizeof(StateMachineObject),		/*tp_basicsize*/
     0,				/*tp_itemsize*/
@@ -6086,9 +6052,7 @@ gammu_SaveRingtone(PyObject *self, PyObject *args, PyObject *kwds)
     GSM_Ringtone                ringtone;
     gboolean                    closefile = FALSE;
     PyObject                    *str;
-#if PY_MAJOR_VERSION >= 3
     int                 fd;
-#endif
 
     if (!PyArg_ParseTupleAndKeywords(args, kwds, "OO!s", kwlist,
                 &file, &PyDict_Type, &(value), &s))
@@ -6098,7 +6062,6 @@ gammu_SaveRingtone(PyObject *self, PyObject *args, PyObject *kwds)
         return NULL;
     }
 
-#if PY_MAJOR_VERSION >= 3
     fd = PyObject_AsFileDescriptor(value);
     if (fd == -1) {
         PyErr_Clear();
@@ -6110,17 +6073,8 @@ gammu_SaveRingtone(PyObject *self, PyObject *args, PyObject *kwds)
         f = fdopen(fd, "wb");
         if (f == NULL) return NULL;
         closefile = TRUE;
-#else
-    if (PyFile_Check(file)) {
-        f = PyFile_AsFile(file);
-        if (f == NULL) return NULL;
-#endif
     } else if (PyUnicode_Check(value)) {
-#if PY_MAJOR_VERSION >= 3
         str = PyUnicode_EncodeFSDefault(value);
-#else
-        str = PyUnicode_AsUTF8String(value);
-#endif
         if (str == NULL) {
             return NULL;
         }
@@ -6133,17 +6087,6 @@ gammu_SaveRingtone(PyObject *self, PyObject *args, PyObject *kwds)
             return NULL;
         }
         closefile = TRUE;
-#if PY_MAJOR_VERSION < 3
-    } else if (PyString_Check(file)) {
-        name = PyString_AsString(file);
-        if (name == NULL) return NULL;
-        f = fopen(name, "wb");
-        if (f == NULL) {
-            PyErr_SetString(PyExc_IOError, "Can not open file for writing!");
-            return NULL;
-        }
-        closefile = TRUE;
-#endif
     } else {
         PyErr_SetString(PyExc_TypeError, "Valid are only string or file parameters!");
         return NULL;
@@ -6585,8 +6528,6 @@ static char gammu_module_documentation[] =
 ;
 
 
-#if PY_MAJOR_VERSION >= 3
-
 static struct PyModuleDef moduledef = {
         PyModuleDef_HEAD_INIT,
         "gammu",
@@ -6599,55 +6540,42 @@ static struct PyModuleDef moduledef = {
         NULL
 };
 
-#define INITERROR return NULL
-
 PyObject *
 PyInit__gammu(void)
-
-#else
-#define INITERROR return
-
-void
-init_gammu(void)
-#endif
 {
     PyObject *module, *d;
     GSM_Debug_Info *di;
 
     /* Create the module and add the functions */
-#if PY_MAJOR_VERSION >= 3
     module = PyModule_Create(&moduledef);
-#else
-    module = Py_InitModule3("_gammu", gammu_methods, gammu_module_documentation);
-#endif
 
     if (module == NULL)
-        INITERROR;
+        return NULL;
 
     DebugFile = NULL;
 
     d = PyModule_GetDict(module);
 
     if (PyType_Ready(&StateMachineType) < 0)
-        INITERROR;
+        return NULL;
     Py_INCREF(&StateMachineType);
 
     if (PyModule_AddObject(module, "StateMachine", (PyObject *)&StateMachineType) < 0)
-        INITERROR;
+        return NULL;
 
     /* SMSD object */
     if (!gammu_smsd_init(module))
-        INITERROR;
+        return NULL;
 
     /* Add some symbolic constants to the module */
 
     /* Define errors */
     if (!gammu_create_errors(d))
-        INITERROR;
+        return NULL;
 
     /* Define data */
     if (!gammu_create_data(d))
-        INITERROR;
+        return NULL;
 
     /* Check for errors */
     if (PyErr_Occurred()) {

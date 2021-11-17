@@ -18,6 +18,7 @@
  *
  */
 
+#define PY_SSIZE_T_CLEAN
 /* Python-gammu configuration */
 #include <Python.h>
 #include <bytesobject.h>
@@ -3520,7 +3521,7 @@ StateMachine_SetCallDivert(StateMachineObject *self, PyObject *args, PyObject *k
     GSM_CallDivert divert;
     static char         *kwlist[] = {"Divert", "Type", "Number", "Timeout", NULL};
     char                *cond, *type, *number;
-    int number_len;
+    Py_ssize_t number_len;
 
     divert.Timeout = 0;
 
@@ -6410,7 +6411,7 @@ gammu_DecodePDU(PyObject *self, PyObject *args, PyObject *kwds)
     PyObject *o = Py_None;
     gboolean smsc;
     const unsigned char *pdu;
-    int pdulen;
+    Py_ssize_t pdulen;
 	size_t parse_len = 0;
     GSM_SMSMessage sms;
 

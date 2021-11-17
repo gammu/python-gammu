@@ -21,6 +21,8 @@
 
 /* Python-gammu configuration */
 
+#define PY_SSIZE_T_CLEAN
+
 /* Python includes */
 #include <Python.h>
 

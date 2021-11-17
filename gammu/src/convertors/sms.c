@@ -21,6 +21,7 @@
 
 /* SMS related conversions */
 
+#define PY_SSIZE_T_CLEAN
 #include "convertors.h"
 #include "misc.h"
 
@@ -689,7 +690,7 @@ PyObject *UDHToPython(GSM_UDHHeader * udh)
 		"{s:s,s:s#,s:i,s:i,s:i,s:i}",
 #endif
 		"Type", type,
-		"Text", udh->Text, udh->Length,
+		"Text", udh->Text, (Py_ssize_t)udh->Length,
 		"ID8bit", udh->ID8bit,
 		"ID16bit", udh->ID16bit,
 		"PartNumber", udh->PartNumber,

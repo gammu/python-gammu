@@ -1,3 +1,8 @@
+3.2.4
+=====
+
+* Compatibility with Python 3.10.
+
 3.2.3
 =====
 

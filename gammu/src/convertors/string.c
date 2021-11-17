@@ -26,8 +26,9 @@
 unsigned char *StringPythonToGammu(PyObject * o)
 {
 	PyObject *u;
-	Py_UNICODE *ps;
+	wchar_t *ps;
 	unsigned char *gs;
+	Py_ssize_t len;
 
 #if PY_MAJOR_VERSION >= 3
 	u = PyObject_Str(o);
@@ -41,8 +42,16 @@ unsigned char *StringPythonToGammu(PyObject * o)
 		return NULL;
 	}
 
-	ps = PyUnicode_AsUnicode(u);
+	len = PyUnicode_GET_LENGTH(u) + 1;
+	ps = malloc(len * sizeof(wchar_t));
 	if (ps == NULL) {
+		PyErr_SetString(PyExc_MemoryError,
+				"Not enough memory to allocate string");
+		return NULL;
+	}
+
+	len = PyUnicode_AsWideChar(u, ps, len -1);
+	if (len == -1) {
 		PyErr_Format(PyExc_ValueError, "Can not get unicode value");
 		return NULL;
 	}
@@ -51,10 +60,10 @@ unsigned char *StringPythonToGammu(PyObject * o)
 	return gs;
 }
 
-unsigned char *strPythonToGammu(const Py_UNICODE * src, const size_t len)
+unsigned char *strPythonToGammu(const wchar_t * src, const size_t len)
 {
 	unsigned char *dest;
-	Py_UNICODE wc, tmp;
+	wchar_t wc, tmp;
 	size_t i, j;
 
 	/* Allocate memory */
@@ -93,7 +102,7 @@ unsigned char *strPythonToGammu(const Py_UNICODE * src, const size_t len)
 	return dest;
 }
 
-Py_UNICODE *strGammuToPython(const unsigned char *src)
+wchar_t *strGammuToPython(const unsigned char *src)
 {
 	int len = 0;
 	size_t out_len = 0;
@@ -104,14 +113,14 @@ Py_UNICODE *strGammuToPython(const unsigned char *src)
 	return strGammuToPythonL(src, len, &out_len);
 }
 
-Py_UNICODE *strGammuToPythonL(const unsigned char *src, const int len, size_t *out_len)
+wchar_t *strGammuToPythonL(const unsigned char *src, const int len, size_t *out_len)
 {
-	Py_UNICODE *dest;
-	Py_UNICODE value, second;
+	wchar_t *dest;
+	wchar_t value, second;
 	int i;
 
 	/* Allocate memory */
-	dest = malloc((len + 1) * sizeof(Py_UNICODE));
+	dest = malloc((len + 1) * sizeof(wchar_t));
 	if (dest == NULL) {
 		PyErr_SetString(PyExc_MemoryError,
 				"Not enough memory to allocate string");
@@ -150,14 +159,14 @@ PyObject *UnicodeStringToPython(const unsigned char *src)
 
 PyObject *UnicodeStringToPythonL(const unsigned char *src, const Py_ssize_t len)
 {
-	Py_UNICODE *val;
+	wchar_t *val;
 	PyObject *res;
 	size_t out_len = 0;
 
 	val = strGammuToPythonL(src, len, &out_len);
 	if (val == NULL)
 		return NULL;
-	res = PyUnicode_FromUnicode(val, out_len);
+	res = PyUnicode_FromWideChar(val, out_len);
 	free(val);
 	return res;
 }

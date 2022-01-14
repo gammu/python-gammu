@@ -30,8 +30,8 @@ import os
 import platform
 import subprocess
 import sys
-from packaging.version import parse
 
+from packaging.version import parse
 from setuptools import Extension, setup
 
 # some defines

@@ -1,6 +1,7 @@
 codecov
 coverage
 coveralls
+packaging
 scrutinizer-ocular
 setuptools >= 38.6.0
 wheel >= 0.31.0

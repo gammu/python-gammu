@@ -54,7 +54,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 Installing
 ==========
 
-You can install in a usual way for Python modules using distutils, so use
+You can install in a usual way for Python modules using setuptools, so use
 ``setup.py`` which is placed in the top level directory::
 
     ./setup.py build

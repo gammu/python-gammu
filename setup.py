@@ -30,8 +30,8 @@ import os
 import platform
 import subprocess
 import sys
-from distutils.version import StrictVersion
 
+from packaging.version import parse
 from setuptools import Extension, setup
 
 # some defines
@@ -112,9 +112,9 @@ class GammuConfig:
         with open(self.config_path(self.path)) as handle:
             for line in handle:
                 if line.startswith("#define GAMMU_VERSION "):
-                    version = line.split('"')[1]
+                    version = parse(line.split('"')[1])
 
-        if version is None or StrictVersion(version) < StrictVersion(GAMMU_REQUIRED):
+        if version is None or version < parse(GAMMU_REQUIRED):
             print("Too old Gammu version, please upgrade!")
             sys.exit(100)
 

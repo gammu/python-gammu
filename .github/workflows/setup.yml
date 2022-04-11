@@ -90,7 +90,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Download all the dists
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: python-package-distributions
           path: dist/

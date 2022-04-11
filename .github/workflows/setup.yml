@@ -29,7 +29,7 @@ jobs:
       - name: twine
         run: twine check dist/*
       - name: Store the binary wheel
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: python-package-distributions
           path: dist
@@ -76,7 +76,7 @@ jobs:
       - name: twine
         run: twine check dist/*
       - name: Store the binary wheel
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: python-package-distributions
           path: dist

@@ -64,7 +64,7 @@ def Callback(state_machine, callback_type, data):
 
     for reply in REPLIES:
         if data["Text"].startswith(reply[0]):
-            if isinstance(reply[1], collections.Callable):
+            if isinstance(reply[1], collections.abc.Callable):
                 response = reply[1](data)
             else:
                 response = reply[1]

@@ -1,3 +1,9 @@
+3.2.5
+=====
+
+* Compatibility with Python 3.11.
+* Dropped support for Python 3.6.
+
 3.2.4
 =====
 

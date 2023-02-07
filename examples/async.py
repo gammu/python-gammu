@@ -71,7 +71,6 @@ async def get_info(worker):
 
 
 async def main():
-
     gammu.SetDebugFile(sys.stderr)
     gammu.SetDebugLevel("textall")
 

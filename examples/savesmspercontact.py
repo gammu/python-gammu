@@ -81,7 +81,6 @@ def saveSMS(mysms, all_contacts):
 
 
 def getContacts(state_machine):
-
     # Get all contacts
     remaining = state_machine.GetMemoryStatus(Type="SM")["Used"]
     contacts = dict()

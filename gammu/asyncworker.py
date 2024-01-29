@@ -1,4 +1,5 @@
 """Async extensions for gammu."""
+
 import asyncio
 
 import gammu

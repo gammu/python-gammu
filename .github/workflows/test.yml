@@ -48,6 +48,6 @@ jobs:
         run: coverage run --source=. ./setup.py test
       - name: Coverage
         run: coverage xml
-      - uses: codecov/codecov-action@v4
+      - uses: codecov/codecov-action@v5
         with:
           name: ${{ matrix.os }}, Python ${{ matrix.python-version }}

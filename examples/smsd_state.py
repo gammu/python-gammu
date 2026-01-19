@@ -21,7 +21,6 @@
 #
 """Sample script to show how to get SMSD status"""
 
-
 import gammu.smsd
 
 smsd = gammu.smsd.SMSD("/etc/gammu-smsdrc")

@@ -24,7 +24,6 @@ Example for reading data from phone and convering it to and from
 vCard, vTodo, vCalendar
 """
 
-
 import sys
 
 import gammu

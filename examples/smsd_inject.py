@@ -21,7 +21,6 @@
 #
 """Sample script to show how to send SMS through SMSD"""
 
-
 import sys
 
 import gammu.smsd

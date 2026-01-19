@@ -30,7 +30,6 @@ argument and get somethink like (not exactly!)
 gammu --getfilesystem -flatall
 """
 
-
 import argparse
 import locale
 

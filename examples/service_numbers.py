@@ -23,7 +23,6 @@
 Service numbers dialogue example.
 """
 
-
 import sys
 
 import gammu

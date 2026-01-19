@@ -21,7 +21,6 @@
 #
 """Sample script to show how to send long (multipart) SMS"""
 
-
 import sys
 
 import gammu

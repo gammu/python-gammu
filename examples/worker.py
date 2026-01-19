@@ -26,7 +26,6 @@ only about handling received data and not about phone communication
 details.
 """
 
-
 import sys
 
 import gammu

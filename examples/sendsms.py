@@ -23,7 +23,6 @@
 Sample script to show how to send SMS
 """
 
-
 import sys
 
 import gammu

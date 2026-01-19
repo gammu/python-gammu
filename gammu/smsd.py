@@ -21,6 +21,7 @@
 """
 SMSD wrapper layer.
 """
+
 from gammu import SMSD
 
 __all__ = ["SMSD"]

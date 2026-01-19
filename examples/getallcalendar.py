@@ -21,7 +21,6 @@
 #
 """Example for reading calendar from phone"""
 
-
 import gammu
 
 # Create object for talking with phone

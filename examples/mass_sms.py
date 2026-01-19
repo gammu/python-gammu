@@ -21,7 +21,6 @@
 #
 """Sample script to show how to same SMS to multiple recipients"""
 
-
 import sys
 
 import gammu

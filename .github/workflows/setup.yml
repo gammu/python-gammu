@@ -95,10 +95,14 @@ jobs:
 
   publish:
     runs-on: ubuntu-24.04
+    permissions:
+      # this permission is mandatory for trusted publishing
+      id-token: write
     needs:
       - check
       - linux
       - windows
+    if: startsWith(github.ref, 'refs/tags/')  && github.repository == 'gammu/python-gammu'
 
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
@@ -110,3 +114,23 @@ jobs:
       - name: Publish package
         if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags')
         uses: pypa/gh-action-pypi-publish@ed0c53931b1dc9bd32cbe73a98c7f6766f8a527e # v1.13.0
+
+  release_github:
+    runs-on: ubuntu-24.04
+    name: Create release on GitHub
+    needs:
+      - check
+      - linux
+      - windows
+    permissions:
+      contents: write
+    if: startsWith(github.ref, 'refs/tags/')  && github.repository == 'gammu/python-gammu'
+    steps:
+    - uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7.0.0
+      with:
+        name: dist
+        path: dist
+    - uses: ncipollo/release-action@b7eabc95ff50cbeeedec83973935c8f306dfcd0b # v1.20.0
+      with:
+        generateReleaseNotes: true
+        artifacts: dist/*

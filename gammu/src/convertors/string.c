@@ -128,14 +128,19 @@ wchar_t *strGammuToPythonL(const unsigned char *src, const int len, size_t *out_
 	for (i = 0; i < len; i++) {
 		value = (src[2 * i] << 8) + src[(2 * i) + 1];
 		if (value >= 0xD800 && value <= 0xDBFF) {
+			/* High surrogate */
 			second = src[(i + 1) * 2] * 256 + src[(i + 1) * 2 + 1];
 			if (second >= 0xDC00 && second <= 0xDFFF) {
+				/* Valid surrogate pair */
 				value = ((value - 0xD800) << 10) + (second - 0xDC00) + 0x010000;
 				i++;
-			} else if (second == 0) {
-				/* Surrogate at the end of string */
+			} else {
+				/* Invalid surrogate pair or surrogate at end of string */
 				value = 0xFFFD; /* REPLACEMENT CHARACTER */
 			}
+		} else if (value >= 0xDC00 && value <= 0xDFFF) {
+			/* Standalone low surrogate (not preceded by high surrogate) */
+			value = 0xFFFD; /* REPLACEMENT CHARACTER */
 		}
 		dest[(*out_len)++] = value;
 	}

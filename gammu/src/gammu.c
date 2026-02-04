@@ -1865,10 +1865,11 @@ StateMachine_GetNetworkInfo(StateMachineObject *self, PyObject *args, PyObject *
     /* Detect if NetworkName is Unicode or ASCII string.
      * Unicode strings in Gammu use 2-byte encoding (little-endian).
      * ASCII strings from dummy backend are regular C strings.
-     * Heuristic: if second byte is 0 (empty string or Unicode pattern), use Unicode path.
-     * Otherwise, treat as ASCII for backward compatibility with dummy backend.
+     * Heuristic: if second byte is 0 and first byte is non-zero, it's Unicode.
+     * If both bytes are 0, it's empty (compatible with both).
+     * Otherwise, treat as ASCII for backward compatibility.
      */
-    if (netinfo.NetworkName[0] == 0 || netinfo.NetworkName[1] == 0) {
+    if (netinfo.NetworkName[0] == 0 || (netinfo.NetworkName[0] != 0 && netinfo.NetworkName[1] == 0)) {
         /* Unicode string or empty */
         network_name = UnicodeStringToPython(netinfo.NetworkName);
     } else {

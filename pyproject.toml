@@ -1,0 +1,74 @@
+[build-system]
+requires = [
+    "setuptools>=61.2",
+]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "python-gammu"
+version = "3.2.4"
+authors = [
+    { name = "Michal Čihař", email = "michal@cihar.com" },
+]
+description = "Gammu bindings"
+keywords = [
+    "mobile",
+    "phone",
+    "SMS",
+    "contact",
+    "gammu",
+    "calendar",
+    "todo",
+]
+classifiers = [
+    "Development Status :: 6 - Mature",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Telecommunications Industry",
+    "Operating System :: MacOS",
+    "Operating System :: Microsoft :: Windows",
+    "Operating System :: POSIX",
+    "Operating System :: Unix",
+    "Programming Language :: C",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Topic :: Communications :: Telephony",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: System :: Hardware",
+]
+requires-python = ">=3.10"
+license = "GPL-2.0-or-later"
+
+[project.readme]
+file = "README.rst"
+content-type = "text/x-rst"
+
+[project.urls]
+Homepage = "https://wammu.eu/python-gammu/"
+Download = "https://wammu.eu/download/python-gammu/"
+
+[tool.isort]
+multi_line_output = 3
+include_trailing_comma = true
+force_grid_wrap = 0
+use_parentheses = true
+line_length = 88
+known_first_party = [
+    "gammu",
+]
+
+[tool.setuptools]
+packages = [
+    "gammu",
+]
+platforms = [
+    "Linux",
+    "Mac OSX",
+    "Windows XP/2000/NT",
+    "Windows 95/98/ME",
+]
+include-package-data = false

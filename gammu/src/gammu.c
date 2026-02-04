@@ -1821,7 +1821,7 @@ static char StateMachine_GetNetworkInfo__doc__[] =
 "@rtype: hash\n"
 "@note: NetworkName may be empty if not provided by the phone. In such cases,\n"
 "       you can look up the network name using NetworkCode in the gammu.GSMNetworks\n"
-"       dictionary: network_name = gammu.GSMNetworks.get(network_code)\n"
+"       dictionary: if network_code in gammu.GSMNetworks: network_name = gammu.GSMNetworks[network_code]\n"
 ;
 
 static PyObject *

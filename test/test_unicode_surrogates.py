@@ -46,7 +46,7 @@ class SurrogateTest(unittest.TestCase):
             "08"  # Data coding scheme (UCS2)
             "11111111111111"  # Timestamp
             "04"  # User data length (4 bytes = 2 UCS2 chars)
-            "D80000410000"  # Text: D800 (invalid surrogate) + 0041 ('A') + 0000 (null terminator)
+            "D8000041"  # Text: D800 (invalid surrogate) + 0041 ('A')
         )
 
         pdu_data = binascii.unhexlify(pdu_hex.encode("ascii"))
@@ -79,7 +79,7 @@ class SurrogateTest(unittest.TestCase):
             "08"  # Data coding scheme (UCS2)
             "11111111111111"  # Timestamp
             "04"  # User data length (4 bytes = 2 UCS2 chars forming 1 surrogate pair)
-            "D800DC000000"  # Text: D800 DC00 (valid surrogate pair) + 0000 (null terminator)
+            "D800DC00"  # Text: D800 DC00 (valid surrogate pair)
         )
 
         pdu_data = binascii.unhexlify(pdu_hex.encode("ascii"))
@@ -110,7 +110,7 @@ class SurrogateTest(unittest.TestCase):
             "08"  # Data coding scheme (UCS2)
             "11111111111111"  # Timestamp
             "04"  # User data length
-            "D80001000000"  # Text: D800 (high surrogate) + 0100 (invalid - not low surrogate)
+            "D8000100"  # Text: D800 (high surrogate) + 0100 (invalid - not low surrogate)
         )
 
         pdu_data = binascii.unhexlify(pdu_hex.encode("ascii"))
@@ -140,7 +140,7 @@ class SurrogateTest(unittest.TestCase):
             "08"  # Data coding scheme (UCS2)
             "11111111111111"  # Timestamp
             "04"  # User data length
-            "DC0000410000"  # Text: DC00 (standalone low surrogate) + 0041 ('A')
+            "DC000041"  # Text: DC00 (standalone low surrogate) + 0041 ('A')
         )
 
         pdu_data = binascii.unhexlify(pdu_hex.encode("ascii"))

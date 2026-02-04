@@ -7,3 +7,4 @@ python_gammu.egg-info/
 *.so
 .coverage
 /.cache/
+_codeql_detected_source_root

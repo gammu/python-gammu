@@ -59,6 +59,38 @@ file = "README.rst"
 Download = "https://wammu.eu/download/python-gammu/"
 Homepage = "https://wammu.eu/python-gammu/"
 
+[tool.check-manifest]
+ignore = [
+  ".pre-commit-config.yaml",
+  "admin/*"
+]
+
+[tool.coverage.paths]
+source = [
+  "."
+]
+
+[tool.coverage.report]
+exclude_also = [
+  "@(abc\\.)?abstractmethod",
+  # Don't complain about missing debug-only code:
+  "def __repr__",
+  # Don't complain if non-runnable code isn't run:
+  "if 0:",
+  "if __name__ == .__main__.:",
+  "if self\\.debug",
+  # Type checking
+  "if TYPE_CHECKING:",
+  # Have to re-enable the standard pragma
+  "pragma: no cover",
+  # Don't complain if tests don't hit defensive assertion code:
+  "raise AssertionError",
+  "raise NotImplementedError"
+]
+
+[tool.coverage.run]
+branch = true
+
 [tool.isort]
 force_grid_wrap = 0
 include_trailing_comma = true

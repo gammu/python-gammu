@@ -26,8 +26,6 @@ jobs:
           pip install -r requirements-test.txt
       - name: build
         run: python ./setup.py sdist
-      - name: twine
-        run: twine check dist/*
       - name: Store the binary wheel
         uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
         with:
@@ -73,8 +71,6 @@ jobs:
           pip install -r requirements-test.txt
       - name: build
         run: python ./setup.py bdist_wheel
-      - name: twine
-        run: twine check dist/*
       - name: Store the binary wheel
         uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
         with:

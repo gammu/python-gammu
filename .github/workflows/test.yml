@@ -47,7 +47,7 @@ jobs:
         shell: bash
         run: CFLAGS="-Wall -Wextra" ./setup.py build
       - name: Test
-        run: coverage run --source=. ./setup.py test
+        run: pytest
       - name: Coverage
         run: coverage xml
       - uses: codecov/codecov-action@671740ac38dd9b0130fbe1cec585b89eea48d3de # v5

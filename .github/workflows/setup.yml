@@ -60,7 +60,7 @@ jobs:
       - name: Store the binary wheel
         uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
         with:
-          name: dist-windows-${{ matrix.python-version }}
+          name: dist-windows-${{ matrix.python-version }}-${{ matrix.architecture }}
           path: dist
 
   check:

@@ -133,8 +133,16 @@ wchar_t *strGammuToPythonL(const unsigned char *src, const int len, size_t *out_
 				second = src[(i + 1) * 2] * 256 + src[(i + 1) * 2 + 1];
 				if (second >= 0xDC00 && second <= 0xDFFF) {
 					/* Valid surrogate pair */
-					value = ((value - 0xD800) << 10) + (second - 0xDC00) + 0x010000;
-					i++;
+					if (sizeof(wchar_t) == 4) {
+						/* wchar_t is 4 bytes (UTF-32): convert to codepoint */
+						value = ((value - 0xD800) << 10) + (second - 0xDC00) + 0x010000;
+						i++;
+					} else {
+						/* wchar_t is 2 bytes (UTF-16): keep surrogates */
+						dest[(*out_len)++] = value;
+						value = second;
+						i++;
+					}
 				} else {
 					/* Invalid surrogate pair */
 					value = 0xFFFD; /* REPLACEMENT CHARACTER */

@@ -35,7 +35,6 @@ jobs:
           - "3.12"
           - "3.13"
           - "3.14"
-        architecture: [x64, x86]
 
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
@@ -43,16 +42,9 @@ jobs:
         uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6
         with:
           python-version: ${{ matrix.python-version }}
-          architecture: ${{ matrix.architecture }}
       - name: Install Gammu x64
-        if: ${{ matrix.architecture == 'x64' }}
         run: |
           C:/msys64/usr/bin/wget.exe -O gammu-setup.exe https://dl.cihar.com/gammu/releases/windows/Gammu-1.41.0-Windows-64bit.exe
-          ./gammu-setup.exe /S /D=C:/Gammu
-      - name: Install Gammu x86
-        if: ${{ matrix.architecture == 'x86' }}
-        run: |
-          C:/msys64/usr/bin/wget.exe -O gammu-setup.exe https://dl.cihar.com/gammu/releases/windows/Gammu-1.41.0-Windows.exe
           ./gammu-setup.exe /S /D=C:/Gammu
       - uses: astral-sh/setup-uv@803947b9bd8e9f986429fa0c5a41c367cd732b41 # v7.2.1
       - name: build
@@ -60,7 +52,7 @@ jobs:
       - name: Store the binary wheel
         uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
         with:
-          name: dist-windows-${{ matrix.python-version }}-${{ matrix.architecture }}
+          name: dist-windows-${{ matrix.python-version }}
           path: dist
 
   check:

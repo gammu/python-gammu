@@ -236,7 +236,6 @@ setup(
         "Topic :: System :: Hardware",
     ],
     python_requires=">=3.10",
-    test_suite="test",
     packages=["gammu"],
     ext_modules=[get_module()],
 )

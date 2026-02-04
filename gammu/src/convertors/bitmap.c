@@ -316,8 +316,8 @@ PyObject *BitmapToPython(GSM_Bitmap * bitmap)
 	PyObject *xpmval;
 	PyObject *s;
 	char *t;
-	Py_UNICODE *txt;
-	Py_UNICODE *sendr;
+	wchar_t *txt;
+	wchar_t *sendr;
 	PyObject *val;
 
 	xpmval = PyList_New(0);

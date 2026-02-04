@@ -223,7 +223,7 @@ GSM_SMSFormat StringToSMSFormat(char *s)
 PyObject *SMSCToPython(GSM_SMSC * smsc)
 {
 	PyObject *ret;
-	Py_UNICODE *name, *number, *defaultn;
+	wchar_t *name, *number, *defaultn;
 	char *val, *fmt;
 
 	name = strGammuToPython(smsc->Name);
@@ -911,8 +911,8 @@ PyObject *SMSToPython(GSM_SMSMessage * sms)
 	PyObject *udh;
 	PyObject *smsc;
 	char *mt;
-	Py_UNICODE *name;
-	Py_UNICODE *number;
+	wchar_t *name;
+	wchar_t *number;
 	PyObject *text;
 	char *type;
 	char *coding;
@@ -2026,7 +2026,7 @@ int SMSInfoFromPython(PyObject * dict, GSM_MultiPartSMSInfo * entry)
 
 PyObject *SMSFolderToPython(GSM_OneSMSFolder * folder)
 {
-	Py_UNICODE *name;
+	wchar_t *name;
 	char *mt;
 	PyObject *result;
 

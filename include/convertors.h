@@ -80,7 +80,7 @@ int BuildGSMTime(PyObject * pydt, GSM_DateTime * dt);
 /**
  * Convert Python unicode string to Gammu unicode string.
  */
-unsigned char *strPythonToGammu(const Py_UNICODE * src, const size_t len);
+unsigned char *strPythonToGammu(const wchar_t * src, const size_t len);
 
 /**
  * Converts either object to unicode and returns its value.
@@ -90,12 +90,12 @@ unsigned char *StringPythonToGammu(PyObject * o);
 /**
  * Convert Gammu unicode string to unicode string that can be read by Python.
  */
-Py_UNICODE *strGammuToPython(const unsigned char *src);
+wchar_t *strGammuToPython(const unsigned char *src);
 
 /**
  * Convert Gammu unicode string with defined length to unicode string that can be read by Python.
  */
-Py_UNICODE *strGammuToPythonL(const unsigned char *src, const int len, size_t *out_len);
+wchar_t *strGammuToPythonL(const unsigned char *src, const int len, size_t *out_len);
 
 /**
  * Convert Gammu unicode string to python unicode object.

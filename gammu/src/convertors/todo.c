@@ -77,7 +77,7 @@ PyObject *TodoToPython(const GSM_ToDoEntry * entry)
 	PyObject *r;
 	PyObject *d;
 	int i;
-	Py_UNICODE *s;
+	wchar_t *s;
 	char *p;
 	char *t;
 

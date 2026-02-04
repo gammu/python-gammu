@@ -199,7 +199,7 @@ PyObject *CalendarToPython(const GSM_CalendarEntry * entry)
 	PyObject *r;
 	PyObject *d;
 	int i;
-	Py_UNICODE *s;
+	wchar_t *s;
 	char *t;
 	GSM_DateTime dt;
 	int ignore;

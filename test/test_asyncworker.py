@@ -35,7 +35,7 @@ WORKER_EXPECT = [
             "GPRS": "Attached",
             "LAC": "B00B",
             "NetworkCode": "999 99",
-            "NetworkName": "",
+            "NetworkName": "GammuT3l",
             "PacketCID": "DEAD",
             "PacketLAC": "BEEF",
             "PacketState": "HomeNetwork",

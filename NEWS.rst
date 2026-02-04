@@ -1,8 +1,13 @@
 3.2.5
 =====
 
-* Compatibility with Python 3.11.
-* Dropped support for Python 3.6.
+* Compatibility with Python 3.11-3.14.
+* Dropped support for Python 3.6-3.9.
+* Modernized build system.
+* Binary wheels are now provided only for 64-bit Windows.
+* Fixed depreciation warnings while compiling.
+* Safer decoding of Unicode strings.
+* Corrected NetworkName return value.
 
 3.2.4
 =====

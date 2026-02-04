@@ -38,34 +38,34 @@ import gammu
 def get_network_info_with_name(state_machine):
     """
     Get network information and look up network name if it's empty.
-    
+
     The phone returns NetworkCode (e.g., "240 24") even when NetworkName
     is empty. We can use gammu.GSMNetworks to look up the network name.
     """
     # Get network info from phone
     netinfo = state_machine.GetNetworkInfo()
-    
+
     print("Network Information:")
     print("=" * 50)
     print(f"Network Code: {netinfo['NetworkCode']}")
     print(f"Network Name (from phone): {netinfo['NetworkName']}")
-    
+
     # If NetworkName is empty, look it up in the GSMNetworks database
-    if not netinfo['NetworkName'] and netinfo['NetworkCode']:
-        network_code = netinfo['NetworkCode']
+    if not netinfo["NetworkName"] and netinfo["NetworkCode"]:
+        network_code = netinfo["NetworkCode"]
         if network_code in gammu.GSMNetworks:
             network_name = gammu.GSMNetworks[network_code]
             print(f"Network Name (from DB): {network_name}")
         else:
             print(f"Network Name (from DB): Unknown network code '{network_code}'")
-    
+
     print(f"State: {netinfo['State']}")
     print(f"LAC: {netinfo['LAC']}")
     print(f"CID: {netinfo['CID']}")
-    
-    if 'GPRS' in netinfo:
+
+    if "GPRS" in netinfo:
         print(f"GPRS: {netinfo['GPRS']}")
-    
+
     return netinfo
 
 
@@ -73,23 +73,23 @@ def main():
     """Main function to demonstrate network info lookup."""
     # Create state machine
     state_machine = gammu.StateMachine()
-    
+
     # Read configuration from default location (~/.gammurc or /etc/gammurc)
     # You can also specify a config file: state_machine.ReadConfig(Filename="gammurc")
     state_machine.ReadConfig()
-    
+
     # Connect to phone
     state_machine.Init()
-    
+
     # Get and display network information with name lookup
     get_network_info_with_name(state_machine)
-    
+
     # You can also explore available networks in the database
     print("\n" + "=" * 50)
     print("Example: Browsing the GSMNetworks database")
     print("=" * 50)
     print(f"Total networks in database: {len(gammu.GSMNetworks)}")
-    
+
     # Show a few example networks
     print("\nSome example networks:")
     example_codes = ["240 24", "244 05", "310 260", "234 10"]

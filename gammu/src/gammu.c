@@ -1863,6 +1863,8 @@ StateMachine_GetNetworkInfo(StateMachineObject *self, PyObject *args, PyObject *
     }
 
     network_name = UnicodeStringToPython(netinfo.NetworkName);
+    if (network_name == NULL)
+        return NULL;
 
     return Py_BuildValue("{s:N,s:s,s:s,s:s,s:s,s:s,s:s,s:s,s:s}",
             "NetworkName", network_name,

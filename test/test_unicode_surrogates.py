@@ -34,35 +34,35 @@ class SurrogateTest(unittest.TestCase):
         # PDU structure: SMSC info + PDU type + sender + ... + UDH + text
         # We'll create a simple SMS with UCS2 encoding containing:
         # High surrogate 0xD800 followed by 'A' (0x0041)
-        
+
         # This is a crafted PDU with invalid surrogate sequence in the text
         # Format: deliver SMS, UCS2 encoding, with text containing D800 (high surrogate) + 0041 ('A')
         pdu_hex = (
             "07911234567890F0"  # SMSC
-            "04"                # PDU type: SMS-DELIVER
-            "0B"                # Sender address length
-            "911234567890F0"    # Sender number
-            "00"                # Protocol identifier
-            "08"                # Data coding scheme (UCS2)
-            "11111111111111"    # Timestamp
-            "04"                # User data length (4 bytes = 2 UCS2 chars)
-            "D80000410000"      # Text: D800 (invalid surrogate) + 0041 ('A') + 0000 (null terminator)
+            "04"  # PDU type: SMS-DELIVER
+            "0B"  # Sender address length
+            "911234567890F0"  # Sender number
+            "00"  # Protocol identifier
+            "08"  # Data coding scheme (UCS2)
+            "11111111111111"  # Timestamp
+            "04"  # User data length (4 bytes = 2 UCS2 chars)
+            "D80000410000"  # Text: D800 (invalid surrogate) + 0041 ('A') + 0000 (null terminator)
         )
-        
-        pdu_data = binascii.unhexlify(pdu_hex.encode('ascii'))
-        
+
+        pdu_data = binascii.unhexlify(pdu_hex.encode("ascii"))
+
         # This should not raise UnicodeEncodeError
         try:
             sms = gammu.DecodePDU(pdu_data)
-            text = sms.get('Text', '')
-            
+            text = sms.get("Text", "")
+
             # Should be able to encode to UTF-8 without error
-            text.encode('utf-8')
-            
+            text.encode("utf-8")
+
             # The invalid surrogate should be replaced with replacement character
             # U+FFFD (REPLACEMENT CHARACTER)
-            self.assertIn('\ufffd', text)
-            
+            self.assertIn("\ufffd", text)
+
         except UnicodeEncodeError as e:
             self.fail(f"UnicodeEncodeError should not be raised: {e}")
 
@@ -72,29 +72,29 @@ class SurrogateTest(unittest.TestCase):
         # Create a PDU with a valid surrogate pair
         pdu_hex = (
             "07911234567890F0"  # SMSC
-            "04"                # PDU type: SMS-DELIVER
-            "0B"                # Sender address length
-            "911234567890F0"    # Sender number
-            "00"                # Protocol identifier
-            "08"                # Data coding scheme (UCS2)
-            "11111111111111"    # Timestamp
-            "04"                # User data length (4 bytes = 2 UCS2 chars forming 1 surrogate pair)
-            "D800DC000000"      # Text: D800 DC00 (valid surrogate pair) + 0000 (null terminator)
+            "04"  # PDU type: SMS-DELIVER
+            "0B"  # Sender address length
+            "911234567890F0"  # Sender number
+            "00"  # Protocol identifier
+            "08"  # Data coding scheme (UCS2)
+            "11111111111111"  # Timestamp
+            "04"  # User data length (4 bytes = 2 UCS2 chars forming 1 surrogate pair)
+            "D800DC000000"  # Text: D800 DC00 (valid surrogate pair) + 0000 (null terminator)
         )
-        
-        pdu_data = binascii.unhexlify(pdu_hex.encode('ascii'))
-        
+
+        pdu_data = binascii.unhexlify(pdu_hex.encode("ascii"))
+
         try:
             sms = gammu.DecodePDU(pdu_data)
-            text = sms.get('Text', '')
-            
+            text = sms.get("Text", "")
+
             # Should be able to encode to UTF-8 without error
-            encoded = text.encode('utf-8')
-            
+            encoded = text.encode("utf-8")
+
             # Valid surrogate pair D800 DC00 should decode to U+10000
             # U+10000 in UTF-8 is F0 90 80 80
-            self.assertIn(b'\xf0\x90\x80\x80', encoded)
-            
+            self.assertIn(b"\xf0\x90\x80\x80", encoded)
+
         except UnicodeEncodeError as e:
             self.fail(f"UnicodeEncodeError should not be raised: {e}")
 
@@ -103,28 +103,28 @@ class SurrogateTest(unittest.TestCase):
         # High surrogate 0xD800 followed by invalid value 0x0100 (not a low surrogate)
         pdu_hex = (
             "07911234567890F0"  # SMSC
-            "04"                # PDU type: SMS-DELIVER
-            "0B"                # Sender address length
-            "911234567890F0"    # Sender number
-            "00"                # Protocol identifier
-            "08"                # Data coding scheme (UCS2)
-            "11111111111111"    # Timestamp
-            "04"                # User data length
-            "D80001000000"      # Text: D800 (high surrogate) + 0100 (invalid - not low surrogate)
+            "04"  # PDU type: SMS-DELIVER
+            "0B"  # Sender address length
+            "911234567890F0"  # Sender number
+            "00"  # Protocol identifier
+            "08"  # Data coding scheme (UCS2)
+            "11111111111111"  # Timestamp
+            "04"  # User data length
+            "D80001000000"  # Text: D800 (high surrogate) + 0100 (invalid - not low surrogate)
         )
-        
-        pdu_data = binascii.unhexlify(pdu_hex.encode('ascii'))
-        
+
+        pdu_data = binascii.unhexlify(pdu_hex.encode("ascii"))
+
         try:
             sms = gammu.DecodePDU(pdu_data)
-            text = sms.get('Text', '')
-            
+            text = sms.get("Text", "")
+
             # Should be able to encode to UTF-8 without error
-            text.encode('utf-8')
-            
+            text.encode("utf-8")
+
             # The invalid surrogate should be replaced
-            self.assertIn('\ufffd', text)
-            
+            self.assertIn("\ufffd", text)
+
         except UnicodeEncodeError as e:
             self.fail(f"UnicodeEncodeError should not be raised: {e}")
 
@@ -133,31 +133,31 @@ class SurrogateTest(unittest.TestCase):
         # Low surrogate 0xDC00 alone (without preceding high surrogate)
         pdu_hex = (
             "07911234567890F0"  # SMSC
-            "04"                # PDU type: SMS-DELIVER
-            "0B"                # Sender address length
-            "911234567890F0"    # Sender number
-            "00"                # Protocol identifier
-            "08"                # Data coding scheme (UCS2)
-            "11111111111111"    # Timestamp
-            "04"                # User data length
-            "DC0000410000"      # Text: DC00 (standalone low surrogate) + 0041 ('A')
+            "04"  # PDU type: SMS-DELIVER
+            "0B"  # Sender address length
+            "911234567890F0"  # Sender number
+            "00"  # Protocol identifier
+            "08"  # Data coding scheme (UCS2)
+            "11111111111111"  # Timestamp
+            "04"  # User data length
+            "DC0000410000"  # Text: DC00 (standalone low surrogate) + 0041 ('A')
         )
-        
-        pdu_data = binascii.unhexlify(pdu_hex.encode('ascii'))
-        
+
+        pdu_data = binascii.unhexlify(pdu_hex.encode("ascii"))
+
         try:
             sms = gammu.DecodePDU(pdu_data)
-            text = sms.get('Text', '')
-            
+            text = sms.get("Text", "")
+
             # Should be able to encode to UTF-8 without error
-            text.encode('utf-8')
-            
+            text.encode("utf-8")
+
             # The standalone low surrogate should be replaced
-            self.assertIn('\ufffd', text)
-            
+            self.assertIn("\ufffd", text)
+
         except UnicodeEncodeError as e:
             self.fail(f"UnicodeEncodeError should not be raised: {e}")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

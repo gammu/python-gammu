@@ -1819,6 +1819,9 @@ static char StateMachine_GetNetworkInfo__doc__[] =
 "Gets network information.\n\n"
 "@return: Hash with information about network (NetworkName, State, NetworkCode, CID and LAC)\n"
 "@rtype: hash\n"
+"@note: NetworkName may be empty if not provided by the phone. In such cases,\n"
+"       you can look up the network name using NetworkCode in the gammu.GSMNetworks\n"
+"       dictionary: if network_code in gammu.GSMNetworks: network_name = gammu.GSMNetworks[network_code]\n"
 ;
 
 static PyObject *
@@ -1826,6 +1829,7 @@ StateMachine_GetNetworkInfo(StateMachineObject *self, PyObject *args, PyObject *
     GSM_Error           error;
     GSM_NetworkInfo     netinfo;
     char                *buffer, *packet_state;
+    PyObject            *network_name;
 
     if (!PyArg_ParseTuple(args, ""))
         return NULL;
@@ -1858,8 +1862,12 @@ StateMachine_GetNetworkInfo(StateMachineObject *self, PyObject *args, PyObject *
         case GSM_NetworkStatusUnknown: packet_state = "NetworkStatusUnknown"; break;
     }
 
-    return Py_BuildValue("{s:s,s:s,s:s,s:s,s:s,s:s,s:s,s:s,s:s}",
-            "NetworkName", netinfo.NetworkName,
+    network_name = UnicodeStringToPython(netinfo.NetworkName);
+    if (network_name == NULL)
+        return NULL;
+
+    return Py_BuildValue("{s:N,s:s,s:s,s:s,s:s,s:s,s:s,s:s,s:s}",
+            "NetworkName", network_name,
             "State", buffer,
             "PacketState", packet_state,
             "NetworkCode", netinfo.NetworkCode,

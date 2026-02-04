@@ -1233,7 +1233,7 @@ StateMachine_GetAlarm(StateMachineObject *self, PyObject *args, PyObject *kwds) 
     GSM_Error           error;
     GSM_Alarm           gsm_alarm;
     PyObject            *dt;
-    Py_UNICODE          *s;
+    wchar_t             *s;
     PyObject            *result;
     static char         *kwlist[] = {"Location", NULL};
 
@@ -1891,7 +1891,7 @@ StateMachine_GetCategory(StateMachineObject *self, PyObject *args, PyObject *kwd
     GSM_Category        Category;
     static char         *kwlist[] = {"Type", "Location", NULL};
     char                *s;
-    Py_UNICODE          *u;
+    wchar_t             *u;
     PyObject            *o;
 
     if (!PyArg_ParseTupleAndKeywords(args, kwds, "si", kwlist,

@@ -72,7 +72,7 @@ PyObject *MemoryEntryToPython(const GSM_MemoryEntry * entry)
 	PyObject *l;
 	int i;
 	int j;
-	Py_UNICODE *s;
+	wchar_t *s;
 	char *t;
 	const GSM_BinaryPicture *bitmap;
 	const char *bmptype;

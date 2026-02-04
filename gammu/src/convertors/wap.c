@@ -157,7 +157,7 @@ int MMSIndicatorFromPython(PyObject * dict, GSM_MMSIndicator * mms)
 PyObject *WAPBookmarkToPython(GSM_WAPBookmark * wap)
 {
 	PyObject *ret;
-	Py_UNICODE *title, *address;
+	wchar_t *title, *address;
 
 	title = strGammuToPython(wap->Title);
 	if (title == NULL)

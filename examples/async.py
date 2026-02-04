@@ -52,6 +52,15 @@ async def send_message_async(state_machine, number, message):
 async def get_network_info(worker):
     info = await worker.get_network_info_async()
     print("NetworkName:", info["NetworkName"])
+    
+    # If NetworkName is empty, look it up in the GSMNetworks database
+    if not info["NetworkName"] and info["NetworkCode"]:
+        network_code = info["NetworkCode"]
+        if network_code in gammu.GSMNetworks:
+            print("  NetworkName (from DB):", gammu.GSMNetworks[network_code])
+        else:
+            print("  NetworkName (from DB): Unknown network code")
+    
     print("  State:", info["State"])
     print("  NetworkCode:", info["NetworkCode"])
     print("  CID:", info["CID"])

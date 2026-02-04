@@ -20,6 +20,7 @@
 #
 import unittest
 
+import gammu
 import gammu.data
 
 
@@ -30,3 +31,24 @@ class DataTest(unittest.TestCase):
     def test_errors(self):
         self.assertTrue("ERR_INSTALL_NOT_FOUND" in gammu.data.Errors)
         self.assertEqual(gammu.data.ErrorNumbers[73], "ERR_NETWORK_ERROR")
+
+    def test_gsm_networks(self):
+        """Test that GSMNetworks dictionary is available and contains expected data."""
+        # GSMNetworks should be a dictionary available from gammu module
+        self.assertIsInstance(gammu.GSMNetworks, dict)
+        # Should have at least some networks
+        self.assertGreater(len(gammu.GSMNetworks), 0)
+        # Test a known network code (Finland Elisa)
+        # Network code "244 05" should map to "Elisa"
+        if "244 05" in gammu.GSMNetworks:
+            self.assertEqual(gammu.GSMNetworks["244 05"], "Elisa")
+
+    def test_gsm_countries(self):
+        """Test that GSMCountries dictionary is available and contains expected data."""
+        # GSMCountries should be a dictionary available from gammu module
+        self.assertIsInstance(gammu.GSMCountries, dict)
+        # Should have at least some countries
+        self.assertGreater(len(gammu.GSMCountries), 0)
+        # Test a known country code (Finland)
+        if "244" in gammu.GSMCountries:
+            self.assertEqual(gammu.GSMCountries["244"], "Finland")

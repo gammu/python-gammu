@@ -1829,6 +1829,7 @@ StateMachine_GetNetworkInfo(StateMachineObject *self, PyObject *args, PyObject *
     GSM_Error           error;
     GSM_NetworkInfo     netinfo;
     char                *buffer, *packet_state;
+    PyObject            *network_name;
 
     if (!PyArg_ParseTuple(args, ""))
         return NULL;
@@ -1861,8 +1862,10 @@ StateMachine_GetNetworkInfo(StateMachineObject *self, PyObject *args, PyObject *
         case GSM_NetworkStatusUnknown: packet_state = "NetworkStatusUnknown"; break;
     }
 
-    return Py_BuildValue("{s:s,s:s,s:s,s:s,s:s,s:s,s:s,s:s,s:s}",
-            "NetworkName", netinfo.NetworkName,
+    network_name = UnicodeStringToPython(netinfo.NetworkName);
+
+    return Py_BuildValue("{s:N,s:s,s:s,s:s,s:s,s:s,s:s,s:s,s:s}",
+            "NetworkName", network_name,
             "State", buffer,
             "PacketState", packet_state,
             "NetworkCode", netinfo.NetworkCode,

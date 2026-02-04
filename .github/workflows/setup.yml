@@ -8,10 +8,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
-      - uses: actions/cache@cdf6c1fa76f9f475f3d7449005a359c84ca0f306 # v5
-        with:
-          path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-setup-${{ hashFiles('**/requirements*.txt') }}
       - name: Setup Python
         uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6
         with:
@@ -21,8 +17,6 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y libgammu-dev libdbd-sqlite3
-      - name: Install dependencies
-        run: uv pip install -r requirements-test.txt
       - name: build
         run: uv build --sdist
       - name: Store the binary wheel
@@ -45,10 +39,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
-      - uses: actions/cache@cdf6c1fa76f9f475f3d7449005a359c84ca0f306 # v5
-        with:
-          path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-setup-${{ hashFiles('**/requirements*.txt') }}
       - name: Setup Python
         uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6
         with:
@@ -65,8 +55,6 @@ jobs:
           C:/msys64/usr/bin/wget.exe -O gammu-setup.exe https://dl.cihar.com/gammu/releases/windows/Gammu-1.41.0-Windows.exe
           ./gammu-setup.exe /S /D=C:/Gammu
       - uses: astral-sh/setup-uv@v7.2.1
-      - name: Install dependencies
-        run: uv pip install -r requirements-test.txt
       - name: build
         run: uv build --wheel
       - name: Store the binary wheel

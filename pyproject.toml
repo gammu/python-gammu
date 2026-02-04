@@ -72,3 +72,11 @@ platforms = [
     "Windows 95/98/ME",
 ]
 include-package-data = false
+
+[dependency-groups]
+dev = [
+"pre-commit==4.5.1",
+"pytest==9.0.2",
+"pytest-cov==7.0.0"
+"pytest-github-actions-annotate-failures==0.3.0",
+]

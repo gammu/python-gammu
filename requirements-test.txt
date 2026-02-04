@@ -1,5 +1,0 @@
--r requirements.txt
-pre-commit==4.5.1
-pytest==9.0.2
-pytest-cov==7.0.0
-pytest-github-actions-annotate-failures==0.3.0

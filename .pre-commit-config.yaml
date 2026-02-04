@@ -23,6 +23,10 @@ repos:
     rev: 1.20.0
     hooks:
       - id: blacken-docs
+  - repo: https://github.com/pappasam/toml-sort
+    rev: v0.24.3
+    hooks:
+    - id: toml-sort-fix
   - repo: meta
     hooks:
       - id: check-hooks-apply

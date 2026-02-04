@@ -6,22 +6,9 @@ Python bindings for the `Gammu library <https://wammu.eu/gammu/>`_.
 .. image:: https://github.com/gammu/python-gammu/actions/workflows/test.yml/badge.svg
     :target: https://github.com/gammu/python-gammu/actions/workflows/test.yml
 
-.. image:: https://api.codacy.com/project/badge/Grade/c7e87df480fb4609aa48482873f5c46b
-    :target: https://www.codacy.com/app/Gammu/python-gammu
-
-.. image:: https://coveralls.io/repos/gammu/python-gammu/badge.svg
-    :target: https://coveralls.io/r/gammu/python-gammu
-
-.. image:: https://scan.coverity.com/projects/4837/badge.svg
-    :target: https://scan.coverity.com/projects/4837
-
 .. image:: https://img.shields.io/liberapay/receives/Gammu.svg
     :alt: Liberapay
     :target: https://liberapay.com/Gammu/donate
-
-.. image:: https://www.bountysource.com/badge/team?team_id=23177&style=bounties_received
-    :alt: Bountysource
-    :target: https://www.bountysource.com/teams/gammu/issues?utm_source=Gammu&utm_medium=shield&utm_campaign=bounties_received
 
 .. image:: https://img.shields.io/pypi/v/python-gammu.svg
     :alt: PyPI

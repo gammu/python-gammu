@@ -41,7 +41,7 @@ try:
             start = False
         else:
             cursms = state_machine.GetNextSMS(Location=cursms[0]["Location"], Folder=0)
-        remain = remain - len(cursms)
+        remain -= len(cursms)
         sms.append(cursms)
 except gammu.ERR_EMPTY:
     # This error is raised when we've reached last entry

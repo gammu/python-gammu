@@ -46,7 +46,7 @@ while remain > 0:
         start = False
     else:
         entry = state_machine.GetNextCalendar(Location=entry["Location"])
-    remain = remain - 1
+    remain -= 1
 
     # Display it
     print()

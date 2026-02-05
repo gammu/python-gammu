@@ -41,7 +41,7 @@ def main():
             start = False
         else:
             entry = state_machine.GetNextToDo(Location=entry["Location"])
-        remain = remain - 1
+        remain -= 1
 
         print()
         print("{:<15}: {:d}".format("Location", entry["Location"]))

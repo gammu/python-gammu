@@ -51,7 +51,7 @@ def main():
             entry = state_machine.GetNextMemory(
                 Location=entry["Location"], Type=memory_type
             )
-        remain = remain - 1
+        remain -= 1
 
         print()
         print("{:<15}: {:d}".format("Location", entry["Location"]))

@@ -96,7 +96,7 @@ def getContacts(state_machine):
                 entry = state_machine.GetNextMemory(
                     Location=entry["Location"], Type="SM"
                 )
-                remaining = remaining - 1
+                remaining -= 1
 
             numbers = list()
             for entry in entry["Entries"]:
@@ -136,7 +136,7 @@ def getAndDeleteAllSMS(state_machine):
                     Folder=0, Location=entry[0]["Location"]
                 )
 
-            remaining = remaining - 1
+            remaining -= 1
             entries.append(entry)
 
             # delete retrieved sms

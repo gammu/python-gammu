@@ -139,7 +139,7 @@ class BasicDummyTest(DummyTest):
                 entry = state_machine.GetNextMemory(
                     Location=entry["Location"], Type="ME"
                 )
-            remain = remain - 1
+            remain -= 1
 
     def test_getmemory(self):
         state_machine = self.get_statemachine()
@@ -173,7 +173,7 @@ class BasicDummyTest(DummyTest):
                 start = False
             else:
                 entry = state_machine.GetNextCalendar(Location=entry["Location"])
-            remain = remain - 1
+            remain -= 1
 
     def test_sms(self):
         state_machine = self.get_statemachine()
@@ -195,7 +195,7 @@ class BasicDummyTest(DummyTest):
                 sms.append(
                     state_machine.GetNextSMS(Location=sms[-1][0]["Location"], Folder=0)
                 )
-            remain = remain - len(sms)
+            remain -= len(sms)
 
         data = gammu.LinkSMS(sms)
 
@@ -220,7 +220,7 @@ class BasicDummyTest(DummyTest):
                 start = False
             else:
                 entry = state_machine.GetNextToDo(Location=entry["Location"])
-            remain = remain - 1
+            remain -= 1
 
     def test_sms_folders(self):
         state_machine = self.get_statemachine()

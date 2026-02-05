@@ -43,7 +43,7 @@ def get_all_memory(state_machine, memory_type):
             entry = state_machine.GetNextMemory(
                 Location=entry["Location"], Type=memory_type
             )
-        remain = remain - 1
+        remain -= 1
 
         print()
         print("{:<15}: {:d}".format("Location", entry["Location"]))
@@ -67,7 +67,7 @@ def get_all_calendar(state_machine):
             start = False
         else:
             entry = state_machine.GetNextCalendar(Location=entry["Location"])
-        remain = remain - 1
+        remain -= 1
 
         print()
         print("{:<20}: {:d}".format("Location", entry["Location"]))
@@ -97,7 +97,7 @@ def get_all_sms(state_machine):
             start = False
         else:
             sms = state_machine.GetNextSMS(Location=sms[0]["Location"], Folder=0)
-        remain = remain - len(sms)
+        remain -= len(sms)
 
     return sms
 
@@ -167,7 +167,7 @@ def get_all_todo(state_machine):
             start = False
         else:
             entry = state_machine.GetNextToDo(Location=entry["Location"])
-        remain = remain - 1
+        remain -= 1
 
         print()
         print("{:<15}: {:d}".format("Location", entry["Location"]))

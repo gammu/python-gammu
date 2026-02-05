@@ -30,6 +30,10 @@
 /* Locales */
 #include <locale.h>
 
+/* File creation and permissions */
+#include <fcntl.h>
+#include <sys/stat.h>
+
 /* Strings */
 #ifdef HAVE_STRING_H
 #include <string.h>
@@ -6082,15 +6086,26 @@ gammu_SaveRingtone(PyObject *self, PyObject *args, PyObject *kwds)
         if (f == NULL) return NULL;
         closefile = TRUE;
     } else if (PyUnicode_Check(value)) {
+        int ofd;
+
         str = PyUnicode_EncodeFSDefault(value);
         if (str == NULL) {
             return NULL;
         }
         name = PyBytes_AsString(str);
-        if (name == NULL) return NULL;
-        f = fopen(name, "wb");
+        if (name == NULL) {
+            Py_DECREF(str);
+            return NULL;
+        }
+        ofd = open(name, O_WRONLY | O_CREAT | O_TRUNC, S_IRUSR | S_IWUSR);
         Py_DECREF(str);
+        if (ofd == -1) {
+            PyErr_SetString(PyExc_IOError, "Can not open file for writing!");
+            return NULL;
+        }
+        f = fdopen(ofd, "wb");
         if (f == NULL) {
+            close(ofd);
             PyErr_SetString(PyExc_IOError, "Can not open file for writing!");
             return NULL;
         }

@@ -26,7 +26,7 @@ import sys
 import gammu
 
 # Check parameters count
-if len(sys.argv) < 3 or sys.argv[1] in ["--help", "-h", "-?"]:
+if len(sys.argv) < 3 or sys.argv[1] in {"--help", "-h", "-?"}:
     print("Usage: mass-sms <TEXT> [number]...")
     sys.exit(1)
 

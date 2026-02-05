@@ -166,6 +166,6 @@ class GammuAsyncWorker(gammu.worker.GammuWorker):
         self.enqueue("Terminate")
         await self._terminate_future
 
-        while self._thread.is_alive():
-            await asyncio.sleep(5)
+        await asyncio.to_thread(self._thread.join)
+
         self._thread = None

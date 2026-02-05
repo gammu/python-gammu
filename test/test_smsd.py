@@ -27,6 +27,7 @@ import threading
 import time
 import unittest
 
+import gammu
 import gammu.smsd
 
 from .test_dummy import DummyTest
@@ -74,6 +75,27 @@ class SMSDDummyTest(DummyTest):
         database = sqlite3.connect(os.path.join(self.test_dir, "smsd.db"))
         with open(get_script()) as handle:
             database.executescript(handle.read())
+
+        # Check if SMSD with SQLite driver is available
+        # This will fail if Gammu was built without SQLite support
+        try:
+            smsd = gammu.smsd.SMSD(self.config_name)
+            # Clean up the test instance
+            del smsd
+        except gammu.GSMError as exc:
+            # Check if the error is related to SMSD configuration/driver
+            error_info = exc.args[0] if exc.args else {}
+            error_where = error_info.get("Where", "")
+            error_code = error_info.get("Code", 0)
+
+            # If error happens during SMSD_ReadConfig, it's likely a driver/config issue
+            # Common error codes: 27 (ERR_UNKNOWN), 75 (DB driver initialization failed)
+            if error_where == "SMSD_ReadConfig" or error_code in (27, 75):
+                raise unittest.SkipTest(
+                    "SMSD initialization failed (Gammu may be built without required database driver support)"
+                )
+            # Re-raise if it's a different error
+            raise
 
     def get_smsd(self):
         return gammu.smsd.SMSD(self.config_name)

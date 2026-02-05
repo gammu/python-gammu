@@ -165,10 +165,15 @@ class PDUTest(unittest.TestCase):
         ]
 
         decoded = gammu.DecodeSMS(message)
-        assert decoded["Entries"][0]["MMSIndicator"]["Address"] == "http://mmsc.labmctel.fr:9090/m33"
+        assert (
+            decoded["Entries"][0]["MMSIndicator"]["Address"]
+            == "http://mmsc.labmctel.fr:9090/m33"
+        )
 
     def test_counter(self) -> None:
         assert gammu.SMSCounter("foobar") == (1, 154)
 
     def test_counter_long(self) -> None:
-        assert gammu.SMSCounter("foobar fjsa;kjfkasdjfkljsklfjaskdljfkljasdfkljqilui143uu51o23rjhskdf jasdklfjasdklf jasdfkljasdlkfj;asd;lfjaskdljf431ou983jdfaskljfklsdjdkljasfl sdfjasdfkl jafklsda") == (2, 156)
+        assert gammu.SMSCounter(
+            "foobar fjsa;kjfkasdjfkljsklfjaskdljfkljasdfkljqilui143uu51o23rjhskdf jasdklfjasdklf jasdfkljasdlkfj;asd;lfjaskdljf431ou983jdfaskljfklsdjdkljasfl sdfjasdfkl jafklsda"
+        ) == (2, 156)

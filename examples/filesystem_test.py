@@ -207,14 +207,14 @@ def main() -> None:  # noqa: PLR0912, PLR0915, C901
         "\n\nExpectation: Modifying attributes "
         "(readonly=1, protected=0, system=1, hidden=1)"
     )
-    state_machine.SetFileAttributes(f"{args.folder}/cgi.jpg"), 1, 0, 1, 1
+    state_machine.SetFileAttributes(f"{args.folder}/cgi.jpg", 1, 0, 1, 1)
 
     # Check GetFolderListing
     print("\n\nExpectation: Listing of cgi.jpg's properties")
-    file_f = state_machine.GetFolderListing(args.folder), 1
+    file_f = state_machine.GetFolderListing(args.folder, 1)
     while 1:
         if file_f["Name"] != "cgi.jpg":
-            file_f = state_machine.GetFolderListing(args.folder), 0
+            file_f = state_machine.GetFolderListing(args.folder, 0)
         else:
             attribute = ""
             if file_f["Protected"]:
@@ -250,10 +250,10 @@ def main() -> None:  # noqa: PLR0912, PLR0915, C901
 
     # Check GetFolderListing again *wired*
     print("\n\nExpectation: Print properties of newly created folder")
-    file_f = state_machine.GetFolderListing(args.folder), 1
+    file_f = state_machine.GetFolderListing(args.folder, 1)
     while 1:
         if file_f["Name"] != "42alpha":
-            file_f = state_machine.GetFolderListing(args.folder), 0
+            file_f = state_machine.GetFolderListing(args.folder, 0)
         else:
             attribute = ""
             if file_f["Protected"]:

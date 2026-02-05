@@ -42,8 +42,7 @@ def getInternationalizedNumber(number):
 
     if number.startswith("0"):
         return number.replace("0", "+49", 1)
-    else:
-        return number
+    return number
 
 
 def getFilename(mydir, mysms):
@@ -148,9 +147,8 @@ def getAndDeleteAllSMS(state_machine):
         print("Failed to read messages!")
 
     # Link all SMS when there are concatenated messages
-    entries = gammu.LinkSMS(entries)
+    return gammu.LinkSMS(entries)
 
-    return entries
 
 
 def main() -> None:

@@ -20,7 +20,6 @@
 #
 
 import contextlib
-import contextlib
 import datetime
 import os.path
 import pathlib
@@ -406,9 +405,7 @@ class BasicDummyTest(DummyTest):  # noqa: PLR0904
         }
 
         # Test 1: Save using string filename
-        with tempfile.NamedTemporaryFile(
-            mode="wb", delete=False, suffix=".rttl"
-        ) as f:
+        with tempfile.NamedTemporaryFile(mode="wb", delete=False, suffix=".rttl") as f:
             temp_file = f.name
         os.unlink(temp_file)  # Remove it so SaveRingtone can create it fresh
 

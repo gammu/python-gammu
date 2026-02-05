@@ -398,7 +398,7 @@ class BasicDummyTest(DummyTest):  # noqa: PLR0904
                     "Scale": 220,  # Valid scale: 55, 110, 220, 440, or 880
                     "Style": "Natural",
                     "Note": "C",
-                    "Duration": "1/4",
+                    "Duration": "1_4",
                     "DurationSpec": "NoSpecialDuration",
                 }
             ],

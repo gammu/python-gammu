@@ -103,8 +103,8 @@ class DebugTest(unittest.TestCase):
         if handle:
             handle.close()
         if filename is not None:
-            with pathlib.Path(filename).open(encoding="utf-8") as handle:
-                assert "SMS type: Status report" in handle.read()
+            content = pathlib.Path(filename).read_text(encoding="utf-8")
+            assert "SMS type: Status report" in content
 
     def test_file(self) -> None:
         testfile = tempfile.NamedTemporaryFile(suffix=".debug", delete=False)

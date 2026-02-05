@@ -40,12 +40,12 @@ async def send_message_async(state_machine, number, message) -> None:
     # Encode messages
     encoded = gammu.EncodeSMS(smsinfo)
     # Send messages
-    for message in encoded:
+    for encoded_message in encoded:
         # Fill in numbers
-        message["SMSC"] = {"Location": 1}
-        message["Number"] = number
+        encoded_message["SMSC"] = {"Location": 1}
+        encoded_message["Number"] = number
         # Actually send the message
-        await state_machine.send_sms_async(message)
+        await state_machine.send_sms_async(encoded_message)
 
 
 async def get_network_info(worker) -> None:

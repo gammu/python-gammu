@@ -215,6 +215,9 @@ static PyObject *SMSD_new(PyTypeObject * type, PyObject * args, PyObject * kwds)
 	if (self->config == NULL)
 		return NULL;
 
+	/* Disable exit on failure to allow Python to handle errors */
+	self->config->exit_on_failure = FALSE;
+
 	return (PyObject *) self;
 }
 

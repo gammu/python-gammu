@@ -22,15 +22,6 @@
 Phone communication library - python wrapper for Gammu library.
 """
 
-from gammu._gammu import *
+from gammu._gammu import *  # noqa: F403
 
-__version__ = "Gammu {}, python-gammu {}".format(*Version())
-
-# Submodules
-__all__ = [
-    "data",
-    "worker",
-    "asyncworker",
-    "smsd",
-    "exception",
-]
+__version__ = "Gammu {}, python-gammu {}".format(*Version())  # noqa: F405

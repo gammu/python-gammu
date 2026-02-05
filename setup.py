@@ -23,7 +23,6 @@
 python-gammu - Phone communication library
 """
 
-import codecs
 import glob
 import os
 import platform

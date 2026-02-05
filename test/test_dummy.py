@@ -285,8 +285,7 @@ class BasicDummyTest(DummyTest):
     def test_sendsms_long(self):
         state_machine = self.get_statemachine()
         text = (
-            "Very long python-gammu testing message sent "
-            "from example python script. "
+            "Very long python-gammu testing message sent from example python script. "
         ) * 10
         smsinfo = {
             "Class": -1,

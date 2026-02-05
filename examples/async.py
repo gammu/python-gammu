@@ -82,7 +82,7 @@ async def main() -> None:
     gammu.SetDebugFile(sys.stderr)
     gammu.SetDebugLevel("textall")
 
-    config = dict(Device="/dev/ttyS6", Connection="at")
+    config = {"Device": "/dev/ttyS6", "Connection": "at"}
     worker = gammu.asyncworker.GammuAsyncWorker()
     worker.configure(config)
 

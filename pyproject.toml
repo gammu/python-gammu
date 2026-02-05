@@ -171,8 +171,6 @@ ignore = [
   "PYI056",
   "RSE102",
   "RUF012",
-  "S101",
-  "S110",
   "S607",
   "SIM115",
   "SLF001",
@@ -185,7 +183,7 @@ select = ["ALL"]
 [tool.ruff.lint.per-file-ignores]
 "examples/*.py" = ["T201"]
 "setup.py" = ["T201"]
-"test/*.py" = ["T201"]
+"test/*.py" = ["S101", "T201"]
 
 [tool.setuptools]
 include-package-data = false

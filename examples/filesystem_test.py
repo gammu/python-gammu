@@ -181,13 +181,13 @@ def main() -> None:  # noqa: PLR0912, PLR0915, C901
         else:
             attribute = ""
             if file_f["Protected"]:
-                attribute = attribute + "P"
+                attribute += "P"
             if file_f["ReadOnly"]:
-                attribute = attribute + "R"
+                attribute += "R"
             if file_f["Hidden"]:
-                attribute = attribute + "H"
+                attribute += "H"
             if file_f["System"]:
-                attribute = attribute + "S"
+                attribute += "S"
             print(
                 "ID:         "
                 + file_f["ID_FullName"]
@@ -233,13 +233,13 @@ def main() -> None:  # noqa: PLR0912, PLR0915, C901
         else:
             attribute = ""
             if file_f["Protected"]:
-                attribute = attribute + "P"
+                attribute += "P"
             if file_f["ReadOnly"]:
-                attribute = attribute + "R"
+                attribute += "R"
             if file_f["Hidden"]:
-                attribute = attribute + "H"
+                attribute += "H"
             if file_f["System"]:
-                attribute = attribute + "S"
+                attribute += "S"
             print(
                 "ID:         "
                 + file_f["ID_FullName"]
@@ -289,13 +289,13 @@ def main() -> None:  # noqa: PLR0912, PLR0915, C901
         else:
             attribute = ""
             if file_f["Protected"]:
-                attribute = attribute + "P"
+                attribute += "P"
             if file_f["ReadOnly"]:
-                attribute = attribute + "R"
+                attribute += "R"
             if file_f["Hidden"]:
-                attribute = attribute + "H"
+                attribute += "H"
             if file_f["System"]:
-                attribute = attribute + "S"
+                attribute += "S"
             print(
                 "ID:         "
                 + file_f["ID_FullName"]

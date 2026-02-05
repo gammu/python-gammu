@@ -50,10 +50,10 @@ def main():
             print("{:<15}: {:d}".format("Location", entry["Location"]))
             for v in entry["Entries"]:
                 print("{:<15}: {}".format(v["Type"], str(v["Value"])))
-            remain = remain - 1
+            remain -= 1
         except gammu.ERR_EMPTY:
             pass
-        location = location + 1
+        location += 1
 
 
 if __name__ == "__main__":

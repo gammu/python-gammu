@@ -42,7 +42,7 @@ def main():
                 start = False
             else:
                 sms = state_machine.GetNextSMS(Location=sms[0]["Location"], Folder=0)
-            remain = remain - len(sms)
+            remain -= len(sms)
 
             for m in sms:
                 print()

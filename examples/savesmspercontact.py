@@ -149,7 +149,6 @@ def getAndDeleteAllSMS(state_machine):
     return gammu.LinkSMS(entries)
 
 
-
 def main() -> None:
     # Get all contacts
     state_machine = gammu.StateMachine()

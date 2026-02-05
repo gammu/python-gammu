@@ -481,13 +481,13 @@ InternationalPrefixes = [
 ]
 
 __all__ = [
-    "Errors",
-    "ErrorNumbers",
-    "Connections",
-    "MemoryValueTypes",
     "CalendarTypes",
     "CalendarValueTypes",
+    "Connections",
+    "ErrorNumbers",
+    "Errors",
+    "InternationalPrefixes",
+    "MemoryValueTypes",
     "TodoPriorities",
     "TodoValueTypes",
-    "InternationalPrefixes",
 ]

@@ -1,5 +1,5 @@
 /*
- * python-gammu - Phone communication libary, SMSD part
+ * python-gammu - Phone communication library, SMSD part
  * Copyright (C) 2003 - 2018 Michal Čihař
  *
  * This program is free software; you can redistribute it and/or modify

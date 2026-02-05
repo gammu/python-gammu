@@ -1,5 +1,5 @@
 /*
- * python-gammu - Phone communication libary
+ * python-gammu - Phone communication library
  * Copyright (C) 2003 - 2018 Michal Čihař
  *
  * This program is free software; you can redistribute it and/or modify
@@ -655,7 +655,7 @@ StateMachine_SetConfig(StateMachineObject *self, PyObject *args, PyObject *kwds)
                 free(setv);
             } else {
                 free(setv);
-                PyErr_Format(PyExc_ValueError, "Uknown key: %s", s);
+                PyErr_Format(PyExc_ValueError, "Unknown key: %s", s);
                 return NULL;
             }
         }
@@ -2053,7 +2053,7 @@ StateMachine_GetMemoryStatus(StateMachineObject *self, PyObject *args, PyObject 
 
 static char StateMachine_GetMemory__doc__[] =
 "GetMemory(Type, Location)\n\n"
-"Reads entry from memory (phonebooks or calls). Which entry shouldbe read is defined in entry.\n"
+"Reads entry from memory (phonebooks or calls). Which entry should be read is defined in entry.\n"
 "@param Type: Memory type, one of 'ME', 'SM', 'ON', 'DC', 'RC', 'MC', 'MT', 'FD', 'VM'\n"
 "@type Type: string\n"
 "@return: Memory entry as hash\n"
@@ -2092,7 +2092,7 @@ StateMachine_GetMemory(StateMachineObject *self, PyObject *args, PyObject *kwds)
 
 static char StateMachine_GetNextMemory__doc__[] =
 "GetNextMemory(Type, Start, Location)\n\n"
-"Reads entry from memory (phonebooks or calls). Which entry shouldbe read is defined in entry. This can be easily used for reading all entries.\n\n"
+"Reads entry from memory (phonebooks or calls). Which entry should be read is defined in entry. This can be easily used for reading all entries.\n\n"
 "@param Type: Memory type, one of 'ME', 'SM', 'ON', 'DC', 'RC', 'MC', 'MT', 'FD', 'VM'\n"
 "@type Type: string\n"
 "@param Start: Whether to start. This can not be used together with Location\n"
@@ -3598,7 +3598,7 @@ StateMachine_SetRingtone(StateMachineObject *self, PyObject *args, PyObject *kwd
 /********************/
 
 static char StateMachine_GetRingtonesInfo__doc__[] =
-"Acquires ringtone informaiton."
+"Acquires ringtone information."
 ;
 
 static PyObject *
@@ -5176,7 +5176,7 @@ StateMachine_SetDebugFile(StateMachineObject *self, PyObject *args, PyObject *kw
 
 static char StateMachine_SetDebugLevel__doc__[] =
 "SetDebugLevel(Level)\n\n"
-"Sets state machine debug level accorting to passed string. You need to configure output file using L{SetDebugFile} to activate it.\n\n"
+"Sets state machine debug level according to passed string. You need to configure output file using L{SetDebugFile} to activate it.\n\n"
 "@type Level: string\n"
 "@param Level: name of debug level to use, currently one of:\n"
 "   - nothing\n"
@@ -5616,7 +5616,7 @@ gammu_SetDebugFile(PyObject *self, PyObject *args, PyObject *kwds)
 
 static char gammu_SetDebugLevel__doc__[] =
 "SetDebugLevel(Level)\n\n"
-"Sets global debug level accorting to passed string. You need to configure output file using L{SetDebugFile} to activate it.\n\n"
+"Sets global debug level according to passed string. You need to configure output file using L{SetDebugFile} to activate it.\n\n"
 "@type Level: string\n"
 "@param Level: name of debug level to use, currently one of:\n"
 "   - nothing\n"
@@ -5654,7 +5654,7 @@ static char gammu_LinkSMS__doc__[] =
 "@type Messages: list\n"
 "@type EMS: boolean\n"
 "@param Messages: List of messages to link\n"
-"@param EMS: Whether to detect ems, defauls to True\n"
+"@param EMS: Whether to detect ems, defaults to True\n"
 "@return: List of linked messages\n"
 "@rtype: list\n"
 ;
@@ -5709,7 +5709,7 @@ static char gammu_DecodeSMS__doc__[] =
 "Decodes multi part SMS message.\n\n"
 "@param Messages: Nessages to decode\n"
 "@type Messages: list\n"
-"@param EMS: Whether to use EMS, defalt to True\n"
+"@param EMS: Whether to use EMS, defaults to True\n"
 "@type EMS: boolean\n"
 "@return: Multi part message information\n"
 "@rtype: hash\n"

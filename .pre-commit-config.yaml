@@ -31,3 +31,10 @@ repos:
     hooks:
       - id: check-hooks-apply
       - id: check-useless-excludes
+  - repo: https://github.com/crate-ci/typos
+    rev: v1.43.0
+    hooks:
+    - id: typos
+      args: []
+      require_serial: true
+      pass_filenames: false

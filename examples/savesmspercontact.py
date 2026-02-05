@@ -162,7 +162,7 @@ def main():
     state_machine.Terminate()
 
     # Get all sms
-    # why in two steps? ERR_TIMOUT is raised without closing the connection
+    # why in two steps? ERR_TIMEOUT is raised without closing the connection
     state_machine = gammu.StateMachine()
     state_machine.ReadConfig()
     state_machine.Init()

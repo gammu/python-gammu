@@ -1,5 +1,5 @@
 /*
- * python-gammu - Phone communication libary
+ * python-gammu - Phone communication library
  * Copyright (C) 2003 - 2018 Michal Čihař
  *
  * This program is free software; you can redistribute it and/or modify

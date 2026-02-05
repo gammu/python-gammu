@@ -22,12 +22,12 @@
 """
 This file should provide me with a test frame for the filesystem
 functions. It can't be run automatically, but you should be able
-to decide, wheather the output looks sensible
+to decide, whether the output looks sensible
 
 BEWARE - the test WILL TOUCH AND WRITE FILESYSTEM!!
 
-I asume you call the script from the directory were it lays and
-have the grafic there and you have write permission there and that
+I assume you call the script from the directory were it lays and
+have the graphic there and you have write permission there and that
 there is a file called cgi.jpg to be used as test file
 
 READY:
@@ -100,7 +100,7 @@ def main():
     state_machine.Init()
 
     # Check GetFileSystemStatus
-    print("Expection: Info about filesystem usage")
+    print("Expectation: Info about filesystem usage")
     try:
         fs_info = state_machine.GetFileSystemStatus()
         fs_info["Total"] = fs_info["Free"] + fs_info["Used"]
@@ -109,14 +109,14 @@ def main():
         print("You will have to live without this knowledge")
 
     # Check DeleteFile
-    print("\n\nExpection: Deleting cgi.jpg from memorycard")
+    print("\n\nExpectation: Deleting cgi.jpg from memorycard")
     try:
         state_machine.DeleteFile(unicode(args.folder + "/cgi.jpg"))
     except gammu.ERR_FILENOTEXIST:
         print("Oh well - we copy it now ;-) (You SHOULD read this)")
 
     # Check AddFilePart
-    print("\n\nExpection: Put cgi.jpg onto Memorycard on phone")
+    print("\n\nExpectation: Put cgi.jpg onto Memorycard on phone")
     file_handle = open(args.testfile, "rb")
     file_stat = os.stat(args.testfile)
     ttime = datetime.datetime.fromtimestamp(file_stat[8])
@@ -141,7 +141,7 @@ def main():
         file_f = state_machine.AddFilePart(file_f)
 
     # Check GetFilePart
-    print("\n\nExpection: Get cgi.jpg from memorycard and write it as test.jpg")
+    print("\n\nExpectation: Get cgi.jpg from memorycard and write it as test.jpg")
     with open("./test.jpg", "wb") as handle:
         file_f = {"ID_FullName": args.folder + "/cgi.jpg", "Finished": 0}
         while not file_f["Finished"]:
@@ -150,7 +150,7 @@ def main():
         handle.flush()
 
     # Check correct transfer
-    print("\n\nExpection: test.jpg and cgi.jpg to be the same")
+    print("\n\nExpectation: test.jpg and cgi.jpg to be the same")
     f1 = open(args.testfile, "rb")
     f2 = open("./test.jpg", "rb")
     if f1.read() == f2.read():
@@ -161,7 +161,7 @@ def main():
     os.remove("./test.jpg")
 
     # Check GetNextRootFolder
-    print("\n\nExpection: Root Folder List")
+    print("\n\nExpectation: Root Folder List")
     try:
         file_obj = state_machine.GetNextRootFolder("")
         while 1:
@@ -174,7 +174,7 @@ def main():
         print("Not supported...")
 
     # Check GetNextFileFolder
-    print("\n\nExpection: Info for a file of the phone (cgi.jpg)")
+    print("\n\nExpectation: Info for a file of the phone (cgi.jpg)")
     file_f = state_machine.GetNextFileFolder(1)
     while 1:
         if file_f["Name"] != "cgi.jpg":
@@ -220,13 +220,13 @@ def main():
     # Check SetFileAttributes
     # Protected is spared, as my mobile nokia 6230i says it's unsupported
     print(
-        "\n\nExpection: Modifying attributes "
+        "\n\nExpectation: Modifying attributes "
         "(readonly=1, protected=0, system=1, hidden=1)"
     )
     state_machine.SetFileAttributes(unicode(args.folder + "/cgi.jpg"), 1, 0, 1, 1)
 
     # Check GetFolderListing
-    print("\n\nExpection: Listing of cgi.jpg's properties")
+    print("\n\nExpectation: Listing of cgi.jpg's properties")
     file_f = state_machine.GetFolderListing(unicode(args.folder), 1)
     while 1:
         if file_f["Name"] != "cgi.jpg":
@@ -270,7 +270,7 @@ def main():
             break
 
     # Check DeleteFile
-    print("\n\nExpection: Deletion of cgi.jpg from memorycard")
+    print("\n\nExpectation: Deletion of cgi.jpg from memorycard")
     try:
         state_machine.DeleteFile(unicode(args.folder + "cgi.jpg"))
         print("Deleted")
@@ -278,11 +278,11 @@ def main():
         print("Something is wrong ...")
 
     # Check AddFolder
-    print('\n\nExpection: Creation of a folder on the memorycard "42alpha"')
+    print('\n\nExpectation: Creation of a folder on the memorycard "42alpha"')
     state_machine.AddFolder(unicode(args.folder), "42alpha")
 
     # Check GetFolderListing again *wired*
-    print("\n\nExpection: Print properties of newly created folder")
+    print("\n\nExpectation: Print properties of newly created folder")
     file_f = state_machine.GetFolderListing(unicode(args.folder), 1)
     while 1:
         if file_f["Name"] != "42alpha":
@@ -326,7 +326,7 @@ def main():
             break
 
     # Check DeleteFolder
-    print('\n\nExpection: Deletion of previously created folder "42alpha"')
+    print('\n\nExpectation: Deletion of previously created folder "42alpha"')
     state_machine.DeleteFolder(unicode(args.folder + "/42alpha"))
 
 

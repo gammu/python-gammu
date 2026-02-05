@@ -20,7 +20,7 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #
 """
-python-gammu - Phone communication libary
+python-gammu - Phone communication library
 """
 
 import codecs

@@ -19,7 +19,7 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #
 """
-Phone communication libary - python wrapper for Gammu library.
+Phone communication library - python wrapper for Gammu library.
 """
 
 from gammu._gammu import *

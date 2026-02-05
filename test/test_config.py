@@ -18,9 +18,9 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #
-import pathlib
 import tempfile
 import unittest
+from pathlib import Path
 
 import pytest
 
@@ -103,19 +103,19 @@ class DebugTest(unittest.TestCase):
         if handle:
             handle.close()
         if filename is not None:
-            content = pathlib.Path(filename).read_text(encoding="utf-8")
+            content = Path(filename).read_text(encoding="utf-8")
             assert "SMS type: Status report" in content
 
     def test_file(self) -> None:
         testfile = tempfile.NamedTemporaryFile(suffix=".debug", delete=False)
         testfile.close()
         try:
-            handle = pathlib.Path(testfile.name).open("w", encoding="utf-8")
+            handle = Path(testfile.name).open("w", encoding="utf-8")
             gammu.SetDebugFile(handle)
             self.check_operation(testfile.name, handle)
         finally:
             gammu.SetDebugFile(None)
-            pathlib.Path(testfile.name).unlink()
+            Path(testfile.name).unlink()
 
     def test_filename(self) -> None:
         testfile = tempfile.NamedTemporaryFile(suffix=".debug", delete=False)
@@ -125,7 +125,7 @@ class DebugTest(unittest.TestCase):
             self.check_operation(testfile.name)
         finally:
             gammu.SetDebugFile(None)
-            pathlib.Path(testfile.name).unlink()
+            Path(testfile.name).unlink()
 
     def test_none(self) -> None:
         gammu.SetDebugFile(None)
@@ -138,8 +138,8 @@ class DebugTest(unittest.TestCase):
         try:
             gammu.SetDebugFile(testfile.name)
             self.check_operation(None)
-            content = pathlib.Path(testfile.name).read_text(encoding="utf-8")
+            content = Path(testfile.name).read_text(encoding="utf-8")
             assert not content
         finally:
             gammu.SetDebugFile(None)
-            pathlib.Path(testfile.name).unlink()
+            Path(testfile.name).unlink()

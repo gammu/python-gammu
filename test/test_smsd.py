@@ -19,7 +19,6 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #
 
-import os.path
 import platform
 import sqlite3
 import threading
@@ -46,7 +45,7 @@ MESSAGE_2 = {
 MAX_STATUS_RETRIES = 2
 
 
-def get_script():
+def get_script() -> Path:
     """
     Returns SQL script to create database.
 
@@ -65,7 +64,7 @@ def get_script():
 
     print(f"Gammu version {version}, SMSD DB version {dbver}")
 
-    return os.path.join(os.path.dirname(__file__), "data", f"sqlite-{dbver}.sql")
+    return Path(__file__).parent / "data" / f"sqlite-{dbver}.sql"
 
 
 class SMSDDummyTest(DummyTest):
@@ -73,7 +72,7 @@ class SMSDDummyTest(DummyTest):
         if platform.system() == "Windows":
             pytest.skip("SMSD testing not supported on Windows (no DBI driver)")
         super().setUp()
-        database = sqlite3.connect(os.path.join(self.test_dir, "smsd.db"))
+        database = sqlite3.connect(self.test_dir / "smsd.db")
         script = Path(get_script()).read_text(encoding="utf-8")
         database.executescript(script)
 

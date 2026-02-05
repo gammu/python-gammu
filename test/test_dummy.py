@@ -19,22 +19,20 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #
 
-import contextlib
 import datetime
-import os.path
-import pathlib
 import platform
 import shutil
 import stat
 import tempfile
 import unittest
+from pathlib import Path
 
 import pytest
 
 import gammu
 
-DUMMY_DIR = os.path.join(os.path.dirname(__file__), "data", "gammu-dummy")
-TEST_FILE = os.path.join(os.path.dirname(__file__), "data", "sqlite-14.sql")
+DUMMY_DIR = Path(__file__).parent / "data" / "gammu-dummy"
+TEST_FILE = Path(__file__).parent / "data" / "sqlite-14.sql"
 CONFIGURATION = """
 # Configuration for Gammu testsuite
 
@@ -58,19 +56,21 @@ dbdir = {path}
 
 
 class DummyTest(unittest.TestCase):
-    test_dir = None
-    config_name = None
-    dummy_dir = None
+    test_dir: Path
+    config_file: Path
+    config_name: str
+    dummy_dir: Path
     _called = False
     _state_machine = None
 
     def setUp(self) -> None:
-        self.test_dir = tempfile.mkdtemp()
-        self.dummy_dir = os.path.join(self.test_dir, "gammu-dummy")
-        self.config_name = os.path.join(self.test_dir, ".gammurc")
+        self.test_dir = Path(tempfile.mkdtemp())
+        self.dummy_dir = self.test_dir / "gammu-dummy"
+        self.config_file = self.test_dir / ".gammurc"
+        self.config_name = self.config_file.as_posix()
         shutil.copytree(DUMMY_DIR, self.dummy_dir)
-        pathlib.Path(self.config_name).write_text(
-            CONFIGURATION.format(path=self.test_dir), encoding="utf-8"
+        self.config_file.write_text(
+            CONFIGURATION.format(path=self.test_dir.as_posix()), encoding="utf-8"
         )
 
     def tearDown(self) -> None:
@@ -87,8 +87,8 @@ class DummyTest(unittest.TestCase):
 
     def fake_incoming_call(self) -> None:
         """Fake incoming call."""
-        filename = os.path.join(self.dummy_dir, "incoming-call")
-        pathlib.Path(filename).write_text("\n", encoding="utf-8")
+        filename = self.dummy_dir / "incoming-call"
+        filename.write_text("\n", encoding="utf-8")
 
     def check_incoming_call(self) -> None:
         """Checks whether incoming call faking is supported."""
@@ -333,14 +333,14 @@ class BasicDummyTest(DummyTest):  # noqa: PLR0904
             state_machine.DeleteFolder(name)
         assert name == state_machine.AddFolder("", name)
         # Check the folder exists as expected on filesystem
-        assert os.path.exists(os.path.join(self.dummy_dir, "fs", name))
+        assert (self.dummy_dir / "fs" / name).exists()
         state_machine.DeleteFolder(name)
 
     def test_addfile(self) -> None:
         state_machine = self.get_statemachine()
-        file_stat = os.stat(TEST_FILE)
+        file_stat = TEST_FILE.stat()
         ttime = datetime.datetime.fromtimestamp(file_stat.st_mtime)
-        content = pathlib.Path(TEST_FILE).read_bytes()
+        content = TEST_FILE.read_bytes()
         file_f = {
             "ID_FullName": "testfolder",
             "Name": "sqlite.sql",
@@ -406,20 +406,21 @@ class BasicDummyTest(DummyTest):  # noqa: PLR0904
 
         # Test 1: Save using string filename
         with tempfile.NamedTemporaryFile(mode="wb", delete=False, suffix=".rttl") as f:
-            temp_file = f.name
-        os.unlink(temp_file)  # Remove it so SaveRingtone can create it fresh
+            temp_file_name = f.name
+        temp_file = Path(temp_file_name)
+        temp_file.unlink()  # Remove it so SaveRingtone can create it fresh
 
         try:
             # Save the ringtone
-            gammu.SaveRingtone(temp_file, ringtone, "rttl")
+            gammu.SaveRingtone(temp_file.as_posix(), ringtone, "rttl")
 
             # Check that the file was created
-            assert os.path.exists(temp_file)
+            assert temp_file.exists()
 
             # Check file permissions - should be owner read/write only
             # Skip permission check on Windows as it handles permissions differently
             if platform.system() != "Windows":
-                file_stat = os.stat(temp_file)
+                file_stat = temp_file.stat()
                 file_mode = stat.S_IMODE(file_stat.st_mode)
 
                 # File should have owner read/write permissions (0o600)
@@ -440,8 +441,7 @@ class BasicDummyTest(DummyTest):  # noqa: PLR0904
                 )
         finally:
             # Clean up - use try-except to handle case where file doesn't exist
-            with contextlib.suppress(FileNotFoundError):
-                os.unlink(temp_file)
+            temp_file.unlink(missing_ok=True)
 
         # Test 2: Test multiple formats to ensure comprehensive coverage
         formats_to_test = ["rttl", "ott", "imy"]
@@ -449,16 +449,17 @@ class BasicDummyTest(DummyTest):  # noqa: PLR0904
             with tempfile.NamedTemporaryFile(
                 mode="wb", delete=False, suffix=f".{fmt}"
             ) as f:
-                temp_file = f.name
-            os.unlink(temp_file)
+                temp_file_name = f.name
+            temp_file = Path(temp_file_name)
+            temp_file.unlink()
 
             try:
-                gammu.SaveRingtone(temp_file, ringtone, fmt)
-                assert os.path.exists(temp_file), f"File not created for format {fmt}"
+                gammu.SaveRingtone(temp_file.as_posix(), ringtone, fmt)
+                assert temp_file.exists(), f"File not created for format {fmt}"
 
                 # Verify permissions for each format
                 if platform.system() != "Windows":
-                    file_stat = os.stat(temp_file)
+                    file_stat = temp_file.stat()
                     file_mode = stat.S_IMODE(file_stat.st_mode)
                     assert (file_mode & stat.S_IRWXG) == 0, (
                         f"Format {fmt}: Group has permissions"
@@ -467,8 +468,7 @@ class BasicDummyTest(DummyTest):  # noqa: PLR0904
                         f"Format {fmt}: Others have permissions"
                     )
             finally:
-                with contextlib.suppress(FileNotFoundError):
-                    os.unlink(temp_file)
+                temp_file.unlink(missing_ok=True)
 
     def test_incoming_call(self) -> None:
         self.check_incoming_call()

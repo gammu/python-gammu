@@ -18,25 +18,21 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #
-import glob
-import os
-import os.path
 import tempfile
 import unittest
+from pathlib import Path
 
 import gammu
 
-TEST_DIR = os.path.join(os.path.dirname(__file__), "data")
-TEST_FILES_CALENDAR = glob.glob(os.path.join(TEST_DIR, "*.ics")) + glob.glob(
-    os.path.join(TEST_DIR, "*.vcs")
-)
-TEST_FILES_CONTACTS = glob.glob(os.path.join(TEST_DIR, "*.vcf"))
+TEST_DIR = Path(__file__).parent / "data"
+TEST_FILES_CALENDAR = [*TEST_DIR.glob("*.ics"), *TEST_DIR.glob("*.vcs")]
+TEST_FILES_CONTACTS = TEST_DIR.glob("*.vcf")
 TEST_CONTACTS = (".lmb", ".vcf", ".backup")
 TEST_CALENDAR = (".vcs", ".ics", ".backup")
 
 
 class BackupTest(unittest.TestCase):
-    def perform_test(self, filename, extensions) -> None:
+    def perform_test(self, filename: Path, extensions: tuple[str, ...]) -> None:
         out_files = [
             tempfile.NamedTemporaryFile(suffix=extension, delete=False)
             for extension in extensions
@@ -47,7 +43,7 @@ class BackupTest(unittest.TestCase):
             handle.close()
         out_backup.close()
         try:
-            backup = gammu.ReadBackup(filename)
+            backup = gammu.ReadBackup(filename.as_posix())
             for out in out_files:
                 # Save to new format
                 gammu.SaveBackup(out.name, backup)
@@ -69,8 +65,8 @@ class BackupTest(unittest.TestCase):
                 gammu.SaveBackup(out_backup.name, backup)
         finally:
             for handle in out_files:
-                os.unlink(handle.name)
-            os.unlink(out_backup.name)
+                Path(handle.name).unlink()
+            Path(out_backup.name).unlink()
 
     def test_convert_contacts(self) -> None:
         for filename in TEST_FILES_CONTACTS:
@@ -81,7 +77,7 @@ class BackupTest(unittest.TestCase):
             self.perform_test(filename, TEST_CALENDAR)
 
     def test_calendar(self) -> None:
-        entry = gammu.ReadBackup(os.path.join(TEST_DIR, "rrule.ics"))["Calendar"][0]
+        entry = gammu.ReadBackup((TEST_DIR / "rrule.ics").as_posix())["Calendar"][0]
 
         # Convert it to vCard
         vc_entry = gammu.EncodeVCALENDAR(entry)
@@ -94,7 +90,7 @@ class BackupTest(unittest.TestCase):
         assert entry2["Type"] == entry3["Type"]
 
     def test_todo(self) -> None:
-        entry = gammu.ReadBackup(os.path.join(TEST_DIR, "02.vcs"))["ToDo"][0]
+        entry = gammu.ReadBackup((TEST_DIR / "02.vcs").as_posix())["ToDo"][0]
 
         # Convert it to vCard
         vt_entry = gammu.EncodeVTODO(entry)
@@ -107,7 +103,7 @@ class BackupTest(unittest.TestCase):
         assert entry2["Type"] == entry3["Type"]
 
     def test_contact(self) -> None:
-        entry = gammu.ReadBackup(os.path.join(TEST_DIR, "gammu.vcf"))["PhonePhonebook"][
+        entry = gammu.ReadBackup((TEST_DIR / "gammu.vcf").as_posix())["PhonePhonebook"][
             0
         ]
 

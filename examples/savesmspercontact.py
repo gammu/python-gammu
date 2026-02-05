@@ -21,19 +21,10 @@
 #
 
 
-import errno
-import os
 import re
+from pathlib import Path
 
 import gammu
-
-
-def createFolderIfNotExist(path) -> None:
-    try:
-        os.makedirs(path)
-    except OSError as exception:
-        if exception.errno != errno.EEXIST:
-            raise
 
 
 def getInternationalizedNumber(number):
@@ -45,16 +36,14 @@ def getInternationalizedNumber(number):
     return number
 
 
-def getFilename(mydir, mysms):
+def getFilename(mydir: Path, mysms) -> str:
     if mysms[0]["DateTime"]:
         return mysms[0]["DateTime"].strftime("%Y-%m-%d-%Hh%Mm%Ss")
 
     # no date available so calculate unknown number
-    myfiles = os.listdir(mydir)
-
     nextitem = 0
-    for i in myfiles:
-        match = re.match(r"^Unknown-([0-9]*)", i)
+    for i in mydir.glob("Unknown-*"):
+        match = re.match(r"^Unknown-([0-9]*)", i.name)
         if match and int(match.group(1)) > nextitem:
             nextitem = int(match.group(1))
 
@@ -65,15 +54,17 @@ def saveSMS(mysms, all_contacts) -> None:
     my_number = getInternationalizedNumber(mysms[0]["Number"])
 
     try:
-        mydir = all_contacts[my_number]
+        mydir = Path(all_contacts[my_number])
     except KeyError:
-        mydir = my_number
+        mydir = Path(my_number)
 
-    createFolderIfNotExist(mydir)
+    mydir.mkdir(parents=True, exist_ok=True)
 
     myfile = getFilename(mydir, mysms)
 
-    with open(os.path.join(mydir, myfile), "a", encoding="utf-8") as handle:
+    outfile = mydir / myfile
+
+    with outfile.open("a", encoding="utf-8") as handle:
         handle.writelines(i["Text"] for i in mysms)
         handle.write("\n")
 

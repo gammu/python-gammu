@@ -21,11 +21,12 @@
 #
 """python-gammu - Phone communication library."""
 
-import glob
 import os
 import platform
 import subprocess  # noqa: S404
 import sys
+from pathlib import Path
+from typing import cast
 
 from packaging.version import parse
 from setuptools import Extension, setup
@@ -40,7 +41,7 @@ class GammuConfig:
         self.on_windows = platform.system() == "Windows"
         self.has_pkgconfig = self.check_pkconfig()
         self.has_env = "GAMMU_PATH" in os.environ
-        self.path = self.lookup_path()
+        self.path: Path = cast("Path", self.lookup_path())
         self.use_pkgconfig = self.has_pkgconfig and not self.has_env
 
     def check_pkconfig(self) -> bool:
@@ -50,28 +51,29 @@ class GammuConfig:
         except (subprocess.CalledProcessError, OSError):
             return False
 
-    def config_path(self, base):
-        return os.path.join(base, "include", "gammu", "gammu-config.h")
+    def config_path(self, base: Path) -> Path:
+        return base / "include" / "gammu" / "gammu-config.h"
 
-    def lookup_path(self):
+    def lookup_path(self) -> Path | None:
+        paths: list[Path]
         if self.has_env:
-            paths = [os.environ["GAMMU_PATH"]]
+            paths = [Path(os.environ["GAMMU_PATH"])]
         elif self.on_windows:
             paths = [
-                "C:\\Gammu",
-                "C:\\Program Files\\Gammu",
-                "C:\\Program Files (x86)\\Gammu",
+                Path("C:\\Gammu"),
+                Path("C:\\Program Files\\Gammu"),
+                Path("C:\\Program Files (x86)\\Gammu"),
             ]
-            paths += glob.glob("C:\\Program Files\\Gammu*")
-            paths += glob.glob("C:\\Program Files (x86)\\Gammu*")
+            paths += Path("C:\\Program Files").glob("Gammu*")
+            paths += Path("C:\\Program Files (x86)").glob("Gammu*")
         else:
-            paths = ["/usr/local/", "/usr/"]
-            paths += glob.glob("/opt/gammu*")
+            paths = [Path("/usr/local/"), Path("/usr/")]
+            paths += Path("/opt").glob("gammu*")
 
         for path in paths:
             include = self.config_path(path)
-            if os.path.exists(include):
-                return path
+            if include.exists():
+                return Path(path)
         return None
 
     def check_version(self) -> None:
@@ -91,7 +93,7 @@ class GammuConfig:
                 print("Can not find supported Gammu version using pkg-config!")
                 sys.exit(100)
 
-        if self.path is None:
+        if not self.path:
             print("Failed to find Gammu!")
             print("Either it is not installed or not found.")
             print("After install Gammu ensure that setup finds it by any of:")
@@ -100,7 +102,7 @@ class GammuConfig:
             sys.exit(101)
 
         version = None
-        with open(self.config_path(self.path), encoding="utf-8") as handle:
+        with self.config_path(self.path).open(encoding="utf-8") as handle:
             for line in handle:
                 if line.startswith("#define GAMMU_VERSION "):
                     version = parse(line.split('"')[1])
@@ -109,7 +111,7 @@ class GammuConfig:
             print("Too old Gammu version, please upgrade!")
             sys.exit(100)
 
-    def get_libs(self):
+    def get_libs(self) -> list[str]:
         if self.use_pkgconfig:
             output = subprocess.check_output(
                 ["pkg-config", "--libs-only-l", "gammu", "gammu-smsd"]
@@ -122,7 +124,7 @@ class GammuConfig:
             libs.append("m")
         return libs
 
-    def get_cflags(self):
+    def get_cflags(self) -> str:
         if self.use_pkgconfig:
             return (
                 subprocess.check_output(
@@ -131,9 +133,9 @@ class GammuConfig:
                 .decode("utf-8")
                 .strip()
             )
-        return "-I{}".format(os.path.join(self.path, "include", "gammu"))
+        return "-I{}".format((self.path / "include" / "gammu").as_posix())
 
-    def get_ldflags(self):
+    def get_ldflags(self) -> str:
         if self.use_pkgconfig:
             return (
                 subprocess.check_output(
@@ -143,8 +145,8 @@ class GammuConfig:
                 .strip()
             )
         if self.on_windows:
-            return "/LIBPATH:{}".format(os.path.join(self.path, "lib"))
-        return "-L{}".format(os.path.join(self.path, "lib"))
+            return "/LIBPATH:{}".format(self.path / "lib")
+        return "-L{}".format((self.path / "lib").as_posix())
 
 
 def get_module():

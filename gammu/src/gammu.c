@@ -31,12 +31,11 @@
 #include <locale.h>
 
 /* File creation and permissions */
+#include <sys/stat.h>
 #ifdef _WIN32
 #include <io.h>
-#include <sys/stat.h>
 #else
 #include <fcntl.h>
-#include <sys/stat.h>
 #endif
 
 /* Strings */

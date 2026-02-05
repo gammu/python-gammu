@@ -25,7 +25,7 @@ import gammu.exception
 
 
 def error_function() -> NoReturn:
-    raise gammu.exception.ERR_WRONGCRC()
+    raise gammu.exception.ERR_WRONGCRC
 
 
 class ErrorTest(unittest.TestCase):

@@ -154,7 +154,7 @@ def get_module():
     module = Extension(
         "gammu._gammu",
         define_macros=[
-            ("PYTHON_GAMMU_MAJOR_VERSION", VERSION.split(".")[0]),
+            ("PYTHON_GAMMU_MAJOR_VERSION", VERSION.split(".", maxsplit=1)[0]),
             ("PYTHON_GAMMU_MINOR_VERSION", VERSION.split(".")[1]),
         ],
         libraries=config.get_libs(),

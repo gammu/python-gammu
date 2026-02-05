@@ -41,13 +41,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 Installing
 ==========
 
-You can install in a usual way for Python modules using setuptools, so use
-``setup.py`` which is placed in the top level directory::
-
-    ./setup.py build
-    sudo ./setup.py install
-
-You can also install it using pip installer::
+Install it using pip installer::
 
     pip install python-gammu
 

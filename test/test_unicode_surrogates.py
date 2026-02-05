@@ -61,7 +61,7 @@ class SurrogateTest(unittest.TestCase):
 
             # The invalid surrogate should be replaced with replacement character
             # U+FFFD (REPLACEMENT CHARACTER)
-            self.assertIn("\ufffd", text)
+            assert "�" in text
 
         except UnicodeEncodeError as e:
             self.fail(f"UnicodeEncodeError should not be raised: {e}")
@@ -93,7 +93,7 @@ class SurrogateTest(unittest.TestCase):
 
             # Valid surrogate pair D800 DC00 should decode to U+10000
             # U+10000 in UTF-8 is F0 90 80 80
-            self.assertIn(b"\xf0\x90\x80\x80", encoded)
+            assert b"\xf0\x90\x80\x80" in encoded
 
         except UnicodeEncodeError as e:
             self.fail(f"UnicodeEncodeError should not be raised: {e}")
@@ -123,7 +123,7 @@ class SurrogateTest(unittest.TestCase):
             text.encode("utf-8")
 
             # The invalid surrogate should be replaced
-            self.assertIn("\ufffd", text)
+            assert "�" in text
 
         except UnicodeEncodeError as e:
             self.fail(f"UnicodeEncodeError should not be raised: {e}")
@@ -153,7 +153,7 @@ class SurrogateTest(unittest.TestCase):
             text.encode("utf-8")
 
             # The standalone low surrogate should be replaced
-            self.assertIn("\ufffd", text)
+            assert "�" in text
 
         except UnicodeEncodeError as e:
             self.fail(f"UnicodeEncodeError should not be raised: {e}")

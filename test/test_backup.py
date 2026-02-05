@@ -56,16 +56,8 @@ class BackupTest(unittest.TestCase):
                 backup_2 = gammu.ReadBackup(out.name)
 
                 # Check content length
-                self.assertEqual(
-                    len(backup["Calendar"]),
-                    len(backup_2["Calendar"]),
-                    f"Failed to compare calendar in {filename}",
-                )
-                self.assertEqual(
-                    len(backup["PhonePhonebook"]) + len(backup["SIMPhonebook"]),
-                    len(backup_2["PhonePhonebook"]) + len(backup_2["SIMPhonebook"]),
-                    f"Failed to compare phonebook in {filename}",
-                )
+                assert len(backup["Calendar"]) == len(backup_2["Calendar"]), f"Failed to compare calendar in {filename}"
+                assert len(backup["PhonePhonebook"]) + len(backup["SIMPhonebook"]) == len(backup_2["PhonePhonebook"]) + len(backup_2["SIMPhonebook"]), f"Failed to compare phonebook in {filename}"
 
                 # Try converting to .backup
                 gammu.SaveBackup(out_backup.name, backup)
@@ -93,7 +85,7 @@ class BackupTest(unittest.TestCase):
         entry2 = gammu.DecodeVCS(vc_entry)
         entry3 = gammu.DecodeICS(ic_entry)
 
-        self.assertEqual(entry2["Type"], entry3["Type"])
+        assert entry2["Type"] == entry3["Type"]
 
     def test_todo(self):
         entry = gammu.ReadBackup(os.path.join(TEST_DIR, "02.vcs"))["ToDo"][0]
@@ -106,7 +98,7 @@ class BackupTest(unittest.TestCase):
         entry2 = gammu.DecodeVCS(vt_entry)
         entry3 = gammu.DecodeICS(it_entry)
 
-        self.assertEqual(entry2["Type"], entry3["Type"])
+        assert entry2["Type"] == entry3["Type"]
 
     def test_contact(self):
         entry = gammu.ReadBackup(os.path.join(TEST_DIR, "gammu.vcf"))["PhonePhonebook"][
@@ -119,4 +111,4 @@ class BackupTest(unittest.TestCase):
         # Convert it back to entry
         entry2 = gammu.DecodeVCARD(vc_entry)
 
-        self.assertEqual(entry, entry2)
+        assert entry == entry2

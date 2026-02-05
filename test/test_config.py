@@ -18,7 +18,7 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #
-import os
+import pathlib
 import tempfile
 import unittest
 
@@ -45,7 +45,7 @@ class ConfigTest(unittest.TestCase):
             },
         )
         cfg = state_machine.GetConfig(0)
-        self.assertEqual(cfg["StartInfo"], 1)
+        assert cfg["StartInfo"] == 1
 
     def test_config_string(self):
         state_machine = gammu.StateMachine()
@@ -64,7 +64,7 @@ class ConfigTest(unittest.TestCase):
             },
         )
         cfg = state_machine.GetConfig(0)
-        self.assertEqual(cfg["StartInfo"], 1)
+        assert cfg["StartInfo"] == 1
 
     def test_config_none(self):
         state_machine = gammu.StateMachine()
@@ -83,7 +83,7 @@ class ConfigTest(unittest.TestCase):
             },
         )
         cfg = state_machine.GetConfig(0)
-        self.assertEqual(cfg["StartInfo"], 0)
+        assert cfg["StartInfo"] == 0
 
     def test_init_error(self):
         self.assertRaises(TypeError, gammu.StateMachine, Bar=1)
@@ -94,27 +94,25 @@ class DebugTest(unittest.TestCase):
         gammu.SetDebugLevel("textall")
 
     def check_operation(self, filename, handle=None):
-        """
-        Executes gammu operation which causes debug logs.
-        """
+        """Executes gammu operation which causes debug logs."""
         gammu.DecodePDU(PDU_DATA)
         gammu.SetDebugFile(None)
         if handle:
             handle.close()
         if filename is not None:
-            with open(filename) as handle:
-                self.assertTrue("SMS type: Status report" in handle.read())
+            with pathlib.Path(filename).open() as handle:
+                assert "SMS type: Status report" in handle.read()
 
     def test_file(self):
         testfile = tempfile.NamedTemporaryFile(suffix=".debug", delete=False)
         testfile.close()
         try:
-            handle = open(testfile.name, "w")
+            handle = pathlib.Path(testfile.name).open("w")
             gammu.SetDebugFile(handle)
             self.check_operation(testfile.name, handle)
         finally:
             gammu.SetDebugFile(None)
-            os.unlink(testfile.name)
+            pathlib.Path(testfile.name).unlink()
 
     def test_filename(self):
         testfile = tempfile.NamedTemporaryFile(suffix=".debug", delete=False)
@@ -124,7 +122,7 @@ class DebugTest(unittest.TestCase):
             self.check_operation(testfile.name)
         finally:
             gammu.SetDebugFile(None)
-            os.unlink(testfile.name)
+            pathlib.Path(testfile.name).unlink()
 
     def test_none(self):
         gammu.SetDebugFile(None)
@@ -137,8 +135,8 @@ class DebugTest(unittest.TestCase):
         try:
             gammu.SetDebugFile(testfile.name)
             self.check_operation(None)
-            with open(testfile.name) as handle:
-                self.assertEqual("", handle.read())
+            with pathlib.Path(testfile.name).open() as handle:
+                assert handle.read() == ""
         finally:
             gammu.SetDebugFile(None)
-            os.unlink(testfile.name)
+            pathlib.Path(testfile.name).unlink()

@@ -20,6 +20,8 @@
 #
 import asyncio
 
+import pytest
+
 import gammu.asyncworker
 
 from .test_dummy import DummyTest
@@ -93,9 +95,9 @@ class AsyncWorkerDummyTest(DummyTest):
             "Number": "555-555-1234",
         }
         self.results.append(("SendSMS", await worker.send_sms_async(message)))
-        with self.assertRaises(TypeError):
+        with pytest.raises(TypeError):
             await worker.send_sms_async(42)
-        with self.assertRaises(Exception):
+        with pytest.raises(Exception):
             await worker.send_sms_async(dict(42))
         self.results.append(
             (
@@ -109,4 +111,4 @@ class AsyncWorkerDummyTest(DummyTest):
 
         self.results.append(("Terminate", await worker.terminate_async()))
         self.maxDiff = None
-        self.assertEqual(WORKER_EXPECT, self.results)
+        assert self.results == WORKER_EXPECT

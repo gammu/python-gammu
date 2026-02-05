@@ -337,13 +337,13 @@ class WorkerDummyTest(DummyTest):
         # Remove GetDateTime from comparing as the value changes
         for i in range(len(self.results)):
             if self.results[i][0] == "GetDateTime":
-                self.assertEqual(self.results[i][2], "ERR_NONE")
-                self.assertEqual(self.results[i][3], 100)
+                assert self.results[i][2] == "ERR_NONE"
+                assert self.results[i][3] == 100
                 del self.results[i]
                 break
 
         self.maxDiff = None
-        self.assertEqual(WORKER_EXPECT, self.results)
+        assert self.results == WORKER_EXPECT
 
     def test_incoming(self):
         self.check_incoming_call()
@@ -356,4 +356,4 @@ class WorkerDummyTest(DummyTest):
         worker.enqueue("SetIncomingCall")
         self.fake_incoming_call()
         worker.terminate()
-        self.assertTrue(self._called)
+        assert self._called

@@ -62,8 +62,8 @@ class PDUTest(unittest.TestCase):
 
     def test_decode(self):
         sms = gammu.DecodePDU(PDU_DATA)
-        self.assertEqual(sms["Number"], "604865888")
-        self.assertEqual(sms["Text"], "Delivered")
+        assert sms["Number"] == "604865888"
+        assert sms["Text"] == "Delivered"
 
     def do_smstest(self, smsinfo, expected):
         # encode SMSes
@@ -73,7 +73,7 @@ class PDUTest(unittest.TestCase):
         decodedsms = gammu.DecodeSMS(sms)
 
         # compare text
-        self.assertEqual(decodedsms["Entries"][0]["Buffer"], expected)
+        assert decodedsms["Entries"][0]["Buffer"] == expected
 
         # do conversion to PDU
         pdu = [gammu.EncodePDU(s) for s in sms]
@@ -85,7 +85,7 @@ class PDUTest(unittest.TestCase):
         decodedsms = gammu.DecodeSMS(pdusms)
 
         # compare PDU results
-        self.assertEqual(decodedsms["Entries"][0]["Buffer"], expected)
+        assert decodedsms["Entries"][0]["Buffer"] == expected
 
     def test_encode_plain(self):
         smsinfo = {"Entries": [{"ID": "ConcatenatedTextLong", "Buffer": MESSAGE}]}
@@ -116,7 +116,7 @@ class PDUTest(unittest.TestCase):
         decodedsms = gammu.DecodeSMS(linked[0])
 
         # compare results
-        self.assertTrue(decodedsms["Entries"][0]["Buffer"], MESSAGE)
+        assert decodedsms["Entries"][0]["Buffer"], MESSAGE
 
     def test_mms_decode(self):
         message = [
@@ -165,20 +165,10 @@ class PDUTest(unittest.TestCase):
         ]
 
         decoded = gammu.DecodeSMS(message)
-        self.assertEqual(
-            decoded["Entries"][0]["MMSIndicator"]["Address"],
-            "http://mmsc.labmctel.fr:9090/m33",
-        )
+        assert decoded["Entries"][0]["MMSIndicator"]["Address"] == "http://mmsc.labmctel.fr:9090/m33"
 
     def test_counter(self):
-        self.assertEqual(gammu.SMSCounter("foobar"), (1, 154))
+        assert gammu.SMSCounter("foobar") == (1, 154)
 
     def test_counter_long(self):
-        self.assertEqual(
-            gammu.SMSCounter(
-                "foobar fjsa;kjfkasdjfkljsklfjaskdljfkljasdfkljqilui143uu51o2"
-                "3rjhskdf jasdklfjasdklf jasdfkljasdlkfj;asd;lfjaskdljf431ou9"
-                "83jdfaskljfklsdjdkljasfl sdfjasdfkl jafklsda"
-            ),
-            (2, 156),
-        )
+        assert gammu.SMSCounter("foobar fjsa;kjfkasdjfkljsklfjaskdljfkljasdfkljqilui143uu51o2" "3rjhskdf jasdklfjasdklf jasdfkljasdlkfj;asd;lfjaskdljf431ou9" "83jdfaskljfklsdjdkljasfl sdfjasdfkl jafklsda") == (2, 156)

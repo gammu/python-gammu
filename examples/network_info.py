@@ -85,7 +85,7 @@ def main() -> None:
     get_network_info_with_name(state_machine)
 
     # You can also explore available networks in the database
-    print("\n" + "=" * 50)
+    print(f"\n{'=' * 50}")
     print("Example: Browsing the GSMNetworks database")
     print("=" * 50)
     print(f"Total networks in database: {len(gammu.GSMNetworks)}")

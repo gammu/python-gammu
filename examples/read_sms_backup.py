@@ -48,21 +48,21 @@ def main() -> None:
 
         part = message[0]
         print()
-        print("{:<15}: {}".format("Number", part["Number"]))
-        print("{:<15}: {}".format("Date", str(part["DateTime"])))
-        print("{:<15}: {}".format("State", part["State"]))
-        print("{:<15}: {}".format("Folder", part["Folder"]))
-        print("{:<15}: {}".format("Validity", part["SMSC"]["Validity"]))
+        print(f"{'Number':<15}: {part['Number']}")
+        print(f"{'Date':<15}: {part['DateTime']!s}")
+        print(f"{'State':<15}: {part['State']}")
+        print(f"{'Folder':<15}: {part['Folder']}")
+        print(f"{'Validity':<15}: {part['SMSC']['Validity']}")
         loc = []
         for part in message:
             loc.append(str(part["Location"]))
-        print("{:<15}: {}".format("Location(s)", ", ".join(loc)))
+        print(f"{'Location(s)':<15}: {', '.join(loc)}")
         if decoded is None:
-            print("\n{}".format(charsetencoder(part["Text"], "replace")[0]))
+            print(f"\n{charsetencoder(part['Text'], 'replace')[0]}")
         else:
             for entries in decoded["Entries"]:
                 print()
-                print("{:<15}: {}".format("Type", entries["ID"]))
+                print(f"{'Type':<15}: {entries['ID']}")
                 if entries["Bitmap"] is not None:
                     for bmp in entries["Bitmap"]:
                         print("Bitmap:")

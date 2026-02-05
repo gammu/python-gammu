@@ -41,7 +41,7 @@ class ServiceHandler:
         self.received_reply = True
 
         print("Network reply:")
-        print("Status: {}".format(data["Status"]))
+        print(f"Status: {data['Status']}")
         print(data["Text"])
 
         if data["Status"] == "ActionNeeded":

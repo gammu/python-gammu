@@ -70,13 +70,13 @@ async def get_network_info(worker) -> None:
 async def get_info(worker) -> None:
     print("Phone information:")
     manufacturer = await worker.get_manufacturer_async()
-    print("{:<15}: {}".format("Manufacturer", manufacturer))
+    print(f"{'Manufacturer':<15}: {manufacturer}")
     model = await worker.get_model_async()
-    print("{:<15}: {} ({})".format("Model", model[0], model[1]))
+    print(f"{'Model':<15}: {model[0]} ({model[1]})")
     imei = await worker.get_imei_async()
-    print("{:<15}: {}".format("IMEI", imei))
+    print(f"{'IMEI':<15}: {imei}")
     firmware = await worker.get_firmware_async()
-    print("{:<15}: {}".format("Firmware", firmware[0]))
+    print(f"{'Firmware':<15}: {firmware[0]}")
 
 
 async def main() -> None:
@@ -101,7 +101,7 @@ async def main() -> None:
         while 1:
             try:
                 signal = await worker.get_signal_quality_async()
-                print("Signal is at {:d}%".format(signal["SignalPercent"]))
+                print(f"Signal is at {signal['SignalPercent']:d}%")
             except Exception as e:  # noqa: BLE001
                 print(f"Exception reading signal: {e}")
 

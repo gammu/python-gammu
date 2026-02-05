@@ -50,7 +50,7 @@ while remain > 0:
 
     # Display it
     print()
-    print("{:<20}: {:d}".format("Location", entry["Location"]))
-    print("{:<20}: {}".format("Type", entry["Type"]))
+    print(f"{'Location':<20}: {entry['Location']:d}")
+    print(f"{'Type':<20}: {entry['Type']}")
     for v in entry["Entries"]:
-        print("{:<20}: {}".format(v["Type"], str(v["Value"])))
+        print(f"{v['Type']:<20}: {v['Value']!s}")

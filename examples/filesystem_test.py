@@ -113,7 +113,7 @@ def main() -> None:  # noqa: PLR0912, PLR0915, C901
     # Check DeleteFile
     print("\n\nExpectation: Deleting cgi.jpg from memorycard")
     try:
-        state_machine.DeleteFile(args.folder + "/cgi.jpg")
+        state_machine.DeleteFile(f"{args.folder}/cgi.jpg")
     except gammu.ERR_FILENOTEXIST:
         print("Oh well - we copy it now ;-) (You SHOULD read this)")
 
@@ -145,7 +145,7 @@ def main() -> None:  # noqa: PLR0912, PLR0915, C901
     # Check GetFilePart
     print("\n\nExpectation: Get cgi.jpg from memorycard and write it as test.jpg")
     with open("./test.jpg", "wb") as handle:
-        file_f = {"ID_FullName": args.folder + "/cgi.jpg", "Finished": 0}
+        file_f = {"ID_FullName": f"{args.folder}/cgi.jpg", "Finished": 0}
         while not file_f["Finished"]:
             file_f = state_machine.GetFilePart(file_f)
         handle.write(file_f["Buffer"])
@@ -167,7 +167,7 @@ def main() -> None:  # noqa: PLR0912, PLR0915, C901
     try:
         file_obj = state_machine.GetNextRootFolder("")
         while 1:
-            print(file_obj["ID_FullName"] + " - " + file_obj["Name"])
+            print(f"{file_obj['ID_FullName']} - {file_obj['Name']}")
             try:
                 file_obj = state_machine.GetNextRootFolder(file_obj["ID_FullName"])
             except gammu.ERR_EMPTY:
@@ -191,31 +191,14 @@ def main() -> None:  # noqa: PLR0912, PLR0915, C901
                 attribute += "H"
             if file_f["System"]:
                 attribute += "S"
-            print(
-                "ID:         "
-                + file_f["ID_FullName"]
-                + "\n"
-                + "Name:       "
-                + file_f["Name"]
-                + "\n"
-                + "Folder:     "
-                + str(file_f["Folder"])
-                + "\n"
-                + "Used:       "
-                + str(file_f["Used"])
-                + "\n"
-                + "Modified:   "
-                + file_f["Modified"].strftime("%x %X")
-                + "\n"
-                + "Type:       "
-                + file_f["Type"]
-                + "\n"
-                + "Level:      "
-                + str(file_f["Level"])
-                + "\n"
-                + "Attribute:  "
-                + attribute
-            )
+            print(f"ID:         {file_f['ID_FullName']}")
+            print(f"Name:       {file_f['Name']}")
+            print(f"Folder:     {file_f['Folder']!s}")
+            print(f"Used:       {file_f['Used']!s}")
+            print(f"Modified:   {file_f['Modified'].strftime('%x %X')}")
+            print(f"Type:       {file_f['Type']}")
+            print(f"Level:      {file_f['Level']!s}")
+            print(f"Attribute:  {attribute}")
 
             break
 
@@ -225,7 +208,7 @@ def main() -> None:  # noqa: PLR0912, PLR0915, C901
         "\n\nExpectation: Modifying attributes "
         "(readonly=1, protected=0, system=1, hidden=1)"
     )
-    state_machine.SetFileAttributes(args.folder + "/cgi.jpg"), 1, 0, 1, 1
+    state_machine.SetFileAttributes(f"{args.folder}/cgi.jpg"), 1, 0, 1, 1
 
     # Check GetFolderListing
     print("\n\nExpectation: Listing of cgi.jpg's properties")
@@ -243,38 +226,21 @@ def main() -> None:  # noqa: PLR0912, PLR0915, C901
                 attribute += "H"
             if file_f["System"]:
                 attribute += "S"
-            print(
-                "ID:         "
-                + file_f["ID_FullName"]
-                + "\n"
-                + "Name:       "
-                + file_f["Name"]
-                + "\n"
-                + "Folder:     "
-                + str(file_f["Folder"])
-                + "\n"
-                + "Used:       "
-                + str(file_f["Used"])
-                + "\n"
-                + "Modified:   "
-                + file_f["Modified"].strftime("%x %X")
-                + "\n"
-                + "Type:       "
-                + file_f["Type"]
-                + "\n"
-                + "Level:      "
-                + str(file_f["Level"])
-                + "\n"
-                + "Attribute:  "
-                + attribute
-            )
+            print(f"ID:         {file_f['ID_FullName']}")
+            print(f"Name:       {file_f['Name']}")
+            print(f"Folder:     {file_f['Folder']!s}")
+            print(f"Used:       {file_f['Used']!s}")
+            print(f"Modified:   {file_f['Modified'].strftime('%x %X')}")
+            print(f"Type:       {file_f['Type']}")
+            print(f"Level:      {file_f['Level']!s}")
+            print(f"Attribute:  {attribute}")
 
             break
 
     # Check DeleteFile
     print("\n\nExpectation: Deletion of cgi.jpg from memorycard")
     try:
-        state_machine.DeleteFile(args.folder + "cgi.jpg")
+        state_machine.DeleteFile(f"{args.folder}cgi.jpg")
         print("Deleted")
     except gammu.ERR_FILENOTEXIST:
         print("Something is wrong ...")
@@ -299,37 +265,20 @@ def main() -> None:  # noqa: PLR0912, PLR0915, C901
                 attribute += "H"
             if file_f["System"]:
                 attribute += "S"
-            print(
-                "ID:         "
-                + file_f["ID_FullName"]
-                + "\n"
-                + "Name:       "
-                + file_f["Name"]
-                + "\n"
-                + "Folder:     "
-                + str(file_f["Folder"])
-                + "\n"
-                + "Used:       "
-                + str(file_f["Used"])
-                + "\n"
-                + "Modified:   "
-                + file_f["Modified"].strftime("%x %X")
-                + "\n"
-                + "Type:       "
-                + file_f["Type"]
-                + "\n"
-                + "Level:      "
-                + str(file_f["Level"])
-                + "\n"
-                + "Attribute:  "
-                + attribute
-            )
+            print(f"ID:         {file_f['ID_FullName']}")
+            print(f"Name:       {file_f['Name']}")
+            print(f"Folder:     {file_f['Folder']!s}")
+            print(f"Used:       {file_f['Used']!s}")
+            print(f"Modified:   {file_f['Modified'].strftime('%x %X')}")
+            print(f"Type:       {file_f['Type']}")
+            print(f"Level:      {file_f['Level']!s}")
+            print(f"Attribute:  {attribute}")
 
             break
 
     # Check DeleteFolder
     print('\n\nExpectation: Deletion of previously created folder "42alpha"')
-    state_machine.DeleteFolder(args.folder + "/42alpha")
+    state_machine.DeleteFolder(f"{args.folder}/42alpha")
 
 
 if __name__ == "__main__":

@@ -54,9 +54,9 @@ def main() -> None:
         remain -= 1
 
         print()
-        print("{:<15}: {:d}".format("Location", entry["Location"]))
+        print(f"{'Location':<15}: {entry['Location']:d}")
         for v in entry["Entries"]:
-            print("{:<15}: {}".format(v["Type"], str(v["Value"])))
+            print(f"{v['Type']:<15}: {v['Value']!s}")
 
 
 if __name__ == "__main__":

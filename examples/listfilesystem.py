@@ -127,21 +127,12 @@ def Main() -> None:
             # We have to catch the situations, where no Modification Time is
             # provided
             try:
-                time = file_obj["Modified"].strftime("%x %X") + ";"
+                time = f"{file_obj['Modified'].strftime('%x %X')};"
             except AttributeError:
                 time = ";"
 
             print(
-                file_obj["ID_FullName"]
-                + ";"
-                + file_obj["Name"]
-                + ";"
-                + file_obj["Type"]
-                + ";"
-                + time
-                + str(file_obj["Used"])
-                + ";"
-                + FileToAttributeString(file_obj, 0)
+                f"{file_obj['ID_FullName']};{file_obj['Name']};{file_obj['Type']};{time}{file_obj['Used']!s};{FileToAttributeString(file_obj, 0)}"
             )
         elif mode == "level":
             attrib = FileToAttributeString(file_obj, 1)
@@ -152,9 +143,9 @@ def Main() -> None:
             if level > 1:
                 spacer += " |-- "
 
-            title = '"' + file_obj["Name"] + '"'
+            title = f'"{file_obj["Name"]}"'
             if file_obj["Folder"]:
-                title = "Folder " + title
+                title = f"Folder {title}"
             print(attrib + spacer + title)
         file_obj = NextFile()
 

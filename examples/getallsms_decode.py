@@ -55,21 +55,21 @@ for x in data:
 
     m = x[0]
     print()
-    print("{:<15}: {}".format("Number", m["Number"]))
-    print("{:<15}: {}".format("Date", str(m["DateTime"])))
-    print("{:<15}: {}".format("State", m["State"]))
-    print("{:<15}: {}".format("Folder", m["Folder"]))
-    print("{:<15}: {}".format("Validity", m["SMSC"]["Validity"]))
+    print(f"{'Number':<15}: {m['Number']}")
+    print(f"{'Date':<15}: {m['DateTime']!s}")
+    print(f"{'State':<15}: {m['State']}")
+    print(f"{'Folder':<15}: {m['Folder']}")
+    print(f"{'Validity':<15}: {m['SMSC']['Validity']}")
     loc = []
     for m in x:
         loc.append(str(m["Location"]))
-    print("{:<15}: {}".format("Location(s)", ", ".join(loc)))
+    print(f"{'Location(s)':<15}: {', '.join(loc)}")
     if v is None:
-        print("\n{}".format(m["Text"]))
+        print(f"\n{m['Text']}")
     else:
         for e in v["Entries"]:
             print()
-            print("{:<15}: {}".format("Type", e["ID"]))
+            print(f"{'Type':<15}: {e['ID']}")
             if e["Bitmap"] is not None:
                 for bmp in e["Bitmap"]:
                     print("Bitmap:")

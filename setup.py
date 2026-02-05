@@ -37,12 +37,6 @@ from setuptools import Extension, setup
 VERSION = "3.2.4"
 GAMMU_REQUIRED = "1.37.90"
 
-# readme
-THIS_DIRECTORY = os.path.abspath(os.path.dirname(__file__))
-README_FILE = os.path.join(THIS_DIRECTORY, "README.rst")
-with open(README_FILE, encoding="utf-8") as readme:
-    LONG_DESCRIPTION = readme.read()
-
 
 class GammuConfig:
     def __init__(self):

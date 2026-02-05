@@ -43,7 +43,7 @@ class GammuConfig:
         self.path = self.lookup_path()
         self.use_pkgconfig = self.has_pkgconfig and not self.has_env
 
-    def check_pkconfig(self) -> bool | None:
+    def check_pkconfig(self) -> bool:
         try:
             subprocess.check_output(["pkg-config", "--help"])
             return True

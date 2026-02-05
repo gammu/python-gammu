@@ -24,6 +24,7 @@ import os.path
 import pathlib
 import platform
 import shutil
+import stat
 import tempfile
 import unittest
 
@@ -385,8 +386,6 @@ class BasicDummyTest(DummyTest):  # noqa: PLR0904
 
     def test_save_ringtone_permissions(self) -> None:
         """Test that SaveRingtone creates files with restrictive permissions."""
-        import stat
-        
         # Create a simple ringtone dictionary
         ringtone = {
             "Name": "Test",
@@ -395,14 +394,11 @@ class BasicDummyTest(DummyTest):  # noqa: PLR0904
             ]
         }
         
-        # Create a temporary file path
-        with tempfile.NamedTemporaryFile(mode='w', delete=False, suffix='.rttl') as f:
-            temp_file = f.name
+        # Create a unique temporary file path
+        temp_dir = tempfile.gettempdir()
+        temp_file = os.path.join(temp_dir, f"test_ringtone_{os.getpid()}.rttl")
         
         try:
-            # Remove the file so SaveRingtone can create it
-            os.unlink(temp_file)
-            
             # Save the ringtone
             gammu.SaveRingtone(temp_file, ringtone, "rttl")
             

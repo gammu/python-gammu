@@ -150,8 +150,6 @@ ignore = [
   "DTZ001",
   "DTZ006",
   "E501",  # WONTFIX: we accept long strings (rest is formatted by black)
-  "EM101",
-  "EM102",
   "FBT003",
   "FIX002",
   "N802",

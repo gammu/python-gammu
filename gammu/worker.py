@@ -185,8 +185,9 @@ class GammuThread(threading.Thread):
 
     def run(self) -> None:
         """
-        Thread body, which handles phone communication. This should not
-        be used from outside.
+        Thread body, which handles phone communication.
+
+        This should not be used from outside.
         """
         start = True
         while not self._kill:
@@ -233,9 +234,10 @@ class GammuThread(threading.Thread):
 
 class GammuWorker:
     """
-    Wrapper class for asynchronous communication with Gammu. It spawns
-    own thread and then passes all commands to this thread. When task is
-    done, caller is notified via callback.
+    Wrapper class for asynchronous communication with Gammu.
+
+    It spawns own thread and then passes all commands to this thread. When task
+    is done, caller is notified via callback.
     """
 
     def __init__(self, callback, pull_func=gammu_pull_device) -> None:

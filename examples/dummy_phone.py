@@ -20,8 +20,10 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #
 """
-python-gammu - Test script to test several Gammu operations
-(usually using dummy driver, but it depends on config).
+Dummy driver example.
+
+Test script to test several Gammu operations (usually using dummy driver, but
+it depends on config).
 """
 
 import sys

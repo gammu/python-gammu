@@ -25,70 +25,69 @@ import sys
 
 import gammu
 
-REPLY = False
 
+class ServiceHandler:
+    received_reply = False
 
-def callback(state_machine, callback_type, data) -> None:
-    """Callback on USSD data."""
-    global REPLY
-    if callback_type != "USSD":
-        print(f"Unexpected event type: {callback_type}")
-        sys.exit(1)
+    def __init__(self) -> None:
+        self.state_machine = self.get_state_machine()
 
-    REPLY = True
+    def callback(self, callback_type, data) -> None:
+        """Callback on USSD data."""
+        if callback_type != "USSD":
+            print(f"Unexpected event type: {callback_type}")
+            sys.exit(1)
 
-    print("Network reply:")
-    print("Status: {}".format(data["Status"]))
-    print(data["Text"])
+        self.received_reply = True
 
-    if data["Status"] == "ActionNeeded":
-        do_service(state_machine)
+        print("Network reply:")
+        print("Status: {}".format(data["Status"]))
+        print(data["Text"])
 
+        if data["Status"] == "ActionNeeded":
+            self.do_service()
 
-def init():
-    """Initializes gammu and callbacks."""
-    state_machine = gammu.StateMachine()
-    if len(sys.argv) >= 2:
-        state_machine.ReadConfig(Filename=sys.argv[1])
-    else:
-        state_machine.ReadConfig()
-    state_machine.Init()
-    state_machine.SetIncomingCallback(callback)
-    try:
-        state_machine.SetIncomingUSSD()
-    except gammu.ERR_NOTSUPPORTED:
-        print("Incoming USSD notification is not supported.")
-        sys.exit(1)
-    return state_machine
-
-
-def do_service(state_machine) -> None:
-    """Main code to talk with worker."""
-    global REPLY
-
-    if len(sys.argv) >= 3:
-        code = sys.argv[2]
-        del sys.argv[2]
-    else:
-        prompt = "Enter code (empty string to end): "
+    def get_state_machine(self):
+        """Initializes gammu and callbacks."""
+        state_machine = gammu.StateMachine()
+        if len(sys.argv) >= 2:
+            state_machine.ReadConfig(Filename=sys.argv[1])
+        else:
+            state_machine.ReadConfig()
+        state_machine.Init()
+        state_machine.SetIncomingCallback(self.callback)
         try:
-            code = raw_input(prompt)
-        except NameError:
-            code = input(prompt)
-    if code != "":
-        print("Talking to network...")
-        REPLY = False
-        state_machine.DialService(code)
-        loops = 0
-        while not REPLY and loops < 10:
-            state_machine.ReadDevice()
-            loops += 1
+            state_machine.SetIncomingUSSD()
+        except gammu.ERR_NOTSUPPORTED:
+            print("Incoming USSD notification is not supported.")
+            sys.exit(1)
+        return state_machine
+
+    def do_service(self) -> None:
+        """Main code to talk with worker."""
+        if len(sys.argv) >= 3:
+            code = sys.argv[2]
+            del sys.argv[2]
+        else:
+            prompt = "Enter code (empty string to end): "
+            try:
+                code = raw_input(prompt)
+            except NameError:
+                code = input(prompt)
+        if code != "":
+            print("Talking to network...")
+            self.received_reply = False
+            self.state_machine.DialService(code)
+            loops = 0
+            while not self.received_reply and loops < 10:
+                self.state_machine.ReadDevice()
+                loops += 1
 
 
 def main() -> None:
-    state_machine = init()
     print("This example shows interaction with network using service codes")
-    do_service(state_machine)
+    service = ServiceHandler()
+    service.do_service()
 
 
 if __name__ == "__main__":

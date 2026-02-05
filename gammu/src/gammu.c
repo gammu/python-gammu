@@ -32,10 +32,9 @@
 
 /* File creation and permissions */
 #include <sys/stat.h>
+#include <fcntl.h>
 #ifdef _WIN32
 #include <io.h>
-#else
-#include <fcntl.h>
 #endif
 
 /* Strings */

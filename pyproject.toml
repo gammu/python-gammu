@@ -154,7 +154,6 @@ ignore = [
   "EM102",
   "ERA001",
   "FBT003",
-  "FURB101",
   "N802",
   "N818",
   "PERF203",  # WONFIX: affects only old Python versions

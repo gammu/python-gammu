@@ -43,7 +43,7 @@ class GammuConfig:
         self.path = self.lookup_path()
         self.use_pkgconfig = self.has_pkgconfig and not self.has_env
 
-    def check_pkconfig(self) -> bool | None:
+    def check_pkconfig(self) -> bool:
         try:
             subprocess.check_output(["pkg-config", "--help"])
             return True
@@ -151,11 +151,13 @@ def get_module():
     config = GammuConfig()
     config.check_version()
 
+    version_parts = VERSION.split(".")
+
     module = Extension(
         "gammu._gammu",
         define_macros=[
-            ("PYTHON_GAMMU_MAJOR_VERSION", VERSION.split(".", maxsplit=1)[0]),
-            ("PYTHON_GAMMU_MINOR_VERSION", VERSION.split(".")[1]),
+            ("PYTHON_GAMMU_MAJOR_VERSION", version_parts[0]),
+            ("PYTHON_GAMMU_MINOR_VERSION", version_parts[1]),
         ],
         libraries=config.get_libs(),
         include_dirs=["include/"],

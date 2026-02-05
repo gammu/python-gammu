@@ -117,9 +117,7 @@ class GammuConfig:
             return output.replace("-l", "").strip().split()
         libs = ["Gammu", "gsmsd"]
         if self.on_windows:
-            libs.append("Advapi32")
-            libs.append("shfolder")
-            libs.append("shell32")
+            libs.extend(("Advapi32", "shfolder", "shell32"))
         else:
             libs.append("m")
         return libs

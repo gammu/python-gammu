@@ -158,7 +158,6 @@ ignore = [
   "N802",
   "N818",
   "PERF203",  # WONFIX: affects only old Python versions
-  "PLC1901",
   "PLR2004",
   "PLR6301",
   "PTH",

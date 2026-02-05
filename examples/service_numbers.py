@@ -74,7 +74,7 @@ class ServiceHandler:
                 code = raw_input(prompt)
             except NameError:
                 code = input(prompt)
-        if code != "":
+        if code:
             print("Talking to network...")
             self.received_reply = False
             self.state_machine.DialService(code)

@@ -29,8 +29,8 @@ def main() -> None:
         print(f".. exception:: gammu.{exc}")
         print()
         doc = getattr(gammu.exception, exc).__doc__
-        for doc in doc.splitlines():
-            print(f"    {doc}")
+        for line in doc.splitlines():
+            print(f"    {line}")
         print()
 
 

@@ -142,6 +142,7 @@ ignore = [
   "D205",
   "D206",  # CONFIG: formatter
   "D212",  # CONFIG: incompatible with D213
+  "D213",
   "D401",
   "D404",
   "DOC201",
@@ -149,6 +150,8 @@ ignore = [
   "DTZ001",
   "DTZ006",
   "E501",  # WONTFIX: we accept long strings (rest is formatted by black)
+  "EM101",
+  "EM102",
   "ERA001",
   "FBT003",
   "FURB101",
@@ -161,11 +164,12 @@ ignore = [
   "PLR2004",
   "PLR6301",
   "PLW0603",
+  "PLW1514",
   "PT011",
   "PT027",
   "PTH",
-  "PLW1514",
   "PYI056",
+  "RSE102",
   "RUF012",
   "S101",
   "S110",
@@ -174,12 +178,9 @@ ignore = [
   "S607",
   "SIM115",
   "SLF001",
-  "TRY300",
-  "EM102",
-  "RSE102",
-  "D213",
-  "UP032",
   "TRY003",
+  "TRY300",
+  "UP032"
 ]
 preview = true
 select = ["ALL"]

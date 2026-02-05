@@ -65,7 +65,9 @@ class DummyTest(unittest.TestCase):
         self.dummy_dir = os.path.join(self.test_dir, "gammu-dummy")
         self.config_name = os.path.join(self.test_dir, ".gammurc")
         shutil.copytree(DUMMY_DIR, self.dummy_dir)
-        pathlib.Path(self.config_name).write_text(CONFIGURATION.format(path=self.test_dir))
+        pathlib.Path(self.config_name).write_text(
+            CONFIGURATION.format(path=self.test_dir)
+        )
 
     def tearDown(self) -> None:
         if self._state_machine:
@@ -97,7 +99,7 @@ class DummyTest(unittest.TestCase):
         assert data["Number"] == "+800123456"
 
 
-class BasicDummyTest(DummyTest):
+class BasicDummyTest(DummyTest):  # noqa: PLR0904
     def test_model(self) -> None:
         state_machine = self.get_statemachine()
         assert state_machine.GetModel()[1] == "Dummy"
@@ -105,11 +107,20 @@ class BasicDummyTest(DummyTest):
     def test_diverts(self) -> None:
         state_machine = self.get_statemachine()
         diverts = state_machine.GetCallDivert()
-        assert diverts == [{"CallType": "All", "Timeout": 0, "Number": "", "DivertType": "AllTypes"}]
+        assert diverts == [
+            {"CallType": "All", "Timeout": 0, "Number": "", "DivertType": "AllTypes"}
+        ]
 
         state_machine.SetCallDivert("AllTypes", "All", "123456789")
         diverts = state_machine.GetCallDivert()
-        assert diverts == [{"CallType": "All", "Timeout": 0, "Number": "123456789", "DivertType": "AllTypes"}]
+        assert diverts == [
+            {
+                "CallType": "All",
+                "Timeout": 0,
+                "Number": "123456789",
+                "DivertType": "AllTypes",
+            }
+        ]
 
     def test_dial(self) -> None:
         state_machine = self.get_statemachine()
@@ -118,7 +129,17 @@ class BasicDummyTest(DummyTest):
     def test_battery(self) -> None:
         state_machine = self.get_statemachine()
         status = state_machine.GetBatteryCharge()
-        assert status == {"BatteryVoltage": 4200, "PhoneTemperature": 22, "BatteryTemperature": 22, "ChargeState": "BatteryConnected", "ChargeVoltage": 4200, "BatteryCapacity": 2000, "BatteryPercent": 100, "ChargeCurrent": 0, "PhoneCurrent": 500}
+        assert status == {
+            "BatteryVoltage": 4200,
+            "PhoneTemperature": 22,
+            "BatteryTemperature": 22,
+            "ChargeState": "BatteryConnected",
+            "ChargeVoltage": 4200,
+            "BatteryCapacity": 2000,
+            "BatteryPercent": 100,
+            "ChargeCurrent": 0,
+            "PhoneCurrent": 500,
+        }
 
     def test_memory(self) -> None:
         state_machine = self.get_statemachine()
@@ -279,7 +300,13 @@ class BasicDummyTest(DummyTest):
     def test_filesystem(self) -> None:
         state_machine = self.get_statemachine()
         fs_info = state_machine.GetFileSystemStatus()
-        assert fs_info == {"UsedImages": 0, "Used": 1000000, "UsedThemes": 0, "Free": 10101, "UsedSounds": 0}
+        assert fs_info == {
+            "UsedImages": 0,
+            "Used": 1000000,
+            "UsedThemes": 0,
+            "Free": 10101,
+            "UsedSounds": 0,
+        }
 
     def test_deletefile(self) -> None:
         state_machine = self.get_statemachine()

@@ -373,7 +373,7 @@ class BasicDummyTest(DummyTest):  # noqa: PLR0904
         file_f = state_machine.GetNextFileFolder(1)
         folders = 0
         files = 0
-        while 1:
+        while True:
             if file_f["Folder"]:
                 folders += 1
             else:

@@ -8,3 +8,4 @@ python_gammu.egg-info/
 .coverage
 /.cache/
 _codeql_detected_source_root
+/uv.lock

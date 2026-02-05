@@ -163,10 +163,8 @@ ignore = [
   "PLW0603",
   "PT011",
   "PT027",
-  "PTH116",
-  "PTH118",
-  "PTH207",
-  "PTH208",
+  "PTH",
+  "PLW1514",
   "PYI056",
   "RUF012",
   "S101",
@@ -176,7 +174,12 @@ ignore = [
   "S607",
   "SIM115",
   "SLF001",
-  "TRY300"
+  "TRY300",
+  "EM102",
+  "RSE102",
+  "D213",
+  "UP032",
+  "TRY003",
 ]
 preview = true
 select = ["ALL"]

@@ -19,9 +19,9 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #
 import unittest
+from typing import NoReturn
 
 import gammu.exception
-from typing import NoReturn
 
 
 def error_function() -> NoReturn:

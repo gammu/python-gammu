@@ -22,10 +22,10 @@
 
 
 import os
+import pathlib
 import sys
 
 import gammu
-import pathlib
 
 
 def main() -> None:

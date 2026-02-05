@@ -63,7 +63,8 @@ class GammuAsyncWorker(gammu.worker.GammuWorker):
                 self._loop.call_soon_threadsafe(future.set_exception, exception)
 
     def __init__(self, pull_func=gammu_pull_device) -> None:
-        """Initialize the worker class.
+        """
+        Initialize the worker class.
 
         @param callback: See L{GammuThread.__init__} for description.
         """

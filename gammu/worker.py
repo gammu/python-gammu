@@ -18,7 +18,8 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #
-"""Asynchronous communication to phone.
+"""
+Asynchronous communication to phone.
 
 Mostly you should use only L{GammuWorker} class, others are only helpers
 which are used by this class.
@@ -34,7 +35,8 @@ class InvalidCommand(Exception):
     """Exception indicating invalid command."""
 
     def __init__(self, value) -> None:
-        """Initializes exception.
+        """
+        Initializes exception.
 
         @param value: Name of wrong command.
         @type value: string
@@ -48,7 +50,8 @@ class InvalidCommand(Exception):
 
 
 def check_worker_command(command) -> None:
-    """Checks whether command is valid.
+    """
+    Checks whether command is valid.
 
     @param command: Name of command.
     @type command: string
@@ -92,7 +95,8 @@ class GammuTask:
     """Storage of tasks for gammu."""
 
     def __init__(self, name, commands) -> None:
-        """Creates single command instance.
+        """
+        Creates single command instance.
 
         @param name: Name of task.
         @type name: string
@@ -134,7 +138,8 @@ class GammuThread(threading.Thread):
     """Thread for phone communication."""
 
     def __init__(self, queue, config, callback, pull_func=gammu_pull_device) -> None:
-        """Initialises thread data.
+        """
+        Initialises thread data.
 
         @param queue: Queue with events.
         @type queue: queue.Queue object.
@@ -179,7 +184,8 @@ class GammuThread(threading.Thread):
         self._callback(name, result, error, percentage)
 
     def run(self) -> None:
-        """Thread body, which handles phone communication. This should not
+        """
+        Thread body, which handles phone communication. This should not
         be used from outside.
         """
         start = True
@@ -226,13 +232,15 @@ class GammuThread(threading.Thread):
 
 
 class GammuWorker:
-    """Wrapper class for asynchronous communication with Gammu. It spawns
+    """
+    Wrapper class for asynchronous communication with Gammu. It spawns
     own thread and then passes all commands to this thread. When task is
     done, caller is notified via callback.
     """
 
     def __init__(self, callback, pull_func=gammu_pull_device) -> None:
-        """Initializes worker class.
+        """
+        Initializes worker class.
 
         @param callback: See L{GammuThread.__init__} for description.
         """
@@ -244,7 +252,8 @@ class GammuWorker:
         self._pull_func = pull_func
 
     def enqueue_command(self, command, params) -> None:
-        """Enqueues command.
+        """
+        Enqueues command.
 
         @param command: Command(s) to execute. Each command is tuple
         containing function name and it's parameters.
@@ -255,7 +264,8 @@ class GammuWorker:
         self._queue.put(GammuTask(command, [(command, params)]))
 
     def enqueue_task(self, command, commands) -> None:
-        """Enqueues task.
+        """
+        Enqueues task.
 
         @param command: Command(s) to execute. Each command is tuple
         containing function name and it's parameters.
@@ -266,7 +276,8 @@ class GammuWorker:
         self._queue.put(GammuTask(command, commands))
 
     def enqueue(self, command, params=None, commands=None) -> None:
-        """Enqueues command or task.
+        """
+        Enqueues command or task.
 
         @param command: Command(s) to execute. Each command is tuple
         containing function name and it's parameters.
@@ -283,7 +294,8 @@ class GammuWorker:
             self.enqueue_command(command, params)
 
     def configure(self, config) -> None:
-        """Configures gammu instance according to config.
+        """
+        Configures gammu instance according to config.
 
         @param config: Gammu configuration, same as
         L{StateMachine.SetConfig} accepts.

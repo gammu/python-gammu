@@ -46,7 +46,8 @@ MESSAGE_2 = {
 
 
 def get_script():
-    """Returns SQL script to create database.
+    """
+    Returns SQL script to create database.
 
     It returns correct script matching used Gammu version.
     """

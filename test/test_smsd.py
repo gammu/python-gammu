@@ -152,7 +152,7 @@ class SMSDDummyTest(DummyTest):
     def test_get_status_not_running(self) -> None:
         """
         Test that GetStatus raises exception when SMSD is not running.
-        
+
         This test verifies the fix for the issue where GetStatus would cause
         Python to exit instead of raising an exception when SMSD is not running.
         The fix disables the exit_on_failure flag in the SMSD config.

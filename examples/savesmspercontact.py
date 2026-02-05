@@ -54,7 +54,7 @@ def getFilename(mydir, mysms):
 
     nextitem = 0
     for i in myfiles:
-        match = re.match("^Unknown-([0-9]*)", i)
+        match = re.match(r"^Unknown-([0-9]*)", i)
         if match and int(match.group(1)) > nextitem:
             nextitem = int(match.group(1))
 

@@ -27,6 +27,7 @@ import tempfile
 import unittest
 
 import gammu
+import pathlib
 
 DUMMY_DIR = os.path.join(os.path.dirname(__file__), "data", "gammu-dummy")
 TEST_FILE = os.path.join(os.path.dirname(__file__), "data", "sqlite-14.sql")
@@ -64,8 +65,7 @@ class DummyTest(unittest.TestCase):
         self.dummy_dir = os.path.join(self.test_dir, "gammu-dummy")
         self.config_name = os.path.join(self.test_dir, ".gammurc")
         shutil.copytree(DUMMY_DIR, self.dummy_dir)
-        with open(self.config_name, "w") as handle:
-            handle.write(CONFIGURATION.format(path=self.test_dir))
+        pathlib.Path(self.config_name).write_text(CONFIGURATION.format(path=self.test_dir))
 
     def tearDown(self) -> None:
         if self._state_machine:
@@ -82,8 +82,7 @@ class DummyTest(unittest.TestCase):
     def fake_incoming_call(self) -> None:
         """Fake incoming call."""
         filename = os.path.join(self.dummy_dir, "incoming-call")
-        with open(filename, "w") as handle:
-            handle.write("\n")
+        pathlib.Path(filename).write_text("\n")
 
     def check_incoming_call(self) -> None:
         """Checks whether incoming call faking is supported."""
@@ -313,8 +312,7 @@ class BasicDummyTest(DummyTest):
         state_machine = self.get_statemachine()
         file_stat = os.stat(TEST_FILE)
         ttime = datetime.datetime.fromtimestamp(file_stat[8])
-        with open(TEST_FILE, "rb") as handle:
-            content = handle.read()
+        content = pathlib.Path(TEST_FILE).read_bytes()
         file_f = {
             "ID_FullName": "testfolder",
             "Name": "sqlite.sql",

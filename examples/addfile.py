@@ -25,6 +25,7 @@ import os
 import sys
 
 import gammu
+import pathlib
 
 
 def main() -> None:
@@ -32,8 +33,7 @@ def main() -> None:
         print("This requires two parameters: file to upload and path!")
         sys.exit(1)
 
-    with open(sys.argv[1], "rb") as handle:
-        data = handle.read()
+    data = pathlib.Path(sys.argv[1]).read_bytes()
 
     state_machine = gammu.StateMachine()
     state_machine.ReadConfig()

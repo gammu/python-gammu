@@ -51,7 +51,7 @@ import sys
 import gammu
 
 
-def main():
+def main() -> None:  # noqa: PLR0912, PLR0915, C901
     parser = argparse.ArgumentParser(usage="usage: %(prog)s [options]")
 
     parser.add_argument(

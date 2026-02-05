@@ -21,7 +21,7 @@
 #
 """
 python-gammu - Test script to test several Gammu operations
-(usually using dummy driver, but it depends on config)
+(usually using dummy driver, but it depends on config).
 """
 
 import sys

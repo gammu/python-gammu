@@ -394,9 +394,11 @@ class BasicDummyTest(DummyTest):  # noqa: PLR0904
             ]
         }
         
-        # Create a unique temporary file path
-        temp_dir = tempfile.gettempdir()
-        temp_file = os.path.join(temp_dir, f"test_ringtone_{os.getpid()}.rttl")
+        # Create a unique temporary file path using a secure method
+        # We need to close and delete it so SaveRingtone can create it
+        with tempfile.NamedTemporaryFile(mode='w', delete=False, suffix='.rttl') as f:
+            temp_file = f.name
+        os.unlink(temp_file)  # Remove it so SaveRingtone can create it fresh
         
         try:
             # Save the ringtone
@@ -420,9 +422,11 @@ class BasicDummyTest(DummyTest):  # noqa: PLR0904
                 assert (file_mode & stat.S_IRUSR) != 0, f"Owner missing read permission: {oct(file_mode)}"
                 assert (file_mode & stat.S_IWUSR) != 0, f"Owner missing write permission: {oct(file_mode)}"
         finally:
-            # Clean up
-            if os.path.exists(temp_file):
+            # Clean up - use try-except to handle case where file doesn't exist
+            try:
                 os.unlink(temp_file)
+            except FileNotFoundError:
+                pass
 
     def test_incoming_call(self) -> None:
         self.check_incoming_call()

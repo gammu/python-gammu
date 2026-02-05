@@ -396,7 +396,7 @@ class BasicDummyTest(DummyTest):  # noqa: PLR0904
         
         # Create a unique temporary file path using a secure method
         # We need to close and delete it so SaveRingtone can create it
-        with tempfile.NamedTemporaryFile(mode='w', delete=False, suffix='.rttl') as f:
+        with tempfile.NamedTemporaryFile(mode='wb', delete=False, suffix='.rttl') as f:
             temp_file = f.name
         os.unlink(temp_file)  # Remove it so SaveRingtone can create it fresh
         

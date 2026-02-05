@@ -27,7 +27,7 @@ import sys
 import gammu
 
 
-def main():
+def main() -> None:
     if len(sys.argv) != 3:
         print("This requires two parameters: file to upload and path!")
         sys.exit(1)

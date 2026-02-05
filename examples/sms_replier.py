@@ -30,7 +30,7 @@ import gammu
 VERBOSE = False
 
 
-def verbose_print(text):
+def verbose_print(text) -> None:
     if VERBOSE:
         print(text)
 
@@ -54,7 +54,7 @@ REPLIES = [
 ]
 
 
-def Callback(state_machine, callback_type, data):
+def Callback(state_machine, callback_type, data) -> None:
     verbose_print(f"Received incoming event type {callback_type}, data:")
     if callback_type != "SMS":
         print("Unsupported event!")
@@ -82,7 +82,7 @@ def Callback(state_machine, callback_type, data):
             break
 
 
-def main():
+def main() -> None:
     state_machine = gammu.StateMachine()
     state_machine.ReadConfig()
     state_machine.Init()

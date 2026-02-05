@@ -21,14 +21,15 @@
 import unittest
 
 import gammu.exception
+from typing import NoReturn
 
 
-def error_function():
+def error_function() -> NoReturn:
     raise gammu.exception.ERR_WRONGCRC()
 
 
 class ErrorTest(unittest.TestCase):
-    def test_catching(self):
+    def test_catching(self) -> None:
         self.assertRaises(
             gammu.exception.GSMError,
             error_function,

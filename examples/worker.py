@@ -31,7 +31,7 @@ import gammu
 import gammu.worker
 
 
-def callback(name, result, error, percents):
+def callback(name, result, error, percents) -> None:
     """Callback which is executed when something is done. Please remember
     this is called from different thread so it does not have to be save
     to work with GUI here.
@@ -55,7 +55,7 @@ def read_config():
     return state_machine.GetConfig()
 
 
-def main():
+def main() -> None:
     """Main code to talk with worker."""
     worker = gammu.worker.GammuWorker(callback)
     worker.configure(read_config())

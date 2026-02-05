@@ -26,7 +26,7 @@ import time
 import gammu
 
 
-def callback(state_machine, callback_type, data):
+def callback(state_machine, callback_type, data) -> None:
     """This callback receives notification about incoming event.
 
     @param state_machine: state machine which invoked action
@@ -40,7 +40,7 @@ def callback(state_machine, callback_type, data):
     print(data)
 
 
-def try_enable(call, name):
+def try_enable(call, name) -> None:
     try:
         call()
     except gammu.ERR_NOTSUPPORTED:
@@ -49,7 +49,7 @@ def try_enable(call, name):
         print(f"{name} notification is not enabled in Gammu.")
 
 
-def main():
+def main() -> None:
     # Create state machine
     state_machine = gammu.StateMachine()
     # Read gammurc

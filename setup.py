@@ -36,14 +36,14 @@ GAMMU_REQUIRED = "1.37.90"
 
 
 class GammuConfig:
-    def __init__(self):
+    def __init__(self) -> None:
         self.on_windows = platform.system() == "Windows"
         self.has_pkgconfig = self.check_pkconfig()
         self.has_env = "GAMMU_PATH" in os.environ
         self.path = self.lookup_path()
         self.use_pkgconfig = self.has_pkgconfig and not self.has_env
 
-    def check_pkconfig(self):
+    def check_pkconfig(self) -> bool | None:
         try:
             subprocess.check_output(["pkg-config", "--help"])
             return True
@@ -73,7 +73,7 @@ class GammuConfig:
             if os.path.exists(include):
                 return path
 
-    def check_version(self):
+    def check_version(self) -> None:
         if self.use_pkgconfig:
             try:
                 subprocess.check_output(

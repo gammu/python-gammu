@@ -28,7 +28,7 @@ import gammu
 class SurrogateTest(unittest.TestCase):
     """Test handling of Unicode surrogates in PDU decoding."""
 
-    def test_invalid_high_surrogate_alone(self):
+    def test_invalid_high_surrogate_alone(self) -> None:
         """Test that a high surrogate without a low surrogate is replaced with U+FFFD."""
         # Create a PDU with an invalid high surrogate (0xD800) followed by a regular char
         # PDU structure: SMSC info + PDU type + sender + ... + UDH + text
@@ -66,7 +66,7 @@ class SurrogateTest(unittest.TestCase):
         except UnicodeEncodeError as e:
             self.fail(f"UnicodeEncodeError should not be raised: {e}")
 
-    def test_valid_surrogate_pair(self):
+    def test_valid_surrogate_pair(self) -> None:
         """Test that valid surrogate pairs are correctly decoded to supplementary characters."""
         # Valid surrogate pair: D800 DC00 = U+10000
         # Create a PDU with a valid surrogate pair
@@ -98,7 +98,7 @@ class SurrogateTest(unittest.TestCase):
         except UnicodeEncodeError as e:
             self.fail(f"UnicodeEncodeError should not be raised: {e}")
 
-    def test_high_surrogate_with_invalid_low(self):
+    def test_high_surrogate_with_invalid_low(self) -> None:
         """Test that a high surrogate followed by invalid low surrogate is handled."""
         # High surrogate 0xD800 followed by invalid value 0x0100 (not a low surrogate)
         pdu_hex = (
@@ -128,7 +128,7 @@ class SurrogateTest(unittest.TestCase):
         except UnicodeEncodeError as e:
             self.fail(f"UnicodeEncodeError should not be raised: {e}")
 
-    def test_low_surrogate_alone(self):
+    def test_low_surrogate_alone(self) -> None:
         """Test that a standalone low surrogate is replaced with U+FFFD."""
         # Low surrogate 0xDC00 alone (without preceding high surrogate)
         pdu_hex = (

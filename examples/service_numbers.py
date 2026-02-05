@@ -28,7 +28,7 @@ import gammu
 REPLY = False
 
 
-def callback(state_machine, callback_type, data):
+def callback(state_machine, callback_type, data) -> None:
     """Callback on USSD data."""
     global REPLY
     if callback_type != "USSD":
@@ -62,7 +62,7 @@ def init():
     return state_machine
 
 
-def do_service(state_machine):
+def do_service(state_machine) -> None:
     """Main code to talk with worker."""
     global REPLY
 
@@ -85,7 +85,7 @@ def do_service(state_machine):
             loops += 1
 
 
-def main():
+def main() -> None:
     state_machine = init()
     print("This example shows interaction with network using service codes")
     do_service(state_machine)

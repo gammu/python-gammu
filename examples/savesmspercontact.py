@@ -28,7 +28,7 @@ import re
 import gammu
 
 
-def createFolderIfNotExist(path):
+def createFolderIfNotExist(path) -> None:
     try:
         os.makedirs(path)
     except OSError as exception:
@@ -62,7 +62,7 @@ def getFilename(mydir, mysms):
     return "Unknown-" + str(nextitem + 1)
 
 
-def saveSMS(mysms, all_contacts):
+def saveSMS(mysms, all_contacts) -> None:
     my_number = getInternationalizedNumber(mysms[0]["Number"])
 
     try:
@@ -153,7 +153,7 @@ def getAndDeleteAllSMS(state_machine):
     return entries
 
 
-def main():
+def main() -> None:
     # Get all contacts
     state_machine = gammu.StateMachine()
     state_machine.ReadConfig()

@@ -25,14 +25,14 @@ import gammu.data
 
 
 class DataTest(unittest.TestCase):
-    def test_connections(self):
+    def test_connections(self) -> None:
         assert "at" in gammu.data.Connections
 
-    def test_errors(self):
+    def test_errors(self) -> None:
         assert "ERR_INSTALL_NOT_FOUND" in gammu.data.Errors
         assert gammu.data.ErrorNumbers[73] == "ERR_NETWORK_ERROR"
 
-    def test_gsm_networks(self):
+    def test_gsm_networks(self) -> None:
         """Test that GSMNetworks dictionary is available and contains expected data."""
         # GSMNetworks should be a dictionary available from gammu module
         assert isinstance(gammu.GSMNetworks, dict)
@@ -43,7 +43,7 @@ class DataTest(unittest.TestCase):
         if "244 05" in gammu.GSMNetworks:
             assert gammu.GSMNetworks["244 05"] == "Elisa"
 
-    def test_gsm_countries(self):
+    def test_gsm_countries(self) -> None:
         """Test that GSMCountries dictionary is available and contains expected data."""
         # GSMCountries should be a dictionary available from gammu module
         assert isinstance(gammu.GSMCountries, dict)

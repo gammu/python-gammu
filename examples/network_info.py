@@ -67,7 +67,7 @@ def get_network_info_with_name(state_machine):
     return netinfo
 
 
-def main():
+def main() -> None:
     """Main function to demonstrate network info lookup."""
     # Create state machine
     state_machine = gammu.StateMachine()

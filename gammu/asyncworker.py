@@ -9,11 +9,11 @@ import gammu.worker
 class GammuAsyncThread(gammu.worker.GammuThread):
     """Thread for phone communication."""
 
-    def __init__(self, queue, config, callback, pull_func):
+    def __init__(self, queue, config, callback, pull_func) -> None:
         """Initialize thread."""
         super().__init__(queue, config, callback, pull_func)
 
-    def _do_command(self, future, cmd, params, percentage=100):
+    def _do_command(self, future, cmd, params, percentage=100) -> None:
         """Execute single command on phone."""
         func = getattr(self._sm, cmd)
         result = None
@@ -34,14 +34,14 @@ class GammuAsyncThread(gammu.worker.GammuThread):
             self._callback(future, result, None, percentage)
 
 
-def gammu_pull_device(sm):
+def gammu_pull_device(sm) -> None:
     sm.ReadDevice()
 
 
 class GammuAsyncWorker(gammu.worker.GammuWorker):
     """Extend gammu worker class for async operations."""
 
-    def worker_callback(self, name, result, error, percents):
+    def worker_callback(self, name, result, error, percents) -> None:
         """Execute command from the thread worker."""
         future = None
         if name == "Init" and self._init_future is not None:
@@ -62,7 +62,7 @@ class GammuAsyncWorker(gammu.worker.GammuWorker):
                     exception = gammu.GSMError(error)
                 self._loop.call_soon_threadsafe(future.set_exception, exception)
 
-    def __init__(self, pull_func=gammu_pull_device):
+    def __init__(self, pull_func=gammu_pull_device) -> None:
         """Initialize the worker class.
 
         @param callback: See L{GammuThread.__init__} for description.
@@ -74,7 +74,7 @@ class GammuAsyncWorker(gammu.worker.GammuWorker):
         self._thread = None
         self._pull_func = pull_func
 
-    async def init_async(self):
+    async def init_async(self) -> None:
         """Connect to phone."""
         self._init_future = self._loop.create_future()
 
@@ -144,7 +144,7 @@ class GammuAsyncWorker(gammu.worker.GammuWorker):
         result = await future
         return result
 
-    async def terminate_async(self):
+    async def terminate_async(self) -> None:
         """Terminate phone communication."""
         self._terminate_future = self._loop.create_future()
         self.enqueue("Terminate")

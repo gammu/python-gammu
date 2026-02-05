@@ -28,7 +28,7 @@ from .test_sms import PDU_DATA
 
 
 class ConfigTest(unittest.TestCase):
-    def test_config_bool(self):
+    def test_config_bool(self) -> None:
         state_machine = gammu.StateMachine()
         state_machine.SetConfig(
             0,
@@ -47,7 +47,7 @@ class ConfigTest(unittest.TestCase):
         cfg = state_machine.GetConfig(0)
         assert cfg["StartInfo"] == 1
 
-    def test_config_string(self):
+    def test_config_string(self) -> None:
         state_machine = gammu.StateMachine()
         state_machine.SetConfig(
             0,
@@ -66,7 +66,7 @@ class ConfigTest(unittest.TestCase):
         cfg = state_machine.GetConfig(0)
         assert cfg["StartInfo"] == 1
 
-    def test_config_none(self):
+    def test_config_none(self) -> None:
         state_machine = gammu.StateMachine()
         state_machine.SetConfig(
             0,
@@ -85,15 +85,15 @@ class ConfigTest(unittest.TestCase):
         cfg = state_machine.GetConfig(0)
         assert cfg["StartInfo"] == 0
 
-    def test_init_error(self):
+    def test_init_error(self) -> None:
         self.assertRaises(TypeError, gammu.StateMachine, Bar=1)
 
 
 class DebugTest(unittest.TestCase):
-    def setUp(self):
+    def setUp(self) -> None:
         gammu.SetDebugLevel("textall")
 
-    def check_operation(self, filename, handle=None):
+    def check_operation(self, filename, handle=None) -> None:
         """Executes gammu operation which causes debug logs."""
         gammu.DecodePDU(PDU_DATA)
         gammu.SetDebugFile(None)
@@ -103,7 +103,7 @@ class DebugTest(unittest.TestCase):
             with pathlib.Path(filename).open() as handle:
                 assert "SMS type: Status report" in handle.read()
 
-    def test_file(self):
+    def test_file(self) -> None:
         testfile = tempfile.NamedTemporaryFile(suffix=".debug", delete=False)
         testfile.close()
         try:
@@ -114,7 +114,7 @@ class DebugTest(unittest.TestCase):
             gammu.SetDebugFile(None)
             pathlib.Path(testfile.name).unlink()
 
-    def test_filename(self):
+    def test_filename(self) -> None:
         testfile = tempfile.NamedTemporaryFile(suffix=".debug", delete=False)
         testfile.close()
         try:
@@ -124,11 +124,11 @@ class DebugTest(unittest.TestCase):
             gammu.SetDebugFile(None)
             pathlib.Path(testfile.name).unlink()
 
-    def test_none(self):
+    def test_none(self) -> None:
         gammu.SetDebugFile(None)
         self.check_operation(None)
 
-    def test_nothing(self):
+    def test_nothing(self) -> None:
         gammu.SetDebugLevel("nothing")
         testfile = tempfile.NamedTemporaryFile(suffix=".debug", delete=False)
         testfile.close()

@@ -59,7 +59,7 @@ class DummyTest(unittest.TestCase):
     _called = False
     _state_machine = None
 
-    def setUp(self):
+    def setUp(self) -> None:
         self.test_dir = tempfile.mkdtemp()
         self.dummy_dir = os.path.join(self.test_dir, "gammu-dummy")
         self.config_name = os.path.join(self.test_dir, ".gammurc")
@@ -67,7 +67,7 @@ class DummyTest(unittest.TestCase):
         with open(self.config_name, "w") as handle:
             handle.write(CONFIGURATION.format(path=self.test_dir))
 
-    def tearDown(self):
+    def tearDown(self) -> None:
         if self._state_machine:
             self._state_machine.Terminate()
         shutil.rmtree(self.test_dir)
@@ -79,19 +79,19 @@ class DummyTest(unittest.TestCase):
         self._state_machine = state_machine
         return state_machine
 
-    def fake_incoming_call(self):
+    def fake_incoming_call(self) -> None:
         """Fake incoming call."""
         filename = os.path.join(self.dummy_dir, "incoming-call")
         with open(filename, "w") as handle:
             handle.write("\n")
 
-    def check_incoming_call(self):
+    def check_incoming_call(self) -> None:
         """Checks whether incoming call faking is supported."""
         current = tuple(int(x) for x in gammu.Version()[2].split("."))
         if current < (1, 37, 91):
             raise unittest.SkipTest(f"Not supported in version {gammu.Version()[2]}")
 
-    def call_callback(self, state_machine, response, data):
+    def call_callback(self, state_machine, response, data) -> None:
         """Callback on USSD data."""
         self._called = True
         assert response == "Call"
@@ -99,11 +99,11 @@ class DummyTest(unittest.TestCase):
 
 
 class BasicDummyTest(DummyTest):
-    def test_model(self):
+    def test_model(self) -> None:
         state_machine = self.get_statemachine()
         assert state_machine.GetModel()[1] == "Dummy"
 
-    def test_diverts(self):
+    def test_diverts(self) -> None:
         state_machine = self.get_statemachine()
         diverts = state_machine.GetCallDivert()
         assert diverts == [{"CallType": "All", "Timeout": 0, "Number": "", "DivertType": "AllTypes"}]
@@ -112,16 +112,16 @@ class BasicDummyTest(DummyTest):
         diverts = state_machine.GetCallDivert()
         assert diverts == [{"CallType": "All", "Timeout": 0, "Number": "123456789", "DivertType": "AllTypes"}]
 
-    def test_dial(self):
+    def test_dial(self) -> None:
         state_machine = self.get_statemachine()
         state_machine.DialVoice("123456")
 
-    def test_battery(self):
+    def test_battery(self) -> None:
         state_machine = self.get_statemachine()
         status = state_machine.GetBatteryCharge()
         assert status == {"BatteryVoltage": 4200, "PhoneTemperature": 22, "BatteryTemperature": 22, "ChargeState": "BatteryConnected", "ChargeVoltage": 4200, "BatteryCapacity": 2000, "BatteryPercent": 100, "ChargeCurrent": 0, "PhoneCurrent": 500}
 
-    def test_memory(self):
+    def test_memory(self) -> None:
         state_machine = self.get_statemachine()
         status = state_machine.GetMemoryStatus(Type="ME")
 
@@ -141,7 +141,7 @@ class BasicDummyTest(DummyTest):
                 )
             remain -= 1
 
-    def test_getmemory(self):
+    def test_getmemory(self) -> None:
         state_machine = self.get_statemachine()
 
         location = state_machine.AddMemory(
@@ -157,7 +157,7 @@ class BasicDummyTest(DummyTest):
         read = state_machine.GetMemory("SM", location)
         assert len(read["Entries"]) == 2
 
-    def test_calendar(self):
+    def test_calendar(self) -> None:
         state_machine = self.get_statemachine()
         status = state_machine.GetCalendarStatus()
 
@@ -175,7 +175,7 @@ class BasicDummyTest(DummyTest):
                 entry = state_machine.GetNextCalendar(Location=entry["Location"])
             remain -= 1
 
-    def test_sms(self):
+    def test_sms(self) -> None:
         state_machine = self.get_statemachine()
         status = state_machine.GetSMSStatus()
 
@@ -204,7 +204,7 @@ class BasicDummyTest(DummyTest):
             if message is None:
                 assert item[0]["UDH"]["Type"] == "NoUDH"
 
-    def test_todo(self):
+    def test_todo(self) -> None:
         state_machine = self.get_statemachine()
         status = state_machine.GetToDoStatus()
 
@@ -222,19 +222,19 @@ class BasicDummyTest(DummyTest):
                 entry = state_machine.GetNextToDo(Location=entry["Location"])
             remain -= 1
 
-    def test_sms_folders(self):
+    def test_sms_folders(self) -> None:
         state_machine = self.get_statemachine()
         folders = state_machine.GetSMSFolders()
         assert len(folders) == 5
 
-    def ussd_callback(self, state_machine, response, data):
+    def ussd_callback(self, state_machine, response, data) -> None:
         """Callback on USSD data."""
         self._called = True
         assert response == "USSD"
         assert data["Text"] == "Reply for 1234"
         assert data["Status"] == "NoActionNeeded"
 
-    def test_ussd(self):
+    def test_ussd(self) -> None:
         self._called = False
         state_machine = self.get_statemachine()
         state_machine.SetIncomingCallback(self.ussd_callback)
@@ -242,7 +242,7 @@ class BasicDummyTest(DummyTest):
         state_machine.DialService("1234")
         assert self._called
 
-    def test_sendsms(self):
+    def test_sendsms(self) -> None:
         state_machine = self.get_statemachine()
         message = {
             "Text": "python-gammu testing message",
@@ -252,7 +252,7 @@ class BasicDummyTest(DummyTest):
 
         state_machine.SendSMS(message)
 
-    def test_sendsms_long(self):
+    def test_sendsms_long(self) -> None:
         state_machine = self.get_statemachine()
         text = (
             "Very long python-gammu testing message sent from example python script. "
@@ -277,12 +277,12 @@ class BasicDummyTest(DummyTest):
             # Actually send the message
             state_machine.SendSMS(message)
 
-    def test_filesystem(self):
+    def test_filesystem(self) -> None:
         state_machine = self.get_statemachine()
         fs_info = state_machine.GetFileSystemStatus()
         assert fs_info == {"UsedImages": 0, "Used": 1000000, "UsedThemes": 0, "Free": 10101, "UsedSounds": 0}
 
-    def test_deletefile(self):
+    def test_deletefile(self) -> None:
         state_machine = self.get_statemachine()
         self.assertRaises(
             gammu.ERR_FILENOTEXIST,
@@ -291,7 +291,7 @@ class BasicDummyTest(DummyTest):
         )
         state_machine.DeleteFile("file5")
 
-    def test_deletefolder(self):
+    def test_deletefolder(self) -> None:
         state_machine = self.get_statemachine()
         self.assertRaises(
             gammu.ERR_FILENOTEXIST, state_machine.DeleteFolder, "testfolder"
@@ -300,7 +300,7 @@ class BasicDummyTest(DummyTest):
         state_machine.DeleteFolder("testfolder")
 
     @unittest.skipIf(platform.system() == "Windows", "Not supported on Windows")
-    def test_emoji_folder(self):
+    def test_emoji_folder(self) -> None:
         state_machine = self.get_statemachine()
         name = "test-😘"
         self.assertRaises(gammu.ERR_FILENOTEXIST, state_machine.DeleteFolder, name)
@@ -309,7 +309,7 @@ class BasicDummyTest(DummyTest):
         assert os.path.exists(os.path.join(self.dummy_dir, "fs", name))
         state_machine.DeleteFolder(name)
 
-    def test_addfile(self):
+    def test_addfile(self) -> None:
         state_machine = self.get_statemachine()
         file_stat = os.stat(TEST_FILE)
         ttime = datetime.datetime.fromtimestamp(file_stat[8])
@@ -336,13 +336,13 @@ class BasicDummyTest(DummyTest):
         while not file_f["Finished"]:
             file_f = state_machine.AddFilePart(file_f)
 
-    def test_fileattributes(self):
+    def test_fileattributes(self) -> None:
         state_machine = self.get_statemachine()
         state_machine.SetFileAttributes(
             "file5", ReadOnly=1, Protected=0, System=1, Hidden=1
         )
 
-    def test_getnextfile(self):
+    def test_getnextfile(self) -> None:
         state_machine = self.get_statemachine()
         file_f = state_machine.GetNextFileFolder(1)
         folders = 0
@@ -359,7 +359,7 @@ class BasicDummyTest(DummyTest):
         assert folders == 3
         assert files == 6
 
-    def test_incoming_call(self):
+    def test_incoming_call(self) -> None:
         self.check_incoming_call()
         self._called = False
         state_machine = self.get_statemachine()

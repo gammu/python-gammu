@@ -69,14 +69,14 @@ def async_test(coro):
 class AsyncWorkerDummyTest(DummyTest):
     results = []
 
-    def callback(self, name, result, error, percents):
+    def callback(self, name, result, error, percents) -> None:
         self.results.append((name, result, error, percents))
 
-    def my_pull_func(self, sm):
+    def my_pull_func(self, sm) -> None:
         self.results.append(("pull_func", sm.ReadDevice()))
 
     @async_test
-    async def test_worker_async(self):
+    async def test_worker_async(self) -> None:
         self.results = []
         worker = gammu.asyncworker.GammuAsyncWorker(self.my_pull_func)
         worker.configure(self.get_statemachine().GetConfig())

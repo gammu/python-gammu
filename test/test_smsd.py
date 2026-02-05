@@ -66,7 +66,7 @@ def get_script():
 
 
 class SMSDDummyTest(DummyTest):
-    def setUp(self):
+    def setUp(self) -> None:
         if platform.system() == "Windows":
             raise unittest.SkipTest(
                 "SMSD testing not supported on Windows (no DBI driver)"
@@ -100,14 +100,14 @@ class SMSDDummyTest(DummyTest):
     def get_smsd(self):
         return gammu.smsd.SMSD(self.config_name)
 
-    def test_init_error(self):
+    def test_init_error(self) -> None:
         self.assertRaises(TypeError, gammu.smsd.SMSD, Bar=1)
 
-    def test_inject(self):
+    def test_inject(self) -> None:
         smsd = self.get_smsd()
         smsd.InjectSMS([MESSAGE_1])
 
-    def test_smsd(self):
+    def test_smsd(self) -> None:
         smsd = self.get_smsd()
 
         # Inject SMS messages

@@ -43,7 +43,7 @@ def main() -> None:
 
     data = gammu.LinkSMS(messages)
 
-    for message in data:
+    for message in data:  # noqa: PLR1702
         decoded = gammu.DecodeSMS(message)
 
         part = message[0]

@@ -53,14 +53,7 @@ def get_script() -> Path:
     """
     version = tuple(int(x) for x in gammu.Version()[0].split("."))
 
-    if version < (1, 36, 7):
-        dbver = 14
-    elif version < (1, 37, 90):
-        dbver = 15
-    elif version < (1, 38, 5):
-        dbver = 16
-    else:
-        dbver = 17
+    dbver = 17
 
     print(f"Gammu version {version}, SMSD DB version {dbver}")
 

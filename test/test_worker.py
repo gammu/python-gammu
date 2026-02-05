@@ -346,7 +346,6 @@ class WorkerDummyTest(DummyTest):
         assert self.results == WORKER_EXPECT
 
     def test_incoming(self) -> None:
-        self.check_incoming_call()
         self.results = []
         self._called = False
         worker = gammu.worker.GammuWorker(self.callback)

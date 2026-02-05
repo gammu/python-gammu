@@ -92,7 +92,7 @@ class DummyTest(unittest.TestCase):
         """Checks whether incoming call faking is supported."""
         current = tuple(int(x) for x in gammu.Version()[2].split("."))
         if current < (1, 37, 91):
-            raise unittest.SkipTest(f"Not supported in version {gammu.Version()[2]}")
+            pytest.skip(f"Not supported in version {gammu.Version()[2]}")
 
     def call_callback(self, state_machine, response, data) -> None:
         """Callback on USSD data."""

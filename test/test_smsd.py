@@ -68,9 +68,7 @@ def get_script():
 class SMSDDummyTest(DummyTest):
     def setUp(self) -> None:
         if platform.system() == "Windows":
-            pytest.skip(
-                "SMSD testing not supported on Windows (no DBI driver)"
-            )
+            pytest.skip("SMSD testing not supported on Windows (no DBI driver)")
         super().setUp()
         database = sqlite3.connect(os.path.join(self.test_dir, "smsd.db"))
         with open(get_script()) as handle:

@@ -219,7 +219,7 @@ class BasicDummyTest(DummyTest):  # noqa: PLR0904
                 sms.append(
                     state_machine.GetNextSMS(Location=sms[-1][0]["Location"], Folder=0)
                 )
-            remain -= len(sms)
+            remain -= len(sms[-1])
 
         data = gammu.LinkSMS(sms)
 

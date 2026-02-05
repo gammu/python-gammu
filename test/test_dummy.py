@@ -19,6 +19,7 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #
 
+import contextlib
 import datetime
 import os.path
 import pathlib
@@ -387,46 +388,47 @@ class BasicDummyTest(DummyTest):  # noqa: PLR0904
     def test_save_ringtone_permissions(self) -> None:
         """Test that SaveRingtone creates files with restrictive permissions."""
         # Create a simple ringtone dictionary
-        ringtone = {
-            "Name": "Test",
-            "Notes": [
-                {"Note": "C", "Duration": 4, "Scale": 1}
-            ]
-        }
-        
+        ringtone = {"Name": "Test", "Notes": [{"Note": "C", "Duration": 4, "Scale": 1}]}
+
         # Create a unique temporary file path using a secure method
         # We need to close and delete it so SaveRingtone can create it
-        with tempfile.NamedTemporaryFile(mode='wb', delete=False, suffix='.rttl') as f:
+        with tempfile.NamedTemporaryFile(mode="wb", delete=False, suffix=".rttl") as f:
             temp_file = f.name
         os.unlink(temp_file)  # Remove it so SaveRingtone can create it fresh
-        
+
         try:
             # Save the ringtone
             gammu.SaveRingtone(temp_file, ringtone, "rttl")
-            
+
             # Check that the file was created
             assert os.path.exists(temp_file)
-            
+
             # Check file permissions - should be owner read/write only
             # Skip permission check on Windows as it handles permissions differently
             if platform.system() != "Windows":
                 file_stat = os.stat(temp_file)
                 file_mode = stat.S_IMODE(file_stat.st_mode)
-                
+
                 # File should have owner read/write permissions (0o600)
                 # Check that group and others don't have any permissions
-                assert (file_mode & stat.S_IRWXG) == 0, f"Group has permissions: {oct(file_mode)}"
-                assert (file_mode & stat.S_IRWXO) == 0, f"Others have permissions: {oct(file_mode)}"
-                
+                assert (file_mode & stat.S_IRWXG) == 0, (
+                    f"Group has permissions: {oct(file_mode)}"
+                )
+                assert (file_mode & stat.S_IRWXO) == 0, (
+                    f"Others have permissions: {oct(file_mode)}"
+                )
+
                 # Verify owner has read and write permissions
-                assert (file_mode & stat.S_IRUSR) != 0, f"Owner missing read permission: {oct(file_mode)}"
-                assert (file_mode & stat.S_IWUSR) != 0, f"Owner missing write permission: {oct(file_mode)}"
+                assert (file_mode & stat.S_IRUSR) != 0, (
+                    f"Owner missing read permission: {oct(file_mode)}"
+                )
+                assert (file_mode & stat.S_IWUSR) != 0, (
+                    f"Owner missing write permission: {oct(file_mode)}"
+                )
         finally:
             # Clean up - use try-except to handle case where file doesn't exist
-            try:
+            with contextlib.suppress(FileNotFoundError):
                 os.unlink(temp_file)
-            except FileNotFoundError:
-                pass
 
     def test_incoming_call(self) -> None:
         self.check_incoming_call()

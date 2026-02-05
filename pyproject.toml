@@ -186,7 +186,7 @@ sort_table_keys = true
 spaces_before_inline_comment = 2
 
 [tool.typos.default]
-extend-words = {WRONLY = "WRONLY"}
+extend-identifiers = {_O_WRONLY = "_O_WRONLY"}
 
 [tool.typos.files]
 extend-exclude = [

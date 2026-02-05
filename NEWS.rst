@@ -17,7 +17,7 @@
 3.2.3
 =====
 
-* Fixed uninitalized memory usage in DeleteSMS.
+* Fixed uninitialized memory usage in DeleteSMS.
 
 3.2.2
 =====

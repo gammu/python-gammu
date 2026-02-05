@@ -1,5 +1,5 @@
 /*
- * python-gammu - Phone communication libary
+ * python-gammu - Phone communication library
  * Copyright (C) 2003 - 2018 Michal Čihař
  *
  * This program is free software; you can redistribute it and/or modify
@@ -52,7 +52,7 @@ int pyg_warning(const char *format, ...);
 PRINTF_STYLE(1, 2)
 int pyg_error(const char *format, ...);
 
-/* Compatiblity with older python releases */
+/* Compatibility with older python releases */
 #if PY_VERSION_HEX < 0x02050000
 typedef int Py_ssize_t;
 #define PY_FORMAT_SIZE_T ""

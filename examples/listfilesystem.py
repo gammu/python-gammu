@@ -67,7 +67,7 @@ else:
     state_machine.ReadConfig()
 state_machine.Init()
 
-# Get wished listing from commandline (if provided - else asume level)
+# Get wished listing from commandline (if provided - else assume level)
 # On commandline level or flat can be provided as parameters
 if args.flat:
     mode = "flat"

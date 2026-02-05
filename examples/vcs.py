@@ -20,7 +20,7 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #
 """
-Example for reading data from phone and convering it to and from
+Example for reading data from phone and converting it to and from
 vCard, vTodo, vCalendar
 """
 

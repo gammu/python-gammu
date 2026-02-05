@@ -157,7 +157,6 @@ CalendarValueTypes = [
     "END_DATETIME",
     "TONE_ALARM_DATETIME",
     "SILENT_ALARM_DATETIME",
-    "RECURRANCE",
     "TEXT",
     "DESCRIPTION",
     "LOCATION",

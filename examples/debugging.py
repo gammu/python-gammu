@@ -45,7 +45,7 @@ def main():
     model = state_machine.GetModel()
     imei = state_machine.GetIMEI()
     firmware = state_machine.GetFirmware()
-    print("Phone infomation:")
+    print("Phone information:")
     print("{:<15}: {}".format("Manufacturer", manufacturer))
     print("{:<15}: {} ({})".format("Model", model[0], model[1]))
     print("{:<15}: {}".format("IMEI", imei))

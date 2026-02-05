@@ -51,7 +51,7 @@ def callback(state_machine, callback_type, data):
 
 def init():
     """
-    Intializes gammu and callbacks.
+    Initializes gammu and callbacks.
     """
     state_machine = gammu.StateMachine()
     if len(sys.argv) >= 2:

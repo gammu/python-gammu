@@ -19,7 +19,7 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 """
-python-gammu - Phone communication libary
+python-gammu - Phone communication library
 Gammu asynchronous wrapper example with asyncio. This allows your application to care
 only about handling received data and not about phone communication
 details.
@@ -68,7 +68,7 @@ async def get_network_info(worker):
 
 
 async def get_info(worker):
-    print("Phone infomation:")
+    print("Phone information:")
     manufacturer = await worker.get_manufacturer_async()
     print("{:<15}: {}".format("Manufacturer", manufacturer))
     model = await worker.get_model_async()

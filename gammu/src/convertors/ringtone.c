@@ -1,5 +1,5 @@
 /*
- * python-gammu - Phone communication libary
+ * python-gammu - Phone communication library
  * Copyright (C) 2003 - 2018 Michal Čihař
  *
  * This program is free software; you can redistribute it and/or modify
@@ -400,7 +400,7 @@ int RingNoteScaleToInt(GSM_RingNoteScale type)
 	return v;
 }
 
-PyObject *RingCommadToPython(GSM_RingCommand * cmd)
+PyObject *RingCommandToPython(GSM_RingCommand * cmd)
 {
 	PyObject *result;
 	char *type, *style, *note, *durspec, *duration;
@@ -464,7 +464,7 @@ PyObject *RingCommadToPython(GSM_RingCommand * cmd)
 	return result;
 }
 
-int RingCommadFromPython(PyObject * dict, GSM_RingCommand * cmd)
+int RingCommandFromPython(PyObject * dict, GSM_RingCommand * cmd)
 {
 	int i;
 	char *s;
@@ -554,7 +554,7 @@ PyObject *RingtoneToPython(GSM_Ringtone * inring)
 		return NULL;
 
 	for (i = 0; i < ring.NoteTone.NrCommands; i++) {
-		f = RingCommadToPython(&(ring.NoteTone.Commands[i]));
+		f = RingCommandToPython(&(ring.NoteTone.Commands[i]));
 		if (f == NULL) {
 			Py_DECREF(v);
 			return NULL;
@@ -629,7 +629,7 @@ int RingtoneFromPython(PyObject * dict, GSM_Ringtone * ring)
 				     "d in Notes is not a dictionary", i);
 			return 0;
 		}
-		if (!RingCommadFromPython(item, &(ring->NoteTone.Commands[i])))
+		if (!RingCommandFromPython(item, &(ring->NoteTone.Commands[i])))
 			return 0;
 	}
 

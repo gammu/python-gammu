@@ -110,7 +110,7 @@ class GammuCommand:
 
 class GammuTask:
     """
-    Storage of taks for gammu.
+    Storage of tasks for gammu.
     """
 
     def __init__(self, name, commands):
@@ -264,7 +264,7 @@ class GammuThread(threading.Thread):
 
 class GammuWorker:
     """
-    Wrapper class for asynchronous communication with Gammu. It spaws
+    Wrapper class for asynchronous communication with Gammu. It spawns
     own thread and then passes all commands to this thread. When task is
     done, caller is notified via callback.
     """

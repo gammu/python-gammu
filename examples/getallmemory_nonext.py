@@ -47,9 +47,9 @@ def main() -> None:
         try:
             entry = state_machine.GetMemory(Type=memory_type, Location=location)
             print()
-            print("{:<15}: {:d}".format("Location", entry["Location"]))
+            print(f"{'Location':<15}: {entry['Location']:d}")
             for v in entry["Entries"]:
-                print("{:<15}: {}".format(v["Type"], str(v["Value"])))
+                print(f"{v['Type']:<15}: {v['Value']!s}")
             remain -= 1
         except gammu.ERR_EMPTY:
             pass

@@ -39,7 +39,7 @@ def reply_test(message):
     if message["Number"] == "999":
         # No reply to this number
         return None
-    return "Reply to {}".format(message["Text"])
+    return f"Reply to {message['Text']}"
 
 
 # Reply function, first element is matching string, second can be:
@@ -97,7 +97,7 @@ def main() -> None:
     while 1:
         time.sleep(1)
         status = state_machine.GetBatteryCharge()
-        print("Battery is at {:d}%".format(status["BatteryPercent"]))
+        print(f"Battery is at {status['BatteryPercent']:d}%")
 
 
 if __name__ == "__main__":

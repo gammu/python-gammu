@@ -77,7 +77,7 @@ def main() -> None:
     print("Press Ctrl+C to interrupt")
     while 1:
         signal = state_machine.GetSignalQuality()
-        print("Signal is at {:d}%".format(signal["SignalPercent"]))
+        print(f"Signal is at {signal['SignalPercent']:d}%")
         time.sleep(1)
 
 

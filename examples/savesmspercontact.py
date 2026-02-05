@@ -58,7 +58,7 @@ def getFilename(mydir, mysms):
         if match and int(match.group(1)) > nextitem:
             nextitem = int(match.group(1))
 
-    return "Unknown-" + str(nextitem + 1)
+    return f"Unknown-{nextitem + 1!s}"
 
 
 def saveSMS(mysms, all_contacts) -> None:

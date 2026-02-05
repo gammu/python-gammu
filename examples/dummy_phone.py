@@ -49,12 +49,12 @@ def get_all_memory(state_machine, memory_type) -> None:
         remain -= 1
 
         print()
-        print("{:<15}: {:d}".format("Location", entry["Location"]))
+        print(f"{'Location':<15}: {entry['Location']:d}")
         for v in entry["Entries"]:
             if v["Type"] in ("Photo"):
-                print("{:<15}: {}...".format(v["Type"], repr(v["Value"])[:30]))
+                print(f"{v['Type']:<15}: {repr(v['Value'])[:30]}...")
             else:
-                print("{:<15}: {}".format(v["Type"], v["Value"]))
+                print(f"{v['Type']:<15}: {v['Value']}")
 
 
 def get_all_calendar(state_machine) -> None:
@@ -73,10 +73,10 @@ def get_all_calendar(state_machine) -> None:
         remain -= 1
 
         print()
-        print("{:<20}: {:d}".format("Location", entry["Location"]))
-        print("{:<20}: {}".format("Type", entry["Type"]))
+        print(f"{'Location':<20}: {entry['Location']:d}")
+        print(f"{'Type':<20}: {entry['Type']}")
         for v in entry["Entries"]:
-            print("{:<20}: {}".format(v["Type"], v["Value"]))
+            print(f"{v['Type']:<20}: {v['Value']}")
 
 
 def get_battery_status(state_machine) -> None:
@@ -107,24 +107,19 @@ def get_all_sms(state_machine):
 
 def print_sms_header(message, folders) -> None:
     print()
-    print("{:<15}: {}".format("Number", message["Number"]))
-    print("{:<15}: {}".format("Date", message["DateTime"]))
-    print("{:<15}: {}".format("State", message["State"]))
+    print(f"{'Number':<15}: {message['Number']}")
+    print(f"{'Date':<15}: {message['DateTime']}")
+    print(f"{'State':<15}: {message['State']}")
     print(
-        "{:<15}: {} {} ({:d})".format(
-            "Folder",
-            folders[message["Folder"]]["Name"],
-            folders[message["Folder"]]["Memory"],
-            message["Folder"],
-        )
+        f"{'Folder':<15}: {folders[message['Folder']]['Name']} {folders[message['Folder']]['Memory']} ({message['Folder']:d})"
     )
-    print("{:<15}: {}".format("Validity", message["SMSC"]["Validity"]))
+    print(f"{'Validity':<15}: {message['SMSC']['Validity']}")
 
 
 def print_all_sms(sms, folders) -> None:
     for m in sms:
         print_sms_header(m, folders)
-        print("\n{}".format(m["Text"]))
+        print(f"\n{m['Text']}")
 
 
 def link_all_sms(sms, folders) -> None:
@@ -138,13 +133,13 @@ def link_all_sms(sms, folders) -> None:
         loc = []
         for m in x:
             loc.append(m["Location"])
-        print("{:<15}: {}".format("Location(s)", ", ".join(loc)))
+        print(f"{'Location(s)':<15}: {', '.join(loc)}")
         if v is None:
-            print("\n{}".format(m["Text"]))
+            print(f"\n{m['Text']}")
         else:
             for e in v["Entries"]:
                 print()
-                print("{:<15}: {}".format("Type", e["ID"]))
+                print(f"{'Type':<15}: {e['ID']}")
                 if e["Bitmap"] is not None:
                     for bmp in e["Bitmap"]:
                         print("Bitmap:")
@@ -173,16 +168,16 @@ def get_all_todo(state_machine) -> None:
         remain -= 1
 
         print()
-        print("{:<15}: {:d}".format("Location", entry["Location"]))
-        print("{:<15}: {}".format("Priority", entry["Priority"]))
+        print(f"{'Location':<15}: {entry['Location']:d}")
+        print(f"{'Priority':<15}: {entry['Priority']}")
         for v in entry["Entries"]:
-            print("{:<15}: {}".format(v["Type"], v["Value"]))
+            print(f"{v['Type']:<15}: {v['Value']}")
 
 
 def get_sms_folders(state_machine):
     folders = state_machine.GetSMSFolders()
     for i, folder in enumerate(folders):
-        print("Folder {:d}: {} ({})".format(i, folder["Name"], folder["Memory"]))
+        print(f"Folder {i:d}: {folder['Name']} ({folder['Memory']})")
     return folders
 
 

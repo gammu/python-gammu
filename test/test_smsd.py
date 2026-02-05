@@ -43,6 +43,7 @@ MESSAGE_2 = {
     "SMSC": {"Location": 1},
     "Number": "1234567890",
 }
+MAX_STATUS_RETRIES = 2
 
 
 def get_script():

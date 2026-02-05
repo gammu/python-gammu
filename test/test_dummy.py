@@ -19,11 +19,13 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #
 
+import contextlib
 import datetime
 import os.path
 import pathlib
 import platform
 import shutil
+import stat
 import tempfile
 import unittest
 
@@ -382,6 +384,91 @@ class BasicDummyTest(DummyTest):  # noqa: PLR0904
                 break
         assert folders == 3
         assert files == 6
+
+    def test_save_ringtone_permissions(self) -> None:
+        """Test that SaveRingtone creates files with restrictive permissions."""
+        # Create a complete ringtone dictionary with all required fields
+        ringtone = {
+            "Name": "TestRingtone",
+            "Notes": [
+                {
+                    "Type": "Note",
+                    "Value": 113,  # Note value
+                    "Tempo": 120,
+                    "Scale": 220,  # Valid scale: 55, 110, 220, 440, or 880
+                    "Style": "Natural",
+                    "Note": "C",
+                    "Duration": "1_4",
+                    "DurationSpec": "NoSpecialDuration",
+                }
+            ],
+        }
+
+        # Test 1: Save using string filename
+        with tempfile.NamedTemporaryFile(mode="wb", delete=False, suffix=".rttl") as f:
+            temp_file = f.name
+        os.unlink(temp_file)  # Remove it so SaveRingtone can create it fresh
+
+        try:
+            # Save the ringtone
+            gammu.SaveRingtone(temp_file, ringtone, "rttl")
+
+            # Check that the file was created
+            assert os.path.exists(temp_file)
+
+            # Check file permissions - should be owner read/write only
+            # Skip permission check on Windows as it handles permissions differently
+            if platform.system() != "Windows":
+                file_stat = os.stat(temp_file)
+                file_mode = stat.S_IMODE(file_stat.st_mode)
+
+                # File should have owner read/write permissions (0o600)
+                # Check that group and others don't have any permissions
+                assert (file_mode & stat.S_IRWXG) == 0, (
+                    f"Group has permissions: {oct(file_mode)}"
+                )
+                assert (file_mode & stat.S_IRWXO) == 0, (
+                    f"Others have permissions: {oct(file_mode)}"
+                )
+
+                # Verify owner has read and write permissions
+                assert (file_mode & stat.S_IRUSR) != 0, (
+                    f"Owner missing read permission: {oct(file_mode)}"
+                )
+                assert (file_mode & stat.S_IWUSR) != 0, (
+                    f"Owner missing write permission: {oct(file_mode)}"
+                )
+        finally:
+            # Clean up - use try-except to handle case where file doesn't exist
+            with contextlib.suppress(FileNotFoundError):
+                os.unlink(temp_file)
+
+        # Test 2: Test multiple formats to ensure comprehensive coverage
+        formats_to_test = ["rttl", "ott", "imy"]
+        for fmt in formats_to_test:
+            with tempfile.NamedTemporaryFile(
+                mode="wb", delete=False, suffix=f".{fmt}"
+            ) as f:
+                temp_file = f.name
+            os.unlink(temp_file)
+
+            try:
+                gammu.SaveRingtone(temp_file, ringtone, fmt)
+                assert os.path.exists(temp_file), f"File not created for format {fmt}"
+
+                # Verify permissions for each format
+                if platform.system() != "Windows":
+                    file_stat = os.stat(temp_file)
+                    file_mode = stat.S_IMODE(file_stat.st_mode)
+                    assert (file_mode & stat.S_IRWXG) == 0, (
+                        f"Format {fmt}: Group has permissions"
+                    )
+                    assert (file_mode & stat.S_IRWXO) == 0, (
+                        f"Format {fmt}: Others have permissions"
+                    )
+            finally:
+                with contextlib.suppress(FileNotFoundError):
+                    os.unlink(temp_file)
 
     def test_incoming_call(self) -> None:
         self.check_incoming_call()

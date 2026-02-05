@@ -102,12 +102,12 @@ async def main() -> None:
             try:
                 signal = await worker.get_signal_quality_async()
                 print("Signal is at {:d}%".format(signal["SignalPercent"]))
-            except Exception as e:
+            except Exception as e:  # noqa: BLE001
                 print(f"Exception reading signal: {e}")
 
             await asyncio.sleep(10)
 
-    except Exception as e:
+    except Exception as e:  # noqa: BLE001
         print("Exception:")
         print(e)
 

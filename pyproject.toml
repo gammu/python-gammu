@@ -129,7 +129,6 @@ ignore = [
   "B007",
   "B017",
   "B020",
-  "BLE001",
   "COM",  # CONFIG: No trailing commas
   "D100",
   "D101",

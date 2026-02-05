@@ -46,7 +46,8 @@ class GammuAsyncThread(gammu.worker.GammuThread):
             errcode = info.args[0]["Code"]
             error = gammu.ErrorNumbers[errcode]
             self._callback(future, result, error, percentage)
-        except Exception as exception:  # pylint: disable=broad-except
+        # pylint: disable-next=broad-except
+        except Exception as exception:  # noqa: BLE001
             self._callback(future, None, exception, percentage)
         else:
             self._callback(future, result, None, percentage)

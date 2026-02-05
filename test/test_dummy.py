@@ -347,7 +347,7 @@ class BasicDummyTest(DummyTest):  # noqa: PLR0904
             "Modified": ttime,
             "Folder": 0,
             "Level": 1,
-            "Used": file_stat[6],
+            "Used": file_stat.st_size,
             "Buffer": content,
             "Type": "Other",
             "Protected": 0,

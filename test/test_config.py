@@ -22,6 +22,8 @@ import pathlib
 import tempfile
 import unittest
 
+import pytest
+
 import gammu
 
 from .test_sms import PDU_DATA
@@ -86,7 +88,8 @@ class ConfigTest(unittest.TestCase):
         assert cfg["StartInfo"] == 0
 
     def test_init_error(self) -> None:
-        self.assertRaises(TypeError, gammu.StateMachine, Bar=1)
+        with pytest.raises(TypeError):
+            gammu.StateMachine(Bar=1)
 
 
 class DebugTest(unittest.TestCase):

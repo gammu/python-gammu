@@ -24,7 +24,8 @@ import platform
 import sqlite3
 import threading
 import time
-import unittest
+
+import pytest
 
 import gammu
 import gammu.smsd
@@ -67,7 +68,7 @@ def get_script():
 class SMSDDummyTest(DummyTest):
     def setUp(self) -> None:
         if platform.system() == "Windows":
-            raise unittest.SkipTest(
+            pytest.skip(
                 "SMSD testing not supported on Windows (no DBI driver)"
             )
         super().setUp()
@@ -89,8 +90,8 @@ class SMSDDummyTest(DummyTest):
 
             # If error happens during SMSD_ReadConfig, it's likely a driver/config issue
             # Common error codes: 27 (ERR_UNKNOWN), 75 (DB driver initialization failed)
-            if error_where == "SMSD_ReadConfig" or error_code in (27, 75):
-                raise unittest.SkipTest(
+            if error_where == "SMSD_ReadConfig" or error_code in {27, 75}:
+                pytest.skip(
                     "SMSD initialization failed (Gammu may be built without required database driver support)"
                 )
             # Re-raise if it's a different error
@@ -100,7 +101,8 @@ class SMSDDummyTest(DummyTest):
         return gammu.smsd.SMSD(self.config_name)
 
     def test_init_error(self) -> None:
-        self.assertRaises(TypeError, gammu.smsd.SMSD, Bar=1)
+        with pytest.raises(TypeError):
+            gammu.smsd.SMSD(Bar=1)
 
     def test_inject(self) -> None:
         smsd = self.get_smsd()
@@ -131,8 +133,14 @@ class SMSDDummyTest(DummyTest):
                 time.sleep(10)
                 retries += 1
 
-            assert status["Received"] == 2, "Messages were not received as expected ({:d})!".format(status["Received"])
-            assert status["Sent"] == 2, "Messages were not sent as expected ({:d})!".format(status["Sent"])
+            assert status["Received"] == 2, (
+                "Messages were not received as expected ({:d})!".format(
+                    status["Received"]
+                )
+            )
+            assert status["Sent"] == 2, (
+                "Messages were not sent as expected ({:d})!".format(status["Sent"])
+            )
 
             time.sleep(1)
 

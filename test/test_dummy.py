@@ -27,6 +27,8 @@ import shutil
 import tempfile
 import unittest
 
+import pytest
+
 import gammu
 
 DUMMY_DIR = os.path.join(os.path.dirname(__file__), "data", "gammu-dummy")
@@ -310,18 +312,14 @@ class BasicDummyTest(DummyTest):  # noqa: PLR0904
 
     def test_deletefile(self) -> None:
         state_machine = self.get_statemachine()
-        self.assertRaises(
-            gammu.ERR_FILENOTEXIST,
-            state_machine.DeleteFile,
-            "testfolder/nonexisting.png",
-        )
+        with pytest.raises(gammu.ERR_FILENOTEXIST):
+            state_machine.DeleteFile("testfolder/nonexisting.png")
         state_machine.DeleteFile("file5")
 
     def test_deletefolder(self) -> None:
         state_machine = self.get_statemachine()
-        self.assertRaises(
-            gammu.ERR_FILENOTEXIST, state_machine.DeleteFolder, "testfolder"
-        )
+        with pytest.raises(gammu.ERR_FILENOTEXIST):
+            state_machine.DeleteFolder("testfolder")
         state_machine.AddFolder("", "testfolder")
         state_machine.DeleteFolder("testfolder")
 
@@ -329,7 +327,8 @@ class BasicDummyTest(DummyTest):  # noqa: PLR0904
     def test_emoji_folder(self) -> None:
         state_machine = self.get_statemachine()
         name = "test-😘"
-        self.assertRaises(gammu.ERR_FILENOTEXIST, state_machine.DeleteFolder, name)
+        with pytest.raises(gammu.ERR_FILENOTEXIST):
+            state_machine.DeleteFolder(name)
         assert name == state_machine.AddFolder("", name)
         # Check the folder exists as expected on filesystem
         assert os.path.exists(os.path.join(self.dummy_dir, "fs", name))

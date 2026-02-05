@@ -82,7 +82,7 @@ def saveSMS(mysms, all_contacts) -> None:
 def getContacts(state_machine):
     # Get all contacts
     remaining = state_machine.GetMemoryStatus(Type="SM")["Used"]
-    contacts = dict()
+    contacts = {}
 
     start = True
 
@@ -97,7 +97,7 @@ def getContacts(state_machine):
                 )
                 remaining -= 1
 
-            numbers = list()
+            numbers = []
             for entry in entry["Entries"]:
                 if entry["Type"] == "Text_FirstName":
                     name = entry["Value"]
@@ -123,7 +123,7 @@ def getAndDeleteAllSMS(state_machine):
 
     # Get all sms
     start = True
-    entries = list()
+    entries = []
 
     try:
         while remaining > 0:

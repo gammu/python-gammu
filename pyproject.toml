@@ -179,8 +179,7 @@ ignore = [
   "SIM115",
   "SLF001",
   "TRY003",
-  "TRY300",
-  "UP032"
+  "TRY300"
 ]
 preview = true
 select = ["ALL"]

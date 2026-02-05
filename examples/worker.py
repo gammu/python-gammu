@@ -36,11 +36,7 @@ def callback(name, result, error, percents) -> None:
     this is called from different thread so it does not have to be save
     to work with GUI here.
     """
-    print(
-        "-> {} completed {:d}% with error {} , return value:".format(
-            name, percents, error
-        )
-    )
+    print(f"-> {name} completed {percents:d}% with error {error} , return value:")
     print(result)
 
 

@@ -27,8 +27,7 @@ import gammu
 
 
 def callback(state_machine, callback_type, data):
-    """
-    This callback receives notification about incoming event.
+    """This callback receives notification about incoming event.
 
     @param state_machine: state machine which invoked action
     @type state_machine: gammu.StateMachine

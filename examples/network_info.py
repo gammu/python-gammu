@@ -19,8 +19,7 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #
-"""
-Example demonstrating how to get network information and look up network names.
+"""Example demonstrating how to get network information and look up network names.
 
 When GetNetworkInfo() returns an empty NetworkName, you can use the
 gammu.GSMNetworks dictionary to look up the network name by its NetworkCode.
@@ -36,8 +35,7 @@ import gammu
 
 
 def get_network_info_with_name(state_machine):
-    """
-    Get network information and look up network name if it's empty.
+    """Get network information and look up network name if it's empty.
 
     The phone returns NetworkCode (e.g., "240 24") even when NetworkName
     is empty. We can use gammu.GSMNetworks to look up the network name.

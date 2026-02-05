@@ -80,21 +80,19 @@ class DummyTest(unittest.TestCase):
         return state_machine
 
     def fake_incoming_call(self):
-        """Fake incoming call"""
+        """Fake incoming call."""
         filename = os.path.join(self.dummy_dir, "incoming-call")
         with open(filename, "w") as handle:
             handle.write("\n")
 
     def check_incoming_call(self):
-        """Checks whether incoming call faking is supported"""
+        """Checks whether incoming call faking is supported."""
         current = tuple(int(x) for x in gammu.Version()[2].split("."))
         if current < (1, 37, 91):
             raise unittest.SkipTest(f"Not supported in version {gammu.Version()[2]}")
 
     def call_callback(self, state_machine, response, data):
-        """
-        Callback on USSD data.
-        """
+        """Callback on USSD data."""
         self._called = True
         assert response == "Call"
         assert data["Number"] == "+800123456"
@@ -230,9 +228,7 @@ class BasicDummyTest(DummyTest):
         assert len(folders) == 5
 
     def ussd_callback(self, state_machine, response, data):
-        """
-        Callback on USSD data.
-        """
+        """Callback on USSD data."""
         self._called = True
         assert response == "USSD"
         assert data["Text"] == "Reply for 1234"

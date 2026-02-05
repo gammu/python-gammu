@@ -19,10 +19,9 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #
-"""
-This file should provide me with a test frame for the filesystem
+"""This file should provide me with a test frame for the filesystem
 functions. It can't be run automatically, but you should be able
-to decide, whether the output looks sensible
+to decide, whether the output looks sensible.
 
 BEWARE - the test WILL TOUCH AND WRITE FILESYSTEM!!
 

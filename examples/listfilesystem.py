@@ -68,10 +68,7 @@ state_machine.Init()
 
 # Get wished listing from commandline (if provided - else assume level)
 # On commandline level or flat can be provided as parameters
-if args.flat:
-    mode = "flat"
-else:
-    mode = "level"
+mode = "flat" if args.flat else "level"
 
 # Set locale to default locale (here relevant for printing of date)
 locale.setlocale(locale.LC_ALL, "")

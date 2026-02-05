@@ -71,7 +71,7 @@ class SMSDDummyTest(DummyTest):
             pytest.skip("SMSD testing not supported on Windows (no DBI driver)")
         super().setUp()
         database = sqlite3.connect(os.path.join(self.test_dir, "smsd.db"))
-        with open(get_script()) as handle:
+        with open(get_script(), encoding="utf-8") as handle:
             database.executescript(handle.read())
 
         # Check if SMSD with SQLite driver is available

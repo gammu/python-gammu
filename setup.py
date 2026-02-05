@@ -100,7 +100,7 @@ class GammuConfig:
             sys.exit(101)
 
         version = None
-        with open(self.config_path(self.path)) as handle:
+        with open(self.config_path(self.path), encoding="utf-8") as handle:
             for line in handle:
                 if line.startswith("#define GAMMU_VERSION "):
                     version = parse(line.split('"')[1])

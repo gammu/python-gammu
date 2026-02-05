@@ -68,7 +68,7 @@ class DummyTest(unittest.TestCase):
         self.config_name = os.path.join(self.test_dir, ".gammurc")
         shutil.copytree(DUMMY_DIR, self.dummy_dir)
         pathlib.Path(self.config_name).write_text(
-            CONFIGURATION.format(path=self.test_dir)
+            CONFIGURATION.format(path=self.test_dir), encoding="utf-8"
         )
 
     def tearDown(self) -> None:
@@ -86,7 +86,7 @@ class DummyTest(unittest.TestCase):
     def fake_incoming_call(self) -> None:
         """Fake incoming call."""
         filename = os.path.join(self.dummy_dir, "incoming-call")
-        pathlib.Path(filename).write_text("\n")
+        pathlib.Path(filename).write_text("\n", encoding="utf-8")
 
     def check_incoming_call(self) -> None:
         """Checks whether incoming call faking is supported."""

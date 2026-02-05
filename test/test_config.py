@@ -103,14 +103,14 @@ class DebugTest(unittest.TestCase):
         if handle:
             handle.close()
         if filename is not None:
-            with pathlib.Path(filename).open() as handle:
+            with pathlib.Path(filename).open(encoding="utf-8") as handle:
                 assert "SMS type: Status report" in handle.read()
 
     def test_file(self) -> None:
         testfile = tempfile.NamedTemporaryFile(suffix=".debug", delete=False)
         testfile.close()
         try:
-            handle = pathlib.Path(testfile.name).open("w")
+            handle = pathlib.Path(testfile.name).open("w", encoding="utf-8")
             gammu.SetDebugFile(handle)
             self.check_operation(testfile.name, handle)
         finally:
@@ -138,7 +138,7 @@ class DebugTest(unittest.TestCase):
         try:
             gammu.SetDebugFile(testfile.name)
             self.check_operation(None)
-            with pathlib.Path(testfile.name).open() as handle:
+            with pathlib.Path(testfile.name).open(encoding="utf-8") as handle:
                 assert handle.read() == ""
         finally:
             gammu.SetDebugFile(None)

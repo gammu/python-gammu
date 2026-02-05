@@ -73,7 +73,7 @@ def saveSMS(mysms, all_contacts) -> None:
 
     myfile = getFilename(mydir, mysms)
 
-    with open(os.path.join(mydir, myfile), "a") as handle:
+    with open(os.path.join(mydir, myfile), "a", encoding="utf-8") as handle:
         handle.writelines(i["Text"].encode("UTF-8") for i in mysms)
         handle.write(b"\n")
 

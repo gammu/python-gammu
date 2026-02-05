@@ -97,7 +97,7 @@ class AsyncWorkerDummyTest(DummyTest):
         self.results.append(("SendSMS", await worker.send_sms_async(message)))
         with pytest.raises(TypeError):
             await worker.send_sms_async(42)
-        with pytest.raises(Exception):
+        with pytest.raises(Exception):  # noqa: PT011
             await worker.send_sms_async(dict(42))
         self.results.append(
             (

@@ -21,6 +21,8 @@
 import unittest
 from typing import NoReturn
 
+import pytest
+
 import gammu.exception
 
 
@@ -30,7 +32,5 @@ def error_function() -> NoReturn:
 
 class ErrorTest(unittest.TestCase):
     def test_catching(self) -> None:
-        self.assertRaises(
-            gammu.exception.GSMError,
-            error_function,
-        )
+        with pytest.raises(gammu.exception.GSMError):
+            error_function()

@@ -57,12 +57,12 @@ case it does not work, either install ``pkg-config`` or set ``GAMMU_PATH``.
 
 On Linux something like this should work::
 
-    GAMMU_PATH=/opt/gammu python setup.py build
+    GAMMU_PATH=/opt/gammu pip install .
 
 On Windows::
 
     SET GAMMU_PATH="C:\Gammu"
-    python setup.py build
+    pip install .
 
 
 Documentation

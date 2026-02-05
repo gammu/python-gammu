@@ -19,11 +19,10 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 """
-python-gammu - Phone communication library.
+Gammu asynchronous wrapper example.
 
-Gammu asynchronous wrapper example. This allows your application to care
-only about handling received data and not about phone communication
-details.
+This allows your application to care only about handling received data and not
+about phone communication details.
 """
 
 import sys
@@ -34,9 +33,11 @@ import gammu.worker
 
 def callback(name, result, error, percents) -> None:
     """
-    Callback which is executed when something is done. Please remember
-    this is called from different thread so it does not have to be save
-    to work with GUI here.
+    Callback which is executed when something is done.
+
+    Please remember this is called from different thread so it does not have to
+    be save to work with GUI here.
+
     """
     print(f"-> {name} completed {percents:d}% with error {error} , return value:")
     print(result)

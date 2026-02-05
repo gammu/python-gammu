@@ -47,7 +47,6 @@ READY:
 
 import argparse
 import datetime
-import os
 import sys
 from pathlib import Path
 
@@ -91,7 +90,7 @@ def main() -> None:  # noqa: PLR0912, PLR0915, C901
         print("And even better, you should read the script before you run it.")
         sys.exit(1)
 
-    if not os.path.exists(args.testfile):
+    if not Path(args.testfile).exists():
         print("You have to select file which will be used for testing!")
         sys.exit(1)
 
@@ -120,8 +119,9 @@ def main() -> None:  # noqa: PLR0912, PLR0915, C901
 
     # Check AddFilePart
     print("\n\nExpectation: Put cgi.jpg onto Memorycard on phone")
-    file_content = Path(args.testfile).read_bytes()
-    file_stat = os.stat(args.testfile)
+    file_object = Path(args.testfile)
+    file_content = file_object.read_bytes()
+    file_stat = file_object.stat()
     ttime = datetime.datetime.fromtimestamp(file_stat[8])
     file_f = {
         "ID_FullName": args.folder,
@@ -159,7 +159,7 @@ def main() -> None:  # noqa: PLR0912, PLR0915, C901
     else:
         print("Files differ!")
 
-    os.remove("./test.jpg")
+    Path("./test.jpg").unlink()
 
     # Check GetNextRootFolder
     print("\n\nExpectation: Root Folder List")

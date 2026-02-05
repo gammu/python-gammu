@@ -151,7 +151,6 @@ ignore = [
   "PERF203",  # WONFIX: affects only old Python versions
   "PLR2004",
   "PLR6301",
-  "PTH",
   "RUF012",
   "S607",
   "SIM115",

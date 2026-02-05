@@ -20,10 +20,8 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #
 
-
-import os
-import pathlib
 import sys
+from pathlib import Path
 
 import gammu
 
@@ -33,7 +31,8 @@ def main() -> None:
         print("This requires two parameters: file to upload and path!")
         sys.exit(1)
 
-    data = pathlib.Path(sys.argv[1]).read_bytes()
+    test_file = Path(sys.argv[1])
+    data = test_file.read_bytes()
 
     state_machine = gammu.StateMachine()
     state_machine.ReadConfig()
@@ -43,7 +42,7 @@ def main() -> None:
     print("\n\nExpection: Put specified file onto Memorycard on phone")
     file_f = {
         "ID_FullName": sys.argv[2],
-        "Name": os.path.basename(sys.argv[1]),
+        "Name": test_file.name,
         "Buffer": data,
         "Protected": 0,
         "ReadOnly": 0,

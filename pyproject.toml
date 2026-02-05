@@ -152,8 +152,8 @@ ignore = [
   "E501",  # WONTFIX: we accept long strings (rest is formatted by black)
   "EM101",
   "EM102",
-  "ERA001",
   "FBT003",
+  "FIX002",
   "N802",
   "N818",
   "PERF203",  # WONFIX: affects only old Python versions
@@ -164,6 +164,8 @@ ignore = [
   "S607",
   "SIM115",
   "SLF001",
+  "TD002",
+  "TD003",
   "TRY003",
   "TRY300"
 ]

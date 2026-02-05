@@ -45,7 +45,8 @@ WORKER_EXPECT = [
         },
     ),
     ("GetModel", ("unknown", "Dummy")),
-    # ('GetFirmware', ('1.41.0', '20150101', 1.41)), # Mock is returning different values between the local workstation on the CI build
+    # Mock is returning different values between the local workstation on the CI build
+    # TODO: ('GetFirmware', ('1.41.0', '20150101', 1.41)),
     (
         "GetSignalQuality",
         {"BitErrorRate": 0, "SignalPercent": 42, "SignalStrength": 42},
@@ -85,7 +86,7 @@ class AsyncWorkerDummyTest(DummyTest):
         self.results.append(("GetManufacturer", await worker.get_manufacturer_async()))
         self.results.append(("GetNetworkInfo", await worker.get_network_info_async()))
         self.results.append(("GetModel", await worker.get_model_async()))
-        # self.results.append(('GetFirmware', await worker.get_firmware_async()))
+        # TODO: self.results.append(('GetFirmware', await worker.get_firmware_async()))
         self.results.append(
             ("GetSignalQuality", await worker.get_signal_quality_async())
         )

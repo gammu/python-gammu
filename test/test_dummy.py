@@ -96,36 +96,23 @@ class DummyTest(unittest.TestCase):
         Callback on USSD data.
         """
         self._called = True
-        self.assertEqual(response, "Call")
-        self.assertEqual(data["Number"], "+800123456")
+        assert response == "Call"
+        assert data["Number"] == "+800123456"
 
 
 class BasicDummyTest(DummyTest):
     def test_model(self):
         state_machine = self.get_statemachine()
-        self.assertEqual(state_machine.GetModel()[1], "Dummy")
+        assert state_machine.GetModel()[1] == "Dummy"
 
     def test_diverts(self):
         state_machine = self.get_statemachine()
         diverts = state_machine.GetCallDivert()
-        self.assertEqual(
-            diverts,
-            [{"CallType": "All", "Timeout": 0, "Number": "", "DivertType": "AllTypes"}],
-        )
+        assert diverts == [{"CallType": "All", "Timeout": 0, "Number": "", "DivertType": "AllTypes"}]
 
         state_machine.SetCallDivert("AllTypes", "All", "123456789")
         diverts = state_machine.GetCallDivert()
-        self.assertEqual(
-            diverts,
-            [
-                {
-                    "CallType": "All",
-                    "Timeout": 0,
-                    "Number": "123456789",
-                    "DivertType": "AllTypes",
-                }
-            ],
-        )
+        assert diverts == [{"CallType": "All", "Timeout": 0, "Number": "123456789", "DivertType": "AllTypes"}]
 
     def test_dial(self):
         state_machine = self.get_statemachine()
@@ -134,20 +121,7 @@ class BasicDummyTest(DummyTest):
     def test_battery(self):
         state_machine = self.get_statemachine()
         status = state_machine.GetBatteryCharge()
-        self.assertEqual(
-            status,
-            {
-                "BatteryVoltage": 4200,
-                "PhoneTemperature": 22,
-                "BatteryTemperature": 22,
-                "ChargeState": "BatteryConnected",
-                "ChargeVoltage": 4200,
-                "BatteryCapacity": 2000,
-                "BatteryPercent": 100,
-                "ChargeCurrent": 0,
-                "PhoneCurrent": 500,
-            },
-        )
+        assert status == {"BatteryVoltage": 4200, "PhoneTemperature": 22, "BatteryTemperature": 22, "ChargeState": "BatteryConnected", "ChargeVoltage": 4200, "BatteryCapacity": 2000, "BatteryPercent": 100, "ChargeCurrent": 0, "PhoneCurrent": 500}
 
     def test_memory(self):
         state_machine = self.get_statemachine()
@@ -155,7 +129,7 @@ class BasicDummyTest(DummyTest):
 
         remain = status["Used"]
 
-        self.assertEqual(status["Used"], 3)
+        assert status["Used"] == 3
 
         start = True
 
@@ -183,7 +157,7 @@ class BasicDummyTest(DummyTest):
         )
 
         read = state_machine.GetMemory("SM", location)
-        self.assertEqual(len(read["Entries"]), 2)
+        assert len(read["Entries"]) == 2
 
     def test_calendar(self):
         state_machine = self.get_statemachine()
@@ -191,7 +165,7 @@ class BasicDummyTest(DummyTest):
 
         remain = status["Used"]
 
-        self.assertEqual(status["Used"], 2)
+        assert status["Used"] == 2
 
         start = True
 
@@ -209,7 +183,7 @@ class BasicDummyTest(DummyTest):
 
         remain = status["SIMUsed"] + status["PhoneUsed"] + status["TemplatesUsed"]
 
-        self.assertEqual(remain, 6)
+        assert remain == 6
 
         start = True
 
@@ -230,7 +204,7 @@ class BasicDummyTest(DummyTest):
         for item in data:
             message = gammu.DecodeSMS(item)
             if message is None:
-                self.assertEqual(item[0]["UDH"]["Type"], "NoUDH")
+                assert item[0]["UDH"]["Type"] == "NoUDH"
 
     def test_todo(self):
         state_machine = self.get_statemachine()
@@ -238,7 +212,7 @@ class BasicDummyTest(DummyTest):
 
         remain = status["Used"]
 
-        self.assertEqual(status["Used"], 2)
+        assert status["Used"] == 2
 
         start = True
 
@@ -253,16 +227,16 @@ class BasicDummyTest(DummyTest):
     def test_sms_folders(self):
         state_machine = self.get_statemachine()
         folders = state_machine.GetSMSFolders()
-        self.assertEqual(len(folders), 5)
+        assert len(folders) == 5
 
     def ussd_callback(self, state_machine, response, data):
         """
         Callback on USSD data.
         """
         self._called = True
-        self.assertEqual(response, "USSD")
-        self.assertEqual(data["Text"], "Reply for 1234")
-        self.assertEqual(data["Status"], "NoActionNeeded")
+        assert response == "USSD"
+        assert data["Text"] == "Reply for 1234"
+        assert data["Status"] == "NoActionNeeded"
 
     def test_ussd(self):
         self._called = False
@@ -270,7 +244,7 @@ class BasicDummyTest(DummyTest):
         state_machine.SetIncomingCallback(self.ussd_callback)
         state_machine.SetIncomingUSSD()
         state_machine.DialService("1234")
-        self.assertTrue(self._called)
+        assert self._called
 
     def test_sendsms(self):
         state_machine = self.get_statemachine()
@@ -296,7 +270,7 @@ class BasicDummyTest(DummyTest):
         # Encode messages
         encoded = gammu.EncodeSMS(smsinfo)
 
-        self.assertEqual(len(encoded), 5)
+        assert len(encoded) == 5
 
         # Send messages
         for message in encoded:
@@ -310,16 +284,7 @@ class BasicDummyTest(DummyTest):
     def test_filesystem(self):
         state_machine = self.get_statemachine()
         fs_info = state_machine.GetFileSystemStatus()
-        self.assertEqual(
-            fs_info,
-            {
-                "UsedImages": 0,
-                "Used": 1000000,
-                "UsedThemes": 0,
-                "Free": 10101,
-                "UsedSounds": 0,
-            },
-        )
+        assert fs_info == {"UsedImages": 0, "Used": 1000000, "UsedThemes": 0, "Free": 10101, "UsedSounds": 0}
 
     def test_deletefile(self):
         state_machine = self.get_statemachine()
@@ -343,9 +308,9 @@ class BasicDummyTest(DummyTest):
         state_machine = self.get_statemachine()
         name = "test-😘"
         self.assertRaises(gammu.ERR_FILENOTEXIST, state_machine.DeleteFolder, name)
-        self.assertEqual(name, state_machine.AddFolder("", name))
+        assert name == state_machine.AddFolder("", name)
         # Check the folder exists as expected on filesystem
-        self.assertTrue(os.path.exists(os.path.join(self.dummy_dir, "fs", name)))
+        assert os.path.exists(os.path.join(self.dummy_dir, "fs", name))
         state_machine.DeleteFolder(name)
 
     def test_addfile(self):
@@ -395,8 +360,8 @@ class BasicDummyTest(DummyTest):
                 file_f = state_machine.GetNextFileFolder(0)
             except gammu.ERR_EMPTY:
                 break
-        self.assertEqual(folders, 3)
-        self.assertEqual(files, 6)
+        assert folders == 3
+        assert files == 6
 
     def test_incoming_call(self):
         self.check_incoming_call()
@@ -407,4 +372,4 @@ class BasicDummyTest(DummyTest):
         state_machine.GetSignalQuality()
         self.fake_incoming_call()
         state_machine.GetSignalQuality()
-        self.assertTrue(self._called)
+        assert self._called

@@ -132,18 +132,8 @@ class SMSDDummyTest(DummyTest):
                 time.sleep(10)
                 retries += 1
 
-            self.assertEqual(
-                status["Received"],
-                2,
-                "Messages were not received as expected ({:d})!".format(
-                    status["Received"]
-                ),
-            )
-            self.assertEqual(
-                status["Sent"],
-                2,
-                "Messages were not sent as expected ({:d})!".format(status["Sent"]),
-            )
+            assert status["Received"] == 2, "Messages were not received as expected ({:d})!".format(status["Received"])
+            assert status["Sent"] == 2, "Messages were not sent as expected ({:d})!".format(status["Sent"])
 
             time.sleep(1)
 

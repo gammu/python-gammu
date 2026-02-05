@@ -12,7 +12,7 @@ Python bindings for the `Gammu library <https://wammu.eu/gammu/>`_.
 
 .. image:: https://img.shields.io/pypi/v/python-gammu.svg
     :alt: PyPI
-    :target: https://pypi.python.org/pypi/python-gammu/
+    :target: https://pypi.org/project/python-gammu/
 
 Homepage
 ========

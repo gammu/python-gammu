@@ -88,16 +88,16 @@ def getContacts(state_machine):
     try:
         while remaining > 0:
             if start:
-                entry = state_machine.GetNextMemory(Start=True, Type="SM")
+                memory_entry = state_machine.GetNextMemory(Start=True, Type="SM")
                 start = False
             else:
-                entry = state_machine.GetNextMemory(
-                    Location=entry["Location"], Type="SM"
+                memory_entry = state_machine.GetNextMemory(
+                    Location=memory_entry["Location"], Type="SM"
                 )
                 remaining -= 1
 
             numbers = []
-            for entry in entry["Entries"]:
+            for entry in memory_entry["Entries"]:
                 if entry["Type"] == "Text_FirstName":
                     name = entry["Value"]
                 else:

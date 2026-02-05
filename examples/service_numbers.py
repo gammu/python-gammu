@@ -32,7 +32,7 @@ class ServiceHandler:
     def __init__(self) -> None:
         self.state_machine = self.get_state_machine()
 
-    def callback(self, callback_type, data) -> None:
+    def callback(self, _state_machine, callback_type, data) -> None:
         """Callback on USSD data."""
         if callback_type != "USSD":
             print(f"Unexpected event type: {callback_type}")

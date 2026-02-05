@@ -56,8 +56,14 @@ class BackupTest(unittest.TestCase):
                 backup_2 = gammu.ReadBackup(out.name)
 
                 # Check content length
-                assert len(backup["Calendar"]) == len(backup_2["Calendar"]), f"Failed to compare calendar in {filename}"
-                assert len(backup["PhonePhonebook"]) + len(backup["SIMPhonebook"]) == len(backup_2["PhonePhonebook"]) + len(backup_2["SIMPhonebook"]), f"Failed to compare phonebook in {filename}"
+                assert len(backup["Calendar"]) == len(backup_2["Calendar"]), (
+                    f"Failed to compare calendar in {filename}"
+                )
+                assert len(backup["PhonePhonebook"]) + len(
+                    backup["SIMPhonebook"]
+                ) == len(backup_2["PhonePhonebook"]) + len(backup_2["SIMPhonebook"]), (
+                    f"Failed to compare phonebook in {filename}"
+                )
 
                 # Try converting to .backup
                 gammu.SaveBackup(out_backup.name, backup)

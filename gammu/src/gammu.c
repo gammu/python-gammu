@@ -31,8 +31,13 @@
 #include <locale.h>
 
 /* File creation and permissions */
+#ifdef _WIN32
+#include <io.h>
+#include <sys/stat.h>
+#else
 #include <fcntl.h>
 #include <sys/stat.h>
+#endif
 
 /* Strings */
 #ifdef HAVE_STRING_H
@@ -6074,7 +6079,7 @@ gammu_SaveRingtone(PyObject *self, PyObject *args, PyObject *kwds)
         return NULL;
     }
 
-    fd = PyObject_AsFileDescriptor(value);
+    fd = PyObject_AsFileDescriptor(file);
     if (fd == -1) {
         PyErr_Clear();
     }
@@ -6085,10 +6090,10 @@ gammu_SaveRingtone(PyObject *self, PyObject *args, PyObject *kwds)
         f = fdopen(fd, "wb");
         if (f == NULL) return NULL;
         closefile = TRUE;
-    } else if (PyUnicode_Check(value)) {
+    } else if (PyUnicode_Check(file)) {
         int ofd;
 
-        str = PyUnicode_EncodeFSDefault(value);
+        str = PyUnicode_EncodeFSDefault(file);
         if (str == NULL) {
             return NULL;
         }
@@ -6097,7 +6102,13 @@ gammu_SaveRingtone(PyObject *self, PyObject *args, PyObject *kwds)
             Py_DECREF(str);
             return NULL;
         }
+#ifdef _WIN32
+        /* Windows: use _open with _S_IREAD | _S_IWRITE for owner read/write */
+        ofd = _open(name, _O_WRONLY | _O_CREAT | _O_TRUNC | _O_BINARY, _S_IREAD | _S_IWRITE);
+#else
+        /* POSIX: use open with S_IRUSR | S_IWUSR for owner read/write */
         ofd = open(name, O_WRONLY | O_CREAT | O_TRUNC, S_IRUSR | S_IWUSR);
+#endif
         Py_DECREF(str);
         if (ofd == -1) {
             PyErr_SetString(PyExc_IOError, "Can not open file for writing!");
@@ -6105,7 +6116,11 @@ gammu_SaveRingtone(PyObject *self, PyObject *args, PyObject *kwds)
         }
         f = fdopen(ofd, "wb");
         if (f == NULL) {
+#ifdef _WIN32
+            _close(ofd);
+#else
             close(ofd);
+#endif
             PyErr_SetString(PyExc_IOError, "Can not open file for writing!");
             return NULL;
         }

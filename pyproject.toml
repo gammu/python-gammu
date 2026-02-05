@@ -142,7 +142,6 @@ ignore = [
   "D205",
   "D206",  # CONFIG: formatter
   "D212",  # CONFIG: incompatible with D213
-  "D213",
   "D401",
   "DOC201",
   "DOC501",

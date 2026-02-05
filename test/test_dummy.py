@@ -20,6 +20,7 @@
 #
 
 import contextlib
+import contextlib
 import datetime
 import os.path
 import pathlib
@@ -387,12 +388,27 @@ class BasicDummyTest(DummyTest):  # noqa: PLR0904
 
     def test_save_ringtone_permissions(self) -> None:
         """Test that SaveRingtone creates files with restrictive permissions."""
-        # Create a simple ringtone dictionary
-        ringtone = {"Name": "Test", "Notes": [{"Note": "C", "Duration": 4, "Scale": 1}]}
+        # Create a complete ringtone dictionary with all required fields
+        ringtone = {
+            "Name": "TestRingtone",
+            "Notes": [
+                {
+                    "Type": "Note",
+                    "Value": 113,  # Note value
+                    "Tempo": 120,
+                    "Scale": 1,
+                    "Style": "Natural",
+                    "Note": "C",
+                    "Duration": "1/4",
+                    "DurationSpec": "NoSpecialDuration",
+                }
+            ],
+        }
 
-        # Create a unique temporary file path using a secure method
-        # We need to close and delete it so SaveRingtone can create it
-        with tempfile.NamedTemporaryFile(mode="wb", delete=False, suffix=".rttl") as f:
+        # Test 1: Save using string filename
+        with tempfile.NamedTemporaryFile(
+            mode="wb", delete=False, suffix=".rttl"
+        ) as f:
             temp_file = f.name
         os.unlink(temp_file)  # Remove it so SaveRingtone can create it fresh
 
@@ -429,6 +445,33 @@ class BasicDummyTest(DummyTest):  # noqa: PLR0904
             # Clean up - use try-except to handle case where file doesn't exist
             with contextlib.suppress(FileNotFoundError):
                 os.unlink(temp_file)
+
+        # Test 2: Test multiple formats to ensure comprehensive coverage
+        formats_to_test = ["rttl", "ott", "imy"]
+        for fmt in formats_to_test:
+            with tempfile.NamedTemporaryFile(
+                mode="wb", delete=False, suffix=f".{fmt}"
+            ) as f:
+                temp_file = f.name
+            os.unlink(temp_file)
+
+            try:
+                gammu.SaveRingtone(temp_file, ringtone, fmt)
+                assert os.path.exists(temp_file), f"File not created for format {fmt}"
+
+                # Verify permissions for each format
+                if platform.system() != "Windows":
+                    file_stat = os.stat(temp_file)
+                    file_mode = stat.S_IMODE(file_stat.st_mode)
+                    assert (file_mode & stat.S_IRWXG) == 0, (
+                        f"Format {fmt}: Group has permissions"
+                    )
+                    assert (file_mode & stat.S_IRWXO) == 0, (
+                        f"Format {fmt}: Others have permissions"
+                    )
+            finally:
+                with contextlib.suppress(FileNotFoundError):
+                    os.unlink(temp_file)
 
     def test_incoming_call(self) -> None:
         self.check_incoming_call()

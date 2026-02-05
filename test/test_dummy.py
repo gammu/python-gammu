@@ -395,7 +395,7 @@ class BasicDummyTest(DummyTest):  # noqa: PLR0904
                     "Type": "Note",
                     "Value": 113,  # Note value
                     "Tempo": 120,
-                    "Scale": 1,
+                    "Scale": 220,  # Valid scale: 55, 110, 220, 440, or 880
                     "Style": "Natural",
                     "Note": "C",
                     "Duration": "1/4",

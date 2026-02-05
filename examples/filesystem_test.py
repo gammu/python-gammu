@@ -49,6 +49,7 @@ import argparse
 import datetime
 import os
 import sys
+from pathlib import Path
 
 import gammu
 
@@ -119,7 +120,7 @@ def main() -> None:  # noqa: PLR0912, PLR0915, C901
 
     # Check AddFilePart
     print("\n\nExpectation: Put cgi.jpg onto Memorycard on phone")
-    file_handle = open(args.testfile, "rb")
+    file_content = Path(args.testfile).read_bytes()
     file_stat = os.stat(args.testfile)
     ttime = datetime.datetime.fromtimestamp(file_stat[8])
     file_f = {
@@ -129,7 +130,7 @@ def main() -> None:  # noqa: PLR0912, PLR0915, C901
         "Folder": 0,
         "Level": 1,
         "Used": file_stat[6],
-        "Buffer": file_handle.read(),
+        "Buffer": file_content,
         "Type": "Other",
         "Protected": 0,
         "ReadOnly": 0,
@@ -144,18 +145,16 @@ def main() -> None:  # noqa: PLR0912, PLR0915, C901
 
     # Check GetFilePart
     print("\n\nExpectation: Get cgi.jpg from memorycard and write it as test.jpg")
-    with open("./test.jpg", "wb") as handle:
-        file_f = {"ID_FullName": f"{args.folder}/cgi.jpg", "Finished": 0}
-        while not file_f["Finished"]:
-            file_f = state_machine.GetFilePart(file_f)
-        handle.write(file_f["Buffer"])
-        handle.flush()
+    file_f = {"ID_FullName": f"{args.folder}/cgi.jpg", "Finished": 0}
+    while not file_f["Finished"]:
+        file_f = state_machine.GetFilePart(file_f)
+    Path("./test.jpg").write_bytes(file_f["Buffer"])
 
     # Check correct transfer
     print("\n\nExpectation: test.jpg and cgi.jpg to be the same")
-    f1 = open(args.testfile, "rb")
-    f2 = open("./test.jpg", "rb")
-    if f1.read() == f2.read():
+    f1 = Path(args.testfile).read_bytes()
+    f2 = Path("./test.jpg").read_bytes()
+    if f1 == f2:
         print("Same files")
     else:
         print("Files differ!")

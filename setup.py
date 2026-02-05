@@ -24,7 +24,7 @@
 import glob
 import os
 import platform
-import subprocess
+import subprocess  # noqa: S404
 import sys
 
 from packaging.version import parse
@@ -77,7 +77,7 @@ class GammuConfig:
     def check_version(self) -> None:
         if self.use_pkgconfig:
             try:
-                subprocess.check_output(
+                subprocess.check_output(  # noqa: S603
                     [
                         "pkg-config",
                         "--print-errors",

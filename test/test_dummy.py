@@ -219,7 +219,7 @@ class BasicDummyTest(DummyTest):  # noqa: PLR0904
                 sms.append(
                     state_machine.GetNextSMS(Location=sms[-1][0]["Location"], Folder=0)
                 )
-            remain -= len(sms)
+            remain -= len(sms[-1])
 
         data = gammu.LinkSMS(sms)
 
@@ -339,7 +339,7 @@ class BasicDummyTest(DummyTest):  # noqa: PLR0904
     def test_addfile(self) -> None:
         state_machine = self.get_statemachine()
         file_stat = os.stat(TEST_FILE)
-        ttime = datetime.datetime.fromtimestamp(file_stat[8])
+        ttime = datetime.datetime.fromtimestamp(file_stat.st_mtime)
         content = pathlib.Path(TEST_FILE).read_bytes()
         file_f = {
             "ID_FullName": "testfolder",
@@ -347,7 +347,7 @@ class BasicDummyTest(DummyTest):  # noqa: PLR0904
             "Modified": ttime,
             "Folder": 0,
             "Level": 1,
-            "Used": file_stat[6],
+            "Used": file_stat.st_size,
             "Buffer": content,
             "Type": "Other",
             "Protected": 0,
@@ -373,7 +373,7 @@ class BasicDummyTest(DummyTest):  # noqa: PLR0904
         file_f = state_machine.GetNextFileFolder(1)
         folders = 0
         files = 0
-        while 1:
+        while True:
             if file_f["Folder"]:
                 folders += 1
             else:

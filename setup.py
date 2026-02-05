@@ -72,6 +72,7 @@ class GammuConfig:
             include = self.config_path(path)
             if os.path.exists(include):
                 return path
+        return None
 
     def check_version(self) -> None:
         if self.use_pkgconfig:
@@ -143,7 +144,7 @@ class GammuConfig:
                 .decode("utf-8")
                 .strip()
             )
-        elif self.on_windows:
+        if self.on_windows:
             return "/LIBPATH:{}".format(os.path.join(self.path, "lib"))
         return "-L{}".format(os.path.join(self.path, "lib"))
 

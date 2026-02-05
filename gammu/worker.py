@@ -85,8 +85,7 @@ class GammuCommand:
         """Returns textual representation."""
         if self._params is not None:
             return f"{self._command} {self._params}"
-        else:
-            return f"{self._command} ()"
+        return f"{self._command} ()"
 
 
 class GammuTask:

@@ -383,6 +383,51 @@ class BasicDummyTest(DummyTest):  # noqa: PLR0904
         assert folders == 3
         assert files == 6
 
+    def test_save_ringtone_permissions(self) -> None:
+        """Test that SaveRingtone creates files with restrictive permissions."""
+        import stat
+        
+        # Create a simple ringtone dictionary
+        ringtone = {
+            "Name": "Test",
+            "Notes": [
+                {"Note": "C", "Duration": 4, "Scale": 1}
+            ]
+        }
+        
+        # Create a temporary file path
+        with tempfile.NamedTemporaryFile(mode='w', delete=False, suffix='.rttl') as f:
+            temp_file = f.name
+        
+        try:
+            # Remove the file so SaveRingtone can create it
+            os.unlink(temp_file)
+            
+            # Save the ringtone
+            gammu.SaveRingtone(temp_file, ringtone, "rttl")
+            
+            # Check that the file was created
+            assert os.path.exists(temp_file)
+            
+            # Check file permissions - should be owner read/write only
+            # Skip permission check on Windows as it handles permissions differently
+            if platform.system() != "Windows":
+                file_stat = os.stat(temp_file)
+                file_mode = stat.S_IMODE(file_stat.st_mode)
+                
+                # File should have owner read/write permissions (0o600)
+                # Check that group and others don't have any permissions
+                assert (file_mode & stat.S_IRWXG) == 0, f"Group has permissions: {oct(file_mode)}"
+                assert (file_mode & stat.S_IRWXO) == 0, f"Others have permissions: {oct(file_mode)}"
+                
+                # Verify owner has read and write permissions
+                assert (file_mode & stat.S_IRUSR) != 0, f"Owner missing read permission: {oct(file_mode)}"
+                assert (file_mode & stat.S_IWUSR) != 0, f"Owner missing write permission: {oct(file_mode)}"
+        finally:
+            # Clean up
+            if os.path.exists(temp_file):
+                os.unlink(temp_file)
+
     def test_incoming_call(self) -> None:
         self.check_incoming_call()
         self._called = False

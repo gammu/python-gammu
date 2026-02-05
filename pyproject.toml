@@ -101,6 +101,91 @@ line_length = 88
 multi_line_output = 3
 use_parentheses = true
 
+[tool.ruff.format]
+docstring-code-format = true
+
+[tool.ruff.lint]
+extend-safe-fixes = [
+  "ANN",
+  "D",
+  "EM101",
+  "EM102",
+  "FA102",
+  "FLY",
+  "SIM",
+  "TCH",
+  "UP"
+]
+future-annotations = true
+ignore = [
+  "ANN001",
+  "ANN002",
+  "ANN003",
+  "ANN201",
+  "ANN202",
+  "ARG001",
+  "ARG002",
+  "ASYNC110",
+  "B007",
+  "B017",
+  "B020",
+  "BLE001",
+  "COM",  # CONFIG: No trailing commas
+  "CPY001",
+  "D100",
+  "D101",
+  "D102",
+  "D103",
+  "D104",
+  "D107",
+  "D203",  # CONFIG: incompatible with D211
+  "D205",
+  "D206",  # CONFIG: formatter
+  "D212",  # CONFIG: incompatible with D213
+  "D401",
+  "D404",
+  "DOC201",
+  "DOC501",
+  "DTZ001",
+  "DTZ006",
+  "E501",  # WONTFIX: we accept long strings (rest is formatted by black)
+  "ERA001",
+  "FBT003",
+  "FURB101",
+  "N802",
+  "N818",
+  "PERF203",  # WONFIX: affects only old Python versions
+  "PLC1901",
+  "PLR1702",
+  "PLR1704",
+  "PLR2004",
+  "PLR6301",
+  "PLW0603",
+  "PT011",
+  "PT027",
+  "PTH116",
+  "PTH118",
+  "PTH207",
+  "PTH208",
+  "PYI056",
+  "RUF012",
+  "S101",
+  "S110",
+  "S404",
+  "S603",
+  "S607",
+  "SIM115",
+  "SLF001",
+  "TRY300"
+]
+preview = true
+select = ["ALL"]
+
+[tool.ruff.lint.per-file-ignores]
+"examples/*.py" = ["T201"]
+"setup.py" = ["T201"]
+"test/*.py" = ["T201"]
+
 [tool.setuptools]
 include-package-data = false
 packages = [
@@ -125,82 +210,3 @@ extend-exclude = [
   "test/data/*.vcf",
   "test/data/gammu-dummy/pbk/ME/103"
 ]
-[tool.ruff.format]
-docstring-code-format = true
-
-[tool.ruff.lint]
-extend-safe-fixes = [
-  "ANN",
-  "D",
-  "EM101",
-  "EM102",
-  "FA102",
-  "FLY",
-  "SIM",
-  "TCH",
-  "UP"
-]
-future-annotations = true
-ignore = [
-  "COM",  # CONFIG: No trailing commas
-  "D203",  # CONFIG: incompatible with D211
-  "D206",  # CONFIG: formatter
-  "D212",  # CONFIG: incompatible with D213
-  "E501",  # WONTFIX: we accept long strings (rest is formatted by black)
-  "PERF203", # WONFIX: affects only old Python versions
-  "FURB101",
-  "PLR2004",
-  "S101",
-  "S404",
-  "S607",
-  "D100",
-  "D101",
-  "D102",
-  "D103",
-  "D104",
-  "D107",
-  "D401",
-  "D404",
-  "ARG002",
-  "DOC201",
-  "DOC501",
-  "PLC1901",
-  "PLR6301",
-  "DTZ001",
-  "DTZ006",
-  "ANN001",
-  "ANN002",
-  "ANN003",
-  "ANN201",
-  "ANN202",
-  "B017",
-  "RUF012",
-  "PTH118",
-  "PTH116",
-  "PTH207",
-  "ERA001",
-  "FBT003",
-  "PT027",
-  "PT011",
-  "SIM115",
-  "PLR1704",
-  "TRY300",
-  "D205",
-  "N818",
-  "CPY001",
-  "BLE001",
-  "SLF001",
-  "ASYNC110",
-  "PYI056",
-  "ARG001",
-  "PLW0603",
-  "S603",
-  "N802",
-  "B020",
-  "PTH208",
-  "PLR1702",
-  "S110",
-  "B007",
-]
-preview = true
-select = ["ALL"]

@@ -55,8 +55,12 @@ content-type = "text/x-rst"
 file = "README.rst"
 
 [project.urls]
+Documentation = "https://docs.gammu.org/python/"
 Download = "https://wammu.eu/download/python-gammu/"
+Funding = "https://wammu.eu/donate/"
 Homepage = "https://wammu.eu/python-gammu/"
+"Issue Tracker" = "https://github.com/gammu/python-gammu/issues"
+"Source Code" = "https://github.com/gammu/python-gammu"
 
 [tool.check-manifest]
 ignore = [

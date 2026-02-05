@@ -111,7 +111,7 @@ def main():
     # Check DeleteFile
     print("\n\nExpectation: Deleting cgi.jpg from memorycard")
     try:
-        state_machine.DeleteFile(unicode(args.folder + "/cgi.jpg"))
+        state_machine.DeleteFile(args.folder + "/cgi.jpg")
     except gammu.ERR_FILENOTEXIST:
         print("Oh well - we copy it now ;-) (You SHOULD read this)")
 
@@ -223,14 +223,14 @@ def main():
         "\n\nExpectation: Modifying attributes "
         "(readonly=1, protected=0, system=1, hidden=1)"
     )
-    state_machine.SetFileAttributes(unicode(args.folder + "/cgi.jpg"), 1, 0, 1, 1)
+    state_machine.SetFileAttributes(args.folder + "/cgi.jpg"), 1, 0, 1, 1
 
     # Check GetFolderListing
     print("\n\nExpectation: Listing of cgi.jpg's properties")
-    file_f = state_machine.GetFolderListing(unicode(args.folder), 1)
+    file_f = state_machine.GetFolderListing(args.folder), 1
     while 1:
         if file_f["Name"] != "cgi.jpg":
-            file_f = state_machine.GetFolderListing(unicode(args.folder), 0)
+            file_f = state_machine.GetFolderListing(args.folder), 0
         else:
             attribute = ""
             if file_f["Protected"]:
@@ -272,21 +272,21 @@ def main():
     # Check DeleteFile
     print("\n\nExpectation: Deletion of cgi.jpg from memorycard")
     try:
-        state_machine.DeleteFile(unicode(args.folder + "cgi.jpg"))
+        state_machine.DeleteFile(args.folder + "cgi.jpg")
         print("Deleted")
     except gammu.ERR_FILENOTEXIST:
         print("Something is wrong ...")
 
     # Check AddFolder
     print('\n\nExpectation: Creation of a folder on the memorycard "42alpha"')
-    state_machine.AddFolder(unicode(args.folder), "42alpha")
+    state_machine.AddFolder(args.folder), "42alpha"
 
     # Check GetFolderListing again *wired*
     print("\n\nExpectation: Print properties of newly created folder")
-    file_f = state_machine.GetFolderListing(unicode(args.folder), 1)
+    file_f = state_machine.GetFolderListing(args.folder), 1
     while 1:
         if file_f["Name"] != "42alpha":
-            file_f = state_machine.GetFolderListing(unicode(args.folder), 0)
+            file_f = state_machine.GetFolderListing(args.folder), 0
         else:
             attribute = ""
             if file_f["Protected"]:
@@ -327,7 +327,7 @@ def main():
 
     # Check DeleteFolder
     print('\n\nExpectation: Deletion of previously created folder "42alpha"')
-    state_machine.DeleteFolder(unicode(args.folder + "/42alpha"))
+    state_machine.DeleteFolder(args.folder + "/42alpha")
 
 
 if __name__ == "__main__":

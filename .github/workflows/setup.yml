@@ -123,8 +123,8 @@ jobs:
     steps:
     - uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7.0.0
       with:
-        name: dist
-        path: dist
+        path: dist/
+        merge-multiple: true
     - uses: ncipollo/release-action@b7eabc95ff50cbeeedec83973935c8f306dfcd0b # v1.20.0
       with:
         generateReleaseNotes: true

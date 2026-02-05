@@ -48,7 +48,7 @@ keywords = [
 license = "GPL-2.0-or-later"
 name = "python-gammu"
 requires-python = ">=3.10"
-version = "3.2.4"
+version = "3.2.5"
 
 [project.readme]
 content-type = "text/x-rst"

@@ -31,7 +31,7 @@ from packaging.version import parse
 from setuptools import Extension, setup
 
 # some defines
-VERSION = "3.2.4"
+VERSION = "3.2.5"
 GAMMU_REQUIRED = "1.37.90"
 
 

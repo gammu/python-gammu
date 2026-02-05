@@ -339,7 +339,7 @@ class BasicDummyTest(DummyTest):  # noqa: PLR0904
     def test_addfile(self) -> None:
         state_machine = self.get_statemachine()
         file_stat = os.stat(TEST_FILE)
-        ttime = datetime.datetime.fromtimestamp(file_stat[8])
+        ttime = datetime.datetime.fromtimestamp(file_stat.st_mtime)
         content = pathlib.Path(TEST_FILE).read_bytes()
         file_f = {
             "ID_FullName": "testfolder",

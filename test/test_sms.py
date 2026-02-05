@@ -171,4 +171,4 @@ class PDUTest(unittest.TestCase):
         assert gammu.SMSCounter("foobar") == (1, 154)
 
     def test_counter_long(self) -> None:
-        assert gammu.SMSCounter("foobar fjsa;kjfkasdjfkljsklfjaskdljfkljasdfkljqilui143uu51o2" "3rjhskdf jasdklfjasdklf jasdfkljasdlkfj;asd;lfjaskdljf431ou9" "83jdfaskljfklsdjdkljasfl sdfjasdfkl jafklsda") == (2, 156)
+        assert gammu.SMSCounter("foobar fjsa;kjfkasdjfkljsklfjaskdljfkljasdfkljqilui143uu51o23rjhskdf jasdklfjasdklf jasdfkljasdlkfj;asd;lfjaskdljf431ou983jdfaskljfklsdjdkljasfl sdfjasdfkl jafklsda") == (2, 156)

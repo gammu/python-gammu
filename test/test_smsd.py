@@ -103,7 +103,7 @@ class SMSDDummyTest(DummyTest):
 
     def test_init_error(self) -> None:
         with pytest.raises(TypeError):
-            gammu.smsd.SMSD(Bar=1)
+            gammu.smsd.SMSD(invalid_option=1)
 
     def test_inject(self) -> None:
         smsd = self.get_smsd()

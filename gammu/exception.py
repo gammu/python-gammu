@@ -33,7 +33,7 @@ for _name in dir(gammu._gammu):
         continue
     _temp = __import__("gammu._gammu", globals(), locals(), [_name], 0)
     locals()[_name] = getattr(_temp, _name)
-    __all__.append(_name)
+    __all__.append(_name)  # noqa: PYI056
 
 # Cleanup
 del _name

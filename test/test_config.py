@@ -138,8 +138,8 @@ class DebugTest(unittest.TestCase):
         try:
             gammu.SetDebugFile(testfile.name)
             self.check_operation(None)
-            with pathlib.Path(testfile.name).open(encoding="utf-8") as handle:
-                assert handle.read() == ""
+            content = pathlib.Path(testfile.name).read_text(encoding="utf-8")
+            assert not content
         finally:
             gammu.SetDebugFile(None)
             pathlib.Path(testfile.name).unlink()

@@ -126,7 +126,7 @@ class SMSDDummyTest(DummyTest):
 
             # Show SMSD status
             retries = 0
-            while retries < 2:
+            while retries < MAX_STATUS_RETRIES:
                 status = smsd.GetStatus()
                 if status["Sent"] >= 2:
                     break

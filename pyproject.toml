@@ -144,7 +144,6 @@ ignore = [
   "D212",  # CONFIG: incompatible with D213
   "D213",
   "D401",
-  "D404",
   "DOC201",
   "DOC501",
   "DTZ001",

@@ -33,5 +33,5 @@ if len(sys.argv) != 2:
 gammu.SetDebugFile(sys.stderr)
 gammu.SetDebugLevel("textall")
 
-sms = gammu.DecodePDU(sys.argv[1].decode("hex"))
+sms = gammu.DecodePDU(bytes.fromhex(sys.argv[1]))
 print(sms)

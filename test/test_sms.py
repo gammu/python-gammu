@@ -55,17 +55,17 @@ GSM = (
 
 
 class PDUTest(unittest.TestCase):
-    def setUp(self):
+    def setUp(self) -> None:
         if "GAMMU_DEBUG" in os.environ:
             gammu.SetDebugFile(sys.stderr)
             gammu.SetDebugLevel("textall")
 
-    def test_decode(self):
+    def test_decode(self) -> None:
         sms = gammu.DecodePDU(PDU_DATA)
         assert sms["Number"] == "604865888"
         assert sms["Text"] == "Delivered"
 
-    def do_smstest(self, smsinfo, expected):
+    def do_smstest(self, smsinfo, expected) -> None:
         # encode SMSes
         sms = gammu.EncodeSMS(smsinfo)
 
@@ -87,22 +87,22 @@ class PDUTest(unittest.TestCase):
         # compare PDU results
         assert decodedsms["Entries"][0]["Buffer"] == expected
 
-    def test_encode_plain(self):
+    def test_encode_plain(self) -> None:
         smsinfo = {"Entries": [{"ID": "ConcatenatedTextLong", "Buffer": MESSAGE}]}
         self.do_smstest(smsinfo, MESSAGE)
 
-    def test_encode_gsm(self):
+    def test_encode_gsm(self) -> None:
         smsinfo = {"Entries": [{"ID": "ConcatenatedTextLong", "Buffer": GSM}]}
         self.do_smstest(smsinfo, GSM)
 
-    def test_encode_unicode(self):
+    def test_encode_unicode(self) -> None:
         smsinfo = {
             "Entries": [{"ID": "ConcatenatedTextLong", "Buffer": UNICODE}],
             "Unicode": True,
         }
         self.do_smstest(smsinfo, UNICODE)
 
-    def test_link(self):
+    def test_link(self) -> None:
         # SMS info about message
         smsinfo = {"Entries": [{"ID": "ConcatenatedTextLong", "Buffer": MESSAGE}]}
 
@@ -118,7 +118,7 @@ class PDUTest(unittest.TestCase):
         # compare results
         assert decodedsms["Entries"][0]["Buffer"], MESSAGE
 
-    def test_mms_decode(self):
+    def test_mms_decode(self) -> None:
         message = [
             {
                 "RejectDuplicates": 0,
@@ -167,8 +167,8 @@ class PDUTest(unittest.TestCase):
         decoded = gammu.DecodeSMS(message)
         assert decoded["Entries"][0]["MMSIndicator"]["Address"] == "http://mmsc.labmctel.fr:9090/m33"
 
-    def test_counter(self):
+    def test_counter(self) -> None:
         assert gammu.SMSCounter("foobar") == (1, 154)
 
-    def test_counter_long(self):
+    def test_counter_long(self) -> None:
         assert gammu.SMSCounter("foobar fjsa;kjfkasdjfkljsklfjaskdljfkljasdfkljqilui143uu51o2" "3rjhskdf jasdklfjasdklf jasdfkljasdlkfj;asd;lfjaskdljf431ou9" "83jdfaskljfklsdjdkljasfl sdfjasdfkl jafklsda") == (2, 156)

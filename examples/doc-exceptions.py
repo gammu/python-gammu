@@ -24,7 +24,7 @@
 import gammu.exception
 
 
-def main():
+def main() -> None:
     for exc in sorted(gammu.exception.__all__):
         print(f".. exception:: gammu.{exc}")
         print()

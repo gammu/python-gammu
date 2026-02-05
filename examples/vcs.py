@@ -28,7 +28,7 @@ import sys
 import gammu
 
 
-def main():
+def main() -> None:
     state_machine = gammu.StateMachine()
     if len(sys.argv) == 2:
         state_machine.ReadConfig(Filename=sys.argv[1])

@@ -26,7 +26,7 @@ import sys
 import gammu
 
 
-def main():
+def main() -> None:
     # Global debug level
     gammu.SetDebugFile(sys.stderr)
     gammu.SetDebugLevel("textall")

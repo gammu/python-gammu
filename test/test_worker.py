@@ -298,10 +298,10 @@ WORKER_EXPECT = [
 class WorkerDummyTest(DummyTest):
     results = []
 
-    def callback(self, name, result, error, percents):
+    def callback(self, name, result, error, percents) -> None:
         self.results.append((name, result, error, percents))
 
-    def test_worker(self):
+    def test_worker(self) -> None:
         self.results = []
         worker = gammu.worker.GammuWorker(self.callback)
         worker.configure(self.get_statemachine().GetConfig())
@@ -345,7 +345,7 @@ class WorkerDummyTest(DummyTest):
         self.maxDiff = None
         assert self.results == WORKER_EXPECT
 
-    def test_incoming(self):
+    def test_incoming(self) -> None:
         self.check_incoming_call()
         self.results = []
         self._called = False

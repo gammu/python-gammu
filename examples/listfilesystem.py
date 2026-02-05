@@ -117,7 +117,7 @@ def FileToAttributeString(file_obj, filled=1):
     return protected + readonly + hidden + system
 
 
-def Main():
+def Main() -> None:
     # Make sure we reset the pointer of the current entry to the first
     file_obj = NextFile(1)
 

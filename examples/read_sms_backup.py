@@ -27,7 +27,7 @@ import sys
 import gammu
 
 
-def main():
+def main() -> None:
     if len(sys.argv) != 2:
         print("This requires parameter: backup file!")
         sys.exit(1)

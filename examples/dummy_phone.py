@@ -28,7 +28,7 @@ import sys
 import gammu
 
 
-def get_all_memory(state_machine, memory_type):
+def get_all_memory(state_machine, memory_type) -> None:
     status = state_machine.GetMemoryStatus(Type=memory_type)
 
     remain = status["Used"]
@@ -54,7 +54,7 @@ def get_all_memory(state_machine, memory_type):
                 print("{:<15}: {}".format(v["Type"], v["Value"]))
 
 
-def get_all_calendar(state_machine):
+def get_all_calendar(state_machine) -> None:
     status = state_machine.GetCalendarStatus()
 
     remain = status["Used"]
@@ -76,7 +76,7 @@ def get_all_calendar(state_machine):
             print("{:<20}: {}".format(v["Type"], v["Value"]))
 
 
-def get_battery_status(state_machine):
+def get_battery_status(state_machine) -> None:
     status = state_machine.GetBatteryCharge()
 
     for x in status:
@@ -102,7 +102,7 @@ def get_all_sms(state_machine):
     return sms
 
 
-def print_sms_header(message, folders):
+def print_sms_header(message, folders) -> None:
     print()
     print("{:<15}: {}".format("Number", message["Number"]))
     print("{:<15}: {}".format("Date", message["DateTime"]))
@@ -118,13 +118,13 @@ def print_sms_header(message, folders):
     print("{:<15}: {}".format("Validity", message["SMSC"]["Validity"]))
 
 
-def print_all_sms(sms, folders):
+def print_all_sms(sms, folders) -> None:
     for m in sms:
         print_sms_header(m, folders)
         print("\n{}".format(m["Text"]))
 
 
-def link_all_sms(sms, folders):
+def link_all_sms(sms, folders) -> None:
     data = gammu.LinkSMS([[msg] for msg in sms])
 
     for x in data:
@@ -154,7 +154,7 @@ def link_all_sms(sms, folders):
                     print()
 
 
-def get_all_todo(state_machine):
+def get_all_todo(state_machine) -> None:
     status = state_machine.GetToDoStatus()
 
     remain = status["Used"]
@@ -190,7 +190,7 @@ def get_set_date_time(state_machine):
     return dt
 
 
-def main():
+def main() -> None:
     if len(sys.argv) != 2:
         print("This requires one parameter with location of config file!")
         sys.exit(1)

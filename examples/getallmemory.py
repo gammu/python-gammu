@@ -26,7 +26,7 @@ import sys
 import gammu
 
 
-def main():
+def main() -> None:
     state_machine = gammu.StateMachine()
     state_machine.ReadConfig()
     state_machine.Init()

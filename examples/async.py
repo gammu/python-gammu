@@ -31,7 +31,7 @@ import gammu
 import gammu.asyncworker
 
 
-async def send_message_async(state_machine, number, message):
+async def send_message_async(state_machine, number, message) -> None:
     smsinfo = {
         "Class": -1,
         "Unicode": False,
@@ -48,7 +48,7 @@ async def send_message_async(state_machine, number, message):
         await state_machine.send_sms_async(message)
 
 
-async def get_network_info(worker):
+async def get_network_info(worker) -> None:
     info = await worker.get_network_info_async()
     print("NetworkName:", info["NetworkName"])
 
@@ -66,7 +66,7 @@ async def get_network_info(worker):
     print("  LAC:", info["LAC"])
 
 
-async def get_info(worker):
+async def get_info(worker) -> None:
     print("Phone information:")
     manufacturer = await worker.get_manufacturer_async()
     print("{:<15}: {}".format("Manufacturer", manufacturer))
@@ -78,7 +78,7 @@ async def get_info(worker):
     print("{:<15}: {}".format("Firmware", firmware[0]))
 
 
-async def main():
+async def main() -> None:
     gammu.SetDebugFile(sys.stderr)
     gammu.SetDebugLevel("textall")
 

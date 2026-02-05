@@ -239,14 +239,14 @@ def main() -> None:  # noqa: PLR0912, PLR0915, C901
     # Check DeleteFile
     print("\n\nExpectation: Deletion of cgi.jpg from memorycard")
     try:
-        state_machine.DeleteFile(f"{args.folder}cgi.jpg")
+        state_machine.DeleteFile(f"{args.folder}/cgi.jpg")
         print("Deleted")
     except gammu.ERR_FILENOTEXIST:
         print("Something is wrong ...")
 
     # Check AddFolder
     print('\n\nExpectation: Creation of a folder on the memorycard "42alpha"')
-    state_machine.AddFolder(args.folder), "42alpha"
+    state_machine.AddFolder(args.folder, "42alpha")
 
     # Check GetFolderListing again *wired*
     print("\n\nExpectation: Print properties of newly created folder")

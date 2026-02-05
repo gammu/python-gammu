@@ -21,13 +21,13 @@
 
 import datetime
 import os.path
+import pathlib
 import platform
 import shutil
 import tempfile
 import unittest
 
 import gammu
-import pathlib
 
 DUMMY_DIR = os.path.join(os.path.dirname(__file__), "data", "gammu-dummy")
 TEST_FILE = os.path.join(os.path.dirname(__file__), "data", "sqlite-14.sql")

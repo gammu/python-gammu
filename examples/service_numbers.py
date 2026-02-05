@@ -19,9 +19,7 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #
-"""
-Service numbers dialogue example.
-"""
+"""Service numbers dialogue example."""
 
 import sys
 
@@ -31,9 +29,7 @@ REPLY = False
 
 
 def callback(state_machine, callback_type, data):
-    """
-    Callback on USSD data.
-    """
+    """Callback on USSD data."""
     global REPLY
     if callback_type != "USSD":
         print(f"Unexpected event type: {callback_type}")
@@ -50,9 +46,7 @@ def callback(state_machine, callback_type, data):
 
 
 def init():
-    """
-    Initializes gammu and callbacks.
-    """
+    """Initializes gammu and callbacks."""
     state_machine = gammu.StateMachine()
     if len(sys.argv) >= 2:
         state_machine.ReadConfig(Filename=sys.argv[1])
@@ -69,9 +63,7 @@ def init():
 
 
 def do_service(state_machine):
-    """
-    Main code to talk with worker.
-    """
+    """Main code to talk with worker."""
     global REPLY
 
     if len(sys.argv) >= 3:

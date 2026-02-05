@@ -18,8 +18,7 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #
-"""
-Asynchronous communication to phone.
+"""Asynchronous communication to phone.
 
 Mostly you should use only L{GammuWorker} class, others are only helpers
 which are used by this class.
@@ -32,13 +31,10 @@ import gammu
 
 
 class InvalidCommand(Exception):
-    """
-    Exception indicating invalid command.
-    """
+    """Exception indicating invalid command."""
 
     def __init__(self, value):
-        """
-        Initializes exception.
+        """Initializes exception.
 
         @param value: Name of wrong command.
         @type value: string
@@ -47,15 +43,12 @@ class InvalidCommand(Exception):
         self.value = value
 
     def __str__(self):
-        """
-        Returns textual representation of exception.
-        """
+        """Returns textual representation of exception."""
         return f'Invalid command: "{self.value}"'
 
 
 def check_worker_command(command):
-    """
-    Checks whether command is valid.
+    """Checks whether command is valid.
 
     @param command: Name of command.
     @type command: string
@@ -67,41 +60,29 @@ def check_worker_command(command):
 
 
 class GammuCommand:
-    """
-    Storage of single command for gammu.
-    """
+    """Storage of single command for gammu."""
 
     def __init__(self, command, params=None, percentage=100):
-        """
-        Creates single command instance.
-        """
+        """Creates single command instance."""
         check_worker_command(command)
         self._command = command
         self._params = params
         self._percentage = percentage
 
     def get_command(self):
-        """
-        Returns command name.
-        """
+        """Returns command name."""
         return self._command
 
     def get_params(self):
-        """
-        Returns command params.
-        """
+        """Returns command params."""
         return self._params
 
     def get_percentage(self):
-        """
-        Returns percentage of current task.
-        """
+        """Returns percentage of current task."""
         return self._percentage
 
     def __str__(self):
-        """
-        Returns textual representation.
-        """
+        """Returns textual representation."""
         if self._params is not None:
             return f"{self._command} {self._params}"
         else:
@@ -109,13 +90,10 @@ class GammuCommand:
 
 
 class GammuTask:
-    """
-    Storage of tasks for gammu.
-    """
+    """Storage of tasks for gammu."""
 
     def __init__(self, name, commands):
-        """
-        Creates single command instance.
+        """Creates single command instance.
 
         @param name: Name of task.
         @type name: string
@@ -139,17 +117,13 @@ class GammuTask:
             self._list.append(GammuCommand(cmd, params, percents))
 
     def get_next(self):
-        """
-        Returns next command to be executed as L{GammuCommand}.
-        """
+        """Returns next command to be executed as L{GammuCommand}."""
         result = self._list[self._pointer]
         self._pointer += 1
         return result
 
     def get_name(self):
-        """
-        Returns task name.
-        """
+        """Returns task name."""
         return self._name
 
 
@@ -158,13 +132,10 @@ def gammu_pull_device(state_machine):
 
 
 class GammuThread(threading.Thread):
-    """
-    Thread for phone communication.
-    """
+    """Thread for phone communication."""
 
     def __init__(self, queue, config, callback, pull_func=gammu_pull_device):
-        """
-        Initialises thread data.
+        """Initialises thread data.
 
         @param queue: Queue with events.
         @type queue: queue.Queue object.
@@ -191,9 +162,7 @@ class GammuThread(threading.Thread):
         self._pull_func = pull_func
 
     def _do_command(self, name, cmd, params, percentage=100):
-        """
-        Executes single command on phone.
-        """
+        """Executes single command on phone."""
         func = getattr(self._sm, cmd)
         error = "ERR_NONE"
         result = None
@@ -211,8 +180,7 @@ class GammuThread(threading.Thread):
         self._callback(name, result, error, percentage)
 
     def run(self):
-        """
-        Thread body, which handles phone communication. This should not
+        """Thread body, which handles phone communication. This should not
         be used from outside.
         """
         start = True
@@ -249,29 +217,23 @@ class GammuThread(threading.Thread):
                     self._callback("ReadDevice", None, ex, 0)
 
     def kill(self):
-        """
-        Forces thread end without emptying queue.
-        """
+        """Forces thread end without emptying queue."""
         self._kill = True
 
     def join(self, timeout=None):
-        """
-        Terminates thread and waits for it.
-        """
+        """Terminates thread and waits for it."""
         self._terminate = True
         super().join(timeout)
 
 
 class GammuWorker:
-    """
-    Wrapper class for asynchronous communication with Gammu. It spawns
+    """Wrapper class for asynchronous communication with Gammu. It spawns
     own thread and then passes all commands to this thread. When task is
     done, caller is notified via callback.
     """
 
     def __init__(self, callback, pull_func=gammu_pull_device):
-        """
-        Initializes worker class.
+        """Initializes worker class.
 
         @param callback: See L{GammuThread.__init__} for description.
         """
@@ -283,8 +245,7 @@ class GammuWorker:
         self._pull_func = pull_func
 
     def enqueue_command(self, command, params):
-        """
-        Enqueues command.
+        """Enqueues command.
 
         @param command: Command(s) to execute. Each command is tuple
         containing function name and it's parameters.
@@ -295,8 +256,7 @@ class GammuWorker:
         self._queue.put(GammuTask(command, [(command, params)]))
 
     def enqueue_task(self, command, commands):
-        """
-        Enqueues task.
+        """Enqueues task.
 
         @param command: Command(s) to execute. Each command is tuple
         containing function name and it's parameters.
@@ -307,8 +267,7 @@ class GammuWorker:
         self._queue.put(GammuTask(command, commands))
 
     def enqueue(self, command, params=None, commands=None):
-        """
-        Enqueues command or task.
+        """Enqueues command or task.
 
         @param command: Command(s) to execute. Each command is tuple
         containing function name and it's parameters.
@@ -325,8 +284,7 @@ class GammuWorker:
             self.enqueue_command(command, params)
 
     def configure(self, config):
-        """
-        Configures gammu instance according to config.
+        """Configures gammu instance according to config.
 
         @param config: Gammu configuration, same as
         L{StateMachine.SetConfig} accepts.
@@ -335,24 +293,18 @@ class GammuWorker:
         self._config = config
 
     def abort(self):
-        """
-        Aborts any remaining operations.
-        """
+        """Aborts any remaining operations."""
         raise NotImplementedError
 
     def initiate(self):
-        """
-        Connects to phone.
-        """
+        """Connects to phone."""
         self._thread = GammuThread(
             self._queue, self._config, self._callback, self._pull_func
         )
         self._thread.start()
 
     def terminate(self, timeout=None):
-        """
-        Terminates phone connection.
-        """
+        """Terminates phone connection."""
         self.enqueue("Terminate")
         self._thread.join(timeout)
         self._thread = None

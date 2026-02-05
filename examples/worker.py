@@ -18,8 +18,7 @@
 # You should have received a copy of the GNU General Public License along
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-"""
-python-gammu - Phone communication library
+"""python-gammu - Phone communication library.
 
 Gammu asynchronous wrapper example. This allows your application to care
 only about handling received data and not about phone communication
@@ -33,8 +32,7 @@ import gammu.worker
 
 
 def callback(name, result, error, percents):
-    """
-    Callback which is executed when something is done. Please remember
+    """Callback which is executed when something is done. Please remember
     this is called from different thread so it does not have to be save
     to work with GUI here.
     """
@@ -47,9 +45,7 @@ def callback(name, result, error, percents):
 
 
 def read_config():
-    """
-    Reads gammu configuration.
-    """
+    """Reads gammu configuration."""
     state_machine = gammu.StateMachine()
     # This is hack and should be as parameter of this function
     if len(sys.argv) == 2:
@@ -60,9 +56,7 @@ def read_config():
 
 
 def main():
-    """
-    Main code to talk with worker.
-    """
+    """Main code to talk with worker."""
     worker = gammu.worker.GammuWorker(callback)
     worker.configure(read_config())
     # We can directly invoke commands

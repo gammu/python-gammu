@@ -32,7 +32,7 @@ import pytest
 import gammu
 
 DUMMY_DIR = Path(__file__).parent / "data" / "gammu-dummy"
-TEST_FILE = Path(__file__).parent / "data" / "sqlite-14.sql"
+TEST_FILE = Path(__file__).parent / "data" / "sqlite-17.sql"
 CONFIGURATION = """
 # Configuration for Gammu testsuite
 
@@ -89,12 +89,6 @@ class DummyTest(unittest.TestCase):
         """Fake incoming call."""
         filename = self.dummy_dir / "incoming-call"
         filename.write_text("\n", encoding="utf-8")
-
-    def check_incoming_call(self) -> None:
-        """Checks whether incoming call faking is supported."""
-        current = tuple(int(x) for x in gammu.Version()[2].split("."))
-        if current < (1, 37, 91):
-            pytest.skip(f"Not supported in version {gammu.Version()[2]}")
 
     def call_callback(self, state_machine, response, data) -> None:
         """Callback on USSD data."""
@@ -471,7 +465,6 @@ class BasicDummyTest(DummyTest):  # noqa: PLR0904
                 temp_file.unlink(missing_ok=True)
 
     def test_incoming_call(self) -> None:
-        self.check_incoming_call()
         self._called = False
         state_machine = self.get_statemachine()
         state_machine.SetIncomingCallback(self.call_callback)

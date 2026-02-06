@@ -118,7 +118,7 @@ typedef struct {
     int                 memory_entry_cache;
     int                 todo_entry_cache;
     int                 calendar_entry_cache;
-    int                 in_callback;
+    int                 in_callback;        /* Flag to prevent reentrancy: set to 1 during callback execution */
 #ifdef WITH_THREAD
     PyThread_type_lock mutex;
 #endif

@@ -497,4 +497,5 @@ class BasicDummyTest(DummyTest):  # noqa: PLR0904
         
         # Verify that the reentrancy protection worked
         assert self._reentrancy_error is not None
+        assert self._reentrancy_error is not False, "Reentrancy protection did not trigger"
         assert "Can not call Gammu functions from within callback" in self._reentrancy_error

@@ -70,6 +70,10 @@
 /* Use python locking */
 
 #define BEGIN_PHONE_COMM \
+    if (self->in_callback) { \
+        PyErr_SetString(PyExc_RuntimeError, "Can not call Gammu functions from within callback"); \
+        return NULL; \
+    } \
     Py_BEGIN_ALLOW_THREADS \
     PyThread_acquire_lock(self->mutex, 1);
 
@@ -81,7 +85,11 @@
 #else
 
 /* No need for locking when no threads */
-#define BEGIN_PHONE_COMM
+#define BEGIN_PHONE_COMM \
+    if (self->in_callback) { \
+        PyErr_SetString(PyExc_RuntimeError, "Can not call Gammu functions from within callback"); \
+        return NULL; \
+    }
 #define END_PHONE_COMM \
     CheckIncomingEvents(self);
 
@@ -110,6 +118,7 @@ typedef struct {
     int                 memory_entry_cache;
     int                 todo_entry_cache;
     int                 calendar_entry_cache;
+    int                 in_callback;        /* Flag to prevent reentrancy: set to 1 during callback execution */
 #ifdef WITH_THREAD
     PyThread_type_lock mutex;
 #endif
@@ -374,7 +383,9 @@ static void CheckIncomingEvents(StateMachineObject *sm) {
             return;
         }
 
+        sm->in_callback = 1;
         PyObject_Call(sm->IncomingCallback, arglist, NULL);
+        sm->in_callback = 0;
 
         Py_DECREF(arglist);
     }
@@ -414,7 +425,9 @@ static void CheckIncomingEvents(StateMachineObject *sm) {
             return;
         }
 
+        sm->in_callback = 1;
         PyObject_Call(sm->IncomingCallback, arglist, NULL);
+        sm->in_callback = 0;
 
         Py_DECREF(arglist);
     }
@@ -445,7 +458,9 @@ static void CheckIncomingEvents(StateMachineObject *sm) {
             return;
         }
 
+        sm->in_callback = 1;
         PyObject_Call(sm->IncomingCallback, arglist, NULL);
+        sm->in_callback = 0;
 
         Py_DECREF(arglist);
     }
@@ -476,7 +491,9 @@ static void CheckIncomingEvents(StateMachineObject *sm) {
             return;
         }
 
+        sm->in_callback = 1;
         PyObject_Call(sm->IncomingCallback, arglist, NULL);
+        sm->in_callback = 0;
     }
 }
 
@@ -5474,6 +5491,7 @@ StateMachine_new(PyTypeObject *type, PyObject *args, PyObject *kwds)
     /* Reset our structures */
     self->DebugFile         = NULL;
     self->IncomingCallback  = NULL;
+    self->in_callback       = 0;
 
     self->IncomingCallQueue[0] = NULL;
     self->IncomingSMSQueue[0] = NULL;

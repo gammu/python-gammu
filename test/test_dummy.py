@@ -473,3 +473,34 @@ class BasicDummyTest(DummyTest):  # noqa: PLR0904
         self.fake_incoming_call()
         state_machine.GetSignalQuality()
         assert self._called
+
+    def test_callback_reentrancy_protection(self) -> None:
+        """Test that calling Gammu functions from within callback raises error."""
+        self._reentrancy_error = None
+
+        def reentrancy_callback(state_machine, response, data):
+            """Callback that tries to call a Gammu function."""
+            try:
+                # This should raise RuntimeError
+                state_machine.GetSignalQuality()
+                self._reentrancy_error = False  # Should not reach here
+            except RuntimeError as e:
+                # Expected error
+                self._reentrancy_error = str(e)
+
+        state_machine = self.get_statemachine()
+        state_machine.SetIncomingCallback(reentrancy_callback)
+        state_machine.SetIncomingCall()
+        state_machine.GetSignalQuality()
+        self.fake_incoming_call()
+        state_machine.GetSignalQuality()
+
+        # Verify that the reentrancy protection worked
+        assert self._reentrancy_error is not None
+        assert self._reentrancy_error is not False, (
+            "Reentrancy protection did not trigger"
+        )
+        assert (
+            "Can not call Gammu functions from within callback"
+            in self._reentrancy_error
+        )

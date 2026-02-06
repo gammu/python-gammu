@@ -809,11 +809,6 @@ StateMachine_Abort(StateMachineObject *self, PyObject *args, PyObject *kwds)
 {
     GSM_Error           error;
 
-    if (self->in_callback) {
-        PyErr_SetString(PyExc_RuntimeError, "Can not call Gammu functions from within callback");
-        return NULL;
-    }
-
     error = GSM_AbortOperation(self->s);
 
     if (!checkError(error, "Abort")) return NULL;

@@ -231,6 +231,9 @@ static int SMSD_init(SMSDObject * self, PyObject * args, PyObject * kwds)
 	if (!checkError(error, "SMSD_ReadConfig"))
 		return -1;
 
+	/* Disable exit on failure to allow Python to handle errors */
+	SMSD_SetExitOnFailure(self->config, FALSE);
+
 	return 0;
 }
 

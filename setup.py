@@ -33,7 +33,7 @@ from setuptools import Extension, setup
 
 # some defines
 VERSION = "3.2.5"
-GAMMU_REQUIRED = "1.41.0"
+GAMMU_REQUIRED = "1.43.0"
 
 
 class GammuConfig:

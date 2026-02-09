@@ -74,7 +74,7 @@ Please see included python documentation::
     >>> help(gammu)
 
 Alternatively you can use Sphinx to generate browsable version, which is
-also available on-line at <https://docs.gammu.org/>.
+also available online at <https://docs.gammu.org/>.
 
 Feedback and bug reports
 ========================

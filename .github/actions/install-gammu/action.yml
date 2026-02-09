@@ -1,0 +1,35 @@
+name: Install Gammu
+
+runs:
+  using: composite
+  steps:
+  - name: apt
+    if: runner.os == 'Linux'
+    shell: bash
+    run: |
+      sudo apt-get update
+      sudo apt-get install -y libbluetooth-dev libusb-1.0-0-dev libgudev-1.0-dev unixodbc-dev libdbi-dev libdbd-sqlite3 libdbd-mysql libdbd-pgsql cmake cmake-data
+  - name: Source
+    if: runner.os == 'Linux'
+    env:
+      # renovate: datasource=github-releases depName=gammu/gammu versioning=loose
+      GAMMU_VERSION: 1.43.2
+    shell: bash
+    run: |
+      mkdir _gammu
+      cd _gammu
+      curl -LsSf -o gammu.tar.zst "https://github.com/gammu/gammu/releases/download/$GAMMU_VERSION/Gammu-$GAMMU_VERSION.tar.zst"
+      tar xf gammu.tar.zst
+      cd Gammu-*
+      ./configure --prefix=/usr
+      make
+      sudo make install
+  - name: Windows binary
+    if: runner.os == 'Windows'
+    env:
+      # renovate: datasource=github-releases depName=gammu/gammu versioning=loose
+      GAMMU_VERSION: 1.43.2
+    shell: pwsh
+    run: |
+      C:/msys64/usr/bin/wget.exe -O gammu-setup.exe https://github.com/gammu/gammu/releases/download/$Env:GAMMU_VERSION/Gammu-$Env:GAMMU_VERSION-Windows-Minimal.exe
+      ./gammu-setup.exe /S /D=C:/Gammu

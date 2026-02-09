@@ -56,9 +56,9 @@ file = "README.rst"
 
 [project.urls]
 Documentation = "https://docs.gammu.org/python/"
-Download = "https://wammu.eu/download/python-gammu/"
+Download = "https://github.com/gammu/python-gammu"
 Funding = "https://wammu.eu/donate/"
-Homepage = "https://wammu.eu/python-gammu/"
+Homepage = "https://github.com/gammu/python-gammu"
 "Issue Tracker" = "https://github.com/gammu/python-gammu/issues"
 "Source Code" = "https://github.com/gammu/python-gammu"
 

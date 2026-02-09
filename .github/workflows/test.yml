@@ -19,6 +19,9 @@ jobs:
           - "3.12"
           - "3.13"
           - "3.14"
+    env:
+      # renovate: datasource=github-releases depName=gammu/gammu versioning=loose
+      GAMMU_VERSION: 1.43.2
     name: ${{ matrix.os }}, Python ${{ matrix.python-version }}
 
     steps:
@@ -36,7 +39,7 @@ jobs:
       - name: Install Gammu
         if: ${{ matrix.os == 'windows-latest' }}
         run: |
-          C:/msys64/usr/bin/wget.exe -O gammu-setup.exe https://dl.cihar.com/gammu/releases/windows/Gammu-1.41.0-Windows-64bit.exe
+          C:/msys64/usr/bin/wget.exe -O gammu-setup.exe https://github.com/gammu/gammu/releases/download/$Env:GAMMU_VERSION/Gammu-$Env:GAMMU_VERSION-Windows-Minimal.exe
           ./gammu-setup.exe /S /D=C:/Gammu
       - name: Install
         run: uv sync --all-extras --dev

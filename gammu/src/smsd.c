@@ -215,9 +215,6 @@ static PyObject *SMSD_new(PyTypeObject * type, PyObject * args, PyObject * kwds)
 	if (self->config == NULL)
 		return NULL;
 
-	/* Disable exit on failure to allow Python to handle errors */
-	SMSD_SetExitOnFailure(self->config, FALSE);
-
 	return (PyObject *) self;
 }
 
@@ -233,6 +230,9 @@ static int SMSD_init(SMSDObject * self, PyObject * args, PyObject * kwds)
 	error = SMSD_ReadConfig(s, self->config, TRUE);
 	if (!checkError(error, "SMSD_ReadConfig"))
 		return -1;
+
+	/* Disable exit on failure to allow Python to handle errors */
+	SMSD_SetExitOnFailure(self->config, FALSE);
 
 	return 0;
 }

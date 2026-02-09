@@ -31,11 +31,22 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
       - uses: astral-sh/setup-uv@eac588ad8def6316056a12d4907a9d4d84ff7a3b # v7.3.0
-      - name: Install gammu
+      - name: apt
         if: ${{ matrix.os == 'ubuntu-latest' }}
         run: |
           sudo apt-get update
-          sudo apt-get install -y libgammu-dev libdbd-sqlite3
+          sudo apt-get install -y libbluetooth-dev libusb-1.0-0-dev libgudev-1.0-dev unixodbc-dev libdbi-dev libdbd-sqlite3 libdbd-mysql libdbd-pgsql cmake cmake-data
+      - name: Install gammu
+        if: ${{ matrix.os == 'ubuntu-latest' }}
+        run: |
+          mkdir _gammu
+          cd _gammu
+          curl -LsSf -o gammu.tar.zst "https://github.com/gammu/gammu/releases/download/$GAMMU_VERSION/Gammu-$GAMMU_VERSION.tar.zst"
+          tar xf gammu.tar.zst
+          cd Gammu-*
+          ./configure --prefix=/usr
+          make
+          sudo make install
       - name: Install Gammu
         if: ${{ matrix.os == 'windows-latest' }}
         run: |

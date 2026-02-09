@@ -74,7 +74,7 @@ Please see included python documentation::
     >>> help(gammu)
 
 Alternatively you can use Sphinx to generate browsable version, which is
-also available on-line at <https://wammu.eu/docs/manual/>.
+also available online at <https://wammu.eu/docs/manual/>.
 
 Feedback and bug reports
 ========================

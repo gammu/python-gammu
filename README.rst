@@ -17,7 +17,7 @@ Python bindings for the `Gammu library <https://wammu.eu/gammu/>`_.
 Homepage
 ========
 
-<https://wammu.eu/python-gammu/>
+<https://github.com/gammu/python-gammu/>
 
 License
 =======
@@ -74,10 +74,10 @@ Please see included python documentation::
     >>> help(gammu)
 
 Alternatively you can use Sphinx to generate browsable version, which is
-also available on-line at <https://wammu.eu/docs/manual/>.
+also available on-line at <https://docs.gammu.org/>.
 
 Feedback and bug reports
 ========================
 
-Any feedback is welcome, see <https://wammu.eu/support/> for information
+Any feedback is welcome, see <https://github.com/gammu/python-gammu/> for information
 how to contact developers.

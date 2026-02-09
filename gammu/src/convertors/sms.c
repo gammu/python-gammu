@@ -1384,11 +1384,9 @@ char *MultiPartSMSIDToString(EncodeMultiPartSMSID type)
 		case SMS_SiemensFile:
 			s = strdup("SiemensFile");
 			break;
-#if GAMMU_VERSION_NUM >= 13805
 		case SMS_USSD:
 			s = strdup("USSD");
 			break;
-#endif
 	}
 
 	if (s == NULL) {

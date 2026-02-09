@@ -65,7 +65,7 @@ def saveSMS(mysms, all_contacts) -> None:
     outfile = mydir / myfile
 
     with outfile.open("a", encoding="utf-8") as handle:
-        handle.writelines(i["Text"] for i in mysms)
+        handle.writelines(i["Text"] for i in mysms if isinstance(i["Text"], str))
         handle.write("\n")
 
 
@@ -88,6 +88,7 @@ def getContacts(state_machine):
                 remaining -= 1
 
             numbers = []
+            name = "Unknown"
             for entry in memory_entry["Entries"]:
                 if entry["Type"] == "Text_FirstName":
                     name = entry["Value"]

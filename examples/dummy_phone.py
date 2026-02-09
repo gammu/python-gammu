@@ -130,9 +130,7 @@ def link_all_sms(sms, folders) -> None:
 
         m = x[0]
         print_sms_header(m, folders)
-        loc = []
-        for m in x:
-            loc.append(m["Location"])
+        loc = [str(m["Location"]) for m in x]
         print(f"{'Location(s)':<15}: {', '.join(loc)}")
         if v is None:
             print(f"\n{m['Text']}")

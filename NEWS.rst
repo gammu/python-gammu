@@ -1,3 +1,11 @@
+3.2.6
+=====
+
+* Avoid exiting Python on SMSD error.
+* Dropped compatibility with older Gammu releases.
+* Code and packaging cleanups.
+* Reject unsafe Gammu execution from callbacks.
+
 3.2.5
 =====
 

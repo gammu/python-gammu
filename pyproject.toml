@@ -6,7 +6,7 @@ requires = [
 
 [dependency-groups]
 dev = [
-  "pytest-cov==7.0.0",
+  "pytest-cov==7.1.0",
   "pytest-github-actions-annotate-failures==0.4.0",
   "pytest==9.0.2"
 ]

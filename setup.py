@@ -23,7 +23,7 @@
 
 import os
 import platform
-import subprocess  # noqa: S404
+import subprocess  # ruff:ignore[suspicious-subprocess-import]
 import sys
 from pathlib import Path
 from typing import cast
@@ -79,7 +79,7 @@ class GammuConfig:
     def check_version(self) -> None:
         if self.use_pkgconfig:
             try:
-                subprocess.check_output(  # noqa: S603
+                subprocess.check_output(  # ruff:ignore[subprocess-without-shell-equals-true]
                     [
                         "pkg-config",
                         "--print-errors",

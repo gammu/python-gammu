@@ -97,7 +97,7 @@ class DummyTest(unittest.TestCase):
         assert data["Number"] == "+800123456"
 
 
-class BasicDummyTest(DummyTest):  # noqa: PLR0904
+class BasicDummyTest(DummyTest):  # ruff:ignore[too-many-public-methods]
     def test_model(self) -> None:
         state_machine = self.get_statemachine()
         assert state_machine.GetModel()[1] == "Dummy"

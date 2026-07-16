@@ -53,7 +53,7 @@ from pathlib import Path
 import gammu
 
 
-def main() -> None:  # noqa: PLR0912, PLR0915, C901
+def main() -> None:  # ruff:ignore[too-many-branches, too-many-statements, complex-structure]
     parser = argparse.ArgumentParser(usage="usage: %(prog)s [options]")
 
     parser.add_argument(

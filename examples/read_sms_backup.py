@@ -43,7 +43,7 @@ def main() -> None:
 
     data = gammu.LinkSMS(messages)
 
-    for message in data:  # noqa: PLR1702
+    for message in data:  # ruff:ignore[too-many-nested-blocks]
         decoded = gammu.DecodeSMS(message)
 
         part = message[0]

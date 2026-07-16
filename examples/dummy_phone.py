@@ -125,7 +125,7 @@ def print_all_sms(sms, folders) -> None:
 def link_all_sms(sms, folders) -> None:
     data = gammu.LinkSMS([[msg] for msg in sms])
 
-    for x in data:  # noqa: PLR1702
+    for x in data:  # ruff:ignore[too-many-nested-blocks]
         v = gammu.DecodeSMS(x)
 
         m = x[0]

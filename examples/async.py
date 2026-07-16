@@ -102,12 +102,12 @@ async def main() -> None:
             try:
                 signal = await worker.get_signal_quality_async()
                 print(f"Signal is at {signal['SignalPercent']:d}%")
-            except Exception as e:  # noqa: BLE001
+            except Exception as e:  # ruff:ignore[blind-except]
                 print(f"Exception reading signal: {e}")
 
             await asyncio.sleep(10)
 
-    except Exception as e:  # noqa: BLE001
+    except Exception as e:  # ruff:ignore[blind-except]
         print("Exception:")
         print(e)
 

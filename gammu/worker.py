@@ -219,7 +219,7 @@ class GammuThread(threading.Thread):
                 # Read the device to catch possible incoming events
                 try:
                     self._pull_func(self._sm)
-                except Exception as ex:  # noqa: BLE001
+                except Exception as ex:  # ruff:ignore[blind-except]
                     self._callback("ReadDevice", None, ex, 0)
 
     def kill(self) -> None:

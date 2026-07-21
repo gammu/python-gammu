@@ -20,6 +20,6 @@
 #
 """Phone communication library - python wrapper for Gammu library."""
 
-from gammu._gammu import *  # noqa: F403
+from gammu._gammu import *  # ruff:ignore[undefined-local-with-import-star]
 
-__version__ = "Gammu {}, python-gammu {}".format(*Version())  # noqa: F405
+__version__ = "Gammu {}, python-gammu {}".format(*Version())  # ruff:ignore[undefined-local-with-import-star-usage]

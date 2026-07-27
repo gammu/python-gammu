@@ -1,4 +1,30 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": ["github>WeblateOrg/meta:renovate"]
+  "extends": ["github>WeblateOrg/meta:renovate"],
+  "customManagers": [
+    {
+      "customType": "regex",
+      "managerFilePatterns": [
+        "/^\\.github/scripts/build-gammu-wheel\\.sh$/"
+      ],
+      "matchStrings": [
+        "# renovate: datasource=github-release-attachments depName=gammu/gammu versioning=loose\\nreadonly GAMMU_VERSION=\"(?<currentValue>[^\"]+)\"\\nreadonly GAMMU_SHA256=\"(?<currentDigest>[a-f0-9]{64})\""
+      ],
+      "datasourceTemplate": "github-release-attachments",
+      "depNameTemplate": "gammu/gammu",
+      "versioningTemplate": "loose",
+      "autoReplaceStringTemplate": "# renovate: datasource=github-release-attachments depName=gammu/gammu versioning=loose\nreadonly GAMMU_VERSION=\"{{{newValue}}}\"\nreadonly GAMMU_SHA256=\"{{{newDigest}}}\""
+    },
+    {
+      "customType": "regex",
+      "managerFilePatterns": ["/^README\\.rst$/"],
+      "matchStrings": [
+        "\\.\\. renovate: datasource=github-release-attachments depName=gammu/gammu versioning=loose\\n\\nThe bundled Gammu (?<currentValue>[^\\s]+) library is licensed under GPL-2\\.0-or-later\\. The\\ncorresponding source archive is available from:\\n\\nhttps://github\\.com/gammu/gammu/releases/download/[^/\\s]+/Gammu-[^/\\s]+\\.tar\\.gz"
+      ],
+      "datasourceTemplate": "github-release-attachments",
+      "depNameTemplate": "gammu/gammu",
+      "versioningTemplate": "loose",
+      "autoReplaceStringTemplate": ".. renovate: datasource=github-release-attachments depName=gammu/gammu versioning=loose\n\nThe bundled Gammu {{{newValue}}} library is licensed under GPL-2.0-or-later. The\ncorresponding source archive is available from:\n\nhttps://github.com/gammu/gammu/releases/download/{{{newValue}}}/Gammu-{{{newValue}}}.tar.gz"
+    }
+  ]
 }

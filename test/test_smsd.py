@@ -45,6 +45,39 @@ MESSAGE_2 = {
 MAX_STATUS_RETRIES = 2
 
 
+@pytest.mark.parametrize("service", ["files", "null"])
+def test_builtin_service(tmp_path: Path, service: str) -> None:
+    """Verify SMSD services included in the minimal Linux wheels."""
+    paths = {}
+    for name in ("inbox", "outbox", "sent", "error"):
+        path = tmp_path / name
+        path.mkdir()
+        paths[name] = f"{path.as_posix()}/"
+
+    config = tmp_path / "smsdrc"
+    dummy_path = (Path(__file__).parent / "data" / "gammu-dummy").as_posix()
+    config.write_text(
+        f"""
+[gammu]
+model = dummy
+connection = none
+port = {dummy_path}
+gammuloc = /dev/null
+
+[smsd]
+service = {service}
+inboxpath = {paths["inbox"]}
+outboxpath = {paths["outbox"]}
+sentsmspath = {paths["sent"]}
+errorsmspath = {paths["error"]}
+""",
+        encoding="utf-8",
+    )
+
+    smsd = gammu.smsd.SMSD(config.as_posix())
+    del smsd
+
+
 def get_script() -> Path:
     """
     Returns SQL script to create database.

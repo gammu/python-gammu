@@ -5455,7 +5455,23 @@ StateMachine_str(StateMachineObject *self)
 static void
 StateMachine_dealloc(StateMachineObject *self)
 {
-    BEGIN_PHONE_COMM
+    if (self->in_callback) {
+        PyObject *error_type = NULL;
+        PyObject *error_value = NULL;
+        PyObject *error_traceback = NULL;
+
+        PyErr_Fetch(&error_type, &error_value, &error_traceback);
+        PyErr_SetString(PyExc_RuntimeError, "Can not call Gammu functions from within callback");
+        PyErr_WriteUnraisable((PyObject *)self);
+        PyErr_Clear();
+        PyErr_Restore(error_type, error_value, error_traceback);
+        return;
+    }
+
+#ifdef WITH_THREAD
+    Py_BEGIN_ALLOW_THREADS
+    PyThread_acquire_lock(self->mutex, 1);
+#endif
     if (GSM_IsConnected(self->s)) {
         /* Disable any possible incoming notifications */
         GSM_SetIncomingSMS(self->s, FALSE);

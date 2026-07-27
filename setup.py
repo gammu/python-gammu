@@ -117,7 +117,7 @@ class GammuConfig:
                 ["pkg-config", "--libs-only-l", "gammu", "gammu-smsd"]
             ).decode("utf-8")
             return output.replace("-l", "").strip().split()
-        libs = ["Gammu", "gsmsd"]
+        libs = ["gsmsd", "Gammu"]
         if self.on_windows:
             libs.extend(("Advapi32", "shfolder", "shell32"))
         else:
@@ -186,12 +186,16 @@ def get_module():
             "gammu/src/smsd.c",
         ],
     )
-    flags = config.get_cflags()
-    if flags:
-        module.extra_compile_args.append(flags)
-    flags = config.get_ldflags()
-    if flags:
-        module.extra_link_args.append(flags)
+    if config.use_pkgconfig:
+        flags = config.get_cflags()
+        if flags:
+            module.extra_compile_args.append(flags)
+        flags = config.get_ldflags()
+        if flags:
+            module.extra_link_args.append(flags)
+    else:
+        module.include_dirs.append((config.path / "include" / "gammu").as_posix())
+        module.library_dirs.append((config.path / "lib").as_posix())
     return module
 
 

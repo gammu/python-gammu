@@ -68,6 +68,19 @@ ignore = [
   "admin/*"
 ]
 
+[tool.cibuildwheel]
+build = "cp3{10,11,12,13,14}-manylinux*"
+test-command = "pytest test"
+test-requires = ["pytest==9.1.1"]
+test-sources = ["test"]
+
+[tool.cibuildwheel.linux]
+before-all = "bash {package}/.github/scripts/build-gammu-wheel.sh"
+environment = {GAMMU_PATH = "/opt/python-gammu-gammu"}
+manylinux-aarch64-image = "manylinux_2_28"
+manylinux-x86_64-image = "manylinux_2_28"
+repair-wheel-command = "auditwheel repair --strip -w {dest_dir} {wheel}"
+
 [tool.coverage.paths]
 source = [
   "."

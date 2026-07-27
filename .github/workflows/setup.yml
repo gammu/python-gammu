@@ -6,7 +6,7 @@ permissions:
   contents: read
 
 jobs:
-  linux:
+  sdist:
     runs-on: ubuntu-24.04
 
     steps:
@@ -19,11 +19,33 @@ jobs:
       - uses: ./.github/actions/install-gammu
       - name: build
         run: uv build --sdist
-      - name: Store the binary wheel
+      - name: Store the source distribution
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
         with:
-          name: dist-linux
+          name: dist-sdist
           path: dist
+
+  linux:
+    strategy:
+      matrix:
+        include:
+          - architecture: x86_64
+            runner: ubuntu-24.04
+          - architecture: aarch64
+            runner: ubuntu-24.04-arm
+    runs-on: ${{ matrix.runner }}
+
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Build wheels
+        uses: pypa/cibuildwheel@8d2b08b68458a16aeb24b64e68a09ab1c8e82084 # v3.4.1
+        env:
+          CIBW_ARCHS_LINUX: ${{ matrix.architecture }}
+      - name: Store the Linux wheels
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
+        with:
+          name: dist-linux-${{ matrix.architecture }}
+          path: wheelhouse
 
   windows:
     runs-on: windows-latest
@@ -55,6 +77,7 @@ jobs:
   check:
     needs:
     - linux
+    - sdist
     - windows
     runs-on: ubuntu-24.04
     steps:
@@ -75,6 +98,17 @@ jobs:
         merge-multiple: true
     - run: uvx twine check --strict dist/*
     - run: uvx abi3audit dist/*abi3*.whl
+    - name: Check Linux wheel contents
+      shell: bash
+      run: |
+        test "$(find dist -maxdepth 1 -name '*manylinux*.whl' | wc -l)" -eq 10
+        for wheel in dist/*manylinux*.whl; do
+          uvx auditwheel show "$wheel"
+          if unzip -Z1 "$wheel" | grep -E '(^|/)[^/]+[.]libs/'; then
+            echo "Unexpected bundled shared libraries in $wheel"
+            exit 1
+          fi
+        done
     - run: uvx pydistcheck --inspect dist/*
     - run: uvx check-wheel-contents dist/*.whl
     - run: uvx check-manifest -v
@@ -87,6 +121,7 @@ jobs:
     needs:
       - check
       - linux
+      - sdist
       - windows
     if: startsWith(github.ref, 'refs/tags/')  && github.repository == 'gammu/python-gammu'
 
@@ -107,6 +142,7 @@ jobs:
     needs:
       - check
       - linux
+      - sdist
       - windows
     permissions:
       contents: write

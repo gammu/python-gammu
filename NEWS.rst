@@ -1,3 +1,8 @@
+3.3.0
+=====
+
+* Added Linux binary wheels for 64-bit x86 and ARM systems.
+
 3.2.6
 =====
 

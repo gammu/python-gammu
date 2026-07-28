@@ -74,7 +74,7 @@ Requirements
 
 To compile python-gammu from source, you need Gammu development files (usually
 shipped as ``libgammu-dev`` or ``gammu-devel`` in Linux distributions).
-
+also available online at `Gammu documentation <https://docs.gammu.org/>`_.
 The location of the libraries is discovered using ``pkg-config``,
 ``GAMMU_PATH`` environment variable and falls back to generic locations. In
 case it does not work, either install ``pkg-config`` or set ``GAMMU_PATH``.

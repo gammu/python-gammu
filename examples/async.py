@@ -79,6 +79,27 @@ async def get_info(worker) -> None:
     print(f"{'Firmware':<15}: {firmware[0]}")
 
 
+async def run(worker) -> None:
+    await worker.init_async()
+
+    await get_info(worker)
+    await get_network_info(worker)
+
+    await send_message_async(worker, "6700", "BAL")
+
+    # Just a busy waiting for event
+    # We need to keep communication with phone to get notifications
+    print("Press Ctrl+C to interrupt")
+    while 1:
+        try:
+            signal = await worker.get_signal_quality_async()
+            print(f"Signal is at {signal['SignalPercent']:d}%")
+        except Exception as e:  # ruff: ignore[blind-except]
+            print(f"Exception reading signal: {e}")
+
+        await asyncio.sleep(10)
+
+
 async def main() -> None:
     gammu.SetDebugFile(sys.stderr)
     gammu.SetDebugLevel("textall")
@@ -88,25 +109,7 @@ async def main() -> None:
     worker.configure(config)
 
     try:
-        await worker.init_async()
-
-        await get_info(worker)
-        await get_network_info(worker)
-
-        await send_message_async(worker, "6700", "BAL")
-
-        # Just a busy waiting for event
-        # We need to keep communication with phone to get notifications
-        print("Press Ctrl+C to interrupt")
-        while 1:
-            try:
-                signal = await worker.get_signal_quality_async()
-                print(f"Signal is at {signal['SignalPercent']:d}%")
-            except Exception as e:  # ruff: ignore[blind-except]
-                print(f"Exception reading signal: {e}")
-
-            await asyncio.sleep(10)
-
+        await run(worker)
     except Exception as e:  # ruff: ignore[blind-except]
         print("Exception:")
         print(e)

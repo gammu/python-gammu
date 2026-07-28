@@ -36,12 +36,7 @@ class GammuAsyncThread(gammu.worker.GammuThread):
         func = getattr(self._sm, cmd)
         result = None
         try:
-            if params is None:
-                result = func()
-            elif isinstance(params, dict):
-                result = func(**params)
-            else:
-                result = func(*params)
+            result = gammu.worker._execute_command(func, params)
         except gammu.GSMError as info:
             errcode = info.args[0]["Code"]
             error = gammu.ErrorNumbers[errcode]

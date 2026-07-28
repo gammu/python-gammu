@@ -134,6 +134,14 @@ def gammu_pull_device(state_machine) -> None:
     state_machine.ReadDevice()
 
 
+def _execute_command(func, params):
+    if params is None:
+        return func()
+    if isinstance(params, dict):
+        return func(**params)
+    return func(*params)
+
+
 class GammuThread(threading.Thread):
     """Thread for phone communication."""
 
@@ -171,17 +179,42 @@ class GammuThread(threading.Thread):
         error = "ERR_NONE"
         result = None
         try:
-            if params is None:
-                result = func()
-            elif isinstance(params, dict):
-                result = func(**params)
-            else:
-                result = func(*params)
+            result = _execute_command(func, params)
         except gammu.GSMError as info:
             errcode = info.args[0]["Code"]
             error = gammu.ErrorNumbers[errcode]
 
         self._callback(name, result, error, percentage)
+
+    def _do_next_command(self, task) -> None:
+        cmd = task.get_next()
+        self._do_command(
+            task.get_name(),
+            cmd.get_command(),
+            cmd.get_params(),
+            cmd.get_percentage(),
+        )
+
+    def _finish_task(self, task) -> None:
+        try:
+            if task.get_name() != "Init":
+                self._queue.task_done()
+        except (AttributeError, ValueError):
+            # Ignore malformed tasks and duplicate queue acknowledgements.
+            pass
+
+    def _do_task(self, task) -> None:
+        try:
+            while True:
+                self._do_next_command(task)
+        except IndexError:
+            self._finish_task(task)
+
+    def _get_task(self, start):
+        if start:
+            return GammuTask("Init", ["Init"])
+        # Wait at most ten seconds for next command
+        return self._queue.get(True, 10)
 
     def run(self) -> None:
         """
@@ -192,27 +225,9 @@ class GammuThread(threading.Thread):
         start = True
         while not self._kill:
             try:
-                if start:
-                    task = GammuTask("Init", ["Init"])
-                    start = False
-                else:
-                    # Wait at most ten seconds for next command
-                    task = self._queue.get(True, 10)
-                try:
-                    while True:
-                        cmd = task.get_next()
-                        self._do_command(
-                            task.get_name(),
-                            cmd.get_command(),
-                            cmd.get_params(),
-                            cmd.get_percentage(),
-                        )
-                except IndexError:
-                    try:
-                        if task.get_name() != "Init":
-                            self._queue.task_done()
-                    except (AttributeError, ValueError):
-                        pass
+                task = self._get_task(start)
+                start = False
+                self._do_task(task)
             except queue.Empty:
                 if self._terminate:
                     break

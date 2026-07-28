@@ -53,6 +53,16 @@ from pathlib import Path
 import gammu
 
 
+def print_root_folders(state_machine) -> None:
+    file_obj = state_machine.GetNextRootFolder("")
+    while 1:
+        print(f"{file_obj['ID_FullName']} - {file_obj['Name']}")
+        try:
+            file_obj = state_machine.GetNextRootFolder(file_obj["ID_FullName"])
+        except gammu.ERR_EMPTY:
+            break
+
+
 def main() -> None:  # ruff: ignore[too-many-branches, too-many-statements, complex-structure]
     parser = argparse.ArgumentParser(usage="usage: %(prog)s [options]")
 
@@ -164,13 +174,7 @@ def main() -> None:  # ruff: ignore[too-many-branches, too-many-statements, comp
     # Check GetNextRootFolder
     print("\n\nExpectation: Root Folder List")
     try:
-        file_obj = state_machine.GetNextRootFolder("")
-        while 1:
-            print(f"{file_obj['ID_FullName']} - {file_obj['Name']}")
-            try:
-                file_obj = state_machine.GetNextRootFolder(file_obj["ID_FullName"])
-            except gammu.ERR_EMPTY:
-                break
+        print_root_folders(state_machine)
     except gammu.ERR_NOTSUPPORTED:
         print("Not supported...")
 

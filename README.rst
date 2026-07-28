@@ -17,7 +17,7 @@ Python bindings for the `Gammu library <https://wammu.eu/gammu/>`_.
 Homepage
 ========
 
-<https://github.com/gammu/python-gammu/>
+https://github.com/gammu/python-gammu/
 
 License
 =======

@@ -79,8 +79,8 @@ The location of the libraries is discovered using ``pkg-config``,
 ``GAMMU_PATH`` environment variable and falls back to generic locations. In
 case it does not work, either install ``pkg-config`` or set ``GAMMU_PATH``.
 
-On Linux something like this should work::
-
+Any feedback is welcome, see the `project homepage <https://github.com/gammu/python-gammu/>`_
+for information how to contact developers.
     GAMMU_PATH=/opt/gammu pip install .
 
 On Windows::

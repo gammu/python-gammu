@@ -214,7 +214,7 @@ GSM_SMSFormat StringToSMSFormat(char *s)
 	else if (strcmp("Email", s) == 0)
 		return SMS_FORMAT_Email;
 	else {
-		PyErr_Format(PyExc_MemoryError, "Bad value for SMS Format '%s'",
+		PyErr_Format(PyExc_ValueError, "Bad value for SMS Format '%s'",
 			     s);
 		return 0;
 	}

@@ -24,6 +24,12 @@
 import gammu
 
 
+def get_next_sms(state_machine, previous):
+    if previous is None:
+        return state_machine.GetNextSMS(Start=True, Folder=0)
+    return state_machine.GetNextSMS(Location=previous[0]["Location"], Folder=0)
+
+
 def main() -> None:
     state_machine = gammu.StateMachine()
     state_machine.ReadConfig()
@@ -33,27 +39,23 @@ def main() -> None:
 
     remain = status["SIMUsed"] + status["PhoneUsed"] + status["TemplatesUsed"]
 
-    start = True
+    sms = None
+    while remain > 0:
+        try:
+            sms = get_next_sms(state_machine, sms)
+        except gammu.ERR_EMPTY:
+            # This error is raised when we've reached last entry
+            # It can happen when reported status does not match real counts
+            print("Failed to read all messages!")
+            break
+        remain -= len(sms)
 
-    try:
-        while remain > 0:
-            if start:
-                sms = state_machine.GetNextSMS(Start=True, Folder=0)
-                start = False
-            else:
-                sms = state_machine.GetNextSMS(Location=sms[0]["Location"], Folder=0)
-            remain -= len(sms)
-
-            for m in sms:
-                print()
-                print(f"{'Number':<15}: {m['Number']}")
-                print(f"{'Date':<15}: {m['DateTime']!s}")
-                print(f"{'State':<15}: {m['State']}")
-                print(f"\n{m['Text']}")
-    except gammu.ERR_EMPTY:
-        # This error is raised when we've reached last entry
-        # It can happen when reported status does not match real counts
-        print("Failed to read all messages!")
+        for message in sms:
+            print()
+            print(f"{'Number':<15}: {message['Number']}")
+            print(f"{'Date':<15}: {message['DateTime']!s}")
+            print(f"{'State':<15}: {message['State']}")
+            print(f"\n{message['Text']}")
 
 
 if __name__ == "__main__":

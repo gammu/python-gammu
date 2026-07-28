@@ -69,41 +69,49 @@ def saveSMS(mysms, all_contacts) -> None:
         handle.write("\n")
 
 
+def getNextMemory(state_machine, previous):
+    if previous is None:
+        return state_machine.GetNextMemory(Start=True, Type="SM")
+    return state_machine.GetNextMemory(Location=previous["Location"], Type="SM")
+
+
 def getContacts(state_machine):
     # Get all contacts
     remaining = state_machine.GetMemoryStatus(Type="SM")["Used"]
     contacts = {}
 
-    start = True
+    memory_entry = None
 
-    try:
-        while remaining > 0:
-            if start:
-                memory_entry = state_machine.GetNextMemory(Start=True, Type="SM")
-                start = False
+    while remaining > 0:
+        first = memory_entry is None
+        try:
+            memory_entry = getNextMemory(state_machine, memory_entry)
+        except gammu.ERR_EMPTY:
+            # error is raised if memory is empty (this induces wrong reported
+            # memory status)
+            print("Failed to read contacts!")
+            break
+        if not first:
+            remaining -= 1
+
+        numbers = []
+        name = "Unknown"
+        for entry in memory_entry["Entries"]:
+            if entry["Type"] == "Text_FirstName":
+                name = entry["Value"]
             else:
-                memory_entry = state_machine.GetNextMemory(
-                    Location=memory_entry["Location"], Type="SM"
-                )
-                remaining -= 1
+                numbers.append(getInternationalizedNumber(entry["Value"]))
 
-            numbers = []
-            name = "Unknown"
-            for entry in memory_entry["Entries"]:
-                if entry["Type"] == "Text_FirstName":
-                    name = entry["Value"]
-                else:
-                    numbers.append(getInternationalizedNumber(entry["Value"]))
-
-            for number in numbers:
-                contacts[number] = name
-
-    except gammu.ERR_EMPTY:
-        # error is raised if memory is empty (this induces wrong reported
-        # memory status)
-        print("Failed to read contacts!")
+        for number in numbers:
+            contacts[number] = name
 
     return contacts
+
+
+def getNextSMS(state_machine, previous):
+    if previous is None:
+        return state_machine.GetNextSMS(Folder=0, Start=True)
+    return state_machine.GetNextSMS(Folder=0, Location=previous[0]["Location"])
 
 
 def getAndDeleteAllSMS(state_machine):
@@ -113,29 +121,22 @@ def getAndDeleteAllSMS(state_machine):
     remaining = memory["SIMUsed"] + memory["PhoneUsed"]
 
     # Get all sms
-    start = True
     entries = []
+    entry = None
 
-    try:
-        while remaining > 0:
-            if start:
-                entry = state_machine.GetNextSMS(Folder=0, Start=True)
-                start = False
-            else:
-                entry = state_machine.GetNextSMS(
-                    Folder=0, Location=entry[0]["Location"]
-                )
-
+    while remaining > 0:
+        try:
+            entry = getNextSMS(state_machine, entry)
             remaining -= 1
             entries.append(entry)
 
             # delete retrieved sms
             state_machine.DeleteSMS(Folder=0, Location=entry[0]["Location"])
-
-    except gammu.ERR_EMPTY:
-        # error is raised if memory is empty (this induces wrong reported
-        # memory status)
-        print("Failed to read messages!")
+        except gammu.ERR_EMPTY:
+            # error is raised if memory is empty (this induces wrong reported
+            # memory status)
+            print("Failed to read messages!")
+            break
 
     # Link all SMS when there are concatenated messages
     return gammu.LinkSMS(entries)

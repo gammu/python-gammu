@@ -23,6 +23,13 @@
 
 import gammu
 
+
+def get_next_sms(state_machine, previous):
+    if previous is None:
+        return state_machine.GetNextSMS(Start=True, Folder=0)
+    return state_machine.GetNextSMS(Location=previous[0]["Location"], Folder=0)
+
+
 state_machine = gammu.StateMachine()
 state_machine.ReadConfig()
 state_machine.Init()
@@ -32,21 +39,18 @@ status = state_machine.GetSMSStatus()
 remain = status["SIMUsed"] + status["PhoneUsed"] + status["TemplatesUsed"]
 
 sms = []
-start = True
+current_sms = None
 
-try:
-    while remain > 0:
-        if start:
-            cursms = state_machine.GetNextSMS(Start=True, Folder=0)
-            start = False
-        else:
-            cursms = state_machine.GetNextSMS(Location=cursms[0]["Location"], Folder=0)
-        remain -= len(cursms)
-        sms.append(cursms)
-except gammu.ERR_EMPTY:
-    # This error is raised when we've reached last entry
-    # It can happen when reported status does not match real counts
-    print("Failed to read all messages!")
+while remain > 0:
+    try:
+        current_sms = get_next_sms(state_machine, current_sms)
+    except gammu.ERR_EMPTY:
+        # This error is raised when we've reached last entry
+        # It can happen when reported status does not match real counts
+        print("Failed to read all messages!")
+        break
+    remain -= len(current_sms)
+    sms.append(current_sms)
 
 data = gammu.LinkSMS(sms)
 

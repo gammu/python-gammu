@@ -74,13 +74,11 @@ Requirements
 
 To compile python-gammu from source, you need Gammu development files (usually
 shipped as ``libgammu-dev`` or ``gammu-devel`` in Linux distributions).
-also available online at `Gammu documentation <https://docs.gammu.org/>`_.
+
 The location of the libraries is discovered using ``pkg-config``,
 ``GAMMU_PATH`` environment variable and falls back to generic locations. In
 case it does not work, either install ``pkg-config`` or set ``GAMMU_PATH``.
 
-Any feedback is welcome, see the `project homepage <https://github.com/gammu/python-gammu/>`_
-for information how to contact developers.
     GAMMU_PATH=/opt/gammu pip install .
 
 On Windows::
@@ -98,10 +96,10 @@ Please see included python documentation::
     >>> help(gammu)
 
 Alternatively you can use Sphinx to generate browsable version, which is
-also available online at <https://docs.gammu.org/>.
+also available online at `Gammu documentation <https://docs.gammu.org/>`_.
 
 Feedback and bug reports
 ========================
 
-Any feedback is welcome, see <https://github.com/gammu/python-gammu/> for information
-how to contact developers.
+Any feedback is welcome, see the `project homepage <https://github.com/gammu/python-gammu/>`_
+for information how to contact developers.

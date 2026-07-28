@@ -49,16 +49,16 @@ char *SMSValidityToString(GSM_SMSValidity Validity)
 			if (Validity.Relative == SMS_VALID_Max_Time) {
 				strcpy(s, "Max");
 			} else if (Validity.Relative <= 143) {
-				snprintf(s, 99, "%dM",
+				snprintf(s, sizeof(s) - 1, "%dM",
 					 5 * (1 + Validity.Relative));
 			} else if (Validity.Relative <= 167) {
-				snprintf(s, 99, "%dM",
+				snprintf(s, sizeof(s) - 1, "%dM",
 					 12 * 60 + 30 * (Validity.Relative -
 							 143));
 			} else if (Validity.Relative <= 196) {
-				snprintf(s, 99, "%dD", Validity.Relative - 166);
+				snprintf(s, sizeof(s) - 1, "%dD", Validity.Relative - 166);
 			} else {
-				snprintf(s, 99, "%dW", Validity.Relative - 192);
+				snprintf(s, sizeof(s) - 1, "%dW", Validity.Relative - 192);
 			}
 			break;
 		default:
@@ -214,7 +214,7 @@ GSM_SMSFormat StringToSMSFormat(char *s)
 	else if (strcmp("Email", s) == 0)
 		return SMS_FORMAT_Email;
 	else {
-		PyErr_Format(PyExc_MemoryError, "Bad value for SMS Format '%s'",
+		PyErr_Format(PyExc_ValueError, "Bad value for SMS Format '%s'",
 			     s);
 		return 0;
 	}
@@ -498,7 +498,6 @@ char *UDHTypeToString(GSM_UDH type)
 	if (s == NULL) {
 		PyErr_Format(PyExc_ValueError,
 			     "Bad value for UDHType from Gammu: '%d'", type);
-		free(s);
 		return NULL;
 	}
 

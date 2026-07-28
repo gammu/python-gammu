@@ -49,16 +49,16 @@ char *SMSValidityToString(GSM_SMSValidity Validity)
 			if (Validity.Relative == SMS_VALID_Max_Time) {
 				strcpy(s, "Max");
 			} else if (Validity.Relative <= 143) {
-				snprintf(s, 99, "%dM",
+				snprintf(s, sizeof(s) - 1, "%dM",
 					 5 * (1 + Validity.Relative));
 			} else if (Validity.Relative <= 167) {
-				snprintf(s, 99, "%dM",
+				snprintf(s, sizeof(s) - 1, "%dM",
 					 12 * 60 + 30 * (Validity.Relative -
 							 143));
 			} else if (Validity.Relative <= 196) {
-				snprintf(s, 99, "%dD", Validity.Relative - 166);
+				snprintf(s, sizeof(s) - 1, "%dD", Validity.Relative - 166);
 			} else {
-				snprintf(s, 99, "%dW", Validity.Relative - 192);
+				snprintf(s, sizeof(s) - 1, "%dW", Validity.Relative - 192);
 			}
 			break;
 		default:

@@ -30,6 +30,28 @@ from .test_sms import PDU_DATA
 
 
 class ConfigTest(unittest.TestCase):
+    def test_config_sections(self) -> None:
+        with tempfile.TemporaryDirectory() as temp_dir:
+            config_file = Path(temp_dir) / "gammurc"
+            config_file.write_text(
+                "[gammu4]\nconnection = none\ndevice = /dev/null\n",
+                encoding="utf-8",
+            )
+
+            state_machine = gammu.StateMachine()
+            state_machine.ReadConfig(Section=4, Filename=str(config_file))
+            state_machine.SetConfig(0, state_machine.GetConfig(4))
+
+            cfg = state_machine.GetConfig(4)
+            assert cfg["Connection"] == "none"
+            assert cfg["Device"] == "/dev/null"
+
+            with pytest.raises(
+                ValueError,
+                match="Requested configuration not available",
+            ):
+                state_machine.GetConfig(100)
+
     def test_config_bool(self) -> None:
         state_machine = gammu.StateMachine()
         state_machine.SetConfig(

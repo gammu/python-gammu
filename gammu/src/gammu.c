@@ -554,6 +554,20 @@ StateMachine_GetConfig(StateMachineObject *self, PyObject *args, PyObject *kwds)
         "UseGlobalDebugFile", Config->UseGlobalDebugFile);
 }
 
+static int
+StateMachine_ActivateConfig(StateMachineObject *self, int section)
+{
+    if (GSM_GetConfigNum(self->s) <= section) {
+        GSM_SetConfigNum(self->s, section + 1);
+        if (GSM_GetConfigNum(self->s) <= section) {
+            PyErr_Format(PyExc_ValueError, "Maximal configuration storage exceeded");
+            return 0;
+        }
+    }
+
+    return 1;
+}
+
 static char StateMachine_SetConfig__doc__[] =
 "SetConfig(Section, Values)\n\n"
 "Sets specified config section.\n\n"
@@ -688,8 +702,8 @@ StateMachine_SetConfig(StateMachineObject *self, PyObject *args, PyObject *kwds)
         }
     }
 
-    /* Tell Gammu we have configured another section */
-    GSM_SetConfigNum(self->s, section + 1);
+    if (!StateMachine_ActivateConfig(self, section))
+        return NULL;
 
     Py_RETURN_NONE;
 }
@@ -746,8 +760,10 @@ StateMachine_ReadConfig(StateMachineObject *self, PyObject *args, PyObject *kwds
     }
     Config->UseGlobalDebugFile = FALSE;
 
-    /* Tell Gammu we have configured another section */
-    GSM_SetConfigNum(self->s, dst + 1);
+    if (!StateMachine_ActivateConfig(self, dst)) {
+        INI_Free(cfg);
+        return NULL;
+    }
 
     INI_Free(cfg);
 

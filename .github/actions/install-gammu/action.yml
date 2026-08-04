@@ -13,7 +13,7 @@ runs:
     if: runner.os == 'Linux'
     env:
       # renovate: datasource=github-releases depName=gammu/gammu versioning=loose
-      GAMMU_VERSION: 1.43.3
+      GAMMU_VERSION: 1.44.0
     shell: bash
     run: |
       mkdir _gammu
@@ -28,7 +28,7 @@ runs:
     if: runner.os == 'Windows'
     env:
       # renovate: datasource=github-releases depName=gammu/gammu versioning=loose
-      GAMMU_VERSION: 1.43.3
+      GAMMU_VERSION: 1.44.0
     shell: pwsh
     run: |
       C:/msys64/usr/bin/wget.exe -O gammu-setup.exe https://github.com/gammu/gammu/releases/download/$Env:GAMMU_VERSION/Gammu-$Env:GAMMU_VERSION-Windows-Minimal.exe

@@ -1,3 +1,10 @@
+3.4.0
+=====
+
+* Added support for Gammu 1.44.0.
+* Fixed validation when activating configuration sections.
+* Improved SMS conversion error handling.
+
 3.3.0
 =====
 

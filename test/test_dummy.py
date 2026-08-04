@@ -32,7 +32,7 @@ import pytest
 import gammu
 
 DUMMY_DIR = Path(__file__).parent / "data" / "gammu-dummy"
-TEST_FILE = Path(__file__).parent / "data" / "sqlite-17.sql"
+TEST_FILE = Path(__file__).parent / "data" / "sqlite-18.sql"
 CONFIGURATION = """
 # Configuration for Gammu testsuite
 

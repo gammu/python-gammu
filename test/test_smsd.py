@@ -86,7 +86,7 @@ def get_script() -> Path:
     """
     version = tuple(int(x) for x in gammu.Version()[0].split("."))
 
-    dbver = 17
+    dbver = 18
 
     print(f"Gammu version {version}, SMSD DB version {dbver}")
 

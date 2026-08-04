@@ -2,11 +2,12 @@ CREATE TABLE gammu (
   Version INTEGER NOT NULL DEFAULT '0' PRIMARY KEY
 );
 
-INSERT INTO gammu (Version) VALUES (17);
+INSERT INTO gammu (Version) VALUES (18);
 
 CREATE TABLE inbox (
   UpdatedInDB NUMERIC NOT NULL DEFAULT (datetime('now')),
   ReceivingDateTime NUMERIC NOT NULL DEFAULT (datetime('now')),
+  InsertIntoDB NUMERIC NOT NULL DEFAULT (datetime('now')),
   Text TEXT NOT NULL,
   SenderNumber TEXT NOT NULL DEFAULT '',
   Coding TEXT NOT NULL DEFAULT 'Default_No_Compression',
@@ -15,12 +16,18 @@ CREATE TABLE inbox (
   Class INTEGER NOT NULL DEFAULT '-1',
   TextDecoded TEXT NOT NULL DEFAULT '',
   ID INTEGER PRIMARY KEY AUTOINCREMENT,
+  MessageID INTEGER NOT NULL DEFAULT 0,
+  SequencePosition INTEGER NOT NULL DEFAULT 1,
+  PartCount INTEGER NOT NULL DEFAULT 1,
   RecipientID TEXT NOT NULL,
   Processed TEXT NOT NULL DEFAULT 'false',
   Status INTEGER NOT NULL DEFAULT '-1',
   CHECK (Coding IN 
   ('Default_No_Compression','Unicode_No_Compression','8bit','Default_Compression','Unicode_Compression')) 
 );
+
+CREATE INDEX inbox_message ON inbox(MessageID, SequencePosition);
+CREATE INDEX inbox_insert ON inbox(InsertIntoDB);
 
 CREATE TRIGGER update_inbox_time UPDATE ON inbox 
   BEGIN
@@ -33,6 +40,7 @@ CREATE TABLE outbox (
   SendingDateTime NUMERIC NOT NULL DEFAULT (datetime('now')),
   SendBefore time NOT NULL DEFAULT '23:59:59',
   SendAfter time NOT NULL DEFAULT '00:00:00',
+  SendDays INTEGER NOT NULL DEFAULT 127,
   Text TEXT,
   DestinationNumber TEXT NOT NULL DEFAULT '',
   Coding TEXT NOT NULL DEFAULT 'Default_No_Compression',

@@ -55,7 +55,7 @@ import gammu
 
 def print_root_folders(state_machine) -> None:
     file_obj = state_machine.GetNextRootFolder("")
-    while 1:
+    while True:
         print(f"{file_obj['ID_FullName']} - {file_obj['Name']}")
         try:
             file_obj = state_machine.GetNextRootFolder(file_obj["ID_FullName"])
@@ -181,7 +181,7 @@ def main() -> None:  # ruff: ignore[too-many-branches, too-many-statements, comp
     # Check GetNextFileFolder
     print("\n\nExpectation: Info for a file of the phone (cgi.jpg)")
     file_f = state_machine.GetNextFileFolder(1)
-    while 1:
+    while True:
         if file_f["Name"] != "cgi.jpg":
             file_f = state_machine.GetNextFileFolder(0)
         else:
@@ -216,7 +216,7 @@ def main() -> None:  # ruff: ignore[too-many-branches, too-many-statements, comp
     # Check GetFolderListing
     print("\n\nExpectation: Listing of cgi.jpg's properties")
     file_f = state_machine.GetFolderListing(args.folder, 1)
-    while 1:
+    while True:
         if file_f["Name"] != "cgi.jpg":
             file_f = state_machine.GetFolderListing(args.folder, 0)
         else:
@@ -255,7 +255,7 @@ def main() -> None:  # ruff: ignore[too-many-branches, too-many-statements, comp
     # Check GetFolderListing again *wired*
     print("\n\nExpectation: Print properties of newly created folder")
     file_f = state_machine.GetFolderListing(args.folder, 1)
-    while 1:
+    while True:
         if file_f["Name"] != "42alpha":
             file_f = state_machine.GetFolderListing(args.folder, 0)
         else:

@@ -90,7 +90,7 @@ async def run(worker) -> None:
     # Just a busy waiting for event
     # We need to keep communication with phone to get notifications
     print("Press Ctrl+C to interrupt")
-    while 1:
+    while True:
         try:
             signal = await worker.get_signal_quality_async()
             print(f"Signal is at {signal['SignalPercent']:d}%")

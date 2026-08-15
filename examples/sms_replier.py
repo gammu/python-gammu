@@ -94,7 +94,7 @@ def main() -> None:
 
     # We need to keep communication with phone to get notifications
     print("Press Ctrl+C to interrupt")
-    while 1:
+    while True:
         time.sleep(1)
         status = state_machine.GetBatteryCharge()
         print(f"Battery is at {status['BatteryPercent']:d}%")

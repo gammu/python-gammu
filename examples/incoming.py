@@ -75,7 +75,7 @@ def main() -> None:
     # Just a busy waiting for event
     # We need to keep communication with phone to get notifications
     print("Press Ctrl+C to interrupt")
-    while 1:
+    while True:
         signal = state_machine.GetSignalQuality()
         print(f"Signal is at {signal['SignalPercent']:d}%")
         time.sleep(1)

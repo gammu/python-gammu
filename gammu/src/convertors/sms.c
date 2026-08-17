@@ -664,8 +664,9 @@ int UDHFromPython(PyObject * dict, GSM_UDHHeader * udh)
 	udh->Length = len;
 
 	if (udh->Length > GSM_MAX_UDH_LENGTH) {
-		pyg_warning("UDH too large, truncating!");
-		udh->Length = GSM_MAX_UDH_LENGTH;
+		PyErr_Format(PyExc_ValueError, "UDH is too large (maximum is %d bytes)",
+			     GSM_MAX_UDH_LENGTH);
+		return 0;
 	}
 
 	memcpy(udh->Text, s, udh->Length);
@@ -790,8 +791,10 @@ int SMSFromPython(PyObject * dict, GSM_SMSMessage * sms, int needslocation,
 		sms->Length = len;
 
 		if (sms->Length > GSM_MAX_SMS_LENGTH) {
-			pyg_warning("SMS text too large, truncating!\n");
-			sms->Length = GSM_MAX_SMS_LENGTH;
+			PyErr_Format(PyExc_ValueError,
+				     "SMS text is too large (maximum is %d bytes)",
+				     GSM_MAX_SMS_LENGTH);
+			return 0;
 		}
 
 		memcpy(sms->Text, s, sms->Length);
@@ -1122,9 +1125,10 @@ int MultiSMSFromPython(PyObject * list, GSM_MultiSMSMessage * sms)
 	len = PyList_Size(list);
 
 	if (len > GSM_MAX_MULTI_SMS) {
-		pyg_warning("Truncating MultiSMS entries to %d entries! (from %"
-			    PY_FORMAT_SIZE_T "d))\n", GSM_MAX_MULTI_SMS, len);
-		len = GSM_MAX_MULTI_SMS;
+		PyErr_Format(PyExc_ValueError,
+			     "MultiSMS has too many entries (maximum is %d)",
+			     GSM_MAX_MULTI_SMS);
+		return 0;
 	}
 	sms->Number = len;
 
@@ -1993,10 +1997,10 @@ int SMSInfoFromPython(PyObject * dict, GSM_MultiPartSMSInfo * entry)
 	len = PyList_Size(o);
 
 	if (len > GSM_MAX_MULTI_SMS - 1) {
-		pyg_warning("Too many entries, truncating from %"
-			    PY_FORMAT_SIZE_T "d to %d\n", len,
-			    GSM_MAX_MULTI_SMS - 1);
-		len = GSM_MAX_MULTI_SMS - 1;
+		PyErr_Format(PyExc_ValueError,
+			     "Too many SMS info entries (maximum is %d)",
+			     GSM_MAX_MULTI_SMS - 1);
+		return 0;
 	}
 
 	entry->EntriesNum = len;

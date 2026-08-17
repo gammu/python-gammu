@@ -25,6 +25,8 @@ import os
 import sys
 import unittest
 
+import pytest
+
 import gammu
 
 PDU_DATA = binascii.unhexlify(
@@ -64,6 +66,54 @@ class PDUTest(unittest.TestCase):
         sms = gammu.DecodePDU(PDU_DATA)
         assert sms["Number"] == "604865888"
         assert sms["Text"] == "Delivered"
+
+    def test_decode_rejects_truncated_frame(self) -> None:
+        with pytest.raises(gammu.ERR_CORRUPTED):
+            gammu.DecodePDU(b"")
+
+    def test_special_decoders_reject_malformed_data(self) -> None:
+        for value in (
+            "004000810004000000000000000807120500ffff0000",
+            "00400081000400000000000000100b0504158a00000003ce010130017f7f",
+        ):
+            decoded = gammu.DecodePDU(bytes.fromhex(value))
+            assert gammu.DecodeSMS([decoded]) is None
+
+    def test_encode_pdu_rejects_extension_overflow(self) -> None:
+        sms = gammu.EncodeSMS(
+            {"Entries": [{"ID": "ConcatenatedTextLong", "Buffer": "^" * 80}]}
+        )[0]
+        sms["Text"] = "^" * 160
+        with pytest.raises(gammu.ERR_INVALIDDATA):
+            gammu.EncodePDU(sms)
+
+    def test_encode_rejects_unrepresentable_multipart(self) -> None:
+        with pytest.raises(gammu.ERR_INVALIDDATA):
+            gammu.EncodeSMS(
+                {"Entries": [{"ID": "ConcatenatedTextLong", "Buffer": "A" * 40000}]}
+            )
+
+    def test_conversion_limits_reject_instead_of_truncate(self) -> None:
+        sms = gammu.DecodePDU(
+            bytes.fromhex(
+                "0791361907001003B17A0C913619397750320000AD11CD701E340FB3C3F23CC81D0689C3BF"
+            )
+        )
+
+        oversized_binary = dict(sms, Coding="8bit", Text=b"A" * 651)
+        with pytest.raises(ValueError, match="SMS text is too large"):
+            gammu.EncodePDU(oversized_binary)
+
+        oversized_udh = dict(sms)
+        oversized_udh["UDH"] = {"Type": "UserUDH", "Text": b"\x00" * 141}
+        with pytest.raises(ValueError, match="UDH is too large"):
+            gammu.EncodePDU(oversized_udh)
+
+        with pytest.raises(ValueError, match="MultiSMS has too many entries"):
+            gammu.DecodeSMS([sms] * 51)
+
+        with pytest.raises(ValueError, match="Too many SMS info entries"):
+            gammu.EncodeSMS({"Entries": [{}] * 50})
 
     def do_smstest(self, smsinfo, expected) -> None:
         # encode SMSes

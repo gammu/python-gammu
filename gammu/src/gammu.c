@@ -5725,7 +5725,7 @@ gammu_LinkSMS(PyObject *self, PyObject *args, PyObject *kwds)
     static char         *kwlist[] = {"Messages", "EMS", NULL};
     GSM_Error           error;
     PyObject            *value;
-    PyObject            *ret;
+    PyObject            *ret = NULL;
     Py_ssize_t          len;
     int                 i;
 
@@ -5737,20 +5737,29 @@ gammu_LinkSMS(PyObject *self, PyObject *args, PyObject *kwds)
 
     if (!MultiSMSListFromPython(value, &smsin)) return NULL;
 
-    smsout = (GSM_MultiSMSMessage **)malloc((len + 1) * sizeof(GSM_MultiSMSMessage *));
+    smsout = (GSM_MultiSMSMessage **)calloc((len + 1), sizeof(GSM_MultiSMSMessage *));
+    if (smsout == NULL) {
+        PyErr_NoMemory();
+        goto free_input;
+    }
 
     error = GSM_LinkSMS(GSM_GetGlobalDebug(), smsin, smsout, ems);
-    if (!checkError(error, "LinkSMS")) return NULL;
+    if (!checkError(error, "LinkSMS")) {
+        ret = NULL;
+        goto free_output;
+    }
 
     ret = MultiSMSListToPython(smsout);
 
+free_output:
     i = 0;
-    while(smsout[i] != NULL) {
+    while(i < len && smsout[i] != NULL) {
         free(smsout[i]);
         i++;
     }
     free(smsout);
 
+free_input:
     i = 0;
     while(smsin[i] != NULL) {
         free(smsin[i]);
@@ -5813,6 +5822,7 @@ gammu_EncodeSMS(PyObject *self, PyObject *args, PyObject *kwds)
 {
     GSM_MultiSMSMessage         smsout;
     GSM_MultiPartSMSInfo        smsinfo;
+    GSM_Error                   error;
     static char                 *kwlist[] = {"MessagesInfo", NULL};
     PyObject                    *value;
 
@@ -5824,9 +5834,10 @@ gammu_EncodeSMS(PyObject *self, PyObject *args, PyObject *kwds)
 
     if (!SMSInfoFromPython(value, &smsinfo)) return NULL;
 
-    if (!GSM_EncodeMultiPartSMS(GSM_GetGlobalDebug(), &smsinfo, &smsout)) {
+    error = GSM_EncodeMultiPartSMS(GSM_GetGlobalDebug(), &smsinfo, &smsout);
+    if (!checkError(error, "EncodeMultiPartSMS")) {
         GSM_FreeMultiPartSMSInfo(&smsinfo);
-        Py_RETURN_NONE;
+        return NULL;
     }
     GSM_FreeMultiPartSMSInfo(&smsinfo);
 
@@ -6485,8 +6496,10 @@ gammu_EncodePDU(PyObject *self, PyObject *args, PyObject *kwds)
     GSM_Error error;
     PyObject *value;
     unsigned char buffer[1000];
-    char req[1000];
-    int length = 0, current = 0, i;
+    PyObject *result;
+    char *req;
+    int length = 0;
+    size_t current = 0, payload_length, smsc_length, number_length, result_length;
     GSM_SMSMessage sms;
     char *layout = NULL;
     GSM_SMSMessageLayout *msg_layout;
@@ -6512,51 +6525,75 @@ gammu_EncodePDU(PyObject *self, PyObject *args, PyObject *kwds)
     if (!checkError(error, "EncodeSMSFrame")) return NULL;
 
     if (msg_layout == &PHONE_SMSDeliver) {
-        length = length - PHONE_SMSDeliver.Text;
-
-        for (i = 0;i < buffer[PHONE_SMSDeliver.SMSCNumber]+1;i++) {
-            req[current++]=buffer[PHONE_SMSDeliver.SMSCNumber+i];
+        if (length < PHONE_SMSDeliver.Text) {
+            checkError(ERR_INVALIDDATA, "EncodeSMSFrame");
+            return NULL;
         }
-        req[current++]=buffer[PHONE_SMSDeliver.firstbyte];
-
-        for (i = 0;i<((buffer[PHONE_SMSDeliver.Number]+1)/2+1)+1;i++) {
-            req[current++]=buffer[PHONE_SMSDeliver.Number+i];
+        payload_length = (size_t)(length - PHONE_SMSDeliver.Text);
+        smsc_length = (size_t)buffer[PHONE_SMSDeliver.SMSCNumber] + 1;
+        number_length = ((size_t)buffer[PHONE_SMSDeliver.Number] + 1) / 2 + 2;
+        if ((size_t)PHONE_SMSDeliver.SMSCNumber + smsc_length > sizeof(buffer) ||
+            (size_t)PHONE_SMSDeliver.Number + number_length > sizeof(buffer) ||
+            payload_length > sizeof(buffer) - PHONE_SMSDeliver.Text) {
+            checkError(ERR_INVALIDDATA, "EncodeSMSFrame");
+            return NULL;
         }
-        req[current++]=buffer[PHONE_SMSDeliver.TPPID];
-        req[current++]=buffer[PHONE_SMSDeliver.TPDCS];
-
-        for(i = 0;i < 7;i++) {
-            req[current++]=buffer[PHONE_SMSDeliver.DateTime+i];
-        }
-        req[current++]=buffer[PHONE_SMSDeliver.TPUDL];
-
-        for(i = 0;i < length;i++) {
-            req[current++]=buffer[PHONE_SMSDeliver.Text+i];
-        }
+        result_length = smsc_length + 1 + number_length + 2 + 7 + 1 + payload_length;
+        result = PyBytes_FromStringAndSize(NULL, (Py_ssize_t)result_length);
+        if (result == NULL) return NULL;
+        req = PyBytes_AS_STRING(result);
+        memcpy(req + current, buffer + PHONE_SMSDeliver.SMSCNumber, smsc_length);
+        current += smsc_length;
+        req[current++] = buffer[PHONE_SMSDeliver.firstbyte];
+        memcpy(req + current, buffer + PHONE_SMSDeliver.Number, number_length);
+        current += number_length;
+        req[current++] = buffer[PHONE_SMSDeliver.TPPID];
+        req[current++] = buffer[PHONE_SMSDeliver.TPDCS];
+        memcpy(req + current, buffer + PHONE_SMSDeliver.DateTime, 7);
+        current += 7;
+        req[current++] = buffer[PHONE_SMSDeliver.TPUDL];
+        memcpy(req + current, buffer + PHONE_SMSDeliver.Text, payload_length);
+        current += payload_length;
     } else if (msg_layout == &PHONE_SMSSubmit) {
-        length = length - PHONE_SMSSubmit.Text;
-
-        for (i = 0;i < buffer[PHONE_SMSSubmit.SMSCNumber]+1;i++) {
-            req[current++]=buffer[PHONE_SMSSubmit.SMSCNumber+i];
+        if (length < PHONE_SMSSubmit.Text) {
+            checkError(ERR_INVALIDDATA, "EncodeSMSFrame");
+            return NULL;
         }
-        req[current++]=buffer[PHONE_SMSSubmit.firstbyte];
-        req[current++]=buffer[PHONE_SMSSubmit.TPMR];
-
-        for (i = 0;i<((buffer[PHONE_SMSSubmit.Number]+1)/2+1)+1;i++) {
-            req[current++]=buffer[PHONE_SMSSubmit.Number+i];
+        payload_length = (size_t)(length - PHONE_SMSSubmit.Text);
+        smsc_length = (size_t)buffer[PHONE_SMSSubmit.SMSCNumber] + 1;
+        number_length = ((size_t)buffer[PHONE_SMSSubmit.Number] + 1) / 2 + 2;
+        if ((size_t)PHONE_SMSSubmit.SMSCNumber + smsc_length > sizeof(buffer) ||
+            (size_t)PHONE_SMSSubmit.Number + number_length > sizeof(buffer) ||
+            payload_length > sizeof(buffer) - PHONE_SMSSubmit.Text) {
+            checkError(ERR_INVALIDDATA, "EncodeSMSFrame");
+            return NULL;
         }
-        req[current++]=buffer[PHONE_SMSSubmit.TPPID];
-        req[current++]=buffer[PHONE_SMSSubmit.TPDCS];
-        req[current++]=buffer[PHONE_SMSSubmit.TPVP];
-        req[current++]=buffer[PHONE_SMSSubmit.TPUDL];
-
-        for(i = 0;i < length;i++) {
-            req[current++]=buffer[PHONE_SMSSubmit.Text+i];
-        }
-        req[current+1]='\0';
+        result_length = smsc_length + 2 + number_length + 4 + payload_length;
+        result = PyBytes_FromStringAndSize(NULL, (Py_ssize_t)result_length);
+        if (result == NULL) return NULL;
+        req = PyBytes_AS_STRING(result);
+        memcpy(req + current, buffer + PHONE_SMSSubmit.SMSCNumber, smsc_length);
+        current += smsc_length;
+        req[current++] = buffer[PHONE_SMSSubmit.firstbyte];
+        req[current++] = buffer[PHONE_SMSSubmit.TPMR];
+        memcpy(req + current, buffer + PHONE_SMSSubmit.Number, number_length);
+        current += number_length;
+        req[current++] = buffer[PHONE_SMSSubmit.TPPID];
+        req[current++] = buffer[PHONE_SMSSubmit.TPDCS];
+        req[current++] = buffer[PHONE_SMSSubmit.TPVP];
+        req[current++] = buffer[PHONE_SMSSubmit.TPUDL];
+        memcpy(req + current, buffer + PHONE_SMSSubmit.Text, payload_length);
+        current += payload_length;
+    } else {
+        return PyBytes_FromStringAndSize("", 0);
     }
 
-    return PyBytes_FromStringAndSize(req, current);
+    if (current != result_length) {
+        Py_DECREF(result);
+        PyErr_SetString(PyExc_RuntimeError, "Internal PDU length mismatch");
+        return NULL;
+    }
+    return result;
 }
 
 /* List of methods defined in the module */

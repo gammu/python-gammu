@@ -59,10 +59,10 @@ integration are not included.
 
 .. renovate: datasource=github-release-attachments depName=gammu/gammu versioning=loose
 
-The bundled Gammu 1.44.0 library is licensed under GPL-2.0-or-later. The
+The bundled Gammu 1.44.1 library is licensed under GPL-2.0-or-later. The
 corresponding source archive is available from:
 
-https://github.com/gammu/gammu/releases/download/1.44.0/Gammu-1.44.0.tar.gz
+https://github.com/gammu/gammu/releases/download/1.44.1/Gammu-1.44.1.tar.gz
 
 To use those optional features, install a fully featured Gammu development
 package and force a source build::

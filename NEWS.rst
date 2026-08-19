@@ -1,3 +1,9 @@
+3.4.1
+=====
+
+* Reject malformed and oversized SMS data instead of silently truncating it.
+* Updated the Gammu library bundled in binary wheels to 1.44.1.
+
 3.4.0
 =====
 

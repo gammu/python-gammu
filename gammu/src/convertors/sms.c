@@ -498,7 +498,6 @@ char *UDHTypeToString(GSM_UDH type)
 	if (s == NULL) {
 		PyErr_Format(PyExc_ValueError,
 			     "Bad value for UDHType from Gammu: '%d'", type);
-		return NULL;
 	}
 
 	return s;

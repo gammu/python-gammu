@@ -5832,14 +5832,17 @@ gammu_EncodeSMS(PyObject *self, PyObject *args, PyObject *kwds)
                 &PyDict_Type, &(value)))
         return NULL;
 
-    if (!SMSInfoFromPython(value, &smsinfo)) return NULL;
+    if (!SMSInfoFromPython(value, &smsinfo)) {
+        FreeSMSInfo(&smsinfo);
+        return NULL;
+    }
 
     error = GSM_EncodeMultiPartSMS(GSM_GetGlobalDebug(), &smsinfo, &smsout);
     if (!checkError(error, "EncodeMultiPartSMS")) {
-        GSM_FreeMultiPartSMSInfo(&smsinfo);
+        FreeSMSInfo(&smsinfo);
         return NULL;
     }
-    GSM_FreeMultiPartSMSInfo(&smsinfo);
+    FreeSMSInfo(&smsinfo);
 
     return MultiSMSToPython(&smsout);
 }

@@ -1713,6 +1713,7 @@ PyObject *SMSInfoToPython(GSM_MultiPartSMSInfo * smsinfo)
 	return r;
 }
 
+/* Allocations remain owned by the enclosing SMS info even on failure. */
 int SMSPartFromPython(PyObject * dict, GSM_MultiPartSMSEntry * entry)
 {
 	char *s;
@@ -1880,7 +1881,7 @@ int SMSPartFromPython(PyObject * dict, GSM_MultiPartSMSEntry * entry)
 	o = PyDict_GetItemString(dict, "Phonebook");
 	if (o != NULL && o != Py_None) {
 		entry->Phonebook =
-		    (GSM_MemoryEntry *) malloc(sizeof(GSM_MemoryEntry));
+		    (GSM_MemoryEntry *) calloc(1, sizeof(GSM_MemoryEntry));
 		if (entry->Phonebook == NULL) {
 			PyErr_SetString(PyExc_MemoryError,
 					"Not enough memory to allocate structure");
@@ -1920,7 +1921,7 @@ int SMSPartFromPython(PyObject * dict, GSM_MultiPartSMSEntry * entry)
 
 	o = PyDict_GetItemString(dict, "File");
 	if (o != NULL && o != Py_None) {
-		entry->File = (GSM_File *) malloc(sizeof(GSM_File));
+		entry->File = (GSM_File *) calloc(1, sizeof(GSM_File));
 		if (entry->File == NULL) {
 			PyErr_SetString(PyExc_MemoryError,
 					"Not enough memory to allocate structure");
@@ -1939,6 +1940,24 @@ int SMSPartFromPython(PyObject * dict, GSM_MultiPartSMSEntry * entry)
 	return 1;
 }
 
+void FreeSMSInfo(GSM_MultiPartSMSInfo *entry)
+{
+	int i;
+
+	/* Gammu's cleanup does not release files or phonebook pictures. */
+	for (i = 0; i < GSM_MAX_MULTI_SMS; i++) {
+		if (entry->Entries[i].File != NULL) {
+			free(entry->Entries[i].File->Buffer);
+			free(entry->Entries[i].File);
+			entry->Entries[i].File = NULL;
+		}
+		if (entry->Entries[i].Phonebook != NULL) {
+			GSM_FreeMemoryEntry(entry->Entries[i].Phonebook);
+		}
+	}
+	GSM_FreeMultiPartSMSInfo(entry);
+}
+
 int SMSInfoFromPython(PyObject * dict, GSM_MultiPartSMSInfo * entry)
 {
 	PyObject *o;
@@ -1946,12 +1965,12 @@ int SMSInfoFromPython(PyObject * dict, GSM_MultiPartSMSInfo * entry)
 	Py_ssize_t len;
 	Py_ssize_t i;
 
+	GSM_ClearMultiPartSMSInfo(entry);
+
 	if (!PyDict_Check(dict)) {
 		PyErr_Format(PyExc_ValueError, "SMS info is not a dictionary");
 		return 0;
 	}
-
-	GSM_ClearMultiPartSMSInfo(entry);
 
 	entry->UnicodeCoding = GetBoolFromDict(dict, "Unicode");
 	if (entry->UnicodeCoding == BOOL_INVALID) {

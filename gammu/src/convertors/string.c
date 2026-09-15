@@ -41,6 +41,7 @@ unsigned char *StringPythonToGammu(PyObject * o)
 	len = PyUnicode_GET_LENGTH(u) + 1;
 	ps = malloc(len * sizeof(wchar_t));
 	if (ps == NULL) {
+		Py_DECREF(u);
 		PyErr_SetString(PyExc_MemoryError,
 				"Not enough memory to allocate string");
 		return NULL;
@@ -48,10 +49,13 @@ unsigned char *StringPythonToGammu(PyObject * o)
 
 	len = PyUnicode_AsWideChar(u, ps, len -1);
 	if (len == -1) {
+		free(ps);
+		Py_DECREF(u);
 		PyErr_Format(PyExc_ValueError, "Can not get unicode value");
 		return NULL;
 	}
 	gs = strPythonToGammu(ps, PyUnicode_GET_LENGTH(u));
+	free(ps);
 	Py_DECREF(u);
 	return gs;
 }

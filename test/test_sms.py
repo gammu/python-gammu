@@ -56,6 +56,95 @@ GSM = (
 )
 
 
+@pytest.mark.parametrize(
+    "field",
+    [
+        "Ringtone",
+        "Bitmap",
+        "Bookmark",
+        "MMSIndicator",
+        "Phonebook",
+        "Calendar",
+        "ToDo",
+        "File",
+    ],
+)
+def test_encode_sms_nested_conversion_failure(field):
+    # An earlier entry owns a buffer, and the failing field owns a structure.
+    entries = [
+        {"ID": "ConcatenatedTextLong", "Buffer": "earlier entry"},
+        {"ID": "ConcatenatedTextLong", field: 42},
+    ]
+    for _ in range(10):
+        with pytest.raises(ValueError, match=r"not a (dictionary|list)"):
+            gammu.EncodeSMS({"Entries": entries})
+    assert gammu.EncodeSMS({"Entries": entries[:1]})[0]["Text"] == "earlier entry"
+
+
+@pytest.mark.parametrize(
+    ("entries", "error"),
+    [
+        (
+            [{"Ringtone": {"Name": "test", "Notes": []}, "Bitmap": 42}],
+            "list",
+        ),
+        (
+            [
+                {
+                    "Phonebook": {
+                        "Entries": [
+                            {
+                                "Type": "Photo",
+                                "Value": b"picture",
+                                "PictureType": "PNG",
+                            },
+                            42,
+                        ]
+                    }
+                }
+            ],
+            "not dictionary",
+        ),
+        ([{"File": {"Buffer": b"attachment"}}, {}], "ID"),
+        ([{"Buffer": "earlier entry"}, 42], "not dictionary"),
+    ],
+)
+def test_encode_sms_failure_after_nested_allocation(entries, error):
+    # Leave the final empty entry without an ID to fail after the file allocation.
+    entries = [
+        dict(entry, ID="ConcatenatedTextLong")
+        if isinstance(entry, dict) and entry
+        else entry
+        for entry in entries
+    ]
+    for _ in range(10):
+        with pytest.raises(ValueError, match=error):
+            gammu.EncodeSMS({"Entries": entries})
+
+
+@pytest.mark.parametrize("length", [5, 40000])
+def test_encode_sms_nested_cleanup_after_conversion(length):
+    info = {
+        "Entries": [
+            {
+                "ID": "ConcatenatedTextLong",
+                "Buffer": "A" * length,
+                "File": {"Buffer": b"attachment"},
+                "Phonebook": {
+                    "Entries": [
+                        {"Type": "Photo", "Value": b"picture", "PictureType": "PNG"}
+                    ]
+                },
+            }
+        ]
+    }
+    if length == 40000:
+        with pytest.raises(gammu.ERR_INVALIDDATA):
+            gammu.EncodeSMS(info)
+    else:
+        assert gammu.EncodeSMS(info)[0]["Text"] == "A" * length
+
+
 class PDUTest(unittest.TestCase):
     def setUp(self) -> None:
         if "GAMMU_DEBUG" in os.environ:

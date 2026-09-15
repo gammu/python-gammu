@@ -320,8 +320,12 @@ PyObject *SMSInfoToPython(GSM_MultiPartSMSInfo * smsinfo);
 
 /**
  * Converts SMSInfo from Python object.
+ * The output must be released with FreeSMSInfo on both success and failure.
  */
 int SMSInfoFromPython(PyObject * dict, GSM_MultiPartSMSInfo * entry);
+
+/* Releases SMS info constructed by SMSInfoFromPython, including nested data. */
+void FreeSMSInfo(GSM_MultiPartSMSInfo *entry);
 
 /**
  * Converts Bitmap to Python object.

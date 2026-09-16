@@ -193,10 +193,10 @@ int WAPBookmarkFromPython(PyObject * dict, GSM_WAPBookmark * wap)
 	if (wap->Location == INT_INVALID)
 		return 0;
 
-	if (!CopyStringFromDict(dict, "Address", 255, wap->Address))
+	if (!CopyStringFromDict(dict, "Address", sizeof(wap->Address), wap->Address))
 		return 0;
 
-	if (!CopyStringFromDict(dict, "Title", 50, wap->Title))
+	if (!CopyStringFromDict(dict, "Title", sizeof(wap->Title), wap->Title))
 		return 0;
 
 	return 1;

@@ -38,24 +38,15 @@ unsigned char *StringPythonToGammu(PyObject * o)
 		return NULL;
 	}
 
-	len = PyUnicode_GET_LENGTH(u) + 1;
-	ps = malloc(len * sizeof(wchar_t));
+	/* On Windows, supplementary characters use two wchar_t code units. */
+	ps = PyUnicode_AsWideCharString(u, &len);
 	if (ps == NULL) {
 		Py_DECREF(u);
-		PyErr_SetString(PyExc_MemoryError,
-				"Not enough memory to allocate string");
 		return NULL;
 	}
 
-	len = PyUnicode_AsWideChar(u, ps, len -1);
-	if (len == -1) {
-		free(ps);
-		Py_DECREF(u);
-		PyErr_Format(PyExc_ValueError, "Can not get unicode value");
-		return NULL;
-	}
-	gs = strPythonToGammu(ps, PyUnicode_GET_LENGTH(u));
-	free(ps);
+	gs = strPythonToGammu(ps, len);
+	PyMem_Free(ps);
 	Py_DECREF(u);
 	return gs;
 }
@@ -189,24 +180,69 @@ PyObject *UnicodeStringToPythonL(const unsigned char *src, const Py_ssize_t len)
 	return res;
 }
 
+/* Capacity is in bytes, including the two-byte Unicode terminator. */
+int CopyUnicodeStringSized(unsigned char *dest, size_t capacity,
+                           const unsigned char *src, const char *field)
+{
+	size_t length = UnicodeLength(src);
+
+	if (capacity < 2 || length > capacity / 2 - 1) {
+		PyErr_Format(PyExc_ValueError,
+			     "%s is too long (maximum is %zu UTF-16 code units)",
+			     field, capacity < 2 ? 0 : capacity / 2 - 1);
+		return 0;
+	}
+	memcpy(dest, src, (length + 1) * 2);
+	return 1;
+}
+
+int EncodeUnicodeSized(unsigned char *dest, size_t capacity,
+                       const char *src, size_t length, const char *field)
+{
+	unsigned char *encoded;
+	int result;
+
+	/* Each input byte can produce at most a surrogate pair. */
+	if (length > (SIZE_MAX - 2) / 4) {
+		PyErr_NoMemory();
+		return 0;
+	}
+	encoded = malloc(length * 4 + 2);
+	if (encoded == NULL) {
+		PyErr_NoMemory();
+		return 0;
+	}
+	EncodeUnicode(encoded, src, length);
+	result = CopyUnicodeStringSized(dest, capacity, encoded, field);
+	free(encoded);
+	return result;
+}
+
 PyObject *LocaleStringToPython(const char *src)
 {
 	unsigned char *w;
-	size_t len;
+	size_t len, capacity;
 	PyObject *ret;
 
 	/* Length of input */
 	len = strlen(src);
 
 	/* Allocate it */
-	w = malloc(2 * (len + 5));
+	if (len > (SIZE_MAX - 2) / 4) {
+		return PyErr_NoMemory();
+	}
+	capacity = len * 4 + 2;
+	w = malloc(capacity);
 	if (w == NULL) {
 		PyErr_SetString(PyExc_MemoryError,
 				"Not enough memory to allocate string");
 		return NULL;
 	}
 
-	EncodeUnicode(w, src, len);
+	if (!EncodeUnicodeSized(w, capacity, src, len, "Locale string")) {
+		free(w);
+		return NULL;
+	}
 
 	ret = UnicodeStringToPython(w);
 	free(w);

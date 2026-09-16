@@ -586,7 +586,7 @@ StateMachine_SetConfig(StateMachineObject *self, PyObject *args, PyObject *kwds)
     static char     *kwlist[] = {"Section", "Values", NULL};
     PyObject        *key, *value, *str, *keystr;
     PyObject        *dict;
-    char            *s, *v, *setv;
+    char            *s, *v, *setv, **target;
     Py_ssize_t      pos = 0;
     GSM_Config *Config;
 
@@ -602,39 +602,40 @@ StateMachine_SetConfig(StateMachineObject *self, PyObject *args, PyObject *kwds)
     }
 
     while (PyDict_Next(dict, &pos, &key, &value)) {
+        str = NULL;
         keystr = NULL;
         s = NULL;
         if (PyUnicode_Check(key)) {
             keystr = PyUnicode_AsASCIIString(key);
             if (keystr == NULL) {
-                return NULL;
+                goto error;
             }
             s = PyBytes_AsString(keystr);
         }
 
         if (s == NULL) {
             PyErr_Format(PyExc_ValueError, "Non string key in configuration values");
-            return NULL;
+            goto error;
         }
         if (strcmp(s, "UseGlobalDebugFile") == 0) {
             Config->UseGlobalDebugFile = BoolFromPython(value, "UseGlobalDebugFile");
             if (Config->UseGlobalDebugFile == BOOL_INVALID) {
-                return NULL;
+                goto error;
             }
         } else if (strcmp(s, "LockDevice") == 0) {
             Config->LockDevice = BoolFromPython(value, "LockDevice");
             if (Config->LockDevice == BOOL_INVALID) {
-                return NULL;
+                goto error;
             }
         } else if (strcmp(s, "StartInfo") == 0) {
             Config->StartInfo = BoolFromPython(value, "StartInfo");
             if (Config->StartInfo == BOOL_INVALID) {
-                return NULL;
+                goto error;
             }
         } else if (strcmp(s, "SyncTime") == 0) {
             Config->SyncTime = BoolFromPython(value, "SyncTime");
             if (Config->SyncTime == BOOL_INVALID) {
-                return NULL;
+                goto error;
             }
         } else {
             if (PyBytes_Check(value) || PyUnicode_Check(value)) {
@@ -642,7 +643,7 @@ StateMachine_SetConfig(StateMachineObject *self, PyObject *args, PyObject *kwds)
                     str = PyUnicode_EncodeFSDefault(value);
                     if (str == NULL) {
                         PyErr_Format(PyExc_ValueError, "Non string value for %s (unicode)", s);
-                        return NULL;
+                        goto error;
                     }
                 } else {
                     str = value;
@@ -651,61 +652,67 @@ StateMachine_SetConfig(StateMachineObject *self, PyObject *args, PyObject *kwds)
                 v = PyBytes_AsString(str);
                 if (v == NULL) {
                     PyErr_Format(PyExc_ValueError, "Non string value for (string) %s", s);
-                    return NULL;
-                } else {
-                    setv = strdup(v);
+                    goto error;
                 }
-                Py_DECREF(str);
             } else {
                 v = NULL;
-                if (value == Py_None) {
-                    setv = NULL;
-                } else {
+                if (value != Py_None) {
                     PyErr_Format(PyExc_ValueError, "Non string value for %s", s);
-                    return NULL;
+                    goto error;
                 }
             }
             if (strcmp(s, "Model") == 0) {
-                free(setv);
                 if (v == NULL) {
                     Config->Model[0] = 0;
                 } else {
                     mystrncpy(Config->Model, v, sizeof(Config->Model) - 1);
                 }
             } else if (strcmp(s, "DebugLevel") == 0) {
-                free(setv);
                 if (v == NULL) {
                     Config->DebugLevel[0] = 0;
                 } else {
                     mystrncpy(Config->DebugLevel, v, sizeof(Config->DebugLevel) - 1);
                 }
-            } else if (strcmp(s, "Device") == 0) {
-                free(Config->Device);
-                Config->Device = setv;
-            } else if (strcmp(s, "Connection") == 0) {
-                free(Config->Connection);
-                Config->Connection = setv;
-            } else if (strcmp(s, "DebugFile") == 0) {
-                free(Config->DebugFile);
-                Config->DebugFile = setv;
+            } else if (strcmp(s, "Device") == 0 ||
+                       strcmp(s, "Connection") == 0 ||
+                       strcmp(s, "DebugFile") == 0) {
+                if (strcmp(s, "Device") == 0) {
+                    target = &Config->Device;
+                } else if (strcmp(s, "Connection") == 0) {
+                    target = &Config->Connection;
+                } else {
+                    target = &Config->DebugFile;
+                }
+                setv = NULL;
+                if (v != NULL) {
+                    setv = strdup(v);
+                    if (setv == NULL) {
+                        PyErr_NoMemory();
+                        goto error;
+                    }
+                }
+                free(*target);
+                *target = setv;
             } else if (strcmp(s, "Localize") == 0) {
                 /* We ignore this for backward compatibility */
-                free(setv);
             } else {
-                free(setv);
                 PyErr_Format(PyExc_ValueError, "Unknown key: %s", s);
-                return NULL;
+                goto error;
             }
         }
-        if (keystr != NULL) {
-            Py_DECREF(keystr);
-        }
+        Py_XDECREF(str);
+        Py_DECREF(keystr);
     }
 
     if (!StateMachine_ActivateConfig(self, section))
         return NULL;
 
     Py_RETURN_NONE;
+
+error:
+    Py_XDECREF(str);
+    Py_XDECREF(keystr);
+    return NULL;
 }
 
 

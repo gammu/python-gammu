@@ -145,6 +145,61 @@ def test_encode_sms_nested_cleanup_after_conversion(length):
         assert gammu.EncodeSMS(info)[0]["Text"] == "A" * length
 
 
+@pytest.mark.parametrize("row_count", range(5))
+def test_encode_sms_truncated_xpm(row_count):
+    xpm = [b"2 2 2 1", b". c white", b"# c black", b".#", b"#."]
+    with pytest.raises(ValueError, match="XPM list too small!"):
+        gammu.EncodeSMS(
+            {
+                "Entries": [
+                    {
+                        "ID": "ConcatenatedTextLong",
+                        "Buffer": "bitmap conversion",
+                        "Bitmap": [{"Type": "PictureImage", "XPM": xpm[:row_count]}],
+                    }
+                ]
+            }
+        )
+
+
+@pytest.mark.parametrize("index", range(5))
+@pytest.mark.parametrize("value", [None, 42, "not bytes"])
+def test_encode_sms_xpm_requires_bytes(index, value):
+    xpm = [b"2 2 2 1", b". c white", b"# c black", b".#", b"#."]
+    xpm[index] = value
+    with pytest.raises(
+        ValueError, match="XPM contains something different than byte string!"
+    ):
+        gammu.EncodeSMS(
+            {
+                "Entries": [
+                    {
+                        "ID": "ConcatenatedTextLong",
+                        "Buffer": "bitmap conversion",
+                        "Bitmap": [{"Type": "PictureImage", "XPM": xpm}],
+                    }
+                ]
+            }
+        )
+
+
+@pytest.mark.parametrize("extra_rows", [[], [b"ignored"]])
+def test_encode_sms_complete_xpm(extra_rows):
+    xpm = [b"2 2 2 1", b". c white", b"# c black", b".#", b"#."]
+    sms = gammu.EncodeSMS(
+        {
+            "Entries": [
+                {
+                    "ID": "ConcatenatedTextLong",
+                    "Buffer": "bitmap conversion",
+                    "Bitmap": [{"Type": "PictureImage", "XPM": xpm + extra_rows}],
+                }
+            ]
+        }
+    )
+    assert sms[0]["Text"] == "bitmap conversion"
+
+
 class PDUTest(unittest.TestCase):
     def setUp(self) -> None:
         if "GAMMU_DEBUG" in os.environ:

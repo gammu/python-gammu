@@ -48,6 +48,22 @@ def test_optional_integer_uses_default_on_overflow(value):
     assert gammu.EncodePDU({**sms, "MessageReference": value}) == expected
 
 
+@pytest.mark.parametrize("value", [*OVERFLOW_VALUES, HUGE_STRING, None, "invalid"])
+def test_mms_message_size_uses_default(value):
+    indicator = {
+        "Address": "http://example.com/mms/123",
+        "Title": "Photo message",
+        "Sender": "+420123456789",
+        "Class": "Personal",
+    }
+    info = {"Entries": [{"ID": "MMSIndicatorLong", "MMSIndicator": indicator}]}
+    # Both a missing key and a failed conversion must clear the Python exception.
+    for extra in ({}, {"MessageSize": value}):
+        indicator.update(extra)
+        sms = gammu.EncodeSMS(info)
+        assert gammu.DecodeSMS(sms)["Entries"][0]["MMSIndicator"]["MessageSize"] == 0
+
+
 @pytest.mark.parametrize(
     "value", [None, False, True, 0, 1, -1, 2**32, 2**100, -(2**100)]
 )

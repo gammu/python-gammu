@@ -37,10 +37,6 @@ class GammuAsyncThread(gammu.worker.GammuThread):
         result = None
         try:
             result = gammu.worker._execute_command(func, params)
-        except gammu.GSMError as info:
-            errcode = info.args[0]["Code"]
-            error = gammu.ErrorNumbers[errcode]
-            self._callback(future, result, error, percentage)
         # pylint: disable-next=broad-except
         except Exception as exception:  # ruff: ignore[blind-except]
             self._callback(future, None, exception, percentage)
@@ -159,8 +155,9 @@ class GammuAsyncWorker(gammu.worker.GammuWorker):
         """Terminate phone communication."""
         self._terminate_future = self._loop.create_future()
         self.enqueue("Terminate")
-        await self._terminate_future
-
-        await asyncio.to_thread(self._thread.join)
-
-        self._thread = None
+        try:
+            await self._terminate_future
+        finally:
+            await asyncio.to_thread(self._thread.join)
+            self._thread = None
+            self._terminate_future = None

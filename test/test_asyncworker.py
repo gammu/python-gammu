@@ -19,6 +19,8 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #
 import asyncio
+from contextlib import asynccontextmanager
+from unittest.mock import patch
 
 import pytest
 
@@ -61,8 +63,7 @@ WORKER_EXPECT = [
 
 def async_test(coro):
     def wrapper(*args, **kwargs):
-        loop = asyncio.new_event_loop()
-        return loop.run_until_complete(coro(*args, **kwargs))
+        return asyncio.run(coro(*args, **kwargs))
 
     return wrapper
 
@@ -76,40 +77,108 @@ class AsyncWorkerDummyTest(DummyTest):
     def my_pull_func(self, sm) -> None:
         self.results.append(("pull_func", sm.ReadDevice()))
 
+    @asynccontextmanager
+    async def configured_worker(self):
+        worker = gammu.asyncworker.GammuAsyncWorker(self.my_pull_func)
+        worker.configure(self.get_statemachine().GetConfig())
+        try:
+            yield worker
+        finally:
+            if worker._thread is not None:
+                await worker.terminate_async()
+
     @async_test
     async def test_worker_async(self) -> None:
         self.results = []
-        worker = gammu.asyncworker.GammuAsyncWorker(self.my_pull_func)
-        worker.configure(self.get_statemachine().GetConfig())
-        self.results.append(("Init", await worker.init_async()))
-        self.results.append(("GetIMEI", await worker.get_imei_async()))
-        self.results.append(("GetManufacturer", await worker.get_manufacturer_async()))
-        self.results.append(("GetNetworkInfo", await worker.get_network_info_async()))
-        self.results.append(("GetModel", await worker.get_model_async()))
-        # TODO: self.results.append(('GetFirmware', await worker.get_firmware_async()))
-        self.results.append(
-            ("GetSignalQuality", await worker.get_signal_quality_async())
-        )
-        message = {
-            "Text": "python-gammu testing message",
-            "SMSC": {"Location": 1},
-            "Number": "5555551234",
-        }
-        self.results.append(("SendSMS", await worker.send_sms_async(message)))
-        with pytest.raises(TypeError):
-            await worker.send_sms_async(42)
-        with pytest.raises(TypeError):
-            await worker.send_sms_async(dict(42))
-        self.results.append(
-            (
-                "SetIncomingCallback",
-                await worker.set_incoming_callback_async(self.callback),
+        async with self.configured_worker() as worker:
+            self.results.append(("Init", await worker.init_async()))
+            self.results.append(("GetIMEI", await worker.get_imei_async()))
+            self.results.append(
+                ("GetManufacturer", await worker.get_manufacturer_async())
             )
-        )
-        self.results.append(("SetIncomingSMS", await worker.set_incoming_sms_async()))
+            self.results.append(
+                ("GetNetworkInfo", await worker.get_network_info_async())
+            )
+            self.results.append(("GetModel", await worker.get_model_async()))
+            # TODO: self.results.append(('GetFirmware', await worker.get_firmware_async()))
+            self.results.append(
+                ("GetSignalQuality", await worker.get_signal_quality_async())
+            )
+            message = {
+                "Text": "python-gammu testing message",
+                "SMSC": {"Location": 1},
+                "Number": "5555551234",
+            }
+            self.results.append(("SendSMS", await worker.send_sms_async(message)))
+            with pytest.raises(TypeError):
+                await worker.send_sms_async(42)
+            with pytest.raises(TypeError):
+                await worker.send_sms_async(dict(42))
+            self.results.append(
+                (
+                    "SetIncomingCallback",
+                    await worker.set_incoming_callback_async(self.callback),
+                )
+            )
+            self.results.append(
+                ("SetIncomingSMS", await worker.set_incoming_sms_async())
+            )
 
-        await asyncio.sleep(15)
+            await asyncio.sleep(15)
 
-        self.results.append(("Terminate", await worker.terminate_async()))
+        self.results.append(("Terminate", None))
         self.maxDiff = None
         assert self.results == WORKER_EXPECT
+
+    async def check_command_error_cleanup(self, error) -> None:
+        execute = gammu.worker._execute_command
+
+        def fail_send(func, params):
+            if func.__name__ == "SendSMS":
+                raise error
+            return execute(func, params)
+
+        # The exception must escape the worker context to exercise its cleanup.
+        with (  # ruff: ignore[pytest-raises-with-multiple-statements]
+            patch("gammu.worker._execute_command", side_effect=fail_send),
+            pytest.raises(type(error)) as caught,
+        ):
+            async with self.configured_worker() as worker:
+                await worker.init_async()
+                thread = worker._thread
+                await worker.send_sms_async({})
+        assert caught.value is error
+        assert not thread.is_alive()
+        assert worker._thread is None
+
+    @async_test
+    async def test_command_type_error_cleanup(self) -> None:
+        await self.check_command_error_cleanup(TypeError("Invalid SMS"))
+
+    @async_test
+    async def test_command_gsm_error_cleanup(self) -> None:
+        await self.check_command_error_cleanup(
+            gammu.ERR_INVALIDDATA(
+                {"Text": "Invalid data", "Where": "SendSMS", "Code": 44}
+            )
+        )
+
+    @async_test
+    async def test_terminate_error_cleanup(self) -> None:
+        async with self.configured_worker() as worker:
+            await worker.init_async()
+            thread = worker._thread
+            error = RuntimeError("Termination failed")
+            try:
+                with (
+                    patch("gammu.worker._execute_command", side_effect=error),
+                    pytest.raises(RuntimeError) as caught,
+                ):
+                    await worker.terminate_async()
+                assert caught.value is error
+                assert not thread.is_alive()
+                assert worker._thread is None
+            finally:
+                # The mocked Terminate leaves the dummy phone's log file open.
+                # Close it explicitly so Windows can remove the test directory.
+                thread._sm.Terminate()

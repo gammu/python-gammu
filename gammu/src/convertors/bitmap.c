@@ -114,7 +114,7 @@ int BitmapFromPython(PyObject * dict, GSM_Bitmap * entry)
 	int x, y;
 	PyObject *o;
 	PyObject *item;
-	int len;
+	Py_ssize_t len;
 
 	if (!PyDict_Check(dict)) {
 		PyErr_Format(PyExc_ValueError, "Bitmap is not a dictionary");
@@ -221,6 +221,8 @@ int BitmapFromPython(PyObject * dict, GSM_Bitmap * entry)
 	}
 #define GetString(s, x) \
     item = PyList_GetItem(o, x);\
+    if (item == NULL)\
+        return 0;\
     if (!PyBytes_Check(item)) {\
         PyErr_Format(PyExc_ValueError, "XPM contains something different than byte string!");\
         return 0;\
@@ -247,6 +249,11 @@ int BitmapFromPython(PyObject * dict, GSM_Bitmap * entry)
 
 	if (w > 255 || h > 255 || w < 0 || h < 0 || w * h / 8 > GSM_BITMAP_SIZE) {
 		PyErr_Format(PyExc_ValueError, "Bad size of bitmap");
+		return 0;
+	}
+
+	if (len < h + 3) {
+		PyErr_Format(PyExc_ValueError, "XPM list too small!");
 		return 0;
 	}
 

@@ -23,51 +23,116 @@
 
 #include "convertors.h"
 
+/* Import the datetime C API before using its types or constructors. */
+#include <datetime.h>
+
+static int ImportDateTime(void)
+{
+	if (PyDateTimeAPI == NULL) {
+		PyDateTime_IMPORT;
+	}
+	return PyDateTimeAPI != NULL;
+}
+
+static PyObject *BuildPythonTimezone(int seconds)
+{
+	PyObject *offset;
+	PyObject *timezone;
+
+	if (!ImportDateTime())
+		return NULL;
+	offset = PyDelta_FromDSU(0, seconds, 0);
+	if (offset == NULL)
+		return NULL;
+	timezone = PyTimeZone_FromOffset(offset);
+	Py_DECREF(offset);
+	return timezone;
+}
+
 PyObject *BuildPythonDateTime(const GSM_DateTime * dt)
 {
-	PyObject *pModule;
+	PyObject *timezone;
 	PyObject *result;
 
 	if (dt->Year == 0) {
 		Py_RETURN_NONE;
 	}
-
-	/* import datetime */
-	pModule = PyImport_ImportModule("datetime");
-	if (pModule == NULL)
+	timezone = BuildPythonTimezone(dt->Timezone);
+	if (timezone == NULL)
 		return NULL;
-
-	/* create datetime object */
-	result = PyObject_CallMethod(pModule,
-				     "datetime",
-				     "iiiiii",
-				     dt->Year,
-				     dt->Month,
-				     dt->Day, dt->Hour, dt->Minute, dt->Second);
-
-	Py_DECREF(pModule);
-
+	result = PyDateTimeAPI->DateTime_FromDateAndTime(
+		dt->Year, dt->Month, dt->Day, dt->Hour, dt->Minute, dt->Second,
+		0, timezone, PyDateTimeAPI->DateTimeType);
+	Py_DECREF(timezone);
 	return result;
 }
 
 PyObject *BuildPythonTime(const GSM_DateTime * dt)
 {
-	PyObject *pModule;
+	PyObject *timezone;
 	PyObject *result;
 
-	/* import datetime */
-	pModule = PyImport_ImportModule("datetime");
-	if (pModule == NULL)
+	timezone = BuildPythonTimezone(dt->Timezone);
+	if (timezone == NULL)
 		return NULL;
-
-	/* create datetime object */
-	result = PyObject_CallMethod(pModule,
-				     "time",
-				     "iii", dt->Hour, dt->Minute, dt->Second);
-
-	Py_DECREF(pModule);
-
+	result = PyDateTimeAPI->Time_FromTime(
+		dt->Hour, dt->Minute, dt->Second, 0, timezone,
+		PyDateTimeAPI->TimeType);
+	Py_DECREF(timezone);
 	return result;
+}
+
+static int BuildGSMTimezone(PyObject *value, GSM_DateTime *dt)
+{
+	PyObject *method;
+	PyObject *offset;
+	int days, seconds;
+
+	method = PyObject_GetAttrString(value, "utcoffset");
+	if (method == NULL) {
+		/* Preserve support for datetime-like objects without a timezone. */
+		if (PyErr_ExceptionMatches(PyExc_AttributeError)) {
+			PyErr_Clear();
+			return 1;
+		}
+		return 0;
+	}
+	offset = PyObject_CallNoArgs(method);
+	Py_DECREF(method);
+	if (offset == NULL)
+		return 0;
+	if (offset == Py_None) {
+		Py_DECREF(offset);
+		return 1;
+	}
+	if (!ImportDateTime()) {
+		Py_DECREF(offset);
+		return 0;
+	}
+	if (!PyDelta_Check(offset)) {
+		Py_DECREF(offset);
+		PyErr_SetString(PyExc_TypeError,
+			       "utcoffset() must return a timedelta or None");
+		return 0;
+	}
+	days = PyDateTime_DELTA_GET_DAYS(offset);
+	seconds = PyDateTime_DELTA_GET_SECONDS(offset);
+	/* Check days before multiplication to avoid integer overflow. */
+	if (days < -1 || days > 0 || (days == -1 && seconds == 0)) {
+		Py_DECREF(offset);
+		PyErr_SetString(PyExc_ValueError,
+			       "UTC offset must be strictly between -24 and 24 hours");
+		return 0;
+	}
+	if (PyDateTime_DELTA_GET_MICROSECONDS(offset) != 0) {
+		Py_DECREF(offset);
+		PyErr_SetString(PyExc_ValueError,
+			       "UTC offset must be a whole number of seconds");
+		return 0;
+	}
+	dt->Timezone = days * 86400 + seconds;
+	Py_DECREF(offset);
+	return 1;
 }
 
 int BuildGSMDateTime(PyObject * pydt, GSM_DateTime * dt)
@@ -166,7 +231,7 @@ int BuildGSMDateTime(PyObject * pydt, GSM_DateTime * dt)
 	dt->Second = PyLong_AsLong(result);
 	Py_DECREF(result);
 
-	return 1;
+	return BuildGSMTimezone(pydt, dt);
 }
 
 int BuildGSMDate(PyObject * pydt, GSM_DateTime * dt)
@@ -224,35 +289,41 @@ int BuildGSMTime(PyObject * pydt, GSM_DateTime * dt)
 	if (result == NULL)
 		return 0;
 	if (!PyLong_Check(result)) {
+		Py_DECREF(result);
 		PyErr_Format(PyExc_ValueError,
 			     "Attribute %s doesn't seem to be integer", "hour");
 		return 0;
 	}
 	dt->Hour = PyLong_AsLong(result);
+	Py_DECREF(result);
 
 	result = PyObject_GetAttrString(pydt, "minute");
 	if (result == NULL)
 		return 0;
 	if (!PyLong_Check(result)) {
+		Py_DECREF(result);
 		PyErr_Format(PyExc_ValueError,
 			     "Attribute %s doesn't seem to be integer",
 			     "minute");
 		return 0;
 	}
 	dt->Minute = PyLong_AsLong(result);
+	Py_DECREF(result);
 
 	result = PyObject_GetAttrString(pydt, "second");
 	if (result == NULL)
 		return 0;
 	if (!PyLong_Check(result)) {
+		Py_DECREF(result);
 		PyErr_Format(PyExc_ValueError,
 			     "Attribute %s doesn't seem to be integer",
 			     "second");
 		return 0;
 	}
 	dt->Second = PyLong_AsLong(result);
+	Py_DECREF(result);
 
-	return 1;
+	return BuildGSMTimezone(pydt, dt);
 }
 
 /*

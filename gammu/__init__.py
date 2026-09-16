@@ -18,7 +18,15 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #
-"""Phone communication library - python wrapper for Gammu library."""
+"""
+Phone communication library - python wrapper for Gammu library.
+
+Datetime and time values returned by Gammu have fixed-offset timezones, with UTC
+used for zero offsets. Aware inputs preserve their UTC offset and wall-clock
+fields, but not named timezone identities. Naive inputs retain a zero offset.
+Offsets must be whole seconds strictly between -24 and 24 hours. Individual
+phone backends and file formats may not preserve timezone information.
+"""
 
 from gammu._gammu import *  # ruff: ignore[undefined-local-with-import-star]
 

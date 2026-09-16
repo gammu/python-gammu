@@ -416,7 +416,7 @@ int TodoFromPython(PyObject * dict, GSM_ToDoEntry * entry, int needs_location)
 				break;
 			case 't':
 				if (!CopyStringFromDict
-				    (item, "Value", GSM_PHONEBOOK_TEXT_LENGTH,
+				    (item, "Value", sizeof(entry->Entries[i].Text),
 				     entry->Entries[i].Text))
 					return 0;
 				break;

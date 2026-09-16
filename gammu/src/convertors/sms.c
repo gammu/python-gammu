@@ -295,24 +295,33 @@ int SMSCFromPython(PyObject * dict, GSM_SMSC * smsc, gboolean complete)
 			PyErr_Clear();
 
 			if (!CopyStringFromDict
-			    (dict, "Number", GSM_MAX_NUMBER_LENGTH,
+			    (dict, "Number", sizeof(smsc->Number),
 			     smsc->Number))
 				return 0;
 		} else {
 			if (!CopyStringFromDict
-			    (dict, "Number", GSM_MAX_NUMBER_LENGTH,
-			     smsc->Number))
+			    (dict, "Number", sizeof(smsc->Number),
+			     smsc->Number)) {
+				if (PyDict_GetItemString(dict, "Number") != NULL)
+					return 0;
 				PyErr_Clear();
+			}
 		}
 
 		if (!CopyStringFromDict
-		    (dict, "Name", GSM_MAX_SMSC_NAME_LENGTH, smsc->Name))
+		    (dict, "Name", sizeof(smsc->Name), smsc->Name)) {
+			if (PyDict_GetItemString(dict, "Name") != NULL)
+				return 0;
 			PyErr_Clear();
+		}
 
 		if (!CopyStringFromDict
-		    (dict, "DefaultNumber", GSM_MAX_NUMBER_LENGTH,
-		     smsc->DefaultNumber))
+		    (dict, "DefaultNumber", sizeof(smsc->DefaultNumber),
+		     smsc->DefaultNumber)) {
+			if (PyDict_GetItemString(dict, "DefaultNumber") != NULL)
+				return 0;
 			PyErr_Clear();
+		}
 
 		s = GetCharFromDict(dict, "Format");
 		if (s == NULL) {
@@ -339,15 +348,15 @@ int SMSCFromPython(PyObject * dict, GSM_SMSC * smsc, gboolean complete)
 			return 0;
 
 		if (!CopyStringFromDict
-		    (dict, "Number", GSM_MAX_NUMBER_LENGTH, smsc->Number))
+		    (dict, "Number", sizeof(smsc->Number), smsc->Number))
 			return 0;
 
 		if (!CopyStringFromDict
-		    (dict, "Name", GSM_MAX_SMSC_NAME_LENGTH, smsc->Name))
+		    (dict, "Name", sizeof(smsc->Name), smsc->Name))
 			return 0;
 
 		if (!CopyStringFromDict
-		    (dict, "DefaultNumber", GSM_MAX_NUMBER_LENGTH,
+		    (dict, "DefaultNumber", sizeof(smsc->DefaultNumber),
 		     smsc->DefaultNumber))
 			return 0;
 
@@ -731,17 +740,22 @@ int SMSFromPython(PyObject * dict, GSM_SMSMessage * sms, int needslocation,
 	}
 
 	if (!CopyStringFromDict
-	    (dict, "Number", GSM_MAX_NUMBER_LENGTH, sms->Number)) {
+	    (dict, "Number", sizeof(sms->Number), sms->Number)) {
+		if (PyDict_GetItemString(dict, "Number") != NULL)
+			return 0;
 		if (needsnumber) {
 			return 0;
 		} else {
-			EncodeUnicode(sms->Number, "Gammu", 5);
 			PyErr_Clear();
+			if (!EncodeUnicodeSized(sms->Number, sizeof(sms->Number), "Gammu", 5, "Number"))
+				return 0;
 		}
 	}
 
 	if (!CopyStringFromDict
-	    (dict, "Name", GSM_MAX_SMS_NAME_LENGTH, sms->Name)) {
+	    (dict, "Name", sizeof(sms->Name), sms->Name)) {
+		if (PyDict_GetItemString(dict, "Name") != NULL)
+			return 0;
 		PyErr_Clear();
 		sms->Name[0] = 0;
 		sms->Name[1] = 0;
@@ -779,7 +793,7 @@ int SMSFromPython(PyObject * dict, GSM_SMSMessage * sms, int needslocation,
 	if (sms->Coding != SMS_Coding_8bit) {
 		/* No UDH/UserUDH => copy as text */
 		if (!CopyStringFromDict
-		    (dict, "Text", GSM_MAX_SMS_LENGTH, sms->Text))
+		    (dict, "Text", sizeof(sms->Text), sms->Text))
 			return 0;
 		sms->Length = UnicodeLength(sms->Text);
 	} else {

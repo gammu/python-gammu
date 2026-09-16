@@ -597,8 +597,7 @@ int RingtoneFromPython(PyObject * dict, GSM_Ringtone * ring)
 
 	memset(ring, 0, sizeof(GSM_Ringtone));
 
-	/* FIXME: change constant to some define */
-	if (!CopyStringFromDict(dict, "Name", 19, ring->Name)) {
+	if (!CopyStringFromDict(dict, "Name", sizeof(ring->Name), ring->Name)) {
 		return 0;
 	}
 

@@ -185,14 +185,18 @@ int BitmapFromPython(PyObject * dict, GSM_Bitmap * entry)
 	}
 
 	if (!CopyStringFromDict
-	    (dict, "Text", GSM_BITMAP_TEXT_LENGTH, entry->Text)) {
+	    (dict, "Text", sizeof(entry->Text), entry->Text)) {
+		if (PyDict_GetItemString(dict, "Text") != NULL)
+			return 0;
 		PyErr_Clear();
 		entry->Text[0] = 0;
 		entry->Text[1] = 0;
 	}
 
 	if (!CopyStringFromDict
-	    (dict, "Sender", GSM_MAX_NUMBER_LENGTH, entry->Sender)) {
+	    (dict, "Sender", sizeof(entry->Sender), entry->Sender)) {
+		if (PyDict_GetItemString(dict, "Sender") != NULL)
+			return 0;
 		PyErr_Clear();
 		entry->Text[0] = 0;
 		entry->Text[1] = 0;

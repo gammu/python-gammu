@@ -207,7 +207,9 @@ int FileFromPython(PyObject * dict, GSM_File * file, gboolean check)
 		PyErr_Clear();
 	}
 
-	if (!CopyStringFromDict(dict, "Name", 300, file->Name)) {
+	if (!CopyStringFromDict(dict, "Name", sizeof(file->Name), file->Name)) {
+		if (PyDict_GetItemString(dict, "Name") != NULL)
+			return 0;
 		if (check) {
 			return 0;
 		} else {
@@ -249,7 +251,9 @@ int FileFromPython(PyObject * dict, GSM_File * file, gboolean check)
 		}
 	}
 
-	if (!CopyStringFromDict(dict, "ID_FullName", 800, file->ID_FullName)) {
+	if (!CopyStringFromDict(dict, "ID_FullName", sizeof(file->ID_FullName), file->ID_FullName)) {
+		if (PyDict_GetItemString(dict, "ID_FullName") != NULL)
+			return 0;
 		if (check) {
 			return 0;
 		} else {

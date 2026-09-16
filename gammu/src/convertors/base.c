@@ -170,23 +170,18 @@ unsigned char *GetStringFromDict(PyObject * dict, const char *key)
 	return StringPythonToGammu(o);
 }
 
-int CopyStringFromDict(PyObject * dict, const char *key, size_t len,
+int CopyStringFromDict(PyObject * dict, const char *key, size_t capacity,
 		       unsigned char *dest)
 {
 	unsigned char *s;
+	int result;
 
 	s = GetStringFromDict(dict, key);
 	if (s == NULL)
 		return 0;
-	if (UnicodeLength(s) > len) {
-		pyg_warning("Truncating text %s to %ld chars!\n", key,
-			    (long)len);
-		s[2 * len] = 0;
-		s[(2 * len) + 1] = 0;
-	}
-	CopyUnicodeString(dest, s);
+	result = CopyUnicodeStringSized(dest, capacity, s, key);
 	free(s);
-	return 1;
+	return result;
 }
 
 GSM_DateTime GetDateTimeFromDict(PyObject * dict, const char *key)
@@ -306,11 +301,14 @@ char *GetCStringLengthFromDict(PyObject * dict, const char *key,
 {
 	char *result, *data;
 
+	*length = 0;
 	data = GetDataFromDict(dict, key, length);
+	if (data == NULL)
+		return NULL;
 
-	result = (char *)malloc(*length);
+	result = (char *)malloc(*length ? (size_t)*length : 1);
 	if (result == NULL) {
-		PyErr_Format(PyExc_ValueError, "Failed to allocate memory!");
+		PyErr_NoMemory();
 		return NULL;
 	}
 	memcpy(result, data, *length);

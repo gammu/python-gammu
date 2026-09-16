@@ -1352,6 +1352,7 @@ StateMachine_SetAlarm(StateMachineObject *self, PyObject *args, PyObject *kwds) 
 
     gsm_alarm.Location = 1;
     gsm_alarm.Text[0] = 0;
+    gsm_alarm.Text[1] = 0;
     gsm_alarm.Repeating = TRUE;
 
     if (!PyArg_ParseTupleAndKeywords(args, kwds, "O|IIO", kwlist,
@@ -1362,10 +1363,10 @@ StateMachine_SetAlarm(StateMachineObject *self, PyObject *args, PyObject *kwds) 
         gs = StringPythonToGammu(s);
         if (gs == NULL) return NULL;
 
-        if (UnicodeLength(gs) > GSM_MAX_CALENDAR_TEXT_LENGTH) {
-            pyg_warning("Alarm text too long, truncating to %d (from %ld)\n", GSM_MAX_CALENDAR_TEXT_LENGTH, (long)UnicodeLength(gs));
+        if (!CopyUnicodeStringSized(gsm_alarm.Text, sizeof(gsm_alarm.Text), gs, "Text")) {
+            free(gs);
+            return NULL;
         }
-        CopyUnicodeString(gsm_alarm.Text, gs);
         free(gs);
     }
 
@@ -1997,13 +1998,10 @@ StateMachine_AddCategory(StateMachineObject *self, PyObject *args, PyObject *kwd
     name = StringPythonToGammu(u);
     if (name == NULL) return NULL;
 
-    if (UnicodeLength(name) > GSM_MAX_CATEGORY_NAME_LENGTH) {
-        pyg_warning("Category name too long, truncating to %d (from %ld)\n", GSM_MAX_CATEGORY_NAME_LENGTH, (long)UnicodeLength(name));
-        name[2*GSM_MAX_CATEGORY_NAME_LENGTH] = 0;
-        name[2*GSM_MAX_CATEGORY_NAME_LENGTH + 1] = 0;
+    if (!CopyUnicodeStringSized(Category.Name, sizeof(Category.Name), name, "Name")) {
+        free(name);
+        return NULL;
     }
-
-    CopyUnicodeString(Category.Name, name);
     free(name);
 
     BEGIN_PHONE_COMM
@@ -3558,7 +3556,8 @@ StateMachine_SetCallDivert(StateMachineObject *self, PyObject *args, PyObject *k
         return NULL;
     }
 
-    EncodeUnicode(divert.Number, number, number_len);
+    if (!EncodeUnicodeSized(divert.Number, sizeof(divert.Number), number, number_len, "Number"))
+        return NULL;
 
     BEGIN_PHONE_COMM
     error = GSM_SetCallDivert(self->s, &divert);
@@ -4641,7 +4640,11 @@ StateMachine_GetFolderListing(StateMachineObject *self, PyObject *args, PyObject
         return NULL;
 
     folder_g = StringPythonToGammu(folder_p);
-    CopyUnicodeString(File.ID_FullName, folder_g);
+    if (folder_g == NULL) return NULL;
+    if (!CopyUnicodeStringSized(File.ID_FullName, sizeof(File.ID_FullName), folder_g, "Folder")) {
+        free(folder_g);
+        return NULL;
+    }
     free(folder_g);
 
     File.Folder = TRUE;
@@ -4683,7 +4686,11 @@ StateMachine_GetNextRootFolder(StateMachineObject *self, PyObject *args, PyObjec
         return NULL;
 
     folder_g = StringPythonToGammu(folder_p);
-    CopyUnicodeString(File.ID_FullName, folder_g);
+    if (folder_g == NULL) return NULL;
+    if (!CopyUnicodeStringSized(File.ID_FullName, sizeof(File.ID_FullName), folder_g, "Folder")) {
+        free(folder_g);
+        return NULL;
+    }
     free(folder_g);
 
     File.Folder = TRUE;
@@ -4744,7 +4751,11 @@ StateMachine_SetFileAttributes(StateMachineObject *self, PyObject *args, PyObjec
     if (hidden_attr    > 0) File.Hidden    = TRUE;
 
     folder_g = StringPythonToGammu(folder_p);
-    CopyUnicodeString(File.ID_FullName, folder_g);
+    if (folder_g == NULL) return NULL;
+    if (!CopyUnicodeStringSized(File.ID_FullName, sizeof(File.ID_FullName), folder_g, "Folder")) {
+        free(folder_g);
+        return NULL;
+    }
     free(folder_g);
 
     BEGIN_PHONE_COMM
@@ -5089,9 +5100,18 @@ StateMachine_AddFolder(StateMachineObject *self, PyObject *args, PyObject *kwds)
     File.Hidden    = FALSE;
 
     folder_g = StringPythonToGammu(folder_p);
+    if (folder_g == NULL) return NULL;
     name_g = StringPythonToGammu(name_p);
-    CopyUnicodeString(File.ID_FullName, folder_g);
-    CopyUnicodeString(File.Name, name_g);
+    if (name_g == NULL) {
+        free(folder_g);
+        return NULL;
+    }
+    if (!CopyUnicodeStringSized(File.ID_FullName, sizeof(File.ID_FullName), folder_g, "FolderID") ||
+        !CopyUnicodeStringSized(File.Name, sizeof(File.Name), name_g, "Name")) {
+        free(folder_g);
+        free(name_g);
+        return NULL;
+    }
     free(folder_g);
     free(name_g);
 

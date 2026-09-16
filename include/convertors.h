@@ -109,6 +109,16 @@ PyObject *UnicodeStringToPythonL(const unsigned char *src,
 				 const Py_ssize_t len);
 
 /**
+ * Copy or encode a Unicode string into a buffer with capacity in bytes,
+ * including the terminator. Return zero with a Python exception on failure.
+ * The destination is unchanged on failure. Source must not be NULL.
+ */
+int CopyUnicodeStringSized(unsigned char *dest, size_t capacity,
+                           const unsigned char *src, const char *field);
+int EncodeUnicodeSized(unsigned char *dest, size_t capacity,
+                       const char *src, size_t length, const char *field);
+
+/**
  * Converts locale encoded string to python unicode string.
  */
 PyObject *LocaleStringToPython(const char *src);
@@ -169,9 +179,9 @@ char *GetCStringLengthFromDict(PyObject * dict, const char *key,
 unsigned char *GetStringFromDict(PyObject * dict, const char *key);
 
 /**
- * Copies unicode string from Python dictionary to Gammu string with length checking
+ * Copies Unicode from a dictionary, checking destination capacity in bytes.
  */
-int CopyStringFromDict(PyObject * dict, const char *key, size_t len,
+int CopyStringFromDict(PyObject * dict, const char *key, size_t capacity,
 		       unsigned char *dest);
 
 /**

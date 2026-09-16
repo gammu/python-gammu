@@ -671,7 +671,7 @@ int CalendarFromPython(PyObject * dict, GSM_CalendarEntry * entry,
 				break;
 			case 't':
 				if (!CopyStringFromDict
-				    (item, "Value", GSM_PHONEBOOK_TEXT_LENGTH,
+				    (item, "Value", sizeof(entry->Entries[i].Text),
 				     entry->Entries[i].Text))
 					return 0;
 				break;

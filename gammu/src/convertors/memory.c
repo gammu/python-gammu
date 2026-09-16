@@ -640,7 +640,7 @@ int MemoryEntryFromPython(PyObject * dict, GSM_MemoryEntry * entry,
 					PyErr_Clear();
 					if (!CopyStringFromDict
 					    (item, "Value",
-					     GSM_PHONEBOOK_TEXT_LENGTH,
+					     sizeof(entry->Entries[i].Text),
 					     entry->Entries[i].Text))
 						return 0;
 				}
@@ -659,7 +659,7 @@ int MemoryEntryFromPython(PyObject * dict, GSM_MemoryEntry * entry,
 				break;
 			case 't':
 				if (!CopyStringFromDict
-				    (item, "Value", GSM_PHONEBOOK_TEXT_LENGTH,
+				    (item, "Value", sizeof(entry->Entries[i].Text),
 				     entry->Entries[i].Text))
 					return 0;
 				break;
@@ -674,10 +674,10 @@ int MemoryEntryFromPython(PyObject * dict, GSM_MemoryEntry * entry,
 				    (unsigned char *)
 				    GetCStringLengthFromDict(item, "Value",
 							     &data_len);
-				entry->Entries[i].Picture.Length = data_len;
 				if (entry->Entries[i].Picture.Buffer == NULL) {
 					return 0;
 				}
+				entry->Entries[i].Picture.Length = data_len;
 				bmptype = GetCharFromDict(item, "PictureType");
 				if (bmptype == NULL) {
 					entry->Entries[i].Picture.Type = 0;

@@ -56,6 +56,55 @@ GSM = (
 )
 
 
+@pytest.mark.parametrize("extra", [{}, {"MessageSender": 987654}])
+def test_mms_indicator_roundtrip(extra):
+    indicator = {
+        "Address": "http://example.com/mms/123",
+        "Title": "Photo message",
+        "Sender": "+420123456789",
+        "MessageSize": 12345,
+        "Class": "Personal",
+    }
+    sms = gammu.EncodeSMS(
+        {
+            "Entries": [
+                {"ID": "MMSIndicatorLong", "MMSIndicator": {**indicator, **extra}}
+            ]
+        }
+    )
+    # Gammu preserves the address type suffix added by the MMS encoder.
+    expected = {**indicator, "Sender": indicator["Sender"] + "/TYPE=PLMN"}
+    assert gammu.DecodeSMS(sms)["Entries"][0]["MMSIndicator"] == expected
+
+
+@pytest.mark.parametrize(
+    ("field", "capacity"), [("Address", 499), ("Title", 199), ("Sender", 199)]
+)
+def test_mms_indicator_string_capacity(field, capacity):
+    indicator = {
+        "Address": "http://example.com/mms/123",
+        "Title": "Photo message",
+        "Sender": "+420123456789",
+        "MessageSize": 12345,
+        "Class": "Personal",
+    }
+    # Exercise conversion without imposing the MMS wire format's own limits.
+    info = {
+        "Entries": [
+            {
+                "ID": "ConcatenatedTextLong",
+                "Buffer": "ok",
+                "MMSIndicator": indicator,
+            }
+        ]
+    }
+    indicator[field] = "x" * capacity
+    assert gammu.EncodeSMS(info)[0]["Text"] == "ok"
+    indicator[field] += "x"
+    with pytest.raises(ValueError, match=rf"{field} too long!"):
+        gammu.EncodeSMS(info)
+
+
 @pytest.mark.parametrize(
     "field",
     [

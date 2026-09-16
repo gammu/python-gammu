@@ -93,7 +93,7 @@ class AsyncWorkerDummyTest(DummyTest):
         message = {
             "Text": "python-gammu testing message",
             "SMSC": {"Location": 1},
-            "Number": "555-555-1234",
+            "Number": "5555551234",
         }
         self.results.append(("SendSMS", await worker.send_sms_async(message)))
         with pytest.raises(TypeError):

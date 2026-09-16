@@ -32,4 +32,11 @@ runs:
     shell: pwsh
     run: |
       C:/msys64/usr/bin/wget.exe -O gammu-setup.exe https://github.com/gammu/gammu/releases/download/$Env:GAMMU_VERSION/Gammu-$Env:GAMMU_VERSION-Windows-Minimal.exe
-      ./gammu-setup.exe /S /D=C:/Gammu
+      if ($LASTEXITCODE -ne 0) { throw 'Failed to download Gammu' }
+      $process = Start-Process -FilePath ./gammu-setup.exe -ArgumentList '/S', '/D=C:\Gammu' -Wait -PassThru
+      if ($process.ExitCode -ne 0) { throw "Gammu installation failed with exit code $($process.ExitCode)" }
+      foreach ($file in @('include/gammu/gammu-config.h', 'lib/Gammu.lib', 'lib/gsmsd.lib')) {
+        if (-not (Test-Path "C:/Gammu/$file" -PathType Leaf)) {
+          throw "Gammu installation is missing $file"
+        }
+      }

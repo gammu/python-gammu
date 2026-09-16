@@ -13,7 +13,7 @@ dev = [
 
 [project]
 authors = [
-  {email = "michal@cihar.com", name = "Michal Čihař"}
+  { email = "michal@cihar.com", name = "Michal Čihař" }
 ]
 classifiers = [
   "Development Status :: 6 - Mature",
@@ -24,13 +24,13 @@ classifiers = [
   "Operating System :: POSIX",
   "Operating System :: Unix",
   "Programming Language :: C",
+  "Programming Language :: Python",
   "Programming Language :: Python :: 3",
   "Programming Language :: Python :: 3.10",
   "Programming Language :: Python :: 3.11",
   "Programming Language :: Python :: 3.12",
   "Programming Language :: Python :: 3.13",
   "Programming Language :: Python :: 3.14",
-  "Programming Language :: Python",
   "Topic :: Communications :: Telephony",
   "Topic :: Software Development :: Libraries :: Python Modules",
   "Topic :: System :: Hardware"
@@ -76,7 +76,7 @@ test-sources = ["test"]
 
 [tool.cibuildwheel.linux]
 before-all = "bash {package}/.github/scripts/build-gammu-wheel.sh"
-environment = {GAMMU_PATH = "/opt/python-gammu-gammu"}
+environment = { GAMMU_PATH = "/opt/python-gammu-gammu" }
 manylinux-aarch64-image = "manylinux_2_28"
 manylinux-x86_64-image = "manylinux_2_28"
 repair-wheel-command = "auditwheel repair --strip -w {dest_dir} {wheel}"
@@ -201,7 +201,7 @@ sort_table_keys = true
 spaces_before_inline_comment = 2
 
 [tool.typos.default]
-extend-identifiers = {_O_WRONLY = "_O_WRONLY"}
+extend-identifiers = { _O_WRONLY = "_O_WRONLY" }
 
 [tool.typos.files]
 extend-exclude = [

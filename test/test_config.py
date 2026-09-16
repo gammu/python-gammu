@@ -29,6 +29,41 @@ import gammu
 from .test_sms import PDU_DATA
 
 
+@pytest.mark.parametrize(
+    "key", ["Model", "DebugLevel", "Device", "Connection", "DebugFile"]
+)
+@pytest.mark.parametrize("as_bytes", [False, True])
+def test_config_string_ownership(key, as_bytes) -> None:
+    state_machine = gammu.StateMachine()
+    for value in ("textall", "textalldate", "", "text"):
+        state_machine.SetConfig(0, {key: value.encode() if as_bytes else value})
+        assert state_machine.GetConfig(0)[key] == value
+
+    state_machine.SetConfig(0, {key: None})
+    expected = "" if key in {"Model", "DebugLevel"} else None
+    assert state_machine.GetConfig(0)[key] == expected
+
+
+@pytest.mark.parametrize(
+    ("values", "message"),
+    [
+        ({"Model": 123}, "Non string value for Model"),
+        ({"DebugLevel": 123}, "Non string value for DebugLevel"),
+        ({"Device": 123}, "Non string value for Device"),
+        ({"Unknown": "value"}, "Unknown key: Unknown"),
+        ({123: "value"}, "Non string key in configuration values"),
+    ],
+)
+def test_config_invalid_strings(values, message) -> None:
+    state_machine = gammu.StateMachine()
+    state_machine.SetConfig(0, {"Model": "original"})
+    with pytest.raises(ValueError, match=message):
+        state_machine.SetConfig(0, values)
+    assert state_machine.GetConfig(0)["Model"] == "original"
+    state_machine.SetConfig(0, {"Model": "replacement", "Localize": "ignored"})
+    assert state_machine.GetConfig(0)["Model"] == "replacement"
+
+
 class ConfigTest(unittest.TestCase):
     def test_config_sections(self) -> None:
         with tempfile.TemporaryDirectory() as temp_dir:

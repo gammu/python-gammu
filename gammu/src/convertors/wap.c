@@ -105,39 +105,39 @@ int MMSIndicatorFromPython(PyObject * dict, GSM_MMSIndicator * mms)
 	if (s == NULL) {
 		PyErr_Format(PyExc_ValueError, "Address is missing!");
 		return 0;
-	} else if (strlen(s) > 499) {
+	} else if (strlen(s) >= sizeof(mms->Address)) {
 		PyErr_Format(PyExc_ValueError, "Address too long!");
 		free(s);
 		return 0;
 	}
-	strcpy(s, mms->Address);
+	strcpy(mms->Address, s);
 	free(s);
 
 	s = GetCharFromDict(dict, "Title");
 	if (s == NULL) {
 		PyErr_Format(PyExc_ValueError, "Title is missing!");
 		return 0;
-	} else if (strlen(s) > 499) {
+	} else if (strlen(s) >= sizeof(mms->Title)) {
 		free(s);
 		PyErr_Format(PyExc_ValueError, "Title too long!");
 		return 0;
 	}
-	strcpy(s, mms->Title);
+	strcpy(mms->Title, s);
 	free(s);
 
 	s = GetCharFromDict(dict, "Sender");
 	if (s == NULL) {
 		PyErr_Format(PyExc_ValueError, "Sender is missing!");
 		return 0;
-	} else if (strlen(s) > 499) {
+	} else if (strlen(s) >= sizeof(mms->Sender)) {
 		free(s);
 		PyErr_Format(PyExc_ValueError, "Sender too long!");
 		return 0;
 	}
-	strcpy(s, mms->Sender);
+	strcpy(mms->Sender, s);
 	free(s);
 
-	mms->MessageSize = GetIntFromDict(dict, "MessageSender");
+	mms->MessageSize = GetIntFromDict(dict, "MessageSize");
 	if (mms->MessageSize == INT_INVALID) {
 		mms->MessageSize = 0;
 	}

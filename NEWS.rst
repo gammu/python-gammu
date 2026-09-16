@@ -1,3 +1,24 @@
+3.5.0
+=====
+
+* Datetime and time values returned by Gammu are now timezone-aware, using
+  fixed UTC offsets. Zero offsets use UTC. Aware inputs preserve their UTC
+  offset and wall-clock fields; naive inputs retain a zero offset. Code that
+  compares or subtracts returned datetimes with naive datetimes needs to use
+  compatible timezone-aware values. Phone backends and file formats may not
+  preserve timezone information.
+* Fixed memory ownership in configuration handling and memory leaks when SMS
+  conversion fails.
+* Improved bounds checking for Unicode strings and truncated XPM bitmaps, and
+  validation of phonebook photo data.
+* Reject out-of-range integers, malformed numeric strings, and invalid SMS
+  validity values instead of silently accepting or truncating them.
+* Preserve MMS indicator metadata during conversion and reject negative message
+  sizes.
+* Fixed asynchronous worker cleanup after command errors and preserved the
+  original Gammu exceptions.
+* Updated the Gammu library bundled in binary wheels to 1.45.0.
+
 3.4.1
 =====
 

@@ -140,6 +140,7 @@ int MMSIndicatorFromPython(PyObject * dict, GSM_MMSIndicator * mms)
 
 	message_size = GetIntFromDict(dict, "MessageSize");
 	if (message_size == INT_INVALID) {
+		PyErr_Clear();
 		message_size = 0;
 	} else if (message_size < 0) {
 		PyErr_Format(PyExc_ValueError, "MessageSize must be non-negative");

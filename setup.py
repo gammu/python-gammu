@@ -32,7 +32,7 @@ from packaging.version import parse
 from setuptools import Extension, setup
 
 # some defines
-VERSION = "3.4.1"
+VERSION = "3.5.0"
 GAMMU_REQUIRED = "1.44.0"
 
 

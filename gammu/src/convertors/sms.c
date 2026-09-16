@@ -26,6 +26,7 @@
 #include "misc.h"
 
 #include <bytesobject.h>
+#include <errno.h>
 
 char *SMSValidityToString(GSM_SMSValidity Validity)
 {
@@ -77,9 +78,10 @@ char *SMSValidityToString(GSM_SMSValidity Validity)
 GSM_SMSValidity StringToSMSValidity(char *s)
 {
 	GSM_SMSValidity Validity = { 0, 0 };
-	int len;
+	char *end;
+	long value;
 	int val;
-	char type;
+	char type = 'M';
 
 	if (strcmp(s, "NA") == 0) {
 		Validity.Format = SMS_Validity_NotAvailable;
@@ -91,18 +93,22 @@ GSM_SMSValidity StringToSMSValidity(char *s)
 		Validity.Relative = SMS_VALID_Max_Time;
 		return Validity;
 	}
-	len = strlen(s);
-	type = s[len - 1];
-	if (isdigit((int)type))
-		type = 'M';
-	val = atoi(s);
-
-	if (val <= 0) {
-		PyErr_Format(PyExc_ValueError, "Bad relative validity: '%s'",
-			     s);
-		Validity.Format = 0;
-		return Validity;
+	/* Validate the complete decimal value and optional unit before parsing. */
+	for (end = s; *end >= '0' && *end <= '9'; end++)
+		;
+	if (end == s)
+		goto invalid;
+	if (*end != '\0') {
+		if (end[1] != '\0' ||
+		    (*end != 'M' && *end != 'H' && *end != 'D' && *end != 'W'))
+			goto invalid;
+		type = *end;
 	}
+	errno = 0;
+	value = strtol(s, NULL, 10);
+	if (errno == ERANGE || value <= 0 || value > INT_MAX)
+		goto invalid;
+	val = (int)value;
 
 	switch (type) {
 		case 'M':
@@ -172,6 +178,11 @@ GSM_SMSValidity StringToSMSValidity(char *s)
 			Validity.Format = 0;
 	}
 
+	return Validity;
+
+invalid:
+	PyErr_Format(PyExc_ValueError, "Bad relative validity: '%s'", s);
+	Validity.Format = 0;
 	return Validity;
 }
 

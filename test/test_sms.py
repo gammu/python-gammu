@@ -20,6 +20,7 @@
 #
 
 import binascii
+import ctypes
 import datetime
 import os
 import sys
@@ -28,6 +29,116 @@ import unittest
 import pytest
 
 import gammu
+
+INT_MAX = (1 << (ctypes.sizeof(ctypes.c_int) * 8 - 1)) - 1
+LONG_MAX = (1 << (ctypes.sizeof(ctypes.c_long) * 8 - 1)) - 1
+
+
+def encode_validity(validity):
+    return gammu.EncodePDU(
+        {
+            "Text": "ok",
+            "Number": "123",
+            "Folder": 1,
+            "Type": "Submit",
+            "SMSC": {"Location": 1, "Validity": validity},
+        }
+    )
+
+
+def set_smsc_validity(validity):
+    gammu.StateMachine().SetSMSC(
+        {
+            "Location": 1,
+            "Number": "123",
+            "Name": "",
+            "DefaultNumber": "",
+            "Format": "Text",
+            "Validity": validity,
+        }
+    )
+
+
+@pytest.mark.parametrize("convert", [encode_validity, set_smsc_validity])
+@pytest.mark.parametrize(
+    "validity",
+    [
+        "",
+        "0",
+        "0M",
+        "-1",
+        "+12",
+        " 12",
+        "12 ",
+        "12 M",
+        "M",
+        "H",
+        "D",
+        "W",
+        "12junkM",
+        "12junk3",
+        "12MM",
+        "12m",
+        "12X",
+        "1.5H",
+    ],
+)
+def test_invalid_sms_validity(convert, validity):
+    with pytest.raises(ValueError, match="Bad relative validity"):
+        convert(validity)
+
+
+@pytest.mark.parametrize("convert", [encode_validity, set_smsc_validity])
+@pytest.mark.parametrize("suffix", ["", "M", "H", "D", "W"])
+@pytest.mark.parametrize(
+    "number",
+    [
+        str(INT_MAX),
+        str(INT_MAX + 1),
+        str(LONG_MAX + 1),
+        str(2**32 + 12),
+        pytest.param("9" * 10000, id="huge-number"),
+    ],
+)
+def test_sms_validity_overflow(convert, suffix, number):
+    with pytest.raises(ValueError, match="Bad relative validity"):
+        convert(number + suffix)
+
+
+@pytest.mark.parametrize(
+    ("validity", "expected"),
+    [
+        ("Max", "Max"),
+        ("60", "60M"),
+        ("00060M", "60M"),
+        ("60M", "60M"),
+        ("1H", "60M"),
+        ("1D", "1440M"),
+        ("1W", "7D"),
+    ],
+)
+def test_sms_validity_roundtrip(validity, expected):
+    assert gammu.DecodePDU(encode_validity(validity))["SMSC"]["Validity"] == expected
+
+
+def test_sms_validity_not_available():
+    assert encode_validity("NA")
+
+
+@pytest.mark.parametrize("convert", [encode_validity, set_smsc_validity])
+@pytest.mark.parametrize(
+    ("suffix", "maximum"),
+    [("", 635040), ("M", 635040), ("H", 10584), ("D", 441), ("W", 63)],
+)
+def test_sms_validity_above_unit_limit(convert, suffix, maximum):
+    with pytest.raises(ValueError, match="Bad relative validity"):
+        convert(f"{maximum + 1}{suffix}")
+
+
+@pytest.mark.parametrize("validity", ["635040", "635040M", "10584H", "441D", "63W"])
+def test_sms_validity_unit_limit(validity):
+    assert encode_validity(validity)
+
 
 PDU_DATA = binascii.unhexlify(
     b"079124602009999002AB098106845688F8907080517375809070805183018000"

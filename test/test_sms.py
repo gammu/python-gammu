@@ -57,12 +57,13 @@ GSM = (
 
 
 @pytest.mark.parametrize("extra", [{}, {"MessageSender": 987654}])
-def test_mms_indicator_roundtrip(extra):
+@pytest.mark.parametrize("message_size", [0, 1, 12345])
+def test_mms_indicator_roundtrip(extra, message_size):
     indicator = {
         "Address": "http://example.com/mms/123",
         "Title": "Photo message",
         "Sender": "+420123456789",
-        "MessageSize": 12345,
+        "MessageSize": message_size,
         "Class": "Personal",
     }
     sms = gammu.EncodeSMS(
@@ -75,6 +76,21 @@ def test_mms_indicator_roundtrip(extra):
     # Gammu preserves the address type suffix added by the MMS encoder.
     expected = {**indicator, "Sender": indicator["Sender"] + "/TYPE=PLMN"}
     assert gammu.DecodeSMS(sms)["Entries"][0]["MMSIndicator"] == expected
+
+
+@pytest.mark.parametrize("message_size", [-1, -12345])
+def test_mms_indicator_negative_message_size(message_size):
+    indicator = {
+        "Address": "http://example.com/mms/123",
+        "Title": "Photo message",
+        "Sender": "+420123456789",
+        "MessageSize": message_size,
+        "Class": "Personal",
+    }
+    with pytest.raises(ValueError, match="MessageSize must be non-negative"):
+        gammu.EncodeSMS(
+            {"Entries": [{"ID": "MMSIndicatorLong", "MMSIndicator": indicator}]}
+        )
 
 
 @pytest.mark.parametrize(

@@ -92,6 +92,7 @@ PyObject *MMSIndicatorToPython(GSM_MMSIndicator * mms)
 int MMSIndicatorFromPython(PyObject * dict, GSM_MMSIndicator * mms)
 {
 	char *s;
+	int message_size;
 
 	if (!PyDict_Check(dict)) {
 		PyErr_Format(PyExc_ValueError,
@@ -137,10 +138,14 @@ int MMSIndicatorFromPython(PyObject * dict, GSM_MMSIndicator * mms)
 	strcpy(mms->Sender, s);
 	free(s);
 
-	mms->MessageSize = GetIntFromDict(dict, "MessageSize");
-	if (mms->MessageSize == INT_INVALID) {
-		mms->MessageSize = 0;
+	message_size = GetIntFromDict(dict, "MessageSize");
+	if (message_size == INT_INVALID) {
+		message_size = 0;
+	} else if (message_size < 0) {
+		PyErr_Format(PyExc_ValueError, "MessageSize must be non-negative");
+		return 0;
 	}
+	mms->MessageSize = message_size;
 
 	s = GetCharFromDict(dict, "Class");
 	if (s != NULL) {

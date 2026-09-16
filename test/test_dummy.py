@@ -98,6 +98,20 @@ class DummyTest(unittest.TestCase):
 
 
 class BasicDummyTest(DummyTest):  # ruff: ignore[too-many-public-methods]
+    def test_alarm_timezone(self) -> None:
+        state_machine = self.get_statemachine()
+        for timezone in (
+            None,
+            datetime.timezone.utc,
+            datetime.timezone(datetime.timedelta(hours=5, minutes=45)),
+        ):
+            state_machine.SetAlarm(
+                datetime.time(12, 34, 56, tzinfo=timezone), Repeating=False
+            )
+            value = state_machine.GetAlarm()["Time"]
+            # The dummy backend explicitly resets stored alarm offsets to zero.
+            assert value == datetime.time(12, 34, 56, tzinfo=datetime.timezone.utc)
+
     def test_model(self) -> None:
         state_machine = self.get_statemachine()
         assert state_machine.GetModel()[1] == "Dummy"

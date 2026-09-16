@@ -1199,7 +1199,7 @@ StateMachine_GetSIMIMSI(StateMachineObject *self, PyObject *args, PyObject *kwds
 
 static char StateMachine_GetDateTime__doc__[] =
 "GetDateTime()\n\n"
-"Reads date and time from phone.\n\n"
+"Reads date and time from phone as a fixed-offset aware datetime.\n\n"
 "@return: Date and time from phone as datetime.datetime object.\n"
 "@rtype: datetime.datetime\n"
 ;
@@ -1227,7 +1227,7 @@ StateMachine_GetDateTime(StateMachineObject *self, PyObject *args, PyObject *kwd
 
 static char StateMachine_SetDateTime__doc__[] =
 "SetDateTime(Date)\n\n"
-"Sets date and time in phone.\n\n"
+"Sets date and time in phone. Aware offsets are preserved; naive values use zero offset.\n\n"
 "@param Date: Date to set\n"
 "@type Date: datetime.datetime\n"
 "@return: None\n"
@@ -1261,7 +1261,7 @@ StateMachine_SetDateTime(StateMachineObject *self, PyObject *args, PyObject *kwd
 
 static char StateMachine_GetAlarm__doc__[] =
 "GetAlarm(Location)\n\n"
-"Reads alarm set in phone.\n\n"
+"Reads alarm set in phone. Returned times have a fixed-offset timezone.\n\n"
 "@param Location: Which alarm to read. Many phone support only one alarm. Default is 1.\n"
 "@type Location: int\n"
 "@return: Alarm hash\n"
@@ -1328,7 +1328,7 @@ StateMachine_GetAlarm(StateMachineObject *self, PyObject *args, PyObject *kwds) 
 
 static char StateMachine_SetAlarm__doc__[] =
 "SetAlarm(DateTime, Location, Repeating, Text)\n\n"
-"Sets alarm in phone.\n"
+"Sets alarm in phone. Aware offsets are preserved; naive values use zero offset.\n"
 "@param DateTime: When should alarm happen.\n"
 "@type DateTime: datetime.datetime\n"
 "@param Location: Location of alarm to set. Defaults to 1.\n"
@@ -1354,7 +1354,7 @@ StateMachine_SetAlarm(StateMachineObject *self, PyObject *args, PyObject *kwds) 
     gsm_alarm.Text[0] = 0;
     gsm_alarm.Repeating = TRUE;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwds, "U|IIO", kwlist,
+    if (!PyArg_ParseTupleAndKeywords(args, kwds, "O|IIO", kwlist,
                 &pydt, &(gsm_alarm.Location), &(gsm_alarm.Repeating), &(s)))
         return NULL;
 

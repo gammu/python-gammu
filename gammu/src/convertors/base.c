@@ -31,6 +31,36 @@
 #include <strings.h>
 #endif
 #include <bytesobject.h>
+#include <errno.h>
+
+/* Parse the complete ASCII decimal string, without atoi's undefined overflow. */
+static int IntFromString(PyObject *bytes, const char *key)
+{
+	char *s = PyBytes_AS_STRING(bytes);
+	Py_ssize_t length = PyBytes_GET_SIZE(bytes);
+	Py_ssize_t index;
+	long value;
+
+	for (index = 0; index < length; index++) {
+		if (s[index] < '0' || s[index] > '9')
+			break;
+	}
+	if (length == 0 || index != length) {
+		PyErr_Format(PyExc_ValueError,
+			     "Value of '%s' doesn't seem to be integer", key);
+		return INT_INVALID;
+	}
+
+	errno = 0;
+	value = strtol(s, NULL, 10);
+	/* INT_MAX is reserved for the error sentinel. */
+	if (errno == ERANGE || value >= INT_MAX) {
+		PyErr_Format(PyExc_OverflowError,
+			     "Value of '%s' is out of range for an integer", key);
+		return INT_INVALID;
+	}
+	return (int)value;
+}
 
 gboolean BoolFromPython(PyObject * o, const char *key)
 {
@@ -44,11 +74,8 @@ gboolean BoolFromPython(PyObject * o, const char *key)
 
 	if (!PyBool_Check(o)) {
 		if (PyLong_Check(o)) {
-			i = PyLong_AsLong(o);
-			if (i == 0)
-				return FALSE;
-			else
-				return TRUE;
+			i = PyObject_IsTrue(o);
+			return i < 0 ? BOOL_INVALID : (gboolean)i;
 		}
 		if (PyUnicode_Check(o)) {
 			o2 = PyUnicode_AsASCIIString(o);
@@ -57,8 +84,10 @@ gboolean BoolFromPython(PyObject * o, const char *key)
 			}
 			s = PyBytes_AsString(o2);
 			if (isdigit((int)s[0])) {
-				i = atoi(s);
+				i = IntFromString(o2, key);
 				Py_DECREF(o2);
+				if (i == INT_INVALID)
+					return BOOL_INVALID;
 				if (i == 0)
 					return FALSE;
 				else
@@ -117,8 +146,8 @@ int GetIntFromDict(PyObject * dict, const char *key)
 {
 	PyObject *o;
 	PyObject *o2;
-	char *s;
 	int i;
+	long value;
 
 	o = PyDict_GetItemString(dict, key);
 	if (o == NULL) {
@@ -128,8 +157,16 @@ int GetIntFromDict(PyObject * dict, const char *key)
 	}
 
 	if (PyLong_Check(o)) {
-		/* Well we loose here something, but it is intentional :-) */
-		return (int)PyLong_AsLongLong(o);
+		value = PyLong_AsLong(o);
+		if (value == -1 && PyErr_Occurred())
+			return INT_INVALID;
+		/* INT_MAX is reserved for the error sentinel. */
+		if (value < INT_MIN || value >= INT_MAX) {
+			PyErr_Format(PyExc_OverflowError,
+				     "Value of '%s' is out of range for an integer", key);
+			return INT_INVALID;
+		}
+		return (int)value;
 	}
 
 	if (PyUnicode_Check(o)) {
@@ -137,18 +174,9 @@ int GetIntFromDict(PyObject * dict, const char *key)
 		if (o2 == NULL) {
 			return INT_INVALID;
 		}
-		s = PyBytes_AsString(o2);
-		if (isdigit((int)s[0])) {
-			i = atoi(s);
-			Py_DECREF(o2);
-			return i;
-		} else {
-			Py_DECREF(o2);
-			PyErr_Format(PyExc_ValueError,
-				     "Value of '%s' doesn't seem to be integer",
-				     key);
-			return INT_INVALID;
-		}
+		i = IntFromString(o2, key);
+		Py_DECREF(o2);
+		return i;
 	}
 
 	PyErr_Format(PyExc_ValueError,

@@ -20,7 +20,7 @@ jobs:
       - name: build
         run: uv build --sdist
       - name: Store the source distribution
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
         with:
           name: dist-sdist
           path: dist
@@ -42,7 +42,7 @@ jobs:
         env:
           CIBW_ARCHS_LINUX: ${{ matrix.architecture }}
       - name: Store the Linux wheels
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
         with:
           name: dist-linux-${{ matrix.architecture }}
           path: wheelhouse
@@ -69,7 +69,7 @@ jobs:
       - name: build
         run: uv build --wheel
       - name: Store the binary wheel
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
         with:
           name: dist-windows-${{ matrix.python-version }}
           path: dist

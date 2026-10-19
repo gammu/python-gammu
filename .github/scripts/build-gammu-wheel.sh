@@ -5,8 +5,8 @@
 set -euo pipefail
 
 # renovate: datasource=github-release-attachments depName=gammu/gammu versioning=loose
-readonly GAMMU_VERSION="1.45.0"
-readonly GAMMU_SHA256="f6ff599c79e800cb49831cb015389c453c4382263bb7a1e0b5f417acc4b75d30"
+readonly GAMMU_VERSION="1.45.1"
+readonly GAMMU_SHA256="09c32e0573db6c26b23c185ce0e5600677bd57bf98cf7ec69557e24a5cad7c40"
 readonly GAMMU_PREFIX="${GAMMU_WHEEL_PREFIX:-/opt/python-gammu-gammu}"
 readonly GAMMU_ARCHIVE="Gammu-${GAMMU_VERSION}.tar.gz"
 readonly GAMMU_URL="https://github.com/gammu/gammu/releases/download/${GAMMU_VERSION}/${GAMMU_ARCHIVE}"

@@ -46,7 +46,7 @@ READY:
 """
 
 import argparse
-import datetime
+import datetime as dt
 import sys
 from pathlib import Path
 
@@ -132,7 +132,7 @@ def main() -> None:  # ruff: ignore[too-many-branches, too-many-statements, comp
     file_object = Path(args.testfile)
     file_content = file_object.read_bytes()
     file_stat = file_object.stat()
-    ttime = datetime.datetime.fromtimestamp(file_stat[8])
+    ttime = dt.datetime.fromtimestamp(file_stat[8])
     file_f = {
         "ID_FullName": args.folder,
         "Name": "cgi.jpg",

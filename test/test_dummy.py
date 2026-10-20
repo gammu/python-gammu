@@ -19,7 +19,7 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #
 
-import datetime
+import datetime as dt
 import platform
 import shutil
 import stat
@@ -102,15 +102,15 @@ class BasicDummyTest(DummyTest):  # ruff: ignore[too-many-public-methods]
         state_machine = self.get_statemachine()
         for timezone in (
             None,
-            datetime.timezone.utc,
-            datetime.timezone(datetime.timedelta(hours=5, minutes=45)),
+            dt.timezone.utc,
+            dt.timezone(dt.timedelta(hours=5, minutes=45)),
         ):
             state_machine.SetAlarm(
-                datetime.time(12, 34, 56, tzinfo=timezone), Repeating=False
+                dt.time(12, 34, 56, tzinfo=timezone), Repeating=False
             )
             value = state_machine.GetAlarm()["Time"]
             # The dummy backend explicitly resets stored alarm offsets to zero.
-            assert value == datetime.time(12, 34, 56, tzinfo=datetime.timezone.utc)
+            assert value == dt.time(12, 34, 56, tzinfo=dt.timezone.utc)
 
     def test_model(self) -> None:
         state_machine = self.get_statemachine()
@@ -347,7 +347,7 @@ class BasicDummyTest(DummyTest):  # ruff: ignore[too-many-public-methods]
     def test_addfile(self) -> None:
         state_machine = self.get_statemachine()
         file_stat = TEST_FILE.stat()
-        ttime = datetime.datetime.fromtimestamp(file_stat.st_mtime)
+        ttime = dt.datetime.fromtimestamp(file_stat.st_mtime)
         content = TEST_FILE.read_bytes()
         file_f = {
             "ID_FullName": "testfolder",

@@ -124,62 +124,62 @@ docstring-code-format = true
 extend-safe-fixes = [
   "ANN",
   "D",
-  "EM101",
-  "EM102",
-  "FA102",
+  "f-string-in-exception",
   "FLY",
+  "future-required-type-annotation",
+  "raw-string-in-exception",
   "SIM",
   "TCH",
   "UP"
 ]
 future-annotations = true
 ignore = [
-  "ANN001",
-  "ANN002",
-  "ANN003",
-  "ANN201",
-  "ANN202",
-  "ARG001",
-  "ARG002",
+  "boolean-positional-value-in-call",
+  "call-datetime-fromtimestamp",
+  "call-datetime-without-tzinfo",
   "COM",  # CONFIG: No trailing commas
-  "D100",
-  "D101",
-  "D102",
-  "D103",
-  "D104",
-  "D107",
-  "D203",  # CONFIG: incompatible with D211
-  "D206",  # CONFIG: formatter
-  "D212",  # CONFIG: incompatible with D213
-  "D401",
-  "DOC201",
-  "DOC501",
-  "DTZ001",
-  "DTZ006",
-  "E501",  # WONTFIX: we accept long strings (rest is formatted by black)
-  "FBT003",
-  "FIX002",
-  "N802",
-  "N818",
-  "PERF203",  # WONFIX: affects only old Python versions
-  "PLR2004",
-  "PLR6301",
-  "RUF012",
-  "S607",
-  "SIM115",
-  "SLF001",
-  "TD002",
-  "TD003",
-  "TRY003",
-  "TRY300"
+  "docstring-missing-exception",
+  "docstring-missing-returns",
+  "docstring-tab-indentation",  # CONFIG: formatter
+  "error-suffix-on-exception-name",
+  "incorrect-blank-line-before-class",  # CONFIG: incompatible with D211
+  "invalid-function-name",
+  "line-contains-todo",
+  "line-too-long",  # WONTFIX: we accept long strings (rest is formatted by black)
+  "magic-value-comparison",
+  "missing-return-type-private-function",
+  "missing-return-type-undocumented-public-function",
+  "missing-todo-author",
+  "missing-todo-link",
+  "missing-type-args",
+  "missing-type-function-argument",
+  "missing-type-kwargs",
+  "multi-line-summary-first-line",  # CONFIG: incompatible with D213
+  "mutable-class-default",
+  "no-self-use",
+  "non-imperative-mood",
+  "open-file-with-context-handler",
+  "private-member-access",
+  "raise-vanilla-args",
+  "start-process-with-partial-path",
+  "try-consider-else",
+  "try-except-in-loop",  # WONFIX: affects only old Python versions
+  "undocumented-public-class",
+  "undocumented-public-function",
+  "undocumented-public-init",
+  "undocumented-public-method",
+  "undocumented-public-module",
+  "undocumented-public-package",
+  "unused-function-argument",
+  "unused-method-argument"
 ]
 preview = true
 select = ["ALL"]
 
 [tool.ruff.lint.per-file-ignores]
-"examples/*.py" = ["T201"]
-"setup.py" = ["T201"]
-"test/*.py" = ["S101", "T201"]
+"examples/*.py" = ["print"]
+"setup.py" = ["print"]
+"test/*.py" = ["assert", "print"]
 
 [tool.setuptools]
 include-package-data = false

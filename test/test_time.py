@@ -21,14 +21,14 @@
 
 """Timezone conversion regression tests."""
 
-import datetime
+import datetime as dt
 from types import SimpleNamespace
 
 import pytest
 
 import gammu
 
-WALL_TIME = datetime.datetime(2026, 9, 16, 12, 34, 56)
+WALL_TIME = dt.datetime(2026, 9, 16, 12, 34, 56)
 
 
 def link_datetime(value):
@@ -44,15 +44,15 @@ def link_datetime(value):
     "seconds", [0, 7200, -18000, 19800, -12600, 20700, 1, -1, 86399, -86399]
 )
 def test_datetime_offset_roundtrip(seconds):
-    offset = datetime.timedelta(seconds=seconds)
-    value = WALL_TIME.replace(tzinfo=datetime.timezone(offset))
+    offset = dt.timedelta(seconds=seconds)
+    value = WALL_TIME.replace(tzinfo=dt.timezone(offset))
     result = link_datetime(value)
     for field in ("DateTime", "SMSCDateTime"):
         assert result[field].replace(tzinfo=None) == WALL_TIME
         assert result[field].utcoffset() == offset
 
 
-class NoOffset(datetime.tzinfo):
+class NoOffset(dt.tzinfo):
     def utcoffset(self, dt):
         return None
 
@@ -68,7 +68,7 @@ class NoOffset(datetime.tzinfo):
 def test_naive_datetime(value):
     result = link_datetime(value)["DateTime"]
     assert result.replace(tzinfo=None) == WALL_TIME
-    assert result.tzinfo == datetime.timezone.utc
+    assert result.tzinfo == dt.timezone.utc
 
 
 def test_missing_datetime():
@@ -87,18 +87,18 @@ def test_decode_pdu_offset(encoded_offset, seconds):
     pdu[14] = encoded_offset
     value = gammu.DecodePDU(bytes(pdu))["DateTime"]
     assert value.replace(tzinfo=None) == WALL_TIME
-    assert value.utcoffset() == datetime.timedelta(seconds=seconds)
+    assert value.utcoffset() == dt.timedelta(seconds=seconds)
 
 
 @pytest.mark.parametrize(
     ("offset", "error", "message"),
     [
         (42, TypeError, "timedelta"),
-        (datetime.timedelta(days=1), ValueError, "24"),
-        (datetime.timedelta(days=-1), ValueError, "24"),
-        (datetime.timedelta(days=999999999), ValueError, "24"),
-        (datetime.timedelta(microseconds=1), ValueError, "whole number"),
-        (datetime.timedelta(microseconds=-1), ValueError, "whole number"),
+        (dt.timedelta(days=1), ValueError, "24"),
+        (dt.timedelta(days=-1), ValueError, "24"),
+        (dt.timedelta(days=999999999), ValueError, "24"),
+        (dt.timedelta(microseconds=1), ValueError, "whole number"),
+        (dt.timedelta(microseconds=-1), ValueError, "whole number"),
     ],
 )
 @pytest.mark.parametrize("time_only", [False, True])
@@ -122,7 +122,7 @@ def test_invalid_offset(offset, error, message, time_only):
             state_machine.SetDateTime(value)
 
 
-class BrokenTimezone(datetime.tzinfo):
+class BrokenTimezone(dt.tzinfo):
     def utcoffset(self, dt):
         message = "offset failed"
         raise RuntimeError(message)
@@ -132,7 +132,7 @@ class BrokenTimezone(datetime.tzinfo):
 def test_offset_exception(time_only):
     state_machine = gammu.StateMachine()
     if time_only:
-        value = datetime.time(12, 34, tzinfo=BrokenTimezone())
+        value = dt.time(12, 34, tzinfo=BrokenTimezone())
         with pytest.raises(RuntimeError, match="offset failed"):
             state_machine.SetAlarm(value, Repeating=False)
     else:

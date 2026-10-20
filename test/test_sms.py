@@ -21,7 +21,7 @@
 
 import binascii
 import ctypes
-import datetime
+import datetime as dt
 import os
 import sys
 import unittest
@@ -492,7 +492,7 @@ class PDUTest(unittest.TestCase):
         message = [
             {
                 "RejectDuplicates": 0,
-                "SMSCDateTime": datetime.datetime(2010, 7, 22, 17, 4, 11),
+                "SMSCDateTime": dt.datetime(2010, 7, 22, 17, 4, 11),
                 "Class": -1,
                 "Name": "",
                 "InboxFolder": 0,
@@ -513,7 +513,7 @@ class PDUTest(unittest.TestCase):
                 "ReplaceMessage": 0,
                 "Coding": "8bit",
                 "Number": "33707520030",
-                "DateTime": datetime.datetime(2010, 7, 1, 9, 40, 21),
+                "DateTime": dt.datetime(2010, 7, 1, 9, 40, 21),
                 "DeliveryStatus": 0,
                 "State": "UnSent",
                 "MessageReference": 0,

@@ -1,3 +1,8 @@
+3.5.1
+=====
+
+* Updated the Gammu library bundled in binary wheels to 1.45.1.
+
 3.5.0
 =====
 
